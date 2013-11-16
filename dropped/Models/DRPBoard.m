@@ -93,27 +93,31 @@
 
 - (DRPCharacter *)characterAtPosition:(DRPPosition *)position forTurn:(NSInteger)turn
 {
-    return nil;
+    return _history[turn][position.i][position.j];
 }
 
 - (DRPCharacter *)characterAtPosition:(DRPPosition *)position
 {
-    return nil;
+    return [_history lastObject][position.i][position.j];
 }
 
 - (NSString *)wordForPositions:(NSArray *)positions forTurn:(NSInteger)turn
 {
-    return nil;
+    NSMutableString *word = [NSMutableString stringWithString:@""];
+    for (DRPPosition *position in positions) {
+        [word appendString:((DRPCharacter *)_history[turn][position.i][position.j]).character];
+    }
+    return word;
 }
 
 - (NSString *)wordForPositions:(NSArray *)positions
 {
-    return nil;
+    return [self wordForPositions:positions forTurn:_history.count - 1];
 }
 
 - (DRPPlayedWord *)wordPlayedForTurn:(NSInteger)turn
 {
-    return nil;
+    return _playedWords[turn];
 }
 
 #pragma mark Move Submission
@@ -210,7 +214,6 @@
     [turnData setData:[turnData subdataWithRange:NSMakeRange(numberPositions, turnData.length - numberPositions)]];
     
     for (DRPCharacter *character in playedWord.appendedCharacters) {
-        NSLog(@"%@", character.character);
         if (character.multiplier != -1) {
             NSInteger color = 0;
             [turnData getBytes:&color length:1];

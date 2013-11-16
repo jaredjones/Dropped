@@ -56,6 +56,7 @@
 
 - (NSArray *)loadPositionsFromData:(NSData *)data numberPositions:(NSInteger)length;
 - (NSArray *)loadCharactersFromData:(NSData *)data numberCharacters:(NSInteger)length;
+- (void)prettyPrintHistoryItem:(NSArray *)item;
 
 @end
 
@@ -78,7 +79,7 @@
             // 3 characters, 0 multipliers, 0 additional
             [d appendString:@"\003\000\000"];
             // Positions
-            [d appendString:@"\000\000\001\000\002\004ABC"];
+            [d appendString:@"\000\001\000\003\000\004ABQ"];
             
             data = [d dataUsingEncoding:NSUTF8StringEncoding];
         }
@@ -244,7 +245,27 @@
 
 - (void)applyDiff:(DRPPlayedWord *)playedWord toHistoryItem:(NSMutableArray *)item
 {
-    NSLog(@"%@", playedWord.diff);
+    NSDictionary *diff = playedWord.diff;
+    for (NSInteger i = 0; i < 6; i++) {
+        for (NSInteger j = 5; j >= -6; j--) {
+            DRPPosition *startPosition = [DRPPosition positionWithI:i j:j];
+            if (j >= 0) {
+                DRPPosition *endPosition = diff[startPosition];
+                if (endPosition) {
+                    item[endPosition.i][endPosition.j] = item[startPosition.i][startPosition.j];
+                }
+            } else {
+                NSArray *end = diff[startPosition];
+                if (end) {
+                    DRPCharacter *character = end[0];
+                    DRPPosition *endPosition = end[1];
+                    item[endPosition.i][endPosition.j] = character;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 #pragma mark Utility
@@ -272,6 +293,19 @@
         [characters addObject:character];
     }
     return characters;
+}
+
+- (void)prettyPrintHistoryItem:(NSArray *)item
+{
+    NSMutableString *string = [NSMutableString stringWithString:@"\n"];
+    for (NSInteger j = 0; j < 6; j++) {
+        for (NSInteger i = 0; i < 6; i++) {
+            [string appendString:((DRPCharacter *)item[i][j]).character];
+            [string appendString:@" "];
+        }
+        [string appendString:@"\n"];
+    }
+    NSLog(@"%@", string);
 }
 
 @end

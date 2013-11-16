@@ -21,11 +21,11 @@
 
 + (instancetype)characterWithCharacter:(NSString *)character
 {
-    if ([character isEqualToString:@"3"] || [character isEqualToString:@"three"]) {
+    if ([character isEqualToString:@"3"]) {
         return [DRPCharacter characterWithMulitplier:3];
-    } else if ([character isEqualToString:@"4"] || [character isEqualToString:@"four"]) {
+    } else if ([character isEqualToString:@"4"]) {
         return [DRPCharacter characterWithMulitplier:4];
-    } else if ([character isEqualToString:@"5"] || [character isEqualToString:@"five"]) {
+    } else if ([character isEqualToString:@"5"]) {
         return [DRPCharacter characterWithMulitplier:5];
     }
     
@@ -40,13 +40,13 @@
     DRPCharacter *c = [DRPCharacter new];
     switch (multiplier) {
         case 3:
-            c.character = @"three";
+            c.character = @"3";
             break;
         case 4:
-            c.character = @"four";
+            c.character = @"4";
             break;
         case 5:
-            c.character = @"five";
+            c.character = @"5";
             break;
         default:
             c = nil;

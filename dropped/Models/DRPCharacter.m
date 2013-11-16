@@ -21,6 +21,14 @@
 
 + (instancetype)characterWithCharacter:(NSString *)character
 {
+    if ([character isEqualToString:@"3"]) {
+        return [DRPCharacter characterWithMulitplier:3];
+    } else if ([character isEqualToString:@"4"]) {
+        return [DRPCharacter characterWithMulitplier:4];
+    } else if ([character isEqualToString:@"5"]) {
+        return [DRPCharacter characterWithMulitplier:5];
+    }
+    
     DRPCharacter *c = [DRPCharacter new];
     c.character = character;
     c.multiplier = -1;

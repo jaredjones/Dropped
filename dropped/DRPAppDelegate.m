@@ -7,6 +7,7 @@
 //
 
 #import "DRPAppDelegate.h"
+#import "DRPDictionary.h"
 
 @implementation DRPAppDelegate
 

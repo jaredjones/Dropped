@@ -9,5 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @interface DRPDictionary : NSObject
-
++ (DRPDictionary *)sharedDictionary;
++ (BOOL) isValidWord: (NSString *) word;
++ (NSInteger) getIndexPosition: (NSString *) word;
 @end

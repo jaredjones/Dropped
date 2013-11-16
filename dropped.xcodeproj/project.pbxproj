@@ -21,6 +21,8 @@
 		A920405218370467006940B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A920405118370467006940B8 /* Security.framework */; };
 		A920405C18370BA0006940B8 /* DRPPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = A920405B18370BA0006940B8 /* DRPPosition.m */; };
 		C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C024DF7818370AC300B5775B /* DRPDictionary.m */; };
+		C08CBC171837168800CE678F /* importdatabase.sh in Resources */ = {isa = PBXBuildFile; fileRef = C08CBC141837168800CE678F /* importdatabase.sh */; };
+		C08CBC1A18371B3700CE678F /* Dropped.db in CopyFiles */ = {isa = PBXBuildFile; fileRef = C08CBC131837168800CE678F /* Dropped.db */; };
 		F4E61295ABFC46CDBE1384F1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA523B0D421443AAA174ECE1 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -33,6 +35,19 @@
 			remoteInfo = dropped;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C08CBC1918371B1E00CE678F /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Database;
+			dstSubfolderSpec = 7;
+			files = (
+				C08CBC1A18371B3700CE678F /* Dropped.db in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		A91D8F45183702EE00BEC6E8 /* dropped.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dropped.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,6 +70,9 @@
 		B0935A92C9664719B578E480 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C024DF7718370AC300B5775B /* DRPDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDictionary.h; path = Models/DRPDictionary.h; sourceTree = "<group>"; };
 		C024DF7818370AC300B5775B /* DRPDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPDictionary.m; path = Models/DRPDictionary.m; sourceTree = "<group>"; };
+		C08CBC131837168800CE678F /* Dropped.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dropped.db; sourceTree = "<group>"; };
+		C08CBC141837168800CE678F /* importdatabase.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = importdatabase.sh; sourceTree = "<group>"; };
+		C08CBC151837168800CE678F /* US.dic */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = US.dic; sourceTree = "<group>"; };
 		CA523B0D421443AAA174ECE1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -126,6 +144,7 @@
 				A9204055183704C1006940B8 /* Views */,
 				A9204056183704D7006940B8 /* Models */,
 				A91D8F5A183702EE00BEC6E8 /* Images.xcassets */,
+				C08CBC121837168800CE678F /* Resources */,
 				A91D8F4F183702EE00BEC6E8 /* Supporting Files */,
 			);
 			path = dropped;
@@ -184,6 +203,16 @@
 			name = Board;
 			sourceTree = "<group>";
 		};
+		C08CBC121837168800CE678F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				C08CBC131837168800CE678F /* Dropped.db */,
+				C08CBC141837168800CE678F /* importdatabase.sh */,
+				C08CBC151837168800CE678F /* US.dic */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -196,6 +225,7 @@
 				A91D8F42183702EE00BEC6E8 /* Frameworks */,
 				A91D8F43183702EE00BEC6E8 /* Resources */,
 				8142C07EB6364950BA9598DA /* Copy Pods Resources */,
+				C08CBC1918371B1E00CE678F /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -263,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A91D8F53183702EE00BEC6E8 /* InfoPlist.strings in Resources */,
+				C08CBC171837168800CE678F /* importdatabase.sh in Resources */,
 				A91D8F5B183702EE00BEC6E8 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

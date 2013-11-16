@@ -9,6 +9,7 @@
 #import "DRPBoard.h"
 #import "DRPPosition.h"
 #import "DRPCharacter.h"
+#import "DRPPlayedWord.h"
 
 @interface DRPBoard ()
 
@@ -46,9 +47,12 @@
 - (void)loadData:(NSData *)data;
 - (void)loadInitialState:(NSData *)data;
 - (void)loadTurns:(NSData *)data;
-- (void)loadTurn:(NSMutableData *)data forTurn:(NSInteger)turn;
+- (void)loadTurn:(NSMutableData *)data;
 
 - (NSData *)dumpToMatchData;
+
+- (NSArray *)loadPositionsFromData:(NSData *)data numberPositions:(NSInteger)length;
+- (NSArray *)loadCharactersFromData:(NSData *)data numberCharacters:(NSInteger)length;
 
 @end
 
@@ -63,7 +67,7 @@
         
         if (data == nil) {
             // Test data uses \ddd for non-ASCII characters
-            NSString *d = @"\001ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ\001\003\000\000001325ABC";
+            NSString *d = @"\001ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ\001\003\000\000000102ABC";
             data = [d dataUsingEncoding:NSUTF8StringEncoding];
         }
         
@@ -108,6 +112,9 @@
 
 #pragma mark MatchData Loading
 
+// These methods care very much about state. Do not call any
+// of them directly except loadData.
+
 - (void)loadData:(NSData *)data
 {
     NSInteger dataVersion = 0;
@@ -135,7 +142,6 @@
         for (NSInteger j = 0; j < 6; j++) {
             NSString *c = [initialState substringWithRange:NSMakeRange(i + 6 * j, 1)];
             DRPCharacter *character = [DRPCharacter characterWithCharacter:c];
-            
             [column addObject:character];
         }
         
@@ -153,14 +159,15 @@
     
     NSMutableData *mturnsData = [NSMutableData dataWithData:[turnsData subdataWithRange:NSMakeRange(1, turnsData.length - 1)]];
     
-    for (NSInteger turn = 1; turn <= numberTurns; turn++) {
+    for (NSInteger turn = 0; turn < numberTurns; turn++) {
         // Each call to loadTurn:forTurn: modifies mturnsData until
         // no data is left
-        [self loadTurn:mturnsData forTurn:turn];
+        [self loadTurn:mturnsData];
     }
 }
 
-- (void)loadTurn:(NSMutableData *)turnData forTurn:(NSInteger)turn
+// Append a new turn into history
+- (void)loadTurn:(NSMutableData *)turnData
 {
     NSInteger numberPositions = 0;
     NSInteger numberMultipliers = 0;
@@ -171,10 +178,21 @@
     [turnData setData:[turnData subdataWithRange:NSMakeRange(3, turnData.length - 3)]];
     
     // Create DRPPlayedWord
-    // Apply diff to new history item
+    DRPPlayedWord *playedWord = [DRPPlayedWord new];
     
-     NSInteger turnDataLength = 3 * numberPositions + 4 * (numberMultipliers + numberAdditional);
-     [turnData setData:[turnData subdataWithRange:NSMakeRange(turnDataLength, turnData.length - turnDataLength)]];
+    playedWord.positions = [self loadPositionsFromData:turnData numberPositions:numberPositions];
+    [turnData setData:[turnData subdataWithRange:NSMakeRange(2 * numberPositions, turnData.length - 2 * numberPositions)]];
+    
+    playedWord.multipliers = [self loadPositionsFromData:turnData numberPositions:numberMultipliers];
+    [turnData setData:[turnData subdataWithRange:NSMakeRange(2 * numberMultipliers, turnData.length - 2 * numberMultipliers)]];
+    
+    playedWord.additionalMultipliers = [self loadPositionsFromData:turnData numberPositions:numberAdditional];
+    [turnData setData:[turnData subdataWithRange:NSMakeRange(2 * numberAdditional, turnData.length - 2 * numberAdditional)]];
+    
+    playedWord.appendedCharacters = [self loadCharactersFromData:turnData numberCharacters:numberPositions];
+    [turnData setData:[turnData subdataWithRange:NSMakeRange(numberPositions, turnData.length - numberPositions)]];
+    
+    // Apply diff to new history item
 }
 
 #pragma mark MatchData Dumping
@@ -182,6 +200,33 @@
 - (NSData *)dumpToMatchData
 {
     return nil;
+}
+
+#pragma mark Utility
+
+- (NSArray *)loadPositionsFromData:(NSData *)data numberPositions:(NSInteger)length
+{
+    NSMutableArray *positions = [[NSMutableArray alloc] init];
+    for (NSInteger n = 0; n < length; n++) {
+        NSInteger i = 0, j = 0;
+        [data getBytes:&i range:NSMakeRange(2 * n, 1)];
+        [data getBytes:&j range:NSMakeRange(2 * n + 1, 1)];
+        DRPPosition *position = [DRPPosition positionWithI:i j:j];
+        [positions addObject:position];
+    }
+    return positions;
+}
+
+- (NSArray *)loadCharactersFromData:(NSData *)data numberCharacters:(NSInteger)length
+{
+    NSMutableArray *characters = [[NSMutableArray alloc] init];
+    for (NSInteger n = 0; n < length; n++) {
+        NSString *c = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(n, 1)]
+                                            encoding:NSUTF8StringEncoding];
+        DRPCharacter *character = [DRPCharacter characterWithCharacter:c];
+        [characters addObject:character];
+    }
+    return characters;
 }
 
 @end

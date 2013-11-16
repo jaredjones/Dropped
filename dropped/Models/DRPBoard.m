@@ -51,6 +51,9 @@
 
 - (NSData *)dumpToMatchData;
 
+- (NSMutableArray *)deepCopyHistoryItem:(NSArray *)item;
+- (void)applyDiff:(DRPPlayedWord *)playedWord toHistoryItem:(NSMutableArray *)item;
+
 - (NSArray *)loadPositionsFromData:(NSData *)data numberPositions:(NSInteger)length;
 - (NSArray *)loadCharactersFromData:(NSData *)data numberCharacters:(NSInteger)length;
 
@@ -167,6 +170,10 @@
 }
 
 // Append a new turn into history
+// 1. Loads a DRPPlayedWord to represent the move
+// 2. Copies the last history item
+// 3. Steps forward on the copy using DRPPlayedWord
+// 4. Adds the now different history item to history
 - (void)loadTurn:(NSMutableData *)turnData
 {
     NSInteger numberPositions = 0;
@@ -192,7 +199,12 @@
     playedWord.appendedCharacters = [self loadCharactersFromData:turnData numberCharacters:numberPositions];
     [turnData setData:[turnData subdataWithRange:NSMakeRange(numberPositions, turnData.length - numberPositions)]];
     
+    // TODO: grab the colors of new multipliers
+    
     // Apply diff to new history item
+    NSMutableArray *historyItem = [self deepCopyHistoryItem:[_history lastObject]];
+    [self applyDiff:playedWord toHistoryItem:historyItem];
+    [_history addObject:historyItem];
 }
 
 #pragma mark MatchData Dumping
@@ -200,6 +212,30 @@
 - (NSData *)dumpToMatchData
 {
     return nil;
+}
+
+#pragma mark History Manipulation
+
+- (NSMutableArray *)deepCopyHistoryItem:(NSArray *)item
+{
+    NSMutableArray *copied = [[NSMutableArray alloc] initWithCapacity:6];
+    for (NSInteger i = 0; i < 6; i++) {
+        NSMutableArray *column = [[NSMutableArray alloc] initWithCapacity:6];
+        
+        for (NSInteger j = 0; j < 6; j++) {
+            DRPCharacter *old = (DRPCharacter *)item[i][j];
+            DRPCharacter *newCharacter = [DRPCharacter characterWithCharacter:old.character];
+            [column addObject:newCharacter];
+        }
+        
+        [copied addObject:column];
+    }
+    return copied;
+}
+
+- (void)applyDiff:(DRPPlayedWord *)playedWord toHistoryItem:(NSMutableArray *)item
+{
+    
 }
 
 #pragma mark Utility

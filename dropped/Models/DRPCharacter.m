@@ -21,11 +21,11 @@
 
 + (instancetype)characterWithCharacter:(NSString *)character
 {
-    if ([character isEqualToString:@"3"]) {
+    if ([character isEqualToString:@"3"] || [character isEqualToString:@"three"]) {
         return [DRPCharacter characterWithMulitplier:3];
-    } else if ([character isEqualToString:@"4"]) {
+    } else if ([character isEqualToString:@"4"] || [character isEqualToString:@"four"]) {
         return [DRPCharacter characterWithMulitplier:4];
-    } else if ([character isEqualToString:@"5"]) {
+    } else if ([character isEqualToString:@"5"] || [character isEqualToString:@"five"]) {
         return [DRPCharacter characterWithMulitplier:5];
     }
     

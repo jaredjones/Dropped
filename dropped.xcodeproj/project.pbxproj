@@ -115,8 +115,10 @@
 		A91D8F4E183702EE00BEC6E8 /* dropped */ = {
 			isa = PBXGroup;
 			children = (
-				A91D8F57183702EE00BEC6E8 /* DRPAppDelegate.h */,
-				A91D8F58183702EE00BEC6E8 /* DRPAppDelegate.m */,
+				A9204053183704AA006940B8 /* AppDelegate */,
+				A9204054183704B7006940B8 /* ViewControllers */,
+				A9204055183704C1006940B8 /* Views */,
+				A9204056183704D7006940B8 /* Models */,
 				A91D8F5A183702EE00BEC6E8 /* Images.xcassets */,
 				A91D8F4F183702EE00BEC6E8 /* Supporting Files */,
 			);
@@ -132,6 +134,36 @@
 				A91D8F56183702EE00BEC6E8 /* dropped-Prefix.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		A9204053183704AA006940B8 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				A91D8F57183702EE00BEC6E8 /* DRPAppDelegate.h */,
+				A91D8F58183702EE00BEC6E8 /* DRPAppDelegate.m */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+		A9204054183704B7006940B8 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
+		A9204055183704C1006940B8 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		A9204056183704D7006940B8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

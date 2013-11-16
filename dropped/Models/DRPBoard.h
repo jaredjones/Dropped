@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@class DRPPosition, DRPCharacter;
+@class DRPPosition, DRPCharacter, DRPPlayedWord;
 
 @interface DRPBoard : NSObject
 
@@ -21,15 +21,11 @@
 - (NSString *)wordForPositions:(NSArray *)positions forTurn:(NSInteger)turn;
 - (NSString *)wordForPositions:(NSArray *)positions;
 
-- (NSArray *)positionsPlayedForTurn:(NSInteger)turn;
-- (NSArray *)appendedCharactersForTurn:(NSInteger)turn;
+- (DRPPlayedWord *)wordPlayedForTurn:(NSInteger)turn;
 
 #pragma mark Move Submission
 
-// Creates a new history entry and submits move to Game Center
-- (NSDictionary *)submitMoveForPositions:(NSArray *)positions;
-
-// This is needed by the ViewControllers to play back previous moves
-- (NSDictionary *)diffForPositions:(NSArray *)positions appendedCharacters:(NSArray *)characters;
+// Creates a new history entry. GC submission is handled by DRPMatch.
+- (DRPPlayedWord *)appendMoveForPositions:(NSArray *)positions;
 
 @end

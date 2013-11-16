@@ -16,23 +16,34 @@
 // Make sure that each DRPCharacter is unique. NO
 // structure sharing.
 @property NSMutableDictionary *history;
-
-// Stores
-@property NSMutableArray *positions, *appendedCharacters;
+@property NSMutableArray *playedWords;
 
 // MatchData
-// First byte - version number
-// Next 36 bytes - initial state
-// Next 1 byte - the number of turns taken so far
+// First byte               - version number
+// Next 36 bytes            - initial characters
+// Next 1 byte              - number of turns (n) taken so far
 // Following n sequences
-//      First byte - the number of characters (m) in move
-//      Next 2 * m bytes - positions (i j)
-//      Next m bytes     - Appended characters
+//      First byte                  - number of characters (m) in move
+//      Second byte                 - number of activated multipliers (j) in move
+//      Third byte                  - number of additional multipliers (k) that were
+//                                    dropped in the move but did not affect score
+//                                    (dropped because they would end up in the bottom
+//                                    corners where they could not be activated)
+//      Next (2 * (m+j+k)) bytes    - positions (i j), 2 bytes each. Positions from
+//                                    0 to (2 * m) were used in the played word, the
+//                                    rest are the additional dropped tiles
+//      Next (m + j + k) bytes      - appended characters. Stored "bottom up" in
+//                                    column order
+//      Next (j + k) bytes          - colors for multipliers in appended bytes. Since
+//                                    there are always 2 multipliers on the board at
+//                                    a given time, we know that the appended characters
+//                                    must "replace" each dropped multiplier
 //
-//      Multipliers use values "3", "4", or "5", NOT bytes
-//      If multipliers are present, there are an additional
-//      1 or 2 bytes after the appended characters to represent
-//      color
+//      - Multipliers use values "3", "4", or "5" in
+//        appended characters, NOT bytes
+//      - Total length of sequence is (3 + 3 * m + 4 * (j + k)) bytes
+//
+
 - (NSData *)dumpToMatchData;
 
 @end
@@ -50,8 +61,6 @@
             NSString *d = @"\0ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ\0";
             data = [d dataUsingEncoding:NSUTF8StringEncoding];
         }
-        
-        // Read History (it's good for you)
     }
     return self;
 }
@@ -78,24 +87,14 @@
     return nil;
 }
 
-- (NSArray *)positionsPlayedForTurn:(NSInteger)turn
-{
-    return nil;
-}
-
-- (NSArray *)appendedCharactersForTurn:(NSInteger)turn
+- (DRPPlayedWord *)wordPlayedForTurn:(NSInteger)turn
 {
     return nil;
 }
 
 #pragma mark Move Submission
 
-- (NSDictionary *)submitMoveForPositions:(NSArray *)positions
-{
-    return [self diffForPositions:positions appendedCharacters:nil];
-}
-
-- (NSDictionary *)diffForPositions:(NSArray *)positions appendedCharacters:(NSArray *)characters
+- (DRPPlayedWord *)appendMoveForPositions:(NSArray *)positions
 {
     return nil;
 }

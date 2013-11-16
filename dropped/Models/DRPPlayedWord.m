@@ -8,6 +8,7 @@
 
 #import "DRPPlayedWord.h"
 #import "DRPPosition.h"
+#import "DRPCharacter.h"
 
 @implementation DRPPlayedWord
 
@@ -67,7 +68,13 @@
 
 - (NSInteger)score
 {
-    return 0;
+    NSInteger multiplier = 0;
+    for (DRPCharacter *character in _multipliers) {
+        multiplier += character.multiplier;
+    }
+    
+    multiplier = multiplier == 0 ? 1 : multiplier;
+    return multiplier * _positions.count;
 }
 
 @end

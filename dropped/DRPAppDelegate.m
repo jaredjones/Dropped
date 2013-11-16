@@ -9,14 +9,10 @@
 #import "DRPAppDelegate.h"
 #import "DRPDictionary.h"
 
-#import "DRPMatch.h"
-
 @implementation DRPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    DRPMatch *m = [[DRPMatch alloc] initWithGKMatch:nil];
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];

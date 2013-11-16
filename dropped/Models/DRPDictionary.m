@@ -7,7 +7,11 @@
 //
 
 #import "DRPDictionary.h"
+#import <FMDatabase.h>
 
 @implementation DRPDictionary
-
+- (void)test
+{
+    FMDat
+}
 @end

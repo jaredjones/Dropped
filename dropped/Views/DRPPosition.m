@@ -47,4 +47,15 @@
     return result;
 }
 
+- (BOOL)isEqual:(id)object
+{
+    if (self == object) {
+        return YES;
+    } else if (self.i == ((DRPPosition *)object).i &&
+               self.j == ((DRPPosition *)object).j) {
+        return YES;
+    }
+    return NO;
+}
+
 @end

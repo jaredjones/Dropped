@@ -79,7 +79,7 @@
             // 3 characters, 0 multipliers, 0 additional
             [d appendString:@"\003\000\000"];
             // Positions
-            [d appendString:@"\000\001\000\003\000\004ABQ"];
+            [d appendString:@"\000\001\000\003\000\004A45\003\005"];
             
             data = [d dataUsingEncoding:NSUTF8StringEncoding];
         }
@@ -209,7 +209,15 @@
     playedWord.appendedCharacters = [self loadCharactersFromData:turnData numberCharacters:numberPositions];
     [turnData setData:[turnData subdataWithRange:NSMakeRange(numberPositions, turnData.length - numberPositions)]];
     
-    // TODO: grab the colors of new multipliers
+    for (DRPCharacter *character in playedWord.appendedCharacters) {
+        NSLog(@"%@", character.character);
+        if (character.multiplier != -1) {
+            NSInteger color = 0;
+            [turnData getBytes:&color length:1];
+            [turnData setData:[turnData subdataWithRange:NSMakeRange(1, turnData.length - 1)]];
+            // TODO: Characters need a COLOR property
+        }
+    }
     
     // Apply diff to new history item
     NSMutableArray *historyItem = [self deepCopyHistoryItem:[_history lastObject]];

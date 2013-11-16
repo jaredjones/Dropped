@@ -19,6 +19,7 @@
 		A91D8F64183702EE00BEC6E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4C183702EE00BEC6E8 /* UIKit.framework */; };
 		A920405018370460006940B8 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A920404F18370460006940B8 /* GameKit.framework */; };
 		A920405218370467006940B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A920405118370467006940B8 /* Security.framework */; };
+		A920405918370552006940B8 /* DRPPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = A920405818370552006940B8 /* DRPPosition.m */; };
 		F4E61295ABFC46CDBE1384F1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA523B0D421443AAA174ECE1 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -48,6 +49,8 @@
 		A91D8F61183702EE00BEC6E8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A920404F18370460006940B8 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A920405118370467006940B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		A920405718370552006940B8 /* DRPPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPosition.h; path = Views/DRPPosition.h; sourceTree = "<group>"; };
+		A920405818370552006940B8 /* DRPPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPosition.m; path = Views/DRPPosition.m; sourceTree = "<group>"; };
 		B0935A92C9664719B578E480 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		CA523B0D421443AAA174ECE1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -162,6 +165,8 @@
 		A9204056183704D7006940B8 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A920405718370552006940B8 /* DRPPosition.h */,
+				A920405818370552006940B8 /* DRPPosition.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -297,6 +302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A91D8F55183702EE00BEC6E8 /* main.m in Sources */,
+				A920405918370552006940B8 /* DRPPosition.m in Sources */,
 				A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

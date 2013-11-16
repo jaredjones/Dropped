@@ -9,6 +9,7 @@
 #import "DRPBoard.h"
 #import "DRPPosition.h"
 #import "DRPTile.h"
+#import "DRPMove.h"
 
 @interface DRPBoard ()
 
@@ -25,7 +26,7 @@
     if (self) {
         
         if (data == nil) {
-            NSString *d = @"ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJb";
+            NSString *d = @"ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ\0";
             data = [d dataUsingEncoding:NSUTF8StringEncoding];
         }
         
@@ -53,6 +54,41 @@
                 _boardTiles[position] = history;
             }
         }
+        
+        // Load moves
+        _moves = [[NSMutableArray alloc] init];
+        
+        NSInteger numberTurns = 0;
+        NSData *numberTurnsSubdata = [data subdataWithRange:NSMakeRange(36, 1)];
+        [numberTurnsSubdata getBytes:&numberTurns length:1];
+        
+        NSInteger offset = 37;
+        for (NSInteger turn = 0; turn < numberTurns; turn++) {
+            NSInteger numberCharacters = 0;
+            [data getBytes:&numberTurns range:NSMakeRange(offset, 1)];
+            offset += 1;
+            
+            DRPMove *move = [[DRPMove alloc] init];
+            [_moves addObject:move];
+            
+            for (NSInteger c = 0; c < numberCharacters; c++) {
+                NSInteger i = 0, j = 0;
+                [data getBytes:&i range:NSMakeRange(offset + 2 * c, 1)];
+                [data getBytes:&j range:NSMakeRange(offset + 2 * c + 1, 1)];
+                
+                DRPPosition *position = [DRPPosition positionWithI:i j:j];
+                
+                NSData *characterData = [data subdataWithRange:NSMakeRange(offset + 2 *numberCharacters + c, 1)];
+                NSString *character = [[NSString alloc] initWithData:characterData
+                                                            encoding:NSUTF8StringEncoding];
+                
+                // Create tile, simulate dropping, load into history
+                DRPTile *tile = [DRPTile tileWithPosition:position character:character];
+                [move appendTile:tile];
+            }
+            
+            offset += 3 * numberCharacters;
+        }
     }
     return self;
 }
@@ -65,7 +101,6 @@
 - (DRPTile *)tileAtPosition:(DRPPosition *)position
 {
     return nil;
-//    return _boardTiles[position];
 }
 
 @end

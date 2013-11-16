@@ -8,6 +8,8 @@
 
 #import "DRPPosition.h"
 
+#pragma mark - DRPPosition
+
 @implementation DRPPosition
 
 + (instancetype)positionWithI:(NSInteger)i j:(NSInteger)j

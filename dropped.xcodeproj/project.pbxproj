@@ -22,8 +22,7 @@
 		A920405C18370BA0006940B8 /* DRPPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = A920405B18370BA0006940B8 /* DRPPosition.m */; };
 		A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */; };
 		A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48F18372DA800B7A9A8 /* DRPBoard.m */; };
-		A95BB49518372DA800B7A9A8 /* DRPMove.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB49118372DA800B7A9A8 /* DRPMove.m */; };
-		A95BB49618372DA800B7A9A8 /* DRPTile.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB49318372DA800B7A9A8 /* DRPTile.m */; };
+		A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB49318372DA800B7A9A8 /* DRPCharacter.m */; };
 		C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C024DF7818370AC300B5775B /* DRPDictionary.m */; };
 		C08CBC171837168800CE678F /* importdatabase.sh in Resources */ = {isa = PBXBuildFile; fileRef = C08CBC141837168800CE678F /* importdatabase.sh */; };
 		C08CBC1A18371B3700CE678F /* Dropped.db in CopyFiles */ = {isa = PBXBuildFile; fileRef = C08CBC131837168800CE678F /* Dropped.db */; };
@@ -75,10 +74,8 @@
 		A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMatch.m; path = Models/DRPMatch.m; sourceTree = "<group>"; };
 		A95BB48E18372DA800B7A9A8 /* DRPBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPBoard.h; path = Models/DRPBoard.h; sourceTree = "<group>"; };
 		A95BB48F18372DA800B7A9A8 /* DRPBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPBoard.m; path = Models/DRPBoard.m; sourceTree = "<group>"; };
-		A95BB49018372DA800B7A9A8 /* DRPMove.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMove.h; path = Models/DRPMove.h; sourceTree = "<group>"; };
-		A95BB49118372DA800B7A9A8 /* DRPMove.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMove.m; path = Models/DRPMove.m; sourceTree = "<group>"; };
-		A95BB49218372DA800B7A9A8 /* DRPTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPTile.h; path = Models/DRPTile.h; sourceTree = "<group>"; };
-		A95BB49318372DA800B7A9A8 /* DRPTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPTile.m; path = Models/DRPTile.m; sourceTree = "<group>"; };
+		A95BB49218372DA800B7A9A8 /* DRPCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCharacter.h; path = Models/DRPCharacter.h; sourceTree = "<group>"; };
+		A95BB49318372DA800B7A9A8 /* DRPCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCharacter.m; path = Models/DRPCharacter.m; sourceTree = "<group>"; };
 		B0935A92C9664719B578E480 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C024DF7718370AC300B5775B /* DRPDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDictionary.h; path = Models/DRPDictionary.h; sourceTree = "<group>"; };
 		C024DF7818370AC300B5775B /* DRPDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPDictionary.m; path = Models/DRPDictionary.m; sourceTree = "<group>"; };
@@ -214,10 +211,8 @@
 				A95BB48F18372DA800B7A9A8 /* DRPBoard.m */,
 				A920405A18370BA0006940B8 /* DRPPosition.h */,
 				A920405B18370BA0006940B8 /* DRPPosition.m */,
-				A95BB49218372DA800B7A9A8 /* DRPTile.h */,
-				A95BB49318372DA800B7A9A8 /* DRPTile.m */,
-				A95BB49018372DA800B7A9A8 /* DRPMove.h */,
-				A95BB49118372DA800B7A9A8 /* DRPMove.m */,
+				A95BB49218372DA800B7A9A8 /* DRPCharacter.h */,
+				A95BB49318372DA800B7A9A8 /* DRPCharacter.m */,
 			);
 			name = Board;
 			sourceTree = "<group>";
@@ -373,10 +368,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A95BB49618372DA800B7A9A8 /* DRPTile.m in Sources */,
+				A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */,
 				A91D8F55183702EE00BEC6E8 /* main.m in Sources */,
 				A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */,
-				A95BB49518372DA800B7A9A8 /* DRPMove.m in Sources */,
 				C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */,
 				A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */,
 				A920405C18370BA0006940B8 /* DRPPosition.m in Sources */,

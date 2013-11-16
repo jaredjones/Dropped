@@ -16,7 +16,7 @@
     self = [super init];
     if (self) {
         _gkMatch = gkMatch;
-        // matchData loading is async
+        // matchData loading will be async
         _board = [[DRPBoard alloc] initWithMatchData:gkMatch.matchData];
     }
     return self;

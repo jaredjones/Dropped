@@ -70,7 +70,16 @@
         
         if (data == nil) {
             // Test data uses \ddd for non-ASCII characters
-            NSString *d = @"\001ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ\001\003\000\000000102ABC";
+            NSMutableString *d = [NSMutableString stringWithString:@"\001ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ"];
+            
+            // 1 turn
+            [d appendString:@"\001"];
+            
+            // 3 characters, 0 multipliers, 0 additional
+            [d appendString:@"\003\000\000"];
+            // Positions
+            [d appendString:@"\000\000\001\000\002\004ABC"];
+            
             data = [d dataUsingEncoding:NSUTF8StringEncoding];
         }
         
@@ -235,7 +244,7 @@
 
 - (void)applyDiff:(DRPPlayedWord *)playedWord toHistoryItem:(NSMutableArray *)item
 {
-    
+    NSLog(@"%@", playedWord.diff);
 }
 
 #pragma mark Utility

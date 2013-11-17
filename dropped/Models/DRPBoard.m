@@ -274,6 +274,23 @@
             }
         }
     }
+    
+    // Once all of the DRPCharacters are in the right place,
+    // go through and update each DRPCharacter's adjacentMultiplier
+    for (NSInteger i = 0; i < 6; i++) {
+        for (NSInteger j = 0; j < 6; j++) {
+            DRPPosition *position = [DRPPosition positionWithI:i j:j];
+            DRPCharacter *character = item[position];
+            
+            if (character.multiplier == -1) continue;
+            
+            for (DRPDirection dir = 0; dir < 8; dir++) {
+                DRPPosition *adjacent = [position positionInDirection:dir];
+                DRPCharacter *adjacentCharacter = item[adjacent];
+                adjacentCharacter.adjacentMultiplier = character;
+            }
+        }
+    }
 }
 
 #pragma mark Utility

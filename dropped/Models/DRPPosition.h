@@ -8,11 +8,25 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, DRPDirection) {
+    DRPDirectionRight,
+    DRPDirectionUpRight,
+    DRPDirectionUp,
+    DRPDirectionUpLeft,
+    DRPDirectionLeft,
+    DRPDirectionDownLeft,
+    DRPDirectionDown,
+    DRPDirectionDownRight,
+    DRPDirectionNil
+};
+
 @interface DRPPosition : NSObject <NSCopying>
 
 @property (readonly) NSInteger i, j;
 
 + (instancetype)positionWithI:(NSInteger)i j:(NSInteger)j;
 - (instancetype)initWithI:(NSInteger)i j:(NSInteger)j;
+
+- (DRPPosition *)positionInDirection:(DRPDirection)direction;
 
 @end

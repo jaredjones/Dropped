@@ -60,4 +60,28 @@
     return NO;
 }
 
+#pragma mark Direction
+
+- (DRPPosition *)positionInDirection:(DRPDirection)direction
+{
+    if (direction == DRPDirectionRight) {
+        return [DRPPosition positionWithI:_i + 1 j:_j];
+    } else if (direction == DRPDirectionUpRight) {
+        return [DRPPosition positionWithI:_i + 1 j:_j - 1];
+    } else if (direction == DRPDirectionUp) {
+        return [DRPPosition positionWithI:_i j:_j - 1];
+    }  else if (direction == DRPDirectionUpLeft) {
+        return [DRPPosition positionWithI:_i - 1 j:_j - 1];
+    }  else if (direction == DRPDirectionLeft) {
+        return [DRPPosition positionWithI:_i - 1 j:_j];
+    }  else if (direction == DRPDirectionDownLeft) {
+        return [DRPPosition positionWithI:_i - 1 j:_j + 1];
+    }  else if (direction == DRPDirectionDown) {
+        return [DRPPosition positionWithI:_i j:_j + 1];
+    }  else if (direction == DRPDirectionDownRight) {
+        return [DRPPosition positionWithI:_i + 1 j:_j + 1];
+    }
+    return nil;
+}
+
 @end

@@ -14,7 +14,11 @@
 @interface DRPBoard ()
 
 // Make sure that each DRPCharacter is unique. NO
-// structure sharing.
+// structure sharing since each DRPCharacter stores
+// its adjacent multiplier DRPCharacter.
+// _history is an array of NSDictionaries { DRPPosition : DRPCharacter }
+//      (storing history in NSDictionaries is much cleaner because
+//       dictionary[invalid_position] == nil instead of a crash. -- Brad)
 @property NSMutableArray *history;
 @property NSMutableArray *playedWords;
 
@@ -51,12 +55,12 @@
 
 - (NSData *)dumpToMatchData;
 
-- (NSMutableArray *)deepCopyHistoryItem:(NSArray *)item;
-- (void)applyDiff:(DRPPlayedWord *)playedWord toHistoryItem:(NSMutableArray *)item;
+- (NSMutableDictionary *)deepCopyHistoryItem:(NSMutableDictionary *)item;
+- (void)applyDiff:(DRPPlayedWord *)playedWord toHistoryItem:(NSMutableDictionary *)item;
 
 - (NSArray *)loadPositionsFromData:(NSData *)data numberPositions:(NSInteger)length;
 - (NSArray *)loadCharactersFromData:(NSData *)data numberCharacters:(NSInteger)length;
-- (void)prettyPrintHistoryItem:(NSArray *)item;
+- (void)prettyPrintHistoryItem:(NSDictionary *)item;
 
 @end
 
@@ -93,19 +97,19 @@
 
 - (DRPCharacter *)characterAtPosition:(DRPPosition *)position forTurn:(NSInteger)turn
 {
-    return _history[turn][position.i][position.j];
+    return _history[turn][position];
 }
 
 - (DRPCharacter *)characterAtPosition:(DRPPosition *)position
 {
-    return [_history lastObject][position.i][position.j];
+    return [_history lastObject][position];
 }
 
 - (NSString *)wordForPositions:(NSArray *)positions forTurn:(NSInteger)turn
 {
     NSMutableString *word = [NSMutableString stringWithString:@""];
     for (DRPPosition *position in positions) {
-        [word appendString:((DRPCharacter *)_history[turn][position.i][position.j]).character];
+        [word appendString:((DRPCharacter *)_history[turn][position]).character];
     }
     return word;
 }
@@ -151,18 +155,14 @@
     NSString *initialState = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(0, 36)]
                                                    encoding:NSUTF8StringEncoding];
     
-    NSMutableArray *firstTurn = [[NSMutableArray alloc] init];
+    NSMutableDictionary *firstTurn = [[NSMutableDictionary alloc] init];
     
     for (NSInteger i = 0; i < 6; i++) {
-        NSMutableArray *column = [[NSMutableArray alloc] init];
-        
         for (NSInteger j = 0; j < 6; j++) {
             NSString *c = [initialState substringWithRange:NSMakeRange(i + 6 * j, 1)];
             DRPCharacter *character = [DRPCharacter characterWithCharacter:c];
-            [column addObject:character];
+            firstTurn[[DRPPosition positionWithI:i j:j]] = character;
         }
-        
-        [firstTurn addObject:column];
     }
     
     [_history addObject:firstTurn];
@@ -223,7 +223,7 @@
     }
     
     // Apply diff to new history item
-    NSMutableArray *historyItem = [self deepCopyHistoryItem:[_history lastObject]];
+    NSMutableDictionary *historyItem = [self deepCopyHistoryItem:[_history lastObject]];
     [self applyDiff:playedWord toHistoryItem:historyItem];
     [_history addObject:historyItem];
 }
@@ -237,24 +237,21 @@
 
 #pragma mark History Manipulation
 
-- (NSMutableArray *)deepCopyHistoryItem:(NSArray *)item
+- (NSMutableDictionary *)deepCopyHistoryItem:(NSDictionary *)item
 {
-    NSMutableArray *copied = [[NSMutableArray alloc] initWithCapacity:6];
+    NSMutableDictionary *copied = [[NSMutableDictionary alloc] initWithCapacity:6];
     for (NSInteger i = 0; i < 6; i++) {
-        NSMutableArray *column = [[NSMutableArray alloc] initWithCapacity:6];
-        
         for (NSInteger j = 0; j < 6; j++) {
-            DRPCharacter *old = (DRPCharacter *)item[i][j];
+            DRPPosition *position = [DRPPosition positionWithI:i j:j];
+            DRPCharacter *old = item[position];
             DRPCharacter *newCharacter = [DRPCharacter characterWithCharacter:old.character];
-            [column addObject:newCharacter];
+            copied[position] = newCharacter;
         }
-        
-        [copied addObject:column];
     }
     return copied;
 }
 
-- (void)applyDiff:(DRPPlayedWord *)playedWord toHistoryItem:(NSMutableArray *)item
+- (void)applyDiff:(DRPPlayedWord *)playedWord toHistoryItem:(NSMutableDictionary *)item
 {
     NSDictionary *diff = playedWord.diff;
     for (NSInteger i = 0; i < 6; i++) {
@@ -263,14 +260,14 @@
             if (j >= 0) {
                 DRPPosition *endPosition = diff[startPosition];
                 if (endPosition) {
-                    item[endPosition.i][endPosition.j] = item[startPosition.i][startPosition.j];
+                    item[endPosition] = item[startPosition];
                 }
             } else {
                 NSArray *end = diff[startPosition];
                 if (end) {
                     DRPCharacter *character = end[0];
                     DRPPosition *endPosition = end[1];
-                    item[endPosition.i][endPosition.j] = character;
+                    item[endPosition] = character;
                 } else {
                     break;
                 }
@@ -306,12 +303,13 @@
     return characters;
 }
 
-- (void)prettyPrintHistoryItem:(NSArray *)item
+- (void)prettyPrintHistoryItem:(NSDictionary *)item
 {
     NSMutableString *string = [NSMutableString stringWithString:@"\n"];
     for (NSInteger j = 0; j < 6; j++) {
         for (NSInteger i = 0; i < 6; i++) {
-            [string appendString:((DRPCharacter *)item[i][j]).character];
+            DRPPosition *position = [DRPPosition positionWithI:i j:j];
+            [string appendString:((DRPCharacter *)item[position]).character];
             [string appendString:@" "];
         }
         [string appendString:@"\n"];

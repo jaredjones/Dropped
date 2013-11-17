@@ -10,6 +10,7 @@
 #import "DRPPosition.h"
 #import "DRPCharacter.h"
 #import "DRPPlayedWord.h"
+#import "DRPCharacterHistogram.h"
 
 @interface DRPBoard ()
 
@@ -21,6 +22,10 @@
 //       dictionary[invalid_position] == nil instead of a crash. -- Brad)
 @property NSMutableArray *history;
 @property NSMutableArray *playedWords;
+@property DRPCharacterHistogram *histogram;
+
+- (NSArray *)multipliersActivatedForPositions:(NSArray *)positions;
+- (NSArray *)additionalMultipliersForPositions:(NSArray *)positions;
 
 // MatchData
 // First byte               - version number
@@ -74,6 +79,8 @@
     self = [super init];
     if (self) {
         
+        // Create board from scratch if data is nil
+        
         if (data == nil) {
             // Test data uses \ddd for non-ASCII characters
             NSMutableString *d = [NSMutableString stringWithString:@"\001ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ"];
@@ -84,7 +91,7 @@
             // 3 characters, 0 multipliers, 0 additional
             [d appendString:@"\003\000\000"];
             // Positions
-            [d appendString:@"\000\001\000\003\000\004A45\003\005"];
+            [d appendString:@"\000\001\001\003\004\004A45\003\005"];
             
             data = [d dataUsingEncoding:NSUTF8StringEncoding];
         }
@@ -129,7 +136,28 @@
 
 - (DRPPlayedWord *)appendMoveForPositions:(NSArray *)positions
 {
-    return nil;
+    DRPPlayedWord *playedWord = [_histogram playedWordForPositions:positions
+                                                       activatedMultipliers:[self multipliersActivatedForPositions:positions]
+                                             additionalMultipliers:[self additionalMultipliersForPositions:positions]];
+    
+    // Add Move to History
+    NSMutableDictionary *historyItem = [self deepCopyHistoryItem:[_history lastObject]];
+    [self prettyPrintHistoryItem:historyItem];
+    [self applyDiff:playedWord toHistoryItem:historyItem];
+    [self prettyPrintHistoryItem:historyItem];
+    [_history addObject:historyItem];
+    
+    return playedWord;
+}
+
+- (NSArray *)multipliersActivatedForPositions:(NSArray *)positions
+{
+    return [[NSMutableArray alloc] init];
+}
+
+- (NSArray *)additionalMultipliersForPositions:(NSArray *)positions
+{
+    return [[NSMutableArray alloc] init];
 }
 
 #pragma mark MatchData Loading
@@ -144,6 +172,7 @@
     
     _history = [[NSMutableArray alloc] init];
     _playedWords = [[NSMutableArray alloc] init];
+    _histogram = [[DRPCharacterHistogram alloc] init];
     
     [self loadInitialState:[data subdataWithRange:NSMakeRange(1, data.length - 1)]];
     [self loadTurns:[data subdataWithRange:NSMakeRange(37, data.length - 37)]];
@@ -162,6 +191,7 @@
         for (NSInteger j = 0; j < 6; j++) {
             NSString *c = [initialState substringWithRange:NSMakeRange(i + 6 * j, 1)];
             DRPCharacter *character = [DRPCharacter characterWithCharacter:c];
+            [_histogram addCharacter:character];
             firstTurn[[DRPPosition positionWithI:i j:j]] = character;
         }
     }
@@ -215,6 +245,7 @@
     playedWord.appendedCharacters = [self loadCharactersFromData:turnData numberCharacters:numberPositions];
     [turnData setData:[turnData subdataWithRange:NSMakeRange(numberPositions, turnData.length - numberPositions)]];
     
+    [_histogram addCharacters:playedWord.appendedCharacters];
     for (DRPCharacter *character in playedWord.appendedCharacters) {
         if (character.multiplier != -1) {
             NSInteger color = 0;
@@ -292,7 +323,7 @@
             for (DRPDirection dir = 0; dir < 8; dir++) {
                 DRPPosition *adjacent = [position positionInDirection:dir];
                 DRPCharacter *adjacentCharacter = item[adjacent];
-                adjacentCharacter.adjacentMultiplier = character;
+                adjacentCharacter.adjacentMultiplier = remove ? nil : character;
             }
         }
     }

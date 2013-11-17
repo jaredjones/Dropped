@@ -57,6 +57,7 @@
 
 - (NSMutableDictionary *)deepCopyHistoryItem:(NSMutableDictionary *)item;
 - (void)applyDiff:(DRPPlayedWord *)playedWord toHistoryItem:(NSMutableDictionary *)item;
+- (void)updateAdjacentMultipliersForHistoryItem:(NSDictionary *)item;
 
 - (NSArray *)loadPositionsFromData:(NSData *)data numberPositions:(NSInteger)length;
 - (NSArray *)loadCharactersFromData:(NSData *)data numberCharacters:(NSInteger)length;
@@ -165,6 +166,7 @@
         }
     }
     
+    [self updateAdjacentMultipliersForHistoryItem:firstTurn];
     [_history addObject:firstTurn];
 }
 
@@ -275,8 +277,11 @@
         }
     }
     
-    // Once all of the DRPCharacters are in the right place,
-    // go through and update each DRPCharacter's adjacentMultiplier
+    [self updateAdjacentMultipliersForHistoryItem:item];
+}
+
+- (void)updateAdjacentMultipliersForHistoryItem:(NSDictionary *)item
+{
     for (NSInteger i = 0; i < 6; i++) {
         for (NSInteger j = 0; j < 6; j++) {
             DRPPosition *position = [DRPPosition positionWithI:i j:j];

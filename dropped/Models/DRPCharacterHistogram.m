@@ -8,6 +8,7 @@
 
 #import "DRPCharacterHistogram.h"
 #import "DRPPlayedWord.h"
+#import "DRPPosition.h"
 #import "DRPCharacter.h"
 
 #pragma mark - DRPCharacterHistogram
@@ -49,31 +50,79 @@
 
 #pragma mark Character Generation
 
-- (DRPPlayedWord *)playedWordForPositions:(NSArray *)positions activatedMultipliers:(NSArray *)activatedMultipliers additionalMultipliers:(NSArray *)additionMultipliers
-{
-    DRPPlayedWord *playedWord = [DRPPlayedWord new];
-    playedWord.positions = positions;
-    playedWord.multipliers = activatedMultipliers;
-    playedWord.additionalMultipliers = additionMultipliers;
-    
-    NSMutableArray *appendedCharacters = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < positions.count; i++) {
-        DRPCharacter *character = [self randomCharacter];
-        [self addCharacter:character];
-        [appendedCharacters addObject:character];
-    }
-    
-    playedWord.appendedCharacters = appendedCharacters;
-    
-    return playedWord;
-}
-
 // Generates a new DRPCharacter based on data in histogram
 - (DRPCharacter *)randomCharacter
 {
     NSString *alpha = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     NSInteger c = arc4random_uniform(26);
     return [DRPCharacter characterWithCharacter:[alpha substringWithRange:NSMakeRange(c, 1)]];
+}
+
+#pragma mark AppendedCharacters Generation
+
+- (NSArray *)appendedCharactersForPositions:(NSArray *)positions
+                         droppedMultipliers:(NSArray *)droppedMultipliers
+                                multipliers:(NSArray *)multipliers
+{
+    // First, sort the positions into a nested array
+    // [ [positions in column 0], [positions in column 1], ...]
+    NSArray *sortedPositions = [self sortedPositionsFromPositions:positions];
+    
+    // Compute any new multipliers to add to appendedCharacters
+    // Mutate sortedPositions in place
+    if (droppedMultipliers.count) {
+        
+    }
+    
+    // Generate the rest of the appendedCharacters and
+    // convert to flat array
+    return [self appendedCharactersForSortedPositions:sortedPositions];
+}
+
+- (NSArray *)sortedPositionsFromPositions:(NSArray *)positions
+{
+    NSArray *sorted = [positions sortedArrayUsingComparator:^NSComparisonResult(DRPPosition *a, DRPPosition *b) {
+        if (a.i < b.i) {
+            return NSOrderedAscending;
+        } else if (a.i == a.i && a.j > b.j) {
+            return NSOrderedAscending;
+        }
+        return NSOrderedDescending;
+    }];
+    NSInteger p = 0;
+    
+    NSMutableArray *columns = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < 6; i++) {
+        NSMutableArray *positions = [[NSMutableArray alloc] init];
+        [columns addObject:positions];
+        
+        while (p < sorted.count && ((DRPPosition *)sorted[p]).i == i) {
+            [positions addObject:sorted[p]];
+            p++;
+        }
+    }
+    return columns;
+}
+
+- (NSArray *)appendedCharactersForSortedPositions:(NSArray *)sortedPositions
+{
+    NSMutableArray *appendedCharacters = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < 6; i++) {
+        for (NSInteger p = 0; p < ((NSMutableArray *)sortedPositions[i]).count; i++) {
+            // Reuse newly added multipliers (they were added in a previous step)
+            if ([sortedPositions[i][p] isKindOfClass:[DRPCharacter class]]) {
+                DRPCharacter *multiplier = sortedPositions[i][p];
+                // [self addMultiplier:multiplier];
+                [appendedCharacters addObject:multiplier];
+            } else {
+                // Add new character
+                DRPCharacter *character = [self randomCharacter];
+                [self addCharacter:character];
+                [appendedCharacters addObject:character];
+            }
+        }
+    }
+    return appendedCharacters;
 }
 
 @end

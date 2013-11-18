@@ -15,6 +15,6 @@
 - (void)addCharacters:(NSArray *)characters;
 - (void)addCharacter:(DRPCharacter *)character;
 
-- (DRPPlayedWord *)playedWordForPositions:(NSArray *)positions activatedMultipliers:(NSArray *)activatedMultipliers additionalMultipliers:(NSArray *)additionMultipliers;
+- (NSArray *)appendedCharactersForPositions:(NSArray *)positions droppedMultipliers:(NSArray *)droppedMultipliers multipliers:(NSArray *)multipliers;
 
 @end

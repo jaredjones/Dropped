@@ -21,6 +21,8 @@
 //      (storing history in NSDictionaries is much cleaner because
 //       dictionary[invalid_position] == nil instead of a crash. -- Brad)
 @property NSMutableArray *history;
+// Stores multiplier positions for each turn
+@property NSMutableArray *multiplierHistory;
 @property NSMutableArray *playedWords;
 @property DRPCharacterHistogram *histogram;
 
@@ -63,6 +65,7 @@
 - (NSMutableDictionary *)deepCopyHistoryItem:(NSMutableDictionary *)item;
 - (void)applyDiff:(DRPPlayedWord *)playedWord toHistoryItem:(NSMutableDictionary *)item;
 - (void)updateAdjacentMultipliersForHistoryItem:(NSDictionary *)item;
+- (NSArray *)multipliersInHistoryItem:(NSDictionary *)item;
 
 - (NSArray *)loadPositionsFromData:(NSData *)data numberPositions:(NSInteger)length;
 - (NSArray *)loadCharactersFromData:(NSData *)data numberCharacters:(NSInteger)length;
@@ -83,7 +86,7 @@
         
         if (data == nil) {
             // Test data uses \ddd for non-ASCII characters
-            NSMutableString *d = [NSMutableString stringWithString:@"\001ABCDEFGHIJKLMNOPQRSTUVWXYZABCDEFGHIJ"];
+            NSMutableString *d = [NSMutableString stringWithString:@"\001ABCDEFGHIJKLMNOPQRSTUVWXYZ34ABCDEFGH"];
             
             // 1 turn
             [d appendString:@"\001"];
@@ -91,7 +94,7 @@
             // 3 characters, 0 multipliers, 0 additional
             [d appendString:@"\003\000\000"];
             // Positions
-            [d appendString:@"\000\001\001\003\004\004A45\003\005"];
+            [d appendString:@"\000\001\001\003\004\004KLZ"];
             
             data = [d dataUsingEncoding:NSUTF8StringEncoding];
         }
@@ -136,16 +139,25 @@
 
 - (DRPPlayedWord *)appendMoveForPositions:(NSArray *)positions
 {
-    DRPPlayedWord *playedWord = [_histogram playedWordForPositions:positions
-                                                       activatedMultipliers:[self multipliersActivatedForPositions:positions]
-                                             additionalMultipliers:[self additionalMultipliersForPositions:positions]];
+    // Generate DRPPlayedWord for move
+    DRPPlayedWord *playedWord = [DRPPlayedWord new];
+    playedWord.positions = positions;
+    playedWord.multipliers = [self multipliersActivatedForPositions:positions];
+    playedWord.additionalMultipliers = [self additionalMultipliersForPositions:positions];
+    
+    NSMutableArray *droppedMultipliers = [NSMutableArray arrayWithArray:playedWord.multipliers];
+    [droppedMultipliers addObjectsFromArray:playedWord.additionalMultipliers];
+    
+    playedWord.appendedCharacters = [_histogram appendedCharactersForPositions:positions
+                                                            droppedMultipliers:droppedMultipliers
+                                                                   multipliers:[_multiplierHistory lastObject]];
     
     // Add Move to History
     NSMutableDictionary *historyItem = [self deepCopyHistoryItem:[_history lastObject]];
     [self prettyPrintHistoryItem:historyItem];
     [self applyDiff:playedWord toHistoryItem:historyItem];
     [self prettyPrintHistoryItem:historyItem];
-    [_history addObject:historyItem];
+    [self appendHistoryItem:historyItem];
     
     return playedWord;
 }
@@ -171,6 +183,7 @@
     [data getBytes:&dataVersion length:1];
     
     _history = [[NSMutableArray alloc] init];
+    _multiplierHistory = [[NSMutableArray alloc] init];
     _playedWords = [[NSMutableArray alloc] init];
     _histogram = [[DRPCharacterHistogram alloc] init];
     
@@ -197,7 +210,7 @@
     }
     
     [self updateAdjacentMultipliersForHistoryItem:firstTurn];
-    [_history addObject:firstTurn];
+    [self appendHistoryItem:firstTurn];
 }
 
 - (void)loadTurns:(NSData *)turnsData
@@ -209,8 +222,7 @@
     NSMutableData *mturnsData = [NSMutableData dataWithData:[turnsData subdataWithRange:NSMakeRange(1, turnsData.length - 1)]];
     
     for (NSInteger turn = 0; turn < numberTurns; turn++) {
-        // Each call to loadTurn:forTurn: modifies mturnsData until
-        // no data is left
+        // Each call to loadTurn:forTurn: modifies mturnsData until no data is left
         [self loadTurn:mturnsData];
     }
 }
@@ -258,7 +270,7 @@
     // Apply diff to new history item
     NSMutableDictionary *historyItem = [self deepCopyHistoryItem:[_history lastObject]];
     [self applyDiff:playedWord toHistoryItem:historyItem];
-    [_history addObject:historyItem];
+    [self appendHistoryItem:historyItem];
 }
 
 #pragma mark MatchData Dumping
@@ -269,6 +281,12 @@
 }
 
 #pragma mark History Manipulation
+
+- (void)appendHistoryItem:(NSDictionary *)item
+{
+    [_history addObject:item];
+    [_multiplierHistory addObject:[self multipliersInHistoryItem:item]];
+}
 
 - (NSMutableDictionary *)deepCopyHistoryItem:(NSDictionary *)item
 {
@@ -327,6 +345,21 @@
             }
         }
     }
+}
+
+- (NSArray *)multipliersInHistoryItem:(NSDictionary *)item
+{
+    NSMutableArray *multipliers = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < 6; i++) {
+        for (NSInteger j = 0; j < 6; j++) {
+            DRPPosition *position = [DRPPosition positionWithI:i j:j];
+            DRPCharacter *character = item[position];
+            if (character.multiplier != -1) {
+                [multipliers addObject:position];
+            }
+        }
+    }
+    return multipliers;
 }
 
 #pragma mark Utility

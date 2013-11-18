@@ -39,7 +39,9 @@
                 DRPPosition *startPosition = [DRPPosition positionWithI:i j:startJ];
                 // Skip over captured positions, but make a note so
                 // the offset can be adjusted for the next position
-                if ([_positions containsObject:startPosition]) {
+                if ([_positions containsObject:startPosition] ||
+                    [_multipliers containsObject:startPosition] ||
+                    [_additionalMultipliers containsObject:startPosition]) {
                     [droppedPositions addObject:startPosition];
                     continue;
                 }

@@ -110,7 +110,6 @@
 {
     NSMutableArray *appendedCharacters = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < 6; i++) {
-        NSLog(@"%d", ((NSMutableArray *)sortedPositions[i]).count);
         for (NSInteger p = 0; p < ((NSMutableArray *)sortedPositions[i]).count; p++) {
             // Reuse newly added multipliers (they were added in a previous step)
             if ([sortedPositions[i][p] isKindOfClass:[DRPCharacter class]]) {

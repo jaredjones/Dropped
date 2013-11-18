@@ -164,12 +164,59 @@
 
 - (NSArray *)multipliersActivatedForPositions:(NSArray *)positions
 {
-    return [[NSMutableArray alloc] init];
+    NSMutableDictionary *multiplierAdjacentCount = [[NSMutableDictionary alloc] init];
+    
+    for (DRPPosition *position in positions) {
+        DRPCharacter *character = [self characterAtPosition:position];
+        if (character.adjacentMultiplier) {
+            if (!multiplierAdjacentCount[position]) {
+                multiplierAdjacentCount[position] = @(0);
+            }
+            multiplierAdjacentCount[position] = @([multiplierAdjacentCount[position] intValue] + 1);
+        }
+    }
+    
+    NSMutableArray *activatedMultipliers = [[NSMutableArray alloc] init];
+    for (DRPPosition *multiplierPosition in multiplierAdjacentCount) {
+        DRPCharacter *multiplier = [self characterAtPosition:multiplierPosition];
+        if (multiplier.multiplier <= [multiplierAdjacentCount[multiplierPosition] intValue]) {
+            [activatedMultipliers addObject:multiplierPosition];
+        }
+    }
+    
+    return activatedMultipliers;
 }
 
 - (NSArray *)additionalMultipliersForPositions:(NSArray *)positions
 {
-    return [[NSMutableArray alloc] init];
+    NSMutableArray *additionMultipliers = [[NSMutableArray alloc] init];
+    DRPPosition *m = [self additionMultiplierForPositions:positions inColumn:0];
+    if (m) {
+        [additionMultipliers addObject:m];
+    }
+    m = [self additionMultiplierForPositions:positions inColumn:5];
+    if (m) {
+        [additionMultipliers addObject:m];
+    }
+    
+    return additionMultipliers;
+}
+
+- (DRPPosition *)additionMultiplierForPositions:(NSArray *)positions inColumn:(NSInteger)column
+{
+    DRPPosition *multiplier;
+    for (NSInteger j = 5; j >= 0; j++) {
+        DRPPosition *position = [DRPPosition positionWithI:column j:j];
+        if ([positions containsObject:position]) {
+            continue;
+        }
+        
+        if ([self characterAtPosition:position].multiplier != -1) {
+            multiplier = position;
+        }
+        break;
+    }
+    return nil;
 }
 
 #pragma mark MatchData Loading

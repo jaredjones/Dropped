@@ -13,6 +13,7 @@
 @interface DRPBoard : NSObject
 
 - (instancetype)initWithMatchData:(NSData *)data;
+- (NSData *)matchData;
 
 #pragma mark History
 

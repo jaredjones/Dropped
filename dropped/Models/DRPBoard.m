@@ -26,8 +26,6 @@
 @property NSMutableArray *playedWords;
 @property DRPCharacterHistogram *histogram;
 
-- (NSArray *)multipliersActivatedForPositions:(NSArray *)positions;
-- (NSArray *)additionalMultipliersForPositions:(NSArray *)positions;
 
 // MatchData
 // First byte               - version number
@@ -54,22 +52,6 @@
 //        appended characters, NOT bytes
 //      - Total length of sequence is (3 + 3 * m + 4 * (j + k)) bytes
 //
-
-- (void)loadData:(NSData *)data;
-- (void)loadInitialState:(NSData *)data;
-- (void)loadTurns:(NSData *)data;
-- (void)loadTurn:(NSMutableData *)data;
-
-- (NSData *)dumpToMatchData;
-
-- (NSMutableDictionary *)deepCopyHistoryItem:(NSMutableDictionary *)item;
-- (void)applyDiff:(DRPPlayedWord *)playedWord toHistoryItem:(NSMutableDictionary *)item;
-- (void)updateAdjacentMultipliersForHistoryItem:(NSDictionary *)item;
-- (NSArray *)multipliersInHistoryItem:(NSDictionary *)item;
-
-- (NSArray *)loadPositionsFromData:(NSData *)data numberPositions:(NSInteger)length;
-- (NSArray *)loadCharactersFromData:(NSData *)data numberCharacters:(NSInteger)length;
-- (void)prettyPrintHistoryItem:(NSDictionary *)item;
 
 @end
 
@@ -322,7 +304,7 @@
 
 #pragma mark MatchData Dumping
 
-- (NSData *)dumpToMatchData
+- (NSData *)matchData
 {
     return nil;
 }

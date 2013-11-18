@@ -64,14 +64,16 @@
                          droppedMultipliers:(NSArray *)droppedMultipliers
                                 multipliers:(NSArray *)multipliers
 {
-    // First, sort the positions into a nested array
+    // First, sort the positions of selected and dropped characters into a nested array
     // [ [positions in column 0], [positions in column 1], ...]
-    NSArray *sortedPositions = [self sortedPositionsFromPositions:positions];
+    NSMutableArray *dropped = [NSMutableArray arrayWithArray:positions];
+    [dropped addObjectsFromArray:droppedMultipliers];
+    NSArray *sortedPositions = [self sortedPositionsFromPositions:dropped];
     
     // Compute any new multipliers to add to appendedCharacters
     // Mutate sortedPositions in place
     if (droppedMultipliers.count) {
-        
+        // TODO: multipliers, yo
     }
     
     // Generate the rest of the appendedCharacters and
@@ -84,7 +86,7 @@
     NSArray *sorted = [positions sortedArrayUsingComparator:^NSComparisonResult(DRPPosition *a, DRPPosition *b) {
         if (a.i < b.i) {
             return NSOrderedAscending;
-        } else if (a.i == a.i && a.j > b.j) {
+        } else if (a.i == a.i && a.j < b.j) {
             return NSOrderedAscending;
         }
         return NSOrderedDescending;
@@ -108,7 +110,8 @@
 {
     NSMutableArray *appendedCharacters = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < 6; i++) {
-        for (NSInteger p = 0; p < ((NSMutableArray *)sortedPositions[i]).count; i++) {
+        NSLog(@"%d", ((NSMutableArray *)sortedPositions[i]).count);
+        for (NSInteger p = 0; p < ((NSMutableArray *)sortedPositions[i]).count; p++) {
             // Reuse newly added multipliers (they were added in a previous step)
             if ([sortedPositions[i][p] isKindOfClass:[DRPCharacter class]]) {
                 DRPCharacter *multiplier = sortedPositions[i][p];

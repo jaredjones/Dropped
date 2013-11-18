@@ -68,7 +68,7 @@
         
         if (data == nil) {
             // Test data uses \ddd for non-ASCII characters
-            NSMutableString *d = [NSMutableString stringWithString:@"\001ABCDEFGHIJKLMNOPQRSTUVWXYZ34ABCDEFGH"];
+            NSMutableString *d = [NSMutableString stringWithString:@"\001ABCDEFG3IJKLMNOPQRSTUVWXYZABC4EFGHIJ"];
             
             // 1 turn
             [d appendString:@"\001"];
@@ -119,6 +119,10 @@
 
 #pragma mark Move Submission
 
+// These methods assume that a move is being
+// appended into history. Call only appendMoveForPositions:
+// directly.
+
 - (DRPPlayedWord *)appendMoveForPositions:(NSArray *)positions
 {
     // Generate DRPPlayedWord for move
@@ -146,22 +150,35 @@
 
 - (NSArray *)multipliersActivatedForPositions:(NSArray *)positions
 {
+    // First, loop through each DRPPosition and count
+    // the number of times each multiplier is adjacent
     NSMutableDictionary *multiplierAdjacentCount = [[NSMutableDictionary alloc] init];
-    
     for (DRPPosition *position in positions) {
         DRPCharacter *character = [self characterAtPosition:position];
         if (character.adjacentMultiplier) {
-            if (!multiplierAdjacentCount[position]) {
-                multiplierAdjacentCount[position] = @(0);
+            if (!multiplierAdjacentCount[character.adjacentMultiplier]) {
+                multiplierAdjacentCount[character.adjacentMultiplier] = @(0);
             }
-            multiplierAdjacentCount[position] = @([multiplierAdjacentCount[position] intValue] + 1);
+            NSNumber *count = @([multiplierAdjacentCount[character.adjacentMultiplier] intValue] + 1);
+            multiplierAdjacentCount[character.adjacentMultiplier] = count;
         }
     }
     
+    // Make a list of the multipliers that have
+    // enough adjacent DRPCharacters selected
     NSMutableArray *activatedMultipliers = [[NSMutableArray alloc] init];
-    for (DRPPosition *multiplierPosition in multiplierAdjacentCount) {
-        DRPCharacter *multiplier = [self characterAtPosition:multiplierPosition];
-        if (multiplier.multiplier <= [multiplierAdjacentCount[multiplierPosition] intValue]) {
+    for (DRPCharacter *multiplier in multiplierAdjacentCount) {
+        if (multiplier.multiplier <= [multiplierAdjacentCount[multiplier] intValue]) {
+            
+            // Find the DRPPosition of multiplier
+            // This is necessary since DRPCharacters don't hold position information
+            DRPPosition *multiplierPosition;
+            for (DRPPosition *position in [_multiplierHistory lastObject]) {
+                if ([self characterAtPosition:position] == multiplier) {
+                    multiplierPosition = position;
+                }
+            }
+            
             [activatedMultipliers addObject:multiplierPosition];
         }
     }
@@ -169,6 +186,10 @@
     return activatedMultipliers;
 }
 
+// Multipliers can't sit in the bottom left and right corners.
+// These 2 methods detect when a move would cause a multiplier
+// to reach that position. It must be dropped and replaced in
+// the turn.
 - (NSArray *)additionalMultipliersForPositions:(NSArray *)positions
 {
     NSMutableArray *additionMultipliers = [[NSMutableArray alloc] init];
@@ -370,7 +391,7 @@
             for (DRPDirection dir = 0; dir < 8; dir++) {
                 DRPPosition *adjacent = [position positionInDirection:dir];
                 DRPCharacter *adjacentCharacter = item[adjacent];
-                adjacentCharacter.adjacentMultiplier = remove ? nil : character;
+                adjacentCharacter.adjacentMultiplier = character;
             }
         }
     }

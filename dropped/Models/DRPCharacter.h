@@ -10,7 +10,7 @@
 
 @class DRPPosition;
 
-@interface DRPCharacter : NSObject
+@interface DRPCharacter : NSObject <NSCopying>
 
 @property (readonly) NSString *character;
 

@@ -56,4 +56,21 @@
     return c;
 }
 
+#pragma mark NSCopying
+
+- (id)copyWithZone:(NSZone *)zone
+{
+    return self;
+}
+
+- (BOOL)isEqual:(DRPCharacter *)object {
+    if (![_character isEqual:object.character]) {
+        return NO;
+    }
+    if (_multiplier != object.multiplier) {
+        return NO;
+    }
+    return _adjacentMultiplier == object.adjacentMultiplier;
+}
+
 @end

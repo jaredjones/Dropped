@@ -18,8 +18,6 @@
 @property NSMutableDictionary *letters, *multipliers;
 @property NSInteger numberLetters, numberMultipliers;
 
-- (DRPCharacter *)randomCharacter;
-
 @end
 
 @implementation DRPCharacterHistogram
@@ -58,6 +56,11 @@
     return [DRPCharacter characterWithCharacter:[alpha substringWithRange:NSMakeRange(c, 1)]];
 }
 
+- (DRPCharacter *)randomMultiplier
+{
+    return [DRPCharacter characterWithMulitplier:arc4random_uniform(3) + 3];
+}
+
 #pragma mark AppendedCharacters Generation
 
 - (NSArray *)appendedCharactersForPositions:(NSArray *)positions
@@ -72,9 +75,9 @@
     
     // Compute any new multipliers to add to appendedCharacters
     // Mutate sortedPositions in place
-    if (droppedMultipliers.count) {
-        // TODO: multipliers, yo
-    }
+    [self insertNewMultipliersInSortedPositions:sortedPositions
+                             droppedMultipliers:droppedMultipliers
+                                    multipliers:multipliers];
     
     // Generate the rest of the appendedCharacters and
     // convert to flat array
@@ -104,6 +107,63 @@
         }
     }
     return columns;
+}
+
+- (void)insertNewMultipliersInSortedPositions:(NSArray *)positions
+                           droppedMultipliers:(NSArray *)droppedMultipliers
+                                  multipliers:(NSArray *)multipliers
+{
+    if (!droppedMultipliers.count) return;
+    
+    NSInteger occupiedColumn = -1;
+    // If only one multiplier is being dropped, find the column
+    // of the multiplier staying on the board
+    if (droppedMultipliers.count == 1) {
+        for (DRPPosition *occupied in multipliers) {
+            if (![droppedMultipliers containsObject:occupied]) {
+                occupiedColumn = occupied.i;
+            }
+        }
+    }
+    
+    // Generate and insert new random multiplier in valid columns
+    for (DRPPosition *droppedPosition in droppedMultipliers) {
+        NSInteger newColumn;
+        while (true) {
+            newColumn = [self columnForNewMultiplierWithOccupiedColumn:occupiedColumn];
+            NSInteger rows = ((NSMutableArray *)positions[newColumn]).count;
+            if (rows > 0) {
+                DRPCharacter *multiplier = [self randomMultiplier];
+                ((NSMutableArray *)positions[newColumn])[arc4random_uniform(rows)] = multiplier;
+                break;
+            }
+            // Keep trying if row is invalid
+            // Don't worry, Jared. "Computers are fast." - Novak
+        }
+        occupiedColumn = newColumn;
+    }
+}
+
+// Returns a random result
+// If called with -1, there are no multipliers on the board
+- (NSInteger)columnForNewMultiplierWithOccupiedColumn:(NSInteger)occupiedColumn
+{
+    if (occupiedColumn == -1) {
+        return arc4random_uniform(6);
+    }
+    // The key here is that there will always be one
+    // multiplier in columns 0-2 and the other in
+    // columns 3-5 since there has to be 2 columns
+    // between them
+    NSInteger range, offset;
+    if (occupiedColumn >= 3) {
+        range = occupiedColumn - 2;
+        offset = 0;
+    } else {
+        range = 3 - occupiedColumn;
+        offset = 5 - occupiedColumn;
+    }
+    return arc4random_uniform(range) + offset;
 }
 
 - (NSArray *)appendedCharactersForSortedPositions:(NSArray *)sortedPositions

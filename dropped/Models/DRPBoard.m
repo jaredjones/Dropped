@@ -80,6 +80,7 @@
             
             data = [d dataUsingEncoding:NSUTF8StringEncoding];
         }
+        NSLog(@"%@", data);
         
         [self loadData:data];
     }
@@ -140,10 +141,11 @@
     
     // Add Move to History
     NSMutableDictionary *historyItem = [self deepCopyHistoryItem:[_history lastObject]];
-    [self prettyPrintHistoryItem:historyItem];
+//    [self prettyPrintHistoryItem:historyItem];
     [self applyDiff:playedWord toHistoryItem:historyItem];
-    [self prettyPrintHistoryItem:historyItem];
+//    [self prettyPrintHistoryItem:historyItem];
     [self appendHistoryItem:historyItem];
+    [_playedWords addObject:playedWord];
     
     return playedWord;
 }
@@ -309,6 +311,7 @@
     
     [_histogram addCharacters:playedWord.appendedCharacters];
     for (DRPCharacter *character in playedWord.appendedCharacters) {
+        // Load colors
         if (character.multiplier != -1) {
             NSInteger color = 0;
             [turnData getBytes:&color length:1];
@@ -316,6 +319,8 @@
             // TODO: Characters need a COLOR property
         }
     }
+    
+    [_playedWords addObject:playedWord];
     
     // Apply diff to new history item
     NSMutableDictionary *historyItem = [self deepCopyHistoryItem:[_history lastObject]];
@@ -327,7 +332,48 @@
 
 - (NSData *)matchData
 {
-    return nil;
+    NSMutableData *data = [[NSMutableData alloc] init];
+    
+    // Version Number
+    NSInteger version = 1;
+    [data appendBytes:&version length:1];
+    
+    // Initial State
+    NSMutableDictionary *firstTurn = _history[0];
+    for (NSInteger j = 0; j < 6; j++) {
+        for (NSInteger i = 0; i < 6; i++) {
+            DRPPosition *position = [DRPPosition positionWithI:i j:j];
+            DRPCharacter *character = firstTurn[position];
+            [data appendData:[character.character dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+    }
+    
+    // Turns
+    NSInteger numberTurns = _playedWords.count;
+    [data appendBytes:&numberTurns length:1];
+    
+    for (DRPPlayedWord *playedWord in _playedWords) {
+        NSInteger numberPositions = playedWord.positions.count;
+        NSInteger numberActivated = playedWord.multipliers.count;
+        NSInteger numberAdditional = playedWord.additionalMultipliers.count;
+        [data appendBytes:&numberPositions length:1];
+        [data appendBytes:&numberActivated length:1];
+        [data appendBytes:&numberAdditional length:1];
+        
+        for (DRPPosition *position in playedWord.positions) {
+            NSInteger i = position.i, j = position.j;
+            [data appendBytes:&i length:1];
+            [data appendBytes:&j length:1];
+        }
+        
+        for (DRPCharacter *character in playedWord.appendedCharacters) {
+            [data appendData:[character.character dataUsingEncoding:NSUTF8StringEncoding]];
+        }
+        
+        // colors
+    }
+    
+    return data;
 }
 
 #pragma mark History Manipulation

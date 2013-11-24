@@ -163,7 +163,7 @@
         range = 3 - occupiedColumn;
         offset = 5 - occupiedColumn;
     }
-    return arc4random_uniform(range) + offset;
+    return MAX(arc4random_uniform(range) + offset, 5);
 }
 
 - (NSArray *)appendedCharactersForSortedPositions:(NSArray *)sortedPositions

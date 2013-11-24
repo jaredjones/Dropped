@@ -27,6 +27,8 @@
                       [DRPPosition positionWithI:1 j:3]];
     [m.board appendMoveForPositions:move];
     
+    NSLog(@"%@", m.board.matchData);
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];

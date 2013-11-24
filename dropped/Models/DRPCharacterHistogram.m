@@ -126,44 +126,49 @@
         }
     }
     
-    // Generate and insert new random multiplier in valid columns
-    for (DRPPosition *droppedPosition in droppedMultipliers) {
-        NSInteger newColumn;
-        while (true) {
-            newColumn = [self columnForNewMultiplierWithOccupiedColumn:occupiedColumn];
-            NSInteger rows = ((NSMutableArray *)positions[newColumn]).count;
-            if (rows > 0) {
-                DRPCharacter *multiplier = [self randomMultiplier];
-                ((NSMutableArray *)positions[newColumn])[arc4random_uniform(rows)] = multiplier;
-                break;
-            }
-            // Keep trying if row is invalid
-            // Don't worry, Jared. "Computers are fast." - Novak
+    // Keep a list of valid columns to place a multiplier in
+    // Determine which columns can receive multipliers
+    NSMutableArray *validColumns = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < 6; i++) {
+        if (((NSArray *)positions[i]).count) {
+            [validColumns addObject:@(i)];
         }
+    }
+    
+    // Generate the new multipliers by picking a valid column
+    for (NSInteger i = 0; i < droppedMultipliers.count; i++) {
+        // First, remove any columns that are invalidated because
+        // they are too close to an occupied column
+        validColumns = [self removeInvalidColumnsFromArray:validColumns
+                                         forOccupiedColumn:occupiedColumn];
+        
+        NSInteger newColumn = [validColumns[arc4random_uniform(validColumns.count)] integerValue];
+        
+        DRPCharacter *multiplier = [self randomMultiplier];
+        NSInteger rows = ((NSMutableArray *)positions[newColumn]).count;
+        ((NSMutableArray *)positions[newColumn])[arc4random_uniform(rows)] = multiplier;
         occupiedColumn = newColumn;
     }
 }
 
-// Returns a random result
-// If called with -1, there are no multipliers on the board
-- (NSInteger)columnForNewMultiplierWithOccupiedColumn:(NSInteger)occupiedColumn
+- (NSMutableArray *)removeInvalidColumnsFromArray:(NSArray *)validColumns forOccupiedColumn:(NSInteger)occupiedColumn
 {
-    if (occupiedColumn == -1) {
-        return arc4random_uniform(6);
-    }
-    // The key here is that there will always be one
-    // multiplier in columns 0-2 and the other in
-    // columns 3-5 since there has to be 2 columns
-    // between them
-    NSInteger range, offset;
-    if (occupiedColumn >= 3) {
-        range = occupiedColumn - 2;
-        offset = 0;
+    if (occupiedColumn == -1) return (NSMutableArray *)validColumns;
+    
+    NSRange range;
+    if (occupiedColumn < 3) {
+        range = NSMakeRange(0, occupiedColumn + 3);
     } else {
-        range = 3 - occupiedColumn;
-        offset = 5 - occupiedColumn;
+        range = NSMakeRange(occupiedColumn - 1, 5);
     }
-    return MAX(arc4random_uniform(range) + offset, 5);
+    
+    NSMutableArray *new = [[NSMutableArray alloc] init];
+    for (NSNumber *n in validColumns) {
+        if (!NSLocationInRange([n integerValue], range)) {
+            [new addObject:n];
+        }
+    }
+    return new;
 }
 
 - (NSArray *)appendedCharactersForSortedPositions:(NSArray *)sortedPositions

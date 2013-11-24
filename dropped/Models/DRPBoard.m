@@ -141,9 +141,9 @@
     
     // Add Move to History
     NSMutableDictionary *historyItem = [self deepCopyHistoryItem:[_history lastObject]];
-//    [self prettyPrintHistoryItem:historyItem];
+    [self prettyPrintHistoryItem:historyItem];
     [self applyDiff:playedWord toHistoryItem:historyItem];
-//    [self prettyPrintHistoryItem:historyItem];
+    [self prettyPrintHistoryItem:historyItem];
     [self appendHistoryItem:historyItem];
     [_playedWords addObject:playedWord];
     

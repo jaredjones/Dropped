@@ -17,6 +17,8 @@
 
 @property NSMutableDictionary *letters, *multipliers;
 @property NSInteger numberLetters, numberMultipliers;
+@property NSDictionary *letterPercentages;
+@property NSArray *keys;
 
 @end
 
@@ -28,36 +30,37 @@
     if (self) {
         _letters = [[NSMutableDictionary alloc] init];
         _multipliers = [[NSMutableDictionary alloc] init];
+        _letterPercentages = @{@"A" : @8.4966, @"B" : @2.0720, @"C" : @4.5388, @"D" : @3.3844, @"E" : @11.1607, @"F" : @1.8121, @"G" : @2.4705, @"H" : @3.0034, @"I" : @7.5448, @"J" : @0.1965, @"K" : @1.1016, @"L" : @5.4893, @"M" : @3.0129, @"N" : @6.6544, @"O" : @7.1635, @"P" : @3.1671, @"Q" : @0.1962, @"R" : @7.5809, @"S" : @5.7351, @"T" : @6.9509, @"U" : @3.6308, @"V" : @1.0074, @"W" : @1.2899, @"X" : @0.2902, @"Y" : @1.7779, @"Z" : @0.2722};
+        _keys = _letterPercentages.allKeys;
     }
     return self;
-}
-
-#pragma mark Updating Histogram
-
-- (void)addCharacters:(NSArray *)characters
-{
-    for (DRPCharacter *character in characters) {
-        [self addCharacter:character];
-    }
-}
-
-- (void)addCharacter:(DRPCharacter *)character
-{
-    
 }
 
 #pragma mark Character Generation
 
 // Generates a new DRPCharacter based on data in histogram
+#define ARC4RANDOM_MAX 0x100000000
 - (DRPCharacter *)randomCharacter
 {
-    NSString *alpha = @"ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    NSInteger c = arc4random_uniform(26);
-    return [DRPCharacter characterWithCharacter:[alpha substringWithRange:NSMakeRange(c, 1)]];
+    double r = ((double)arc4random() / ARC4RANDOM_MAX) * 100.0f;
+    double sum = 0.0;
+    
+    NSString *prev = nil;
+    for (NSString *letter in _keys)
+    {
+        sum += [_letterPercentages[letter] doubleValue];
+         prev = letter;
+        if (sum > r)
+            break;
+    }
+    
+    return [DRPCharacter characterWithCharacter:prev];
 }
 
 - (DRPCharacter *)randomMultiplier
 {
+    //3-5
+    //60 30 10
     return [DRPCharacter characterWithMulitplier:arc4random_uniform(3) + 3];
 }
 
@@ -184,7 +187,6 @@
             } else {
                 // Add new character
                 DRPCharacter *character = [self randomCharacter];
-                [self addCharacter:character];
                 [appendedCharacters addObject:character];
             }
         }

@@ -256,7 +256,6 @@
         for (NSInteger j = 0; j < 6; j++) {
             NSString *c = [initialState substringWithRange:NSMakeRange(i + 6 * j, 1)];
             DRPCharacter *character = [DRPCharacter characterWithCharacter:c];
-            [_histogram addCharacter:character];
             firstTurn[[DRPPosition positionWithI:i j:j]] = character;
         }
     }
@@ -309,7 +308,6 @@
     playedWord.appendedCharacters = [self loadCharactersFromData:turnData numberCharacters:numberPositions];
     [turnData setData:[turnData subdataWithRange:NSMakeRange(numberPositions, turnData.length - numberPositions)]];
     
-    [_histogram addCharacters:playedWord.appendedCharacters];
     for (DRPCharacter *character in playedWord.appendedCharacters) {
         // Load colors
         if (character.multiplier != -1) {

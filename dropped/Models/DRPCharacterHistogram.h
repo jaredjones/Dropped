@@ -12,9 +12,6 @@
 
 @interface DRPCharacterHistogram : NSObject
 
-- (void)addCharacters:(NSArray *)characters;
-- (void)addCharacter:(DRPCharacter *)character;
-
 - (NSArray *)appendedCharactersForPositions:(NSArray *)positions droppedMultipliers:(NSArray *)droppedMultipliers multipliers:(NSArray *)multipliers;
 
 @end

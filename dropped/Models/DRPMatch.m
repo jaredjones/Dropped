@@ -57,14 +57,15 @@
 - (void)reloadMatchData
 {
     [_gkMatch loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error) {
-        // Add new moves to _board if necessary
-        // [_board appendWithNewData:matchData]
+        [_board appendNewData:matchData];
+        // Post NSNotification if new turns available
     }];
 }
 
 - (void)reloadPlayerAliases
 {
     [GKPlayer loadPlayersForIdentifiers:nil withCompletionHandler:^(NSArray *players, NSError *error) {
+        // Post NSNotification
     }];
 }
 

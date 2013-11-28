@@ -326,6 +326,36 @@
     [self appendHistoryItem:historyItem];
 }
 
+// Called when new data is downloaded from Game Center
+// and history needs to be updated without reloading
+// the entire game
+- (void)appendNewData:(NSData *)newData
+{
+    NSInteger numberNewDataTurns = 0;
+    [newData getBytes:&numberNewDataTurns range:NSMakeRange(1 + 36, 1)];
+    
+    if (numberNewDataTurns <= _playedWords.count) return;
+    
+    NSInteger numberNewTurns = numberNewDataTurns - _playedWords.count;
+    NSMutableData *mnewData = [NSMutableData dataWithData:[newData subdataWithRange:NSMakeRange(38, newData.length - 38)]];
+    
+    for (NSInteger i = 0; i < numberNewDataTurns; i++) {
+        if (i < numberNewDataTurns - numberNewTurns) {
+            // Turn is already loaded, advance to next one
+            // See big comment at top of file for explanation
+            NSInteger m = 0, j = 0, k = 0;
+            [mnewData getBytes:&m range:NSMakeRange(0, 1)];
+            [mnewData getBytes:&j range:NSMakeRange(1, 1)];
+            [mnewData getBytes:&k range:NSMakeRange(2, 1)];
+            
+            NSInteger turnLength = 3 + 3 * m + 4 * (j + k);
+            [mnewData setData:[mnewData subdataWithRange:NSMakeRange(turnLength, mnewData.length - turnLength)]];
+        }
+        
+        [self loadTurn:mnewData];
+    }
+}
+
 #pragma mark MatchData Dumping
 
 - (NSData *)matchData

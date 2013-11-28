@@ -24,6 +24,8 @@
 
 - (DRPPlayedWord *)wordPlayedForTurn:(NSInteger)turn;
 
+- (void)appendNewData:(NSData *)newData;
+
 #pragma mark Move Submission
 
 // Creates a new history entry. GC submission is handled by DRPMatch.

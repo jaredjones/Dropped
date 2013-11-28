@@ -17,9 +17,9 @@
 		A91D8F62183702EE00BEC6E8 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F61183702EE00BEC6E8 /* XCTest.framework */; };
 		A91D8F63183702EE00BEC6E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F48183702EE00BEC6E8 /* Foundation.framework */; };
 		A91D8F64183702EE00BEC6E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4C183702EE00BEC6E8 /* UIKit.framework */; };
-		A920405018370460006940B8 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A920404F18370460006940B8 /* GameKit.framework */; };
 		A920405218370467006940B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A920405118370467006940B8 /* Security.framework */; };
 		A920405C18370BA0006940B8 /* DRPPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = A920405B18370BA0006940B8 /* DRPPosition.m */; };
+		A95A2C821847C3AB001AF846 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A95A2C811847C3AB001AF846 /* GameKit.framework */; };
 		A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */; };
 		A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48F18372DA800B7A9A8 /* DRPBoard.m */; };
 		A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB49318372DA800B7A9A8 /* DRPCharacter.m */; };
@@ -68,10 +68,10 @@
 		A91D8F5A183702EE00BEC6E8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A91D8F60183702EE00BEC6E8 /* droppedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = droppedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A91D8F61183702EE00BEC6E8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		A920404F18370460006940B8 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A920405118370467006940B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A920405A18370BA0006940B8 /* DRPPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPosition.h; path = Models/DRPPosition.h; sourceTree = "<group>"; };
 		A920405B18370BA0006940B8 /* DRPPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPosition.m; path = Models/DRPPosition.m; sourceTree = "<group>"; };
+		A95A2C811847C3AB001AF846 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A95BB48B18372D9C00B7A9A8 /* DRPMatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMatch.h; path = Models/DRPMatch.h; sourceTree = "<group>"; };
 		A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMatch.m; path = Models/DRPMatch.m; sourceTree = "<group>"; };
 		A95BB48E18372DA800B7A9A8 /* DRPBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPBoard.h; path = Models/DRPBoard.h; sourceTree = "<group>"; };
@@ -97,9 +97,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				A920405218370467006940B8 /* Security.framework in Frameworks */,
-				A920405018370460006940B8 /* GameKit.framework in Frameworks */,
 				A91D8F4B183702EE00BEC6E8 /* CoreGraphics.framework in Frameworks */,
 				A91D8F4D183702EE00BEC6E8 /* UIKit.framework in Frameworks */,
+				A95A2C821847C3AB001AF846 /* GameKit.framework in Frameworks */,
 				A91D8F49183702EE00BEC6E8 /* Foundation.framework in Frameworks */,
 				F4E61295ABFC46CDBE1384F1 /* libPods.a in Frameworks */,
 			);
@@ -140,8 +140,8 @@
 		A91D8F47183702EE00BEC6E8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A95A2C811847C3AB001AF846 /* GameKit.framework */,
 				A920405118370467006940B8 /* Security.framework */,
-				A920404F18370460006940B8 /* GameKit.framework */,
 				A91D8F48183702EE00BEC6E8 /* Foundation.framework */,
 				A91D8F4A183702EE00BEC6E8 /* CoreGraphics.framework */,
 				A91D8F4C183702EE00BEC6E8 /* UIKit.framework */,
@@ -297,6 +297,14 @@
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Brad Zeis";
 				TargetAttributes = {
+					A91D8F44183702EE00BEC6E8 = {
+						DevelopmentTeam = DSR7B666L4;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+						};
+					};
 					A91D8F5F183702EE00BEC6E8 = {
 						TestTargetID = A91D8F44183702EE00BEC6E8;
 					};
@@ -499,10 +507,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "dropped/dropped-Prefix.pch";
 				INFOPLIST_FILE = "dropped/dropped-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -513,10 +524,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "dropped/dropped-Prefix.pch";
 				INFOPLIST_FILE = "dropped/dropped-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

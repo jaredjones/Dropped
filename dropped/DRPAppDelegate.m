@@ -13,25 +13,35 @@
 #import "DRPBoard.h"
 #import "DRPPosition.h"
 
+#import <GameKit/GameKit.h>
+
+@interface DRPAppDelegate ()
+
+// Store the localPlayerID after authenticating
+// to determine when a different  Game Center
+// account logs in while Dropped is in background
+@property NSString *localPlayerID;
+
+@end
+
 @implementation DRPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    DRPMatch *m = [[DRPMatch alloc] initWithGKMatch:nil];
-    NSArray *move = @[[DRPPosition positionWithI:5 j:5],
-                      [DRPPosition positionWithI:4 j:5],
-                      [DRPPosition positionWithI:4 j:4],
-                      [DRPPosition positionWithI:4 j:3],
-                      [DRPPosition positionWithI:0 j:3],
-                      [DRPPosition positionWithI:2 j:3],
-                      [DRPPosition positionWithI:1 j:3]];
-    [m.board appendMoveForPositions:move];
+//    DRPMatch *m = [[DRPMatch alloc] initWithGKMatch:nil];
+//    NSArray *move = @[[DRPPosition positionWithI:5 j:5],
+//                      [DRPPosition positionWithI:4 j:5],
+//                      [DRPPosition positionWithI:4 j:4],
+//                      [DRPPosition positionWithI:4 j:3],
+//                      [DRPPosition positionWithI:0 j:3],
+//                      [DRPPosition positionWithI:2 j:3],
+//                      [DRPPosition positionWithI:1 j:3]];
+//    [m.board appendMoveForPositions:move];
+//    NSLog(@"%@", m.board.matchData);
     
-    NSLog(@"%@", m.board.matchData);
+    [self authenticateLocalPlayer];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -61,6 +71,30 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark Game Center
+
+- (void)authenticateLocalPlayer
+{
+    __weak GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+    localPlayer.authenticateHandler = ^(UIViewController *viewController, NSError *error) {
+        if (viewController != nil) {
+            // User not authenticated, make sure they sign in
+            if (_localPlayerID) {
+                // User logged out while app running
+            } else {
+                // New launch, user not logged in
+            }
+            self.window.rootViewController = viewController;
+        } else if (localPlayer.authenticated) {
+            if (_localPlayerID && ![localPlayer.playerID isEqualToString:_localPlayerID]) {
+                // Different user logged in
+            }
+            
+            _localPlayerID = localPlayer.playerID;
+        }
+    };
 }
 
 @end

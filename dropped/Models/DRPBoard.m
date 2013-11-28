@@ -311,10 +311,11 @@
     for (DRPCharacter *character in playedWord.appendedCharacters) {
         // Load colors
         if (character.multiplier != -1) {
-            NSInteger color = 0;
+            DRPColor color = 0;
             [turnData getBytes:&color length:1];
             [turnData setData:[turnData subdataWithRange:NSMakeRange(1, turnData.length - 1)]];
-            // TODO: Characters need a COLOR property
+            
+            character.color = color;
         }
     }
     
@@ -394,11 +395,16 @@
             [data appendBytes:&j length:1];
         }
         
+        NSMutableData *multiplierColorData = [[NSMutableData alloc] init];
         for (DRPCharacter *character in playedWord.appendedCharacters) {
             [data appendData:[character.character dataUsingEncoding:NSUTF8StringEncoding]];
+            if (character.multiplier != -1) {
+                DRPColor color = character.color;
+                [multiplierColorData appendBytes:&color length:1];
+            }
         }
         
-        // colors
+        [data appendData:multiplierColorData];
     }
     
     return data;

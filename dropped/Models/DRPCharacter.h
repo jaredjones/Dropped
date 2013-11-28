@@ -8,6 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, DRPColor) {
+    DRPColorBlue,
+    DRPColorGreen,
+    DRPColorOrange,
+    DRPColorPurple,
+    DRPColorYellow,
+    DRPColorPink,
+    DRPColorRed,
+    DRPColorNil
+};
+
 @class DRPPosition;
 
 @interface DRPCharacter : NSObject <NSCopying>
@@ -16,6 +27,8 @@
 
 // -1 if not a multiplier
 @property (readonly) NSInteger multiplier;
+@property DRPColor color;
+
 // Non-nil if this tile is next to a multiplier
 @property DRPCharacter *adjacentMultiplier;
 

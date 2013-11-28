@@ -13,10 +13,14 @@
 
 @interface DRPMatch : NSObject
 
-@property (readonly) DRPBoard *board;
+@property (readonly) NSString *matchID;
 
+@property (readonly) DRPBoard *board;
 @property (readonly) GKTurnBasedMatch *gkMatch;
 
+// Loaded from Cache
+- (instancetype)initWithMatchID:(NSString *)matchID;
+// Created fresh
 - (instancetype)initWithGKMatch:(GKTurnBasedMatch *)gkMatch;
 
 @end

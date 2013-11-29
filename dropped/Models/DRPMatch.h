@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <GameKit/GameKit.h>
 
-@class DRPBoard;
+@class DRPPlayer, DRPBoard;
 
 @interface DRPMatch : NSObject
 
@@ -17,10 +17,14 @@
 
 @property (readonly) DRPBoard *board;
 @property (readonly) GKTurnBasedMatch *gkMatch;
+@property (readonly) NSArray *players;
 
 // Loaded from Cache
 - (instancetype)initWithMatchID:(NSString *)matchID;
 // Created fresh
 - (instancetype)initWithGKMatch:(GKTurnBasedMatch *)gkMatch;
+
+- (DRPPlayer *)localPlayer;
+- (DRPPlayer *)currentPlayer;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "DRPMatch.h"
+#import "DRPPlayer.h"
 #import "DRPBoard.h"
 
 @interface DRPMatch ()
@@ -23,9 +24,8 @@
     if (self) {
         _matchID = matchID;
         
-        // Load from cache (pull nsdata out)
+        // Load from cache based on matchID (pull nsdata out)
         // -- matchData
-        // -- players
         // _board = new board with cached data
         
         // Load Game Center match
@@ -33,6 +33,7 @@
             [GKTurnBasedMatch loadMatchWithID:_matchID withCompletionHandler:^(GKTurnBasedMatch *match, NSError *error) {
                 _gkMatch = match;
                 [self reloadMatchData];
+                [self loadGKPlayers];
                 [self reloadPlayerAliases];
             }];
         }
@@ -46,8 +47,12 @@
     if (self) {
         _gkMatch = gkMatch;
         _matchID = _gkMatch.matchID;
+        _gameCenterMatch = YES;
+        
         // Initialize new board from scratch
-        _board = [[DRPBoard alloc] initWithMatchData:nil];
+        [self loadGKPlayers];
+        _board = [[DRPBoard alloc] initWithMatchData:_gkMatch.matchData];
+        [self reloadPlayerScores];
     }
     return self;
 }
@@ -58,8 +63,18 @@
 {
     [_gkMatch loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error) {
         [_board appendNewData:matchData];
+        [self reloadPlayerScores];
         // Post NSNotification if new turns available
     }];
+}
+
+- (void)loadGKPlayers
+{
+    _players = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < 2; i++) {
+        [(NSMutableArray *)_players addObject:[[DRPPlayer alloc] initWithParticipant:_gkMatch.participants[i] turn:i]];
+    }
+    [self reloadPlayerAliases];
 }
 
 - (void)reloadPlayerAliases
@@ -80,6 +95,23 @@
     [_gkMatch endTurnWithNextParticipants:paricipants turnTimeout:GKTurnTimeoutNone matchData:data completionHandler:^(NSError *error) {
         // Post NSNotification to signal ViewControllers
     }];
+}
+
+#pragma mark - Player
+
+- (DRPPlayer *)localPlayer
+{
+    return nil;
+}
+
+- (DRPPlayer *)currentPlayer
+{
+    return nil;
+}
+
+- (void)reloadPlayerScores
+{
+    
 }
 
 @end

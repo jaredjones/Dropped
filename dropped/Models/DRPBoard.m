@@ -118,6 +118,11 @@
     return _playedWords[turn];
 }
 
+- (NSDictionary *)scoresForNumberOfPlayers:(NSInteger)numberOfPlayers
+{
+    return nil;
+}
+
 #pragma mark Move Submission
 
 // These methods assume that a move is being

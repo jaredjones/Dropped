@@ -60,7 +60,7 @@ static DRPDictionary *sharedDictionary = NULL;
 
 + (NSInteger)indexPositionForWord:(NSString *)word
 {
-    return [[DRPDictionary sharedDictionary].database intForQuery:@"SELECT * FROM words where word = ?;", word];
+    return [[DRPDictionary sharedDictionary].database intForQuery:@"SELECT * FROM words WHERE word = ?;", word];
 }
 
 @end

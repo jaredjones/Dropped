@@ -118,9 +118,19 @@
     return _playedWords[turn];
 }
 
-- (NSDictionary *)scoresForNumberOfPlayers:(NSInteger)numberOfPlayers
+- (NSDictionary *)scores
 {
-    return nil;
+    NSMutableDictionary *scores = [NSMutableDictionary dictionaryWithDictionary:@{@0 : @0, @1 : @0}];
+    for (NSInteger i = 0; i < _playedWords.count; i++) {
+        DRPPlayedWord *playedWord = _playedWords[i];
+        scores[@(i % 2)] = @([scores[@(i % 2)] integerValue] + playedWord.score);
+    }
+    return scores;
+}
+
+- (NSInteger)currentTurn
+{
+    return _playedWords.count;
 }
 
 #pragma mark Move Submission

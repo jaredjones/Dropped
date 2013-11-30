@@ -101,12 +101,16 @@
 
 - (DRPPlayer *)localPlayer
 {
-    return nil;
+    GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
+    if ([((DRPPlayer *)_players[0]).participant.playerID isEqualToString:localPlayer.playerID]) {
+        return _players[0];
+    }
+    return _players[1];
 }
 
 - (DRPPlayer *)currentPlayer
 {
-    return nil;
+    return _players[_board.currentTurn % 2];
 }
 
 - (void)reloadPlayerScores

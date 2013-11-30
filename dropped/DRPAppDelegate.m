@@ -86,7 +86,6 @@
             } else {
                 // New launch, user not logged in
             }
-            self.window.rootViewController = viewController;
         } else if (localPlayer.authenticated) {
             if (_localPlayerID && ![localPlayer.playerID isEqualToString:_localPlayerID]) {
                 // Different user logged in

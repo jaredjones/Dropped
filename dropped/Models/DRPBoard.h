@@ -12,6 +12,8 @@
 
 @interface DRPBoard : NSObject
 
+@property (readonly, nonatomic) NSInteger currentTurn;
+
 - (instancetype)initWithMatchData:(NSData *)data;
 - (NSData *)matchData;
 
@@ -21,9 +23,9 @@
 - (DRPCharacter *)characterAtPosition:(DRPPosition *)position;
 - (NSString *)wordForPositions:(NSArray *)positions forTurn:(NSInteger)turn;
 - (NSString *)wordForPositions:(NSArray *)positions;
-- (NSDictionary *)scoresForNumberOfPlayers:(NSInteger)numberOfPlayers;
 
 - (DRPPlayedWord *)wordPlayedForTurn:(NSInteger)turn;
+- (NSDictionary *)scores;
 
 - (void)appendNewData:(NSData *)newData;
 

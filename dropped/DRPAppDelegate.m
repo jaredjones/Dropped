@@ -28,16 +28,16 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-//    DRPMatch *m = [[DRPMatch alloc] initWithGKMatch:nil];
-//    NSArray *move = @[[DRPPosition positionWithI:5 j:5],
-//                      [DRPPosition positionWithI:4 j:5],
-//                      [DRPPosition positionWithI:4 j:4],
-//                      [DRPPosition positionWithI:4 j:3],
-//                      [DRPPosition positionWithI:0 j:3],
-//                      [DRPPosition positionWithI:2 j:3],
-//                      [DRPPosition positionWithI:1 j:3]];
-//    [m.board appendMoveForPositions:move];
-//    NSLog(@"%@", m.board.matchData);
+    DRPMatch *m = [[DRPMatch alloc] initWithGKMatch:nil];
+    NSArray *move = @[[DRPPosition positionWithI:5 j:5],
+                      [DRPPosition positionWithI:4 j:5],
+                      [DRPPosition positionWithI:4 j:4],
+                      [DRPPosition positionWithI:4 j:3],
+                      [DRPPosition positionWithI:0 j:3],
+                      [DRPPosition positionWithI:2 j:3],
+                      [DRPPosition positionWithI:1 j:3]];
+    [m.board appendMoveForPositions:move];
+    NSLog(@"%@", m.board.matchData);
     
     [self authenticateLocalPlayer];
     
@@ -87,6 +87,10 @@
                 // New launch, user not logged in
             }
         } else if (localPlayer.authenticated) {
+            // DEBUG: Kill all Game Center matches when authenticating.
+            // Trust me, super handy during testing.
+            [self killAllGameCenterMatches];
+            
             if (_localPlayerID && ![localPlayer.playerID isEqualToString:_localPlayerID]) {
                 // Different user logged in
             }
@@ -94,6 +98,17 @@
             _localPlayerID = localPlayer.playerID;
         }
     };
+}
+
+- (void)killAllGameCenterMatches
+{
+    [GKTurnBasedMatch loadMatchesWithCompletionHandler:^(NSArray *matches, NSError *error) {
+        for (GKTurnBasedMatch *match in matches) {
+            [match endMatchInTurnWithMatchData:nil completionHandler:^(NSError *error) {
+                [match removeWithCompletionHandler:nil];
+            }];
+        }
+    }];
 }
 
 @end

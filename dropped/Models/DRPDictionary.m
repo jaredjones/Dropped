@@ -32,53 +32,35 @@ static DRPDictionary *sharedDictionary = NULL;
     return sharedDictionary;
 }
 
-- (instancetype)initWithDatabase: (NSString*) filePath withExtension: (NSString *)ext withDirectory: (NSString *) dirPath
+- (instancetype)initWithDatabase:(NSString *)filePath withExtension:(NSString *)ext withDirectory:(NSString *)dirPath
 {
     self = [super init];
     if (self){
         _databasePath = [[NSBundle mainBundle] pathForResource:filePath ofType:ext inDirectory:dirPath];
         _database = [[FMDatabase alloc]initWithPath:_databasePath];
         
-        @try {
-            [_database open];
-        }
-        @catch (NSException *exception) {
-            NSLog(@"An exception occurred with open the DB: %@", exception.name);
-            NSLog(@"Here are some details: %@", exception.reason);
+        if (![_database openWithFlags:SQLITE_OPEN_READONLY]) {
+            // FMDatabase doesn't throw exceptions when it can't
+            // open the database, it just returns a BOOL
             return nil;
-        }
-        @finally {
-            //DO NOTHING
         }
     }
     return self;
 }
 
-+ (BOOL) isValidWord: (NSString *) word
+- (void)dealloc
 {
-    [DRPDictionary sharedDictionary];
-    
-    NSString *prependingSelector = @"SELECT * FROM words WHERE word = '";
-    NSString *postFix = @"';";
-    NSString *query = [prependingSelector stringByAppendingString:word];
-    query = [query stringByAppendingString:postFix];
-    NSInteger count = [sharedDictionary.database intForQuery:query];
-    if (count > 0){
-        return YES;
-    }else{
-        return NO;
-    }
+    [_database close];
 }
 
-+ (NSInteger) getIndexPosition: (NSString *) word
++ (BOOL)isValidWord:(NSString *)word
 {
-    [DRPDictionary sharedDictionary];
-    
-    NSString *prependingSelector = @"SELECT * FROM words WHERE word = '";
-    NSString *postFix = @"';";
-    NSString *query = [prependingSelector stringByAppendingString:word];
-    query = [query stringByAppendingString:postFix];
-    return [sharedDictionary.database intForQuery:query];
+    return [DRPDictionary indexPositionForWord:word] > 0;
+}
+
++ (NSInteger)indexPositionForWord:(NSString *)word
+{
+    return [[DRPDictionary sharedDictionary].database intForQuery:@"SELECT * FROM words where word = ?;", word];
 }
 
 @end

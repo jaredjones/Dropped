@@ -10,6 +10,8 @@
 #import "DRPPosition.h"
 #import "DRPCharacter.h"
 
+#pragma mark - DRPPlayedWord
+
 @implementation DRPPlayedWord
 
 // Diff

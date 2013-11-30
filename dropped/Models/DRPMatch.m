@@ -16,6 +16,8 @@
 
 @end
 
+#pragma mark - DRPMatch
+
 @implementation DRPMatch
 
 - (instancetype)initWithMatchID:(NSString *)matchID
@@ -56,7 +58,7 @@
     return self;
 }
 
-#pragma mark - Game Center
+#pragma mark Game Center
 
 - (void)loadGKPlayers
 {
@@ -106,7 +108,7 @@
     }];
 }
 
-#pragma mark - Player
+#pragma mark Player
 
 - (DRPPlayer *)localPlayer
 {

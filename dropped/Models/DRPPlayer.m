@@ -8,6 +8,8 @@
 
 #import "DRPPlayer.h"
 
+#pragma mark - DRPPlayer
+
 @implementation DRPPlayer
 
 - (instancetype)initWithParticipant:(GKTurnBasedParticipant *)participant turn:(NSInteger)turn

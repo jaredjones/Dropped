@@ -69,7 +69,13 @@
 
 - (void)reloadPlayerAliases
 {
-    [GKPlayer loadPlayersForIdentifiers:nil withCompletionHandler:^(NSArray *players, NSError *error) {
+    NSArray *identifiers = @[((DRPPlayer *)_players[0]).participant.playerID,
+                             ((DRPPlayer *)_players[1]).participant.playerID];
+    [GKPlayer loadPlayersForIdentifiers:identifiers withCompletionHandler:^(NSArray *players, NSError *error) {
+        // UI that cares about player aliases will use KVO to find out about updates
+        for (NSInteger i = 0; i < players.count; i++) {
+            ((DRPPlayer *)_players[i]).alias = ((GKPlayer *)players[i]).alias;
+        }
     }];
 }
 

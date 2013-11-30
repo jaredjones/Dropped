@@ -32,9 +32,8 @@
         if (_gameCenterMatch) {
             [GKTurnBasedMatch loadMatchWithID:_matchID withCompletionHandler:^(GKTurnBasedMatch *match, NSError *error) {
                 _gkMatch = match;
-                [self reloadMatchData];
                 [self loadGKPlayers];
-                [self reloadPlayerAliases];
+                [self reloadMatchData];
             }];
         }
     }
@@ -59,15 +58,6 @@
 
 #pragma mark - Game Center
 
-- (void)reloadMatchData
-{
-    [_gkMatch loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error) {
-        [_board appendNewData:matchData];
-        [self reloadPlayerScores];
-        // Post NSNotification if new turns available
-    }];
-}
-
 - (void)loadGKPlayers
 {
     _players = [[NSMutableArray alloc] init];
@@ -80,7 +70,20 @@
 - (void)reloadPlayerAliases
 {
     [GKPlayer loadPlayersForIdentifiers:nil withCompletionHandler:^(NSArray *players, NSError *error) {
-        // Post NSNotification
+    }];
+}
+
+- (void)reloadMatchData
+{
+    [_gkMatch loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error) {
+        NSInteger turns = _board.currentTurn;
+        [_board appendNewData:matchData];
+        [self reloadPlayerScores];
+        
+        // Post NSNotification if new turns available
+        if (_board.currentTurn > turns) {
+            
+        }
     }];
 }
 
@@ -90,7 +93,7 @@
     [_board appendMoveForPositions:positions];
     
     // Send move off to Game Center
-    NSArray *paricipants = @[];
+    NSArray *paricipants = @[self.currentPlayer];
     NSData *data = _board.matchData;
     [_gkMatch endTurnWithNextParticipants:paricipants turnTimeout:GKTurnTimeoutNone matchData:data completionHandler:^(NSError *error) {
         // Post NSNotification to signal ViewControllers
@@ -115,7 +118,10 @@
 
 - (void)reloadPlayerScores
 {
-    
+    NSDictionary *scores = _board.scores;
+    for (NSInteger i = 0; i < 2; i++) {
+        ((DRPPlayer *)_players[i]).score = [scores[@(i)] integerValue];
+    }
 }
 
 @end

@@ -7,11 +7,7 @@
 //
 
 #import "DRPAppDelegate.h"
-#import "DRPDictionary.h"
-
-#import "DRPMatch.h"
-#import "DRPBoard.h"
-#import "DRPPosition.h"
+#import "DRPMainViewController.h"
 
 #import <GameKit/GameKit.h>
 
@@ -28,20 +24,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    DRPMatch *m = [[DRPMatch alloc] initWithGKMatch:nil];
-    NSArray *move = @[[DRPPosition positionWithI:5 j:5],
-                      [DRPPosition positionWithI:4 j:5],
-                      [DRPPosition positionWithI:4 j:4],
-                      [DRPPosition positionWithI:4 j:3],
-                      [DRPPosition positionWithI:0 j:3],
-                      [DRPPosition positionWithI:2 j:3],
-                      [DRPPosition positionWithI:1 j:3]];
-    [m.board appendMoveForPositions:move];
-    NSLog(@"%@", m.board.matchData);
-    
     [self authenticateLocalPlayer];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = [[DRPMainViewController alloc] initWithNibName:nil bundle:nil];
     [self.window makeKeyAndVisible];
     return YES;
 }

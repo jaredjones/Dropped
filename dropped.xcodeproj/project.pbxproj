@@ -19,6 +19,7 @@
 		A91D8F64183702EE00BEC6E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4C183702EE00BEC6E8 /* UIKit.framework */; };
 		A920405218370467006940B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A920405118370467006940B8 /* Security.framework */; };
 		A920405C18370BA0006940B8 /* DRPPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = A920405B18370BA0006940B8 /* DRPPosition.m */; };
+		A93E9F29184AAC3B0047575A /* DRPMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93E9F28184AAC3B0047575A /* DRPMainViewController.m */; };
 		A95A2C821847C3AB001AF846 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A95A2C811847C3AB001AF846 /* GameKit.framework */; };
 		A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */; };
 		A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48F18372DA800B7A9A8 /* DRPBoard.m */; };
@@ -72,6 +73,8 @@
 		A920405118370467006940B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A920405A18370BA0006940B8 /* DRPPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPosition.h; path = Models/DRPPosition.h; sourceTree = "<group>"; };
 		A920405B18370BA0006940B8 /* DRPPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPosition.m; path = Models/DRPPosition.m; sourceTree = "<group>"; };
+		A93E9F27184AAC3B0047575A /* DRPMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMainViewController.h; path = ViewControllers/DRPMainViewController.h; sourceTree = "<group>"; };
+		A93E9F28184AAC3B0047575A /* DRPMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMainViewController.m; path = ViewControllers/DRPMainViewController.m; sourceTree = "<group>"; };
 		A95A2C811847C3AB001AF846 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A95BB48B18372D9C00B7A9A8 /* DRPMatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMatch.h; path = Models/DRPMatch.h; sourceTree = "<group>"; };
 		A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMatch.m; path = Models/DRPMatch.m; sourceTree = "<group>"; };
@@ -191,6 +194,7 @@
 		A9204054183704B7006940B8 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A980FD14184BB56A00A7800F /* MainViewController */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -239,6 +243,15 @@
 				A99D97D218490C8300208FA0 /* DRPPlayer.m */,
 			);
 			name = Match;
+			sourceTree = "<group>";
+		};
+		A980FD14184BB56A00A7800F /* MainViewController */ = {
+			isa = PBXGroup;
+			children = (
+				A93E9F27184AAC3B0047575A /* DRPMainViewController.h */,
+				A93E9F28184AAC3B0047575A /* DRPMainViewController.m */,
+			);
+			name = MainViewController;
 			sourceTree = "<group>";
 		};
 		C08CBC121837168800CE678F /* Resources */ = {
@@ -400,6 +413,7 @@
 				C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */,
 				A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */,
 				A920405C18370BA0006940B8 /* DRPPosition.m in Sources */,
+				A93E9F29184AAC3B0047575A /* DRPMainViewController.m in Sources */,
 				A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -71,12 +71,17 @@
 
 - (void)reloadPlayerAliases
 {
-    NSArray *identifiers = @[((DRPPlayer *)_players[0]).participant.playerID,
-                             ((DRPPlayer *)_players[1]).participant.playerID];
+    NSMutableArray *identifiers = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < 2; i++) {
+        if (((DRPPlayer *)_players[i]).participant) {
+            [identifiers addObject:((DRPPlayer *)_players[i]).participant.playerID];
+        }
+    }
+    
     [GKPlayer loadPlayersForIdentifiers:identifiers withCompletionHandler:^(NSArray *players, NSError *error) {
         // UI that cares about player aliases will use KVO to find out about updates
         for (NSInteger i = 0; i < players.count; i++) {
-            ((DRPPlayer *)_players[i]).alias = ((GKPlayer *)players[i]).alias;
+            [self playerForPlayerID:((GKPlayer *)players[i]).playerID].alias = ((GKPlayer *)players[i]).alias;
         }
     }];
 }
@@ -122,6 +127,16 @@
 - (DRPPlayer *)currentPlayer
 {
     return _players[_board.currentTurn % 2];
+}
+
+- (DRPPlayer *)playerForPlayerID:(NSString *)playerID
+{
+    for (NSInteger i = 0; i < 2; i++) {
+        if ([((DRPPlayer *)_players[i]).participant.playerID isEqualToString:playerID]) {
+            return _players[i];
+        }
+    }
+    return nil;
 }
 
 - (void)reloadPlayerScores

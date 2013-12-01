@@ -15,7 +15,12 @@ typedef NS_ENUM(NSInteger, DRPPageID) {
     DRPPageGKMatchMaker,
     DRPPageList,
     DRPPageEtCetera,
-    DRPPageCount
+    DRPPageNil
+};
+
+typedef NS_ENUM(NSInteger, DRPPageDirection) {
+    DRPPageDirectionUp,
+    DRPPageDirectionDown
 };
 
 @protocol DRPPage <NSObject>
@@ -24,7 +29,7 @@ typedef NS_ENUM(NSInteger, DRPPageID) {
 @property (readonly) DRPPageID pageID;
 
 @optional
-- (void)willMoveToCurrent:(NSDictionary *)userInfo;
+- (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo;
 - (void)didMoveToCurrent;
 
 - (void)willMoveFromCurrent;

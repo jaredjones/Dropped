@@ -82,6 +82,7 @@
 		A95BB48F18372DA800B7A9A8 /* DRPBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPBoard.m; path = Models/DRPBoard.m; sourceTree = "<group>"; };
 		A95BB49218372DA800B7A9A8 /* DRPCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCharacter.h; path = Models/DRPCharacter.h; sourceTree = "<group>"; };
 		A95BB49318372DA800B7A9A8 /* DRPCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCharacter.m; path = Models/DRPCharacter.m; sourceTree = "<group>"; };
+		A980FD16184BB95B00A7800F /* DRPPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DRPPage.h; path = ViewControllers/DRPPage.h; sourceTree = "<group>"; };
 		A99D97D118490C8300208FA0 /* DRPPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayer.h; path = Models/DRPPlayer.h; sourceTree = "<group>"; };
 		A99D97D218490C8300208FA0 /* DRPPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPlayer.m; path = Models/DRPPlayer.m; sourceTree = "<group>"; };
 		A9C7BBB018395DFD003F585F /* DRPCharacterHistogram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCharacterHistogram.h; path = Models/DRPCharacterHistogram.h; sourceTree = "<group>"; };
@@ -195,6 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				A980FD14184BB56A00A7800F /* MainViewController */,
+				A980FD15184BB8F700A7800F /* Pages */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -252,6 +254,14 @@
 				A93E9F28184AAC3B0047575A /* DRPMainViewController.m */,
 			);
 			name = MainViewController;
+			sourceTree = "<group>";
+		};
+		A980FD15184BB8F700A7800F /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				A980FD16184BB95B00A7800F /* DRPPage.h */,
+			);
+			name = Pages;
 			sourceTree = "<group>";
 		};
 		C08CBC121837168800CE678F /* Resources */ = {

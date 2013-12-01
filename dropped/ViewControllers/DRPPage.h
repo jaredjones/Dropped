@@ -12,7 +12,7 @@ typedef NS_ENUM(NSInteger, DRPPageID) {
     DRPPageSplash,
     DRPPageLogIn,
     DRPPageMatch,
-    DRPPageGKMatchMaker,
+    DRPPageMatchMaker,
     DRPPageList,
     DRPPageEtCetera,
     DRPPageNil

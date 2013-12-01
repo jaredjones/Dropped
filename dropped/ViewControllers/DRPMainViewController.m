@@ -65,6 +65,7 @@
 - (void)decommissionOldPagesWithPreviousPage:(id<DRPPage>)prevPage
 {
     for (UIView *view in self.view.subviews) {
+        if (![view conformsToProtocol:@protocol(DRPPage)]) continue;
         if (!(view == _currentPage.view || view == _upPage.view || view == _downPage.view)) {
             [view removeFromSuperview];
         }

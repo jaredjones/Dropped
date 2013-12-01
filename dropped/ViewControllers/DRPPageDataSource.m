@@ -8,6 +8,8 @@
 
 #import "DRPPageDataSource.h"
 
+#import "DRPPageListViewController.h"
+
 @interface DRPPageDataSource ()
 
 @property NSMutableDictionary *pages;
@@ -52,22 +54,22 @@
         return _pages[@(pageID)];
     }
     
-    UIViewController *viewController;
+    UIViewController<DRPPage> *viewController;
     
     if (pageID == DRPPageList) {
-        viewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
+        viewController = [[DRPPageListViewController alloc] initWithPageID:pageID];
         viewController.view.backgroundColor = [UIColor lightGrayColor];
         
     } else if (pageID == DRPPageMatchMaker) {
-        viewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
+        viewController = [[DRPPageListViewController alloc] initWithPageID:pageID];
         viewController.view.backgroundColor = [UIColor orangeColor];
         
     } else if (pageID == DRPPageMatch) {
-        viewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
+        viewController = [[DRPPageListViewController alloc] initWithPageID:pageID];
         viewController.view.backgroundColor = [UIColor yellowColor];
     }
     else if (pageID == DRPPageEtCetera) {
-        viewController = [[UIViewController alloc] initWithNibName:nil bundle:nil];
+        viewController = [[DRPPageListViewController alloc] initWithPageID:pageID];
         viewController.view.backgroundColor = [UIColor greenColor];
     }
     

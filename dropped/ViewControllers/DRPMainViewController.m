@@ -15,6 +15,9 @@
 @property DRPPageDataSource *dataSource;
 @property UIViewController<DRPPage> *currentPage, *upPage, *downPage;
 
+// DEBUG
+@property UIButton *upButton, *downButton;
+
 @end
 
 #pragma mark - DRPMainViewController
@@ -39,7 +42,7 @@
     [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
 }
 
-#pragma mark - Child View Controllers
+#pragma mark Child View Controllers
 
 - (void)setCurrentPageID:(DRPPageID)pageID animated:(BOOL)animated userInfo:(NSDictionary *)userInfo
 {

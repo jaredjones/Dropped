@@ -28,6 +28,8 @@ typedef NS_ENUM(NSInteger, DRPPageDirection) {
 // Must "@synthesize pageID=_pageID" when conforming to DRPPage
 @property (readonly) DRPPageID pageID;
 
+- (instancetype)initWithPageID:(DRPPageID)pageID;
+
 @optional
 - (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo;
 - (void)didMoveToCurrent;

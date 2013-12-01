@@ -25,6 +25,7 @@
 		A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48F18372DA800B7A9A8 /* DRPBoard.m */; };
 		A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB49318372DA800B7A9A8 /* DRPCharacter.m */; };
 		A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */; };
+		A95C321E184BF77400ECC3D4 /* DRPPageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A95C321D184BF77400ECC3D4 /* DRPPageListViewController.m */; };
 		A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A99D97D218490C8300208FA0 /* DRPPlayer.m */; };
 		A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */; };
 		A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */; };
@@ -85,6 +86,8 @@
 		A95BB49318372DA800B7A9A8 /* DRPCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCharacter.m; path = Models/DRPCharacter.m; sourceTree = "<group>"; };
 		A95C3219184BDD3200ECC3D4 /* DRPPageDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageDataSource.h; path = ViewControllers/DRPPageDataSource.h; sourceTree = "<group>"; };
 		A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageDataSource.m; path = ViewControllers/DRPPageDataSource.m; sourceTree = "<group>"; };
+		A95C321C184BF77400ECC3D4 /* DRPPageListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageListViewController.h; path = ViewControllers/DRPPageListViewController.h; sourceTree = "<group>"; };
+		A95C321D184BF77400ECC3D4 /* DRPPageListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageListViewController.m; path = ViewControllers/DRPPageListViewController.m; sourceTree = "<group>"; };
 		A980FD16184BB95B00A7800F /* DRPPage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = DRPPage.h; path = ViewControllers/DRPPage.h; sourceTree = "<group>"; };
 		A99D97D118490C8300208FA0 /* DRPPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayer.h; path = Models/DRPPlayer.h; sourceTree = "<group>"; };
 		A99D97D218490C8300208FA0 /* DRPPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPlayer.m; path = Models/DRPPlayer.m; sourceTree = "<group>"; };
@@ -265,6 +268,8 @@
 			isa = PBXGroup;
 			children = (
 				A980FD16184BB95B00A7800F /* DRPPage.h */,
+				A95C321C184BF77400ECC3D4 /* DRPPageListViewController.h */,
+				A95C321D184BF77400ECC3D4 /* DRPPageListViewController.m */,
 			);
 			name = Pages;
 			sourceTree = "<group>";
@@ -424,6 +429,7 @@
 				A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */,
 				A91D8F55183702EE00BEC6E8 /* main.m in Sources */,
 				A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */,
+				A95C321E184BF77400ECC3D4 /* DRPPageListViewController.m in Sources */,
 				A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */,
 				A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */,
 				C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */,

@@ -113,6 +113,17 @@
     [self.view addSubview:_currentPage.view];
     [self.view addSubview:_upPage.view];
     [self.view addSubview:_downPage.view];
+    
+    if (!animated) {
+        _currentPage.view.frame = self.view.frame;
+    }
+    
+    CGRect frame = _currentPage.view.frame;
+    frame.origin.y -= CGRectGetHeight(frame);
+    _upPage.view.frame = frame;
+    
+    frame.origin.y = CGRectGetMaxY(_currentPage.view.frame);
+    _downPage.view.frame = frame;
 }
 
 #pragma mark Transitions

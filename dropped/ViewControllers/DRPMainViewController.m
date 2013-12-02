@@ -9,14 +9,15 @@
 #import "DRPMainViewController.h"
 #import "DRPPage.h"
 #import "DRPPageDataSource.h"
+#import "DRPMainPanGestureRecognizer.h"
 
 @interface DRPMainViewController ()
 
 @property DRPPageDataSource *dataSource;
 @property UIViewController<DRPPage> *currentPage, *upPage, *downPage;
 
-// DEBUG
-@property UIButton *upButton, *downButton;
+@property DRPMainPanGestureRecognizer *panGestureRecognizer;
+@property BOOL panRevealedUpPage, panRevealedDownPage;
 
 @end
 
@@ -38,7 +39,9 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    // Load pages
+    _panGestureRecognizer = [[DRPMainPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    [self.view addGestureRecognizer:_panGestureRecognizer];
+    
     [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
 }
 
@@ -47,13 +50,13 @@
 - (void)setCurrentPageID:(DRPPageID)pageID animated:(BOOL)animated userInfo:(NSDictionary *)userInfo
 {
     DRPPageDirection animationDirection = [_dataSource directionFromPage:_currentPage.pageID to:pageID];
-    id<DRPPage> prevPage = _currentPage;
+    UIViewController<DRPPage> *prevPage = _currentPage;
     if ([prevPage respondsToSelector:@selector(willMoveFromCurrent)]) {
         [prevPage willMoveFromCurrent];
     }
     
     [self loadNewPagesAroundCurrentPageID:pageID userInfo:userInfo];
-    [self configurePageViewsAnimated:animated];
+    [self configurePageViewsAnimated:animated withPreviousPage:prevPage];
     if (animated) {
         // run transition (and decommission in completion block)
         [self transitionInDirection:animationDirection completion:^{
@@ -111,7 +114,7 @@
 
 // Reposition the DRPPage UIViews appropriately
 // Slightly different rules if animating to new page
-- (void)configurePageViewsAnimated:(BOOL)animated
+- (void)configurePageViewsAnimated:(BOOL)animated withPreviousPage:(UIViewController<DRPPage> *)prevPage
 {
     [self.view addSubview:_currentPage.view];
     [self.view addSubview:_upPage.view];
@@ -119,8 +122,15 @@
     
     if (!animated) {
         _currentPage.view.frame = self.view.frame;
+    } else {
+        // Mess with the layering within parent view
+        // to make sure the correct views are visible
     }
-    
+    [self repositionPagesAroundCurrentPage];
+}
+
+- (void)repositionPagesAroundCurrentPage
+{
     CGRect frame = _currentPage.view.frame;
     frame.origin.y -= CGRectGetHeight(frame);
     _upPage.view.frame = frame;
@@ -136,6 +146,46 @@
 - (void)transitionInDirection:(DRPPageDirection)direction completion:(void (^)())completion
 {
     
+}
+
+#pragma mark Touch Events
+
+- (void)handlePanGesture:(DRPMainPanGestureRecognizer *)gesture
+{
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        
+        // Store the _currentPage offset (from the top of the screen)
+        // Needed to prevent jerks when a pan is started in
+        // the middle of a transition
+        gesture.viewOffset = _currentPage.view.frame.origin.y;
+        
+        _panRevealedUpPage = NO;
+        _panRevealedDownPage = NO;
+        
+    } else if (gesture.state == UIGestureRecognizerStateChanged) {
+        
+        // Reposition DRPPage views
+        CGRect frame = self.view.frame;
+        frame.origin.y += gesture.viewOffset + [gesture translationInView:self.view].y;
+        _currentPage.view.frame = frame;
+        [self repositionPagesAroundCurrentPage];
+        
+    } else if (gesture.state == UIGestureRecognizerStateEnded) {
+        
+        // Pan ended, animate transition if necessary
+        DRPPageDirection transitionDirection = [self panEndTransitionDirectionWithGesture:gesture];
+        if (transitionDirection != DRPPageDirectionNil) {
+            [self setCurrentPageID:[_dataSource pageIDInDirection:transitionDirection from:_currentPage.pageID]
+                          animated:YES
+                          userInfo:nil];
+        }
+    }
+}
+
+// Return the
+- (DRPPageDirection)panEndTransitionDirectionWithGesture:(DRPMainPanGestureRecognizer *)gesture
+{
+    return DRPPageDirectionNil;
 }
 
 @end

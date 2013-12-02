@@ -10,6 +10,7 @@
 #import "DRPPage.h"
 #import "DRPPageDataSource.h"
 #import "DRPMainPanGestureRecognizer.h"
+#import "DRPTransition.h"
 
 @interface DRPMainViewController ()
 
@@ -58,10 +59,14 @@
     [self loadNewPagesAroundCurrentPageID:pageID userInfo:userInfo];
     [self configurePageViewsAnimated:animated withPreviousPage:prevPage];
     if (animated) {
-        // run transition (and decommission in completion block)
-        [self transitionInDirection:animationDirection completion:^{
+        DRPTransition *transition = [DRPTransition transitionWithStart:prevPage
+                                                           destination:_currentPage
+                                                             direction:animationDirection
+                                                            completion:^{
             [self decommissionOldPagesWithPreviousPage:prevPage];
+            [self repositionPagesAroundCurrentPage];
         }];
+        [transition execute];
     } else {
         [self decommissionOldPagesWithPreviousPage:prevPage];
     }
@@ -122,11 +127,13 @@
     
     if (!animated) {
         _currentPage.view.frame = self.view.frame;
+        [self repositionPagesAroundCurrentPage];
     } else {
         // Mess with the layering within parent view
         // to make sure the correct views are visible
+        [self.view bringSubviewToFront:_currentPage.view];
+        [self.view bringSubviewToFront:prevPage.view];
     }
-    [self repositionPagesAroundCurrentPage];
 }
 
 - (void)repositionPagesAroundCurrentPage
@@ -137,15 +144,6 @@
     
     frame.origin.y = CGRectGetMaxY(_currentPage.view.frame);
     _downPage.view.frame = frame;
-}
-
-#pragma mark Transitions
-
-// Assumes _*Page are set correctly
-// Uses _currentPage to calculate positions
-- (void)transitionInDirection:(DRPPageDirection)direction completion:(void (^)())completion
-{
-    
 }
 
 #pragma mark Touch Events
@@ -185,6 +183,11 @@
 // Return the
 - (DRPPageDirection)panEndTransitionDirectionWithGesture:(DRPMainPanGestureRecognizer *)gesture
 {
+    if (gesture.viewOffset + [gesture translationInView:self.view].y > 0) {
+        return DRPPageDirectionUp;
+    } else if (gesture.viewOffset + [gesture translationInView:self.view].y < 0) {
+        return DRPPageDirectionDown;
+    }
     return DRPPageDirectionNil;
 }
 

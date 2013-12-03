@@ -50,6 +50,8 @@
 
 - (void)setCurrentPageID:(DRPPageID)pageID animated:(BOOL)animated userInfo:(NSDictionary *)userInfo
 {
+    if (pageID == DRPPageNil) return;
+    
     DRPPageDirection animationDirection = [_dataSource directionFromPage:_currentPage.pageID to:pageID];
     UIViewController<DRPPage> *prevPage = _currentPage;
     if ([prevPage respondsToSelector:@selector(willMoveFromCurrent)]) {
@@ -98,10 +100,9 @@
     if (_currentPage.parentViewController != self) {
         [_currentPage willMoveToParentViewController:self];
         [self addChildViewController:_currentPage];
-        
-        if ([_currentPage respondsToSelector:@selector(willMoveToCurrentWithUserInfo:)]) {
-            [_currentPage willMoveToCurrentWithUserInfo:userInfo];
-        }
+    }
+    if ([_currentPage respondsToSelector:@selector(willMoveToCurrentWithUserInfo:)]) {
+        [_currentPage willMoveToCurrentWithUserInfo:userInfo];
     }
     
     _upPage = [_dataSource pageForPageID:[_dataSource pageIDInDirection:DRPPageDirectionUp from:pageID]];
@@ -162,11 +163,7 @@
         
     } else if (gesture.state == UIGestureRecognizerStateChanged) {
         
-        // Reposition DRPPage views
-        CGRect frame = self.view.frame;
-        frame.origin.y += gesture.viewOffset + [gesture translationInView:self.view].y;
-        _currentPage.view.frame = frame;
-        [self repositionPagesAroundCurrentPage];
+        [self repositionPagesDuringDragWithGesture:gesture];
         
     } else if (gesture.state == UIGestureRecognizerStateEnded) {
         
@@ -180,9 +177,26 @@
     }
 }
 
-// Return the
+- (void)repositionPagesDuringDragWithGesture:(DRPMainPanGestureRecognizer *)gesture
+{
+    // Make sure _currentPage is Scrollable
+    CGFloat offset = gesture.viewOffset + [gesture translationInView:self.view].y;
+    DRPPageDirection direction = offset >= 0 ? DRPPageDirectionUp : DRPPageDirectionDown;
+    
+    if ([_dataSource pageIDInDirection:direction from:_currentPage.pageID] != DRPPageNil) {
+        // Reposition DRPPage views
+        CGRect frame = self.view.frame;
+        frame.origin.y += offset;
+        _currentPage.view.frame = frame;
+    }
+    [self repositionPagesAroundCurrentPage];
+}
+
+// Return the direction to transition after a drag
 - (DRPPageDirection)panEndTransitionDirectionWithGesture:(DRPMainPanGestureRecognizer *)gesture
 {
+    // It might be better to just look at the positions of the Page views?
+    
     if (gesture.viewOffset + [gesture translationInView:self.view].y > 0) {
         return DRPPageDirectionUp;
     } else if (gesture.viewOffset + [gesture translationInView:self.view].y < 0) {

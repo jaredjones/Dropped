@@ -18,7 +18,9 @@
 @property UIViewController<DRPPage> *currentPage, *upPage, *downPage;
 
 @property DRPMainPanGestureRecognizer *panGestureRecognizer;
-@property BOOL panRevealedUpPage, panRevealedDownPage;
+@property BOOL panRevealedUpPage, panRevealedDownPage;\
+
+@property DRPTransition *currentTransition;
 
 @end
 
@@ -38,7 +40,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    [DRPTransition setReferenceView:self.view];
     
     _panGestureRecognizer = [[DRPMainPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     [self.view addGestureRecognizer:_panGestureRecognizer];
@@ -61,14 +63,14 @@
     [self loadNewPagesAroundCurrentPageID:pageID userInfo:userInfo];
     [self configurePageViewsAnimated:animated withPreviousPage:prevPage];
     if (animated) {
-        DRPTransition *transition = [DRPTransition transitionWithStart:prevPage
-                                                           destination:_currentPage
-                                                             direction:animationDirection
-                                                            completion:^{
+        _currentTransition = [DRPTransition transitionWithStart:prevPage
+                                                    destination:_currentPage
+                                                      direction:animationDirection
+                                                     completion:^{
             [self decommissionOldPagesWithPreviousPage:prevPage];
             [self repositionPagesAroundCurrentPage];
         }];
-        [transition execute];
+        [_currentTransition execute];
     } else {
         [self decommissionOldPagesWithPreviousPage:prevPage];
     }

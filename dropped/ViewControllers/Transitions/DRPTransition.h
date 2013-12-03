@@ -12,10 +12,14 @@
 @interface DRPTransition : NSObject
 
 @property (readonly) UIViewController *start, *destination;
-@property (readonly, copy) void (^completion)();
+@property (readonly, strong) void (^completion)();
 
-+ transitionWithStart:(UIViewController *)start destination:(UIViewController *)destination direction:(DRPPageDirection)direction completion:(void (^)())completion;
++ (void)setReferenceView:(UIView *)reference;
++ (UIDynamicAnimator *)sharedDynamicAnimator;
+
++ (DRPTransition *)transitionWithStart:(UIViewController *)start destination:(UIViewController *)destination direction:(DRPPageDirection)direction completion:(void (^)())completion;
 
 - (void)execute;
+- (void)interrupt;
 
 @end

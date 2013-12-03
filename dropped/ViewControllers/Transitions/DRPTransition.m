@@ -13,7 +13,7 @@
 @interface DRPTransition ()
 
 @property UIViewController *start, *destination;
-@property (copy) void (^completion)();
+@property (strong) void (^completion)();
 
 - (instancetype)initWithStart:(UIViewController *)start destination:(UIViewController *)destination completion:(void (^)())completion;
 
@@ -42,9 +42,29 @@
     return nil;
 }
 
+#pragma mark Animation
+
 - (void)execute
 {
     
+}
+
+- (void) interrupt
+{
+    
+}
+
+#pragma mark Dynamic Animator
+
+static UIDynamicAnimator *sharedAnimator;
++ (void)setReferenceView:(UIView *)reference
+{
+    sharedAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:reference];
+}
+
++ (UIDynamicAnimator *)sharedDynamicAnimator
+{
+    return sharedAnimator;
 }
 
 @end

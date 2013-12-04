@@ -49,11 +49,6 @@
     
 }
 
-- (void) interrupt
-{
-    
-}
-
 #pragma mark Dynamic Animator
 
 static UIDynamicAnimator *sharedAnimator;

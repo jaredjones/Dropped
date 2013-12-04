@@ -13,6 +13,7 @@
 
 @property (readonly) UIViewController *start, *destination;
 @property (readonly, strong) void (^completion)();
+@property CGFloat startingVelocity;
 
 + (void)setReferenceView:(UIView *)reference;
 + (UIDynamicAnimator *)sharedDynamicAnimator;
@@ -20,6 +21,5 @@
 + (DRPTransition *)transitionWithStart:(UIViewController *)start destination:(UIViewController *)destination direction:(DRPPageDirection)direction completion:(void (^)())completion;
 
 - (void)execute;
-- (void)interrupt;
 
 @end

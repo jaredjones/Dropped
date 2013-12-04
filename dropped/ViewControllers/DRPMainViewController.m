@@ -61,16 +61,29 @@
     }
     
     [self loadNewPagesAroundCurrentPageID:pageID userInfo:userInfo];
-    [self configurePageViewsAnimated:animated withPreviousPage:prevPage];
+    [self configurePageViewsForAnimationWithPreviousPage:prevPage animated:animated];
+    
     if (animated) {
+        void (^completion)() = ^{
+            [self decommissionOldPagesWithPreviousPage:prevPage];
+            [self repositionPagesAroundCurrentPage];
+            _panGestureRecognizer.enabled = YES;
+        };
+        
         _currentTransition = [DRPTransition transitionWithStart:prevPage
                                                     destination:_currentPage
                                                       direction:animationDirection
-                                                     completion:^{
-            [self decommissionOldPagesWithPreviousPage:prevPage];
-            [self repositionPagesAroundCurrentPage];
-        }];
+                                                     completion:completion];
+        
+        // The "velocity" of the drag is stored so there are no instaneous
+        // velocity jerks in the animation
+        _currentTransition.startingVelocity = [userInfo[@"velocity"] floatValue];
+        
+        // Dragging is disabled during the animation. (reenabled in completion block)
+        _panGestureRecognizer.enabled = NO;
+        
         [_currentTransition execute];
+        
     } else {
         [self decommissionOldPagesWithPreviousPage:prevPage];
     }
@@ -122,7 +135,7 @@
 
 // Reposition the DRPPage UIViews appropriately
 // Slightly different rules if animating to new page
-- (void)configurePageViewsAnimated:(BOOL)animated withPreviousPage:(UIViewController<DRPPage> *)prevPage
+- (void)configurePageViewsForAnimationWithPreviousPage:(UIViewController<DRPPage> *)prevPage animated:(BOOL)animated
 {
     [self.view addSubview:_currentPage.view];
     [self.view addSubview:_upPage.view];
@@ -174,7 +187,7 @@
         if (transitionDirection != DRPPageDirectionNil) {
             [self setCurrentPageID:[_dataSource pageIDInDirection:transitionDirection from:_currentPage.pageID]
                           animated:YES
-                          userInfo:nil];
+                          userInfo:@{@"velocity" : @([gesture velocityInView:self.view].y)}];
         }
     }
 }

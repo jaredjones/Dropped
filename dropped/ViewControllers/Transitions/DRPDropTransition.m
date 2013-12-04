@@ -12,6 +12,7 @@
 
 @property UIGravityBehavior *gravity;
 @property UICollisionBehavior *collision;
+@property UIDynamicItemBehavior *item;
 
 @end
 
@@ -30,12 +31,19 @@
                                                       self.destination.view.frame.size.height)];
     _collision.collisionDelegate = self;
     [[DRPTransition sharedDynamicAnimator] addBehavior:_collision];
+    
+    _item = [[UIDynamicItemBehavior alloc] initWithItems:@[self.start.view, self.destination.view]];
+    CGPoint velocity = CGPointMake(0, self.startingVelocity);
+    [_item addLinearVelocity:velocity forItem:self.start.view];
+    [_item addLinearVelocity:velocity forItem:self.destination.view];
+    [[DRPTransition sharedDynamicAnimator] addBehavior:_item];
 }
 
-- (void)interrupt
+- (void)cleanup
 {
     [[DRPTransition sharedDynamicAnimator] removeBehavior:_gravity];
     [[DRPTransition sharedDynamicAnimator] removeBehavior:_collision];
+    [[DRPTransition sharedDynamicAnimator] removeBehavior:_item];
 }
 
 #pragma mark Collision Behavior Delegate
@@ -49,7 +57,7 @@
     if (self.completion) {
         self.completion();
     }
-    [self interrupt];
+    [self cleanup];
 }
 
 @end

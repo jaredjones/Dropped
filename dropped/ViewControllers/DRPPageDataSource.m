@@ -81,12 +81,15 @@
 
 - (DRPPageID)pageIDInDirection:(DRPPageDirection)direction from:(DRPPageID)pageID
 {
+    if (direction == DRPPageDirectionSame) return pageID;
+    
     NSNumber *page = _neighbors[@(pageID)][direction];
     return (!page || page == (id)[NSNull null]) ? DRPPageNil : [page intValue];
 }
 
 - (DRPPageDirection)directionFromPage:(DRPPageID)start to:(DRPPageID)end
 {
+    if (start == end) return DRPPageDirectionSame;
     return [_directions[@(start)][@(end)] intValue];
 }
 

@@ -21,6 +21,7 @@ typedef NS_ENUM(NSInteger, DRPPageID) {
 typedef NS_ENUM(NSInteger, DRPPageDirection) {
     DRPPageDirectionUp,
     DRPPageDirectionDown,
+    DRPPageDirectionSame,
     DRPPageDirectionNil
 };
 

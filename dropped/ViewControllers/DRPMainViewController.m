@@ -55,14 +55,35 @@
     if (pageID == DRPPageNil) return;
     
     DRPPageDirection animationDirection = [_dataSource directionFromPage:_currentPage.pageID to:pageID];
-    UIViewController<DRPPage> *prevPage = _currentPage;
-    if ([prevPage respondsToSelector:@selector(willMoveFromCurrent)]) {
-        [prevPage willMoveFromCurrent];
+    UIViewController<DRPPage> *prevPage;
+    
+    // Compute and Configure new Pages based on direction
+    if (animationDirection != DRPPageDirectionSame) {
+        // Only load new surrounding Pages when transitioning to a new Page
+        prevPage = _currentPage;
+        if ([prevPage respondsToSelector:@selector(willMoveFromCurrent)]) {
+            [prevPage willMoveFromCurrent];
+        }
+        
+        [self loadNewPagesAroundCurrentPageID:pageID userInfo:userInfo];
+        [self configurePageViewsForAnimationWithPreviousPage:prevPage animated:animated];
+        
+    } else {
+        // If animationDirection is DRPPageDirectionSame, that means the transition
+        // needs to animate back to _currentPage.
+        // Recompute the direction of the transition
+        DRPPageDirection prevPageDirection;
+        if (_currentPage.view.frame.origin.y < 0) {
+            animationDirection = DRPPageDirectionUp;
+            prevPageDirection = DRPPageDirectionDown;
+        } else {
+            animationDirection = DRPPageDirectionDown;
+            prevPageDirection = DRPPageDirectionUp;
+        }
+        prevPage = [_dataSource pageForPageID:[_dataSource pageIDInDirection:prevPageDirection from:_currentPage.pageID]];
     }
     
-    [self loadNewPagesAroundCurrentPageID:pageID userInfo:userInfo];
-    [self configurePageViewsForAnimationWithPreviousPage:prevPage animated:animated];
-    
+    // Transition to new Page
     if (animated) {
         void (^completion)() = ^{
             [self decommissionOldPagesWithPreviousPage:prevPage];
@@ -194,10 +215,10 @@
 
 - (void)repositionPagesDuringDragWithGesture:(DRPMainPanGestureRecognizer *)gesture
 {
-    // Make sure _currentPage is Scrollable
     CGFloat offset = gesture.viewOffset + [gesture translationInView:self.view].y;
     DRPPageDirection direction = offset >= 0 ? DRPPageDirectionUp : DRPPageDirectionDown;
     
+    // Make sure _currentPage is Scrollable
     if ([_dataSource pageIDInDirection:direction from:_currentPage.pageID] != DRPPageNil) {
         // Reposition DRPPage views
         CGRect frame = self.view.frame;
@@ -208,13 +229,17 @@
 }
 
 // Return the direction to transition after a drag
+// Returns DRPPageDirectionSame if a transition is needed to _currentPage
 - (DRPPageDirection)panEndTransitionDirectionWithGesture:(DRPMainPanGestureRecognizer *)gesture
 {
     // It might be better to just look at the positions of the Page views?
     
     if (gesture.viewOffset + [gesture translationInView:self.view].y > 0) {
+        if ([gesture velocityInView:self.view].y < 0) return DRPPageDirectionSame;
         return DRPPageDirectionUp;
+        
     } else if (gesture.viewOffset + [gesture translationInView:self.view].y < 0) {
+        if ([gesture velocityInView:self.view].y > 0) return DRPPageDirectionSame;
         return DRPPageDirectionDown;
     }
     return DRPPageDirectionNil;

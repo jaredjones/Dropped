@@ -61,9 +61,7 @@
     if (animationDirection != DRPPageDirectionSame) {
         // Only load new surrounding Pages when transitioning to a new Page
         prevPage = _currentPage;
-        if ([prevPage respondsToSelector:@selector(willMoveFromCurrent)]) {
-            [prevPage willMoveFromCurrent];
-        }
+        [prevPage willMoveFromCurrent];
         
         [self loadNewPagesAroundCurrentPageID:pageID userInfo:userInfo];
         [self configurePageViewsForAnimationWithPreviousPage:prevPage animated:animated];
@@ -120,13 +118,8 @@
         }
     }
     
-    if ([prevPage respondsToSelector:@selector(didMoveFromCurrent)]) {
-        [prevPage didMoveFromCurrent];
-    }
-    
-    if ([_currentPage respondsToSelector:@selector(didMoveToCurrent)]) {
-        [_currentPage didMoveToCurrent];
-    }
+    [prevPage didMoveFromCurrent];
+    [_currentPage didMoveToCurrent];
 }
 
 // Loads the new surround DRPPages and stores them in memory
@@ -137,9 +130,7 @@
         [_currentPage willMoveToParentViewController:self];
         [self addChildViewController:_currentPage];
     }
-    if ([_currentPage respondsToSelector:@selector(willMoveToCurrentWithUserInfo:)]) {
-        [_currentPage willMoveToCurrentWithUserInfo:userInfo];
-    }
+    [_currentPage willMoveToCurrentWithUserInfo:userInfo];
     
     _upPage = [_dataSource pageForPageID:[_dataSource pageIDInDirection:DRPPageDirectionUp from:pageID]];
     if (_upPage && _upPage.parentViewController != self) {

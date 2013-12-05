@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DRPPage.h"
+#import "DRPPageViewController.h"
 
 @interface DRPTransition : NSObject
 

@@ -7,7 +7,7 @@
 //
 
 #import "DRPMainViewController.h"
-#import "DRPPage.h"
+#import "DRPPageViewController.h"
 #import "DRPPageDataSource.h"
 #import "DRPMainPanGestureRecognizer.h"
 #import "DRPTransition.h"
@@ -15,10 +15,10 @@
 @interface DRPMainViewController ()
 
 @property DRPPageDataSource *dataSource;
-@property UIViewController<DRPPage> *currentPage, *upPage, *downPage;
+@property DRPPageViewController *currentPage, *upPage, *downPage;
 
 @property DRPMainPanGestureRecognizer *panGestureRecognizer;
-@property BOOL panRevealedUpPage, panRevealedDownPage;\
+@property BOOL panRevealedUpPage, panRevealedDownPage;
 
 @property DRPTransition *currentTransition;
 
@@ -55,7 +55,7 @@
     if (pageID == DRPPageNil) return;
     
     DRPPageDirection animationDirection = [_dataSource directionFromPage:_currentPage.pageID to:pageID];
-    UIViewController<DRPPage> *prevPage;
+    DRPPageViewController *prevPage;
     
     // Compute and Configure new Pages based on direction
     if (animationDirection != DRPPageDirectionSame) {
@@ -111,10 +111,10 @@
 }
 
 // Called to clean up DRPPages sitting around that aren't active
-- (void)decommissionOldPagesWithPreviousPage:(id<DRPPage>)prevPage
+- (void)decommissionOldPagesWithPreviousPage:(DRPPageViewController *)prevPage
 {
     for (UIView *view in self.view.subviews) {
-        if (![view conformsToProtocol:@protocol(DRPPage)]) continue;
+        if (![view isKindOfClass:[DRPPageViewController class]]) continue;
         if (!(view == _currentPage.view || view == _upPage.view || view == _downPage.view)) {
             [view removeFromSuperview];
         }
@@ -156,7 +156,7 @@
 
 // Reposition the DRPPage UIViews appropriately
 // Slightly different rules if animating to new page
-- (void)configurePageViewsForAnimationWithPreviousPage:(UIViewController<DRPPage> *)prevPage animated:(BOOL)animated
+- (void)configurePageViewsForAnimationWithPreviousPage:(DRPPageViewController *)prevPage animated:(BOOL)animated
 {
     [self.view addSubview:_currentPage.view];
     [self.view addSubview:_upPage.view];

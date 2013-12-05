@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "DRPPage.h"
+#import "DRPPageViewController.h"
 
 @interface DRPPageDataSource : NSObject
 
-- (UIViewController<DRPPage> *)pageForPageID:(DRPPageID)pageID;
+- (DRPPageViewController *)pageForPageID:(DRPPageID)pageID;
 - (DRPPageID)pageIDInDirection:(DRPPageDirection)direction from:(DRPPageID)pageID;
 - (DRPPageDirection)directionFromPage:(DRPPageID)start to:(DRPPageID)end;
 

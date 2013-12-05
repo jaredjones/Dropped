@@ -15,11 +15,11 @@
 @implementation DRPPageListViewController
 @synthesize pageID=_pageID;
 
-- (instancetype)initWithPageID:(DRPPageID)pageID
+- (instancetype)init
 {
-    self = [super initWithNibName:nil bundle:nil];
+    self = [super initWithPageID:DRPPageList];
     if (self) {
-        _pageID = pageID;
+        
     }
     return self;
 }

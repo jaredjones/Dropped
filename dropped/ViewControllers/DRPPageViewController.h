@@ -1,12 +1,12 @@
 //
-//  DRPPage.h
+//  DRPPageViewController.h
 //  dropped
 //
-//  Created by Brad Zeis on 12/1/13.
+//  Created by Brad Zeis on 12/5/13.
 //  Copyright (c) 2013 Brad Zeis. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 typedef NS_ENUM(NSInteger, DRPPageID) {
     DRPPageSplash,
@@ -25,14 +25,15 @@ typedef NS_ENUM(NSInteger, DRPPageDirection) {
     DRPPageDirectionNil
 };
 
-@protocol DRPPage <NSObject>
+@class DRPMainViewController;
 
-// Must "@synthesize pageID=_pageID" when conforming to DRPPage
-@property (readonly) DRPPageID pageID;
+@interface DRPPageViewController : UIViewController
 
 - (instancetype)initWithPageID:(DRPPageID)pageID;
 
-@optional
+@property (readonly) DRPPageID pageID;
+@property (readonly) DRPMainViewController *mainViewController;
+
 - (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo;
 - (void)didMoveToCurrent;
 

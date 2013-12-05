@@ -8,7 +8,7 @@
 
 #import "DRPPageDataSource.h"
 
-#import "DRPPageListViewController.h"
+#import "DRPPageViewController.h"
 
 @interface DRPPageDataSource ()
 
@@ -48,28 +48,28 @@
     return self;
 }
 
-- (UIViewController<DRPPage> *)pageForPageID:(DRPPageID)pageID
+- (DRPPageViewController *)pageForPageID:(DRPPageID)pageID
 {
     if (_pages[@(pageID)]) {
         return _pages[@(pageID)];
     }
     
-    UIViewController<DRPPage> *viewController;
+    DRPPageViewController *viewController;
     
     if (pageID == DRPPageList) {
-        viewController = [[DRPPageListViewController alloc] initWithPageID:pageID];
+        viewController = [[DRPPageViewController alloc] initWithPageID:pageID];
         viewController.view.backgroundColor = [UIColor lightGrayColor];
         
     } else if (pageID == DRPPageMatchMaker) {
-        viewController = [[DRPPageListViewController alloc] initWithPageID:pageID];
+        viewController = [[DRPPageViewController alloc] initWithPageID:pageID];
         viewController.view.backgroundColor = [UIColor orangeColor];
         
     } else if (pageID == DRPPageMatch) {
-        viewController = [[DRPPageListViewController alloc] initWithPageID:pageID];
+        viewController = [[DRPPageViewController alloc] initWithPageID:pageID];
         viewController.view.backgroundColor = [UIColor yellowColor];
     }
     else if (pageID == DRPPageEtCetera) {
-        viewController = [[DRPPageListViewController alloc] initWithPageID:pageID];
+        viewController = [[DRPPageViewController alloc] initWithPageID:pageID];
         viewController.view.backgroundColor = [UIColor greenColor];
     }
     

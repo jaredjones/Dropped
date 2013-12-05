@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DRPPageViewController.h"
 
 @interface DRPMainViewController : UIViewController
+
+- (void)setCurrentPageID:(DRPPageID)pageID animated:(BOOL)animated userInfo:(NSDictionary *)userInfo;
 
 @end

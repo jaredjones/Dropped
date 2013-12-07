@@ -28,6 +28,8 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = [[DRPMainViewController alloc] initWithNibName:nil bundle:nil];
+    
+    [UIApplication sharedApplication].statusBarHidden = YES;
     [self.window makeKeyAndVisible];
     return YES;
 }

@@ -9,7 +9,6 @@
 #import "DRPMainViewController.h"
 #import "DRPPageViewController.h"
 #import "DRPPageDataSource.h"
-#import "DRPMainPanGestureRecognizer.h"
 #import "DRPTransition.h"
 
 @interface DRPMainViewController ()
@@ -17,7 +16,7 @@
 @property DRPPageDataSource *dataSource;
 @property DRPPageViewController *currentPage, *upPage, *downPage;
 
-@property DRPMainPanGestureRecognizer *panGestureRecognizer;
+@property UIPanGestureRecognizer *panGestureRecognizer;
 @property BOOL panRevealedUpPage, panRevealedDownPage;
 
 @property DRPTransition *currentTransition;
@@ -42,7 +41,7 @@
     [super viewDidLoad];
     [DRPTransition setReferenceView:self.view];
     
-    _panGestureRecognizer = [[DRPMainPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     [self.view addGestureRecognizer:_panGestureRecognizer];
     
     [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
@@ -176,14 +175,9 @@
 
 #pragma mark Touch Events
 
-- (void)handlePanGesture:(DRPMainPanGestureRecognizer *)gesture
+- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
 {
     if (gesture.state == UIGestureRecognizerStateBegan) {
-        
-        // Store the _currentPage offset (from the top of the screen)
-        // Needed to prevent jerks when a pan is started in
-        // the middle of a transition
-        gesture.viewOffset = _currentPage.view.frame.origin.y;
         
         _panRevealedUpPage = NO;
         _panRevealedDownPage = NO;
@@ -204,9 +198,9 @@
     }
 }
 
-- (void)repositionPagesDuringDragWithGesture:(DRPMainPanGestureRecognizer *)gesture
+- (void)repositionPagesDuringDragWithGesture:(UIPanGestureRecognizer *)gesture
 {
-    CGFloat offset = gesture.viewOffset + [gesture translationInView:self.view].y;
+    CGFloat offset = [gesture translationInView:self.view].y;
     DRPPageDirection direction = offset >= 0 ? DRPPageDirectionUp : DRPPageDirectionDown;
     
     // Make sure _currentPage is Scrollable
@@ -221,15 +215,16 @@
 
 // Return the direction to transition after a drag
 // Returns DRPPageDirectionSame if a transition is needed to _currentPage
-- (DRPPageDirection)panEndTransitionDirectionWithGesture:(DRPMainPanGestureRecognizer *)gesture
+- (DRPPageDirection)panEndTransitionDirectionWithGesture:(UIPanGestureRecognizer *)gesture
 {
     // It might be better to just look at the positions of the Page views?
+    CGFloat offset = [gesture translationInView:self.view].y;
     
-    if (gesture.viewOffset + [gesture translationInView:self.view].y > 0) {
+    if (offset > 0) {
         if ([gesture velocityInView:self.view].y < 0) return DRPPageDirectionSame;
         return DRPPageDirectionUp;
         
-    } else if (gesture.viewOffset + [gesture translationInView:self.view].y < 0) {
+    } else if (offset < 0) {
         if ([gesture velocityInView:self.view].y > 0) return DRPPageDirectionSame;
         return DRPPageDirectionDown;
     }

@@ -29,7 +29,6 @@
 		A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5BE1850ED5F0024E7D4 /* DRPPageListViewController.m */; };
 		A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */; };
 		A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9AC495F18539E44006E1D84 /* animation.plist */; };
-		A9B1C06F184CF1E900866029 /* DRPMainPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C06E184CF1E900866029 /* DRPMainPanGestureRecognizer.m */; };
 		A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C07B184CFCC100866029 /* DRPDropTransition.m */; };
 		A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C081184CFCDE00866029 /* DRPTransition.m */; };
 		A9B1C085184D042100866029 /* DRPLiftTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C084184D042100866029 /* DRPLiftTransition.m */; };
@@ -109,8 +108,6 @@
 		A9A9D5BF1850ED5F0024E7D4 /* DRPPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageViewController.h; path = ViewControllers/Pages/DRPPageViewController.h; sourceTree = "<group>"; };
 		A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageViewController.m; path = ViewControllers/Pages/DRPPageViewController.m; sourceTree = "<group>"; };
 		A9AC495F18539E44006E1D84 /* animation.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = animation.plist; path = Swatches/animation.plist; sourceTree = "<group>"; };
-		A9B1C06D184CF1E900866029 /* DRPMainPanGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMainPanGestureRecognizer.h; path = ViewControllers/DRPMainPanGestureRecognizer.h; sourceTree = "<group>"; };
-		A9B1C06E184CF1E900866029 /* DRPMainPanGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMainPanGestureRecognizer.m; path = ViewControllers/DRPMainPanGestureRecognizer.m; sourceTree = "<group>"; };
 		A9B1C07A184CFCC100866029 /* DRPDropTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDropTransition.h; path = ViewControllers/Transitions/DRPDropTransition.h; sourceTree = "<group>"; };
 		A9B1C07B184CFCC100866029 /* DRPDropTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPDropTransition.m; path = ViewControllers/Transitions/DRPDropTransition.m; sourceTree = "<group>"; };
 		A9B1C080184CFCDE00866029 /* DRPTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPTransition.h; path = ViewControllers/Transitions/DRPTransition.h; sourceTree = "<group>"; };
@@ -287,8 +284,6 @@
 				A93E9F28184AAC3B0047575A /* DRPMainViewController.m */,
 				A95C3219184BDD3200ECC3D4 /* DRPPageDataSource.h */,
 				A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */,
-				A9B1C06D184CF1E900866029 /* DRPMainPanGestureRecognizer.h */,
-				A9B1C06E184CF1E900866029 /* DRPMainPanGestureRecognizer.m */,
 			);
 			name = MainViewController;
 			sourceTree = "<group>";
@@ -502,7 +497,6 @@
 				A93E9F29184AAC3B0047575A /* DRPMainViewController.m in Sources */,
 				A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */,
 				A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */,
-				A9B1C06F184CF1E900866029 /* DRPMainPanGestureRecognizer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

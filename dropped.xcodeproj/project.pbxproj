@@ -28,6 +28,7 @@
 		A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A99D97D218490C8300208FA0 /* DRPPlayer.m */; };
 		A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5BE1850ED5F0024E7D4 /* DRPPageListViewController.m */; };
 		A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */; };
+		A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9AC495F18539E44006E1D84 /* animation.plist */; };
 		A9B1C06F184CF1E900866029 /* DRPMainPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C06E184CF1E900866029 /* DRPMainPanGestureRecognizer.m */; };
 		A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C07B184CFCC100866029 /* DRPDropTransition.m */; };
 		A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C081184CFCDE00866029 /* DRPTransition.m */; };
@@ -51,6 +52,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		A9AC496118539E8E006E1D84 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Swatches;
+			dstSubfolderSpec = 7;
+			files = (
+				A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C08CBC1918371B1E00CE678F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -97,6 +108,7 @@
 		A9A9D5BE1850ED5F0024E7D4 /* DRPPageListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageListViewController.m; path = ViewControllers/Pages/DRPPageListViewController.m; sourceTree = "<group>"; };
 		A9A9D5BF1850ED5F0024E7D4 /* DRPPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageViewController.h; path = ViewControllers/Pages/DRPPageViewController.h; sourceTree = "<group>"; };
 		A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageViewController.m; path = ViewControllers/Pages/DRPPageViewController.m; sourceTree = "<group>"; };
+		A9AC495F18539E44006E1D84 /* animation.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = animation.plist; path = Swatches/animation.plist; sourceTree = "<group>"; };
 		A9B1C06D184CF1E900866029 /* DRPMainPanGestureRecognizer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMainPanGestureRecognizer.h; path = ViewControllers/DRPMainPanGestureRecognizer.h; sourceTree = "<group>"; };
 		A9B1C06E184CF1E900866029 /* DRPMainPanGestureRecognizer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMainPanGestureRecognizer.m; path = ViewControllers/DRPMainPanGestureRecognizer.m; sourceTree = "<group>"; };
 		A9B1C07A184CFCC100866029 /* DRPDropTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDropTransition.h; path = ViewControllers/Transitions/DRPDropTransition.h; sourceTree = "<group>"; };
@@ -292,6 +304,24 @@
 			name = Pages;
 			sourceTree = "<group>";
 		};
+		A9AC495D18539E0D006E1D84 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				C08CBC131837168800CE678F /* Dropped.db */,
+				C08CBC141837168800CE678F /* importdatabase.sh */,
+				C08CBC151837168800CE678F /* US.dic */,
+			);
+			name = Database;
+			sourceTree = "<group>";
+		};
+		A9AC495E18539E15006E1D84 /* Swatches */ = {
+			isa = PBXGroup;
+			children = (
+				A9AC495F18539E44006E1D84 /* animation.plist */,
+			);
+			name = Swatches;
+			sourceTree = "<group>";
+		};
 		A9B1C070184CF90000866029 /* Transitions */ = {
 			isa = PBXGroup;
 			children = (
@@ -308,9 +338,8 @@
 		C08CBC121837168800CE678F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C08CBC131837168800CE678F /* Dropped.db */,
-				C08CBC141837168800CE678F /* importdatabase.sh */,
-				C08CBC151837168800CE678F /* US.dic */,
+				A9AC495D18539E0D006E1D84 /* Database */,
+				A9AC495E18539E15006E1D84 /* Swatches */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -328,6 +357,7 @@
 				A91D8F43183702EE00BEC6E8 /* Resources */,
 				8142C07EB6364950BA9598DA /* Copy Pods Resources */,
 				C08CBC1918371B1E00CE678F /* CopyFiles */,
+				A9AC496118539E8E006E1D84 /* CopyFiles */,
 			);
 			buildRules = (
 			);

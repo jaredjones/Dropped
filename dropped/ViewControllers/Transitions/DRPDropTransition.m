@@ -7,6 +7,7 @@
 //
 
 #import "DRPDropTransition.h"
+#import "FRBSwatchist.h"
 
 @interface DRPDropTransition ()
 
@@ -21,7 +22,7 @@
 - (void)execute
 {
     _gravity = [[UIGravityBehavior alloc] initWithItems:@[self.start.view, self.destination.view]];
-    _gravity.magnitude = 3.2;
+    _gravity.magnitude = [FRBSwatchist floatForKey:@"animation.gravity"];
     [[DRPTransition sharedDynamicAnimator] addBehavior:_gravity];
 
     _collision = [[UICollisionBehavior alloc] initWithItems:@[self.destination.view]];

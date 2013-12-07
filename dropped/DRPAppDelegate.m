@@ -8,6 +8,7 @@
 
 #import "DRPAppDelegate.h"
 #import "DRPMainViewController.h"
+#import "FRBSwatchist.h"
 
 #import <GameKit/GameKit.h>
 
@@ -25,6 +26,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [self authenticateLocalPlayer];
+    [self loadSwatches];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = [[DRPMainViewController alloc] initWithNibName:nil bundle:nil];
@@ -59,6 +61,14 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark Swatches
+
+- (void)loadSwatches
+{
+    [FRBSwatchist loadSwatch:[[NSBundle mainBundle] URLForResource:@"animation" withExtension:@"plist" subdirectory:@"Swatches"]
+                     forName:@"animation"];
 }
 
 #pragma mark Game Center

@@ -12,8 +12,7 @@
 
 - (void)execute
 {
-    [UIView animateWithDuration:1 animations:^{
-        
+    [UIView animateWithDuration:.48 delay:0 usingSpringWithDamping:1 initialSpringVelocity:self.startingVelocity / -100 options:0 animations:^{
         CGRect frame = self.start.view.frame;
         frame.origin.y = -frame.size.height;
         self.start.view.frame = frame;

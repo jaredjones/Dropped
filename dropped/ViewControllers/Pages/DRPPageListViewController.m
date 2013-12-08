@@ -13,7 +13,6 @@
 @end
 
 @implementation DRPPageListViewController
-@synthesize pageID=_pageID;
 
 - (instancetype)init
 {

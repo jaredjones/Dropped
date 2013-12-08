@@ -177,16 +177,19 @@
 
 - (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
 {
+    [self handlePanGesture:gesture offset:0];
+}
+
+- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset
+{
     if (gesture.state == UIGestureRecognizerStateBegan) {
-        
-        _panRevealedUpPage = NO;
-        _panRevealedDownPage = NO;
         
     } else if (gesture.state == UIGestureRecognizerStateChanged) {
         
-        [self repositionPagesDuringDragWithGesture:gesture];
+        [self repositionPagesDuringDragWithGesture:gesture offset:offset];
         
-    } else if (gesture.state == UIGestureRecognizerStateEnded) {
+    } else if (gesture.state == UIGestureRecognizerStateEnded ||
+               gesture.state == UIGestureRecognizerStateCancelled) {
         
         // Pan ended, animate transition if necessary
         DRPPageDirection transitionDirection = [self panEndTransitionDirectionWithGesture:gesture];
@@ -195,19 +198,22 @@
                           animated:YES
                           userInfo:@{@"velocity" : @([gesture velocityInView:self.view].y)}];
         }
+        
+        _panRevealedUpPage = NO;
+        _panRevealedDownPage = NO;
     }
 }
 
-- (void)repositionPagesDuringDragWithGesture:(UIPanGestureRecognizer *)gesture
+- (void)repositionPagesDuringDragWithGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset
 {
-    CGFloat offset = [gesture translationInView:self.view].y;
-    DRPPageDirection direction = offset >= 0 ? DRPPageDirectionUp : DRPPageDirectionDown;
+    CGFloat translation = [gesture translationInView:self.view].y + offset;
+    DRPPageDirection direction = translation >= 0 ? DRPPageDirectionUp : DRPPageDirectionDown;
     
     // Make sure _currentPage is Scrollable
     if ([_dataSource pageIDInDirection:direction from:_currentPage.pageID] != DRPPageNil) {
         // Reposition DRPPage views
         CGRect frame = self.view.frame;
-        frame.origin.y += offset;
+        frame.origin.y += translation;
         _currentPage.view.frame = frame;
     }
     [self repositionPagesAroundCurrentPage];

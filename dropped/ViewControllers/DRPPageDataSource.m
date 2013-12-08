@@ -58,9 +58,8 @@
     DRPPageViewController *viewController;
     
     if (pageID == DRPPageList) {
-//        viewController = [[DRPPageViewController alloc] initWithPageID:pageID];
         viewController = [[DRPPageListViewController alloc] init];
-        viewController.view.backgroundColor = [UIColor lightGrayColor];
+        viewController.view.backgroundColor = [UIColor whiteColor];
         
     } else if (pageID == DRPPageMatchMaker) {
         viewController = [[DRPPageViewController alloc] initWithPageID:pageID];

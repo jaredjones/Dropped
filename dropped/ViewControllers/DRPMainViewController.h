@@ -12,5 +12,6 @@
 @interface DRPMainViewController : UIViewController
 
 - (void)setCurrentPageID:(DRPPageID)pageID animated:(BOOL)animated userInfo:(NSDictionary *)userInfo;
+- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset;
 
 @end

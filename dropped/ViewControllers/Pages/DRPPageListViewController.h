@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "DRPPageViewController.h"
 
-@interface DRPPageListViewController : DRPPageViewController
+@interface DRPPageListViewController : DRPPageViewController <UIScrollViewDelegate>
 
 @end

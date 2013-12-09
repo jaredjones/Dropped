@@ -192,7 +192,7 @@
                gesture.state == UIGestureRecognizerStateCancelled) {
         
         // Pan ended, animate transition if necessary
-        DRPPageDirection transitionDirection = [self panEndTransitionDirectionWithGesture:gesture];
+        DRPPageDirection transitionDirection = [self panEndTransitionDirectionWithGesture:gesture offset:offset];
         if (transitionDirection != DRPPageDirectionNil) {
             [self setCurrentPageID:[_dataSource pageIDInDirection:transitionDirection from:_currentPage.pageID]
                           animated:YES
@@ -221,10 +221,10 @@
 
 // Return the direction to transition after a drag
 // Returns DRPPageDirectionSame if a transition is needed to _currentPage
-- (DRPPageDirection)panEndTransitionDirectionWithGesture:(UIPanGestureRecognizer *)gesture
+- (DRPPageDirection)panEndTransitionDirectionWithGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset
 {
     // It might be better to just look at the positions of the Page views?
-    CGFloat offset = [gesture translationInView:self.view].y;
+    offset = [gesture translationInView:self.view].y + offset;
     
     if (offset > 0) {
         if ([gesture velocityInView:self.view].y < 0) return DRPPageDirectionSame;

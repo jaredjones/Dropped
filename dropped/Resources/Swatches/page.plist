@@ -20,6 +20,8 @@
 	</dict>
 	<key>cueOffset</key>
 	<integer>20</integer>
+	<key>cueVisibleThreshold</key>
+	<integer>65</integer>
 	<key>cueAnimationDuration</key>
 	<integer>1</integer>
 	<key>cueAnimationDamping</key>

@@ -8,8 +8,12 @@
 
 #import "DRPPageListViewController.h"
 #import "DRPMainViewController.h"
+#import "FRBSwatchist.h"
 
 @interface DRPPageListViewController ()
+
+@property BOOL topCueVisible, bottomCueVisible;
+@property UIScrollView *scrollView;
 
 @end
 
@@ -28,18 +32,44 @@
 {
     [super viewDidLoad];
     
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-    scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 1000);
-    scrollView.delegate = self;
-    [self.view addSubview:scrollView];
+    _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    _scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 1000);
+    _scrollView.delegate = self;
+    [self.view addSubview:_scrollView];
 }
 
 #pragma mark DRPPageViewController
 
 - (void)didMoveToCurrent
 {
-    [self.mainViewController setCue:@"Pull for New Game" inPosition:DRPPageDirectionUp];
-    [self.mainViewController setCue:@"Et Cetera" inPosition:DRPPageDirectionDown];
+    [self resetCues];
+}
+
+- (void)resetCues
+{
+    if (_scrollView.contentOffset.y < [FRBSwatchist floatForKey:@"page.cueVisibleThreshold"]) {
+        if (!_topCueVisible) {
+            [self.mainViewController setCue:@"Pull for New Game" inPosition:DRPPageDirectionUp];
+            _topCueVisible = YES;
+        }
+    } else {
+        if (_topCueVisible) {
+            [self.mainViewController setCue:nil inPosition:DRPPageDirectionUp];
+            _topCueVisible = NO;
+        }
+    }
+    
+    if (_scrollView.contentSize.height - (_scrollView.contentOffset.y + _scrollView.frame.size.height) < [FRBSwatchist floatForKey:@"page.cueVisibleThreshold"]) {
+        if (!_bottomCueVisible) {
+            [self.mainViewController setCue:@"Et Cetera" inPosition:DRPPageDirectionDown];
+            _bottomCueVisible = YES;
+        }
+    } else {
+        if (_bottomCueVisible) {
+            [self.mainViewController setCue:nil inPosition:DRPPageDirectionDown];
+            _bottomCueVisible = NO;
+        }
+    }
 }
 
 #pragma mark ScrollViewDelegate
@@ -59,6 +89,7 @@
         CGFloat offset = -[scrollView.panGestureRecognizer translationInView:self.view].y;
         [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
     }
+    [self resetCues];
 }
 
 // Returns the offset to pass to handlePanGesture:offset:

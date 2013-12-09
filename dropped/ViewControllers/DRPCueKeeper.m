@@ -40,17 +40,19 @@
     if ([[self cueForPosition:position].text isEqualToString:cueText]) return;
     
     [self cycleOutCueInPosition:position];
+    UILabel *cue;
     if (cueText) {
         UIFont *font = [FRBSwatchist fontForKey:@"page.cueFont"];
         CGSize size = [cueText sizeWithAttributes:@{NSFontAttributeName : font}];
-        UILabel *cue = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
+        cue = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
         cue.text = cueText;
         cue.font = font;
         [_view addSubview:cue];
         
-        [self setCue:cue forPosition:position];
         [self animateCue:cue inForPosition:position];
     }
+    
+    [self setCue:cue forPosition:position];
 }
 
 - (void)cycleOutCueInPosition:(DRPPageDirection)position

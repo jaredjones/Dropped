@@ -252,11 +252,7 @@
 
 - (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position
 {
-    if (cue) {
-        [_cueKeeper cycleInCue:cue inPosition:position];
-    } else {
-        [_cueKeeper cycleOutCueInPosition:position];
-    }
+    [_cueKeeper cycleInCue:cue inPosition:position];
 }
 
 @end

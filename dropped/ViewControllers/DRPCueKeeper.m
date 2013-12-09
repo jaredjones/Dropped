@@ -37,7 +37,9 @@
 - (void)cycleInCue:(NSString *)cueText inPosition:(DRPPageDirection)position
 {
     if (!(position == DRPPageDirectionUp || position == DRPPageDirectionDown)) return;
+    if ([[self cueForPosition:position].text isEqualToString:cueText]) return;
     
+    [self cycleOutCueInPosition:position];
     UILabel *cue;
     if (cueText) {
         CGSize size = [cueText sizeWithAttributes:@{NSFontAttributeName : [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"]}];
@@ -46,10 +48,9 @@
         cue.font = [FRBSwatchist fontForKey:@"page.cueFont"];
         [_view addSubview:cue];
         
+        [self setCue:cue forPosition:position];
         [self animateCue:cue inForPosition:position];
     }
-    
-    [self setCue:cue forPosition:position];
 }
 
 - (void)cycleOutCueInPosition:(DRPPageDirection)position
@@ -80,7 +81,12 @@
           initialSpringVelocity:0
                         options:0
                      animations:^{ cue.center = [self preCenterForPosition:position]; }
-                     completion:^(BOOL finished) { [cue removeFromSuperview]; }];
+                     completion:^(BOOL finished) {
+                         [cue removeFromSuperview];
+                         if ([self cueForPosition:position] == cue) {
+                             [self setCue:nil forPosition:position];
+                         }
+                     }];
 }
 
 - (CGPoint)preCenterForPosition:(DRPPageDirection)position

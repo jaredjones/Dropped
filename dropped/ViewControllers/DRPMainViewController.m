@@ -259,10 +259,7 @@
 
 - (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position
 {
-    [_cueKeeper cycleOutCueInPosition:position];
-    if (cue) {
-        [_cueKeeper cycleInCue:cue inPosition:position];
-    }
+    [_cueKeeper cycleInCue:cue inPosition:position];
 }
 
 - (void)emphasizeCuesWithGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset

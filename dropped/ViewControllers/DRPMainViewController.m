@@ -11,6 +11,8 @@
 #import "DRPPageDataSource.h"
 #import "DRPTransition.h"
 
+#import "FRBSwatchist.h"
+
 @interface DRPMainViewController ()
 
 @property DRPPageDataSource *dataSource;
@@ -197,6 +199,8 @@
             [self setCurrentPageID:[_dataSource pageIDInDirection:transitionDirection from:_currentPage.pageID]
                           animated:YES
                           userInfo:@{@"velocity" : @([gesture velocityInView:self.view].y)}];
+        } else {
+            [self setCurrentPageID:_currentPage.pageID animated:YES userInfo:nil];
         }
         
         _panRevealedUpPage = NO;
@@ -225,12 +229,13 @@
 {
     // It might be better to just look at the positions of the Page views?
     offset = [gesture translationInView:self.view].y + offset;
+    CGFloat threshold = [FRBSwatchist floatForKey:@"page.transitionThreshold"];
     
-    if (offset > 0) {
+    if (offset > threshold) {
         if ([gesture velocityInView:self.view].y < 0) return DRPPageDirectionSame;
         return DRPPageDirectionUp;
         
-    } else if (offset < 0) {
+    } else if (offset < -threshold) {
         if ([gesture velocityInView:self.view].y > 0) return DRPPageDirectionSame;
         return DRPPageDirectionDown;
     }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A91C045818557C03002B6899 /* page.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A91C045618557B6A002B6899 /* page.plist */; };
 		A91D8F49183702EE00BEC6E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F48183702EE00BEC6E8 /* Foundation.framework */; };
 		A91D8F4B183702EE00BEC6E8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4A183702EE00BEC6E8 /* CoreGraphics.framework */; };
 		A91D8F4D183702EE00BEC6E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4C183702EE00BEC6E8 /* UIKit.framework */; };
@@ -58,6 +59,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */,
+				A91C045818557C03002B6899 /* page.plist in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +76,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A91C045618557B6A002B6899 /* page.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = page.plist; path = Swatches/page.plist; sourceTree = "<group>"; };
 		A91D8F45183702EE00BEC6E8 /* dropped.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dropped.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A91D8F48183702EE00BEC6E8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A91D8F4A183702EE00BEC6E8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -313,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				A9AC495F18539E44006E1D84 /* animation.plist */,
+				A91C045618557B6A002B6899 /* page.plist */,
 			);
 			name = Swatches;
 			sourceTree = "<group>";

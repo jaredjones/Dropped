@@ -69,6 +69,8 @@
 {
     [FRBSwatchist loadSwatch:[[NSBundle mainBundle] URLForResource:@"animation" withExtension:@"plist" subdirectory:@"Swatches"]
                      forName:@"animation"];
+    [FRBSwatchist loadSwatch:[[NSBundle mainBundle] URLForResource:@"page" withExtension:@"plist" subdirectory:@"Swatches"]
+                     forName:@"page"];
 }
 
 #pragma mark Game Center

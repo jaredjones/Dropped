@@ -12,7 +12,7 @@
 
 @interface DRPPageListViewController ()
 
-@property BOOL topCueVisible, bottomCueVisible;
+@property BOOL topCueVisible, bottomCueVisible, topCueVisibleOnDragStart, bottomCueVisibleOnDragStart;
 @property UIScrollView *scrollView;
 
 @end
@@ -80,6 +80,12 @@
 
 #pragma mark ScrollViewDelegate
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    _topCueVisibleOnDragStart = _topCueVisible;
+    _bottomCueVisibleOnDragStart = _bottomCueVisible;
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (self.mainViewController.currentPageID != self.pageID) return;
@@ -87,7 +93,10 @@
     // Let DRPMainViewController know about scrolling
     CGFloat offset = [self scrollViewPanOffset:scrollView];
     if (offset != 0) {
-        [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
+        if ((scrollView.contentOffset.y < 0 && _topCueVisibleOnDragStart) ||
+            (scrollView.contentOffset.y > 0 && _bottomCueVisibleOnDragStart)) {
+            [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
+        }
     } else if (self.view.frame.origin.y != 0) {
         // Centers the currentPage
         // Without this, you can "catch" a bit of the surrounding pages when dragging
@@ -117,7 +126,11 @@
     CGFloat offset = [self scrollViewPanOffset:scrollView];
     if (offset != 0) {
         // Only handle the gesture at the "edges" of the content
-        [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
+        // and only when the drag was started with the appropriate cue visible
+        if ((scrollView.contentOffset.y < 0 && _topCueVisibleOnDragStart) ||
+            (scrollView.contentOffset.y > 0 && _bottomCueVisibleOnDragStart)) {
+            [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
+        }
     }
 }
 

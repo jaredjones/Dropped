@@ -44,6 +44,7 @@
 {
     [super viewDidLoad];
     [DRPTransition setReferenceView:self.view];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     [self.view addGestureRecognizer:_panGestureRecognizer];
@@ -94,16 +95,14 @@
     
     // Transition to new Page
     if (animated) {
-        void (^completion)() = ^{
-            [self decommissionOldPagesWithPreviousPage:prevPage];
-            [self repositionPagesAroundCurrentPage];
-            _panGestureRecognizer.enabled = YES;
-        };
-        
         _currentTransition = [DRPTransition transitionWithStart:prevPage
                                                     destination:_currentPage
                                                       direction:animationDirection
-                                                     completion:completion];
+                                                     completion:^{
+                                                         [self decommissionOldPagesWithPreviousPage:prevPage];
+                                                         [self repositionPagesAroundCurrentPage];
+                                                         _panGestureRecognizer.enabled = YES;
+                                                     }];
         
         // The "velocity" of the drag is stored so there are no instaneous
         // velocity jerks in the animation
@@ -119,29 +118,20 @@
     }
 }
 
-// Called to clean up DRPPages sitting around that aren't active
-- (void)decommissionOldPagesWithPreviousPage:(DRPPageViewController *)prevPage
-{
-    for (UIView *view in self.view.subviews) {
-        if (![view isKindOfClass:[DRPPageViewController class]]) continue;
-        if (!(view == _currentPage.view || view == _upPage.view || view == _downPage.view)) {
-            [view removeFromSuperview];
-        }
-    }
-    
-    [prevPage didMoveFromCurrent];
-    [_currentPage didMoveToCurrent];
-}
-
 // Loads the new surround DRPPages and stores them in memory
 - (void)loadNewPagesAroundCurrentPageID:(DRPPageID)pageID userInfo:(NSDictionary *)userInfo
 {
+    DRPPageDirection direction = [_dataSource directionFromPage:_currentPage.pageID to:pageID];
+    
     _currentPage = [_dataSource pageForPageID:pageID];
     if (_currentPage.parentViewController != self) {
         [_currentPage willMoveToParentViewController:self];
         [self addChildViewController:_currentPage];
     }
-    [_currentPage willMoveToCurrentWithUserInfo:userInfo];
+    if ((direction == DRPPageDirectionUp && !_panRevealedUpPage) ||
+        (direction == DRPPageDirectionDown && !_panRevealedDownPage)) {
+        [_currentPage willMoveToCurrentWithUserInfo:userInfo];
+    }
     
     _upPage = [_dataSource pageForPageID:[_dataSource pageIDInDirection:DRPPageDirectionUp from:pageID]];
     if (_upPage && _upPage.parentViewController != self) {
@@ -186,6 +176,20 @@
     _downPage.view.frame = frame;
 }
 
+// Called to clean up DRPPages sitting around that aren't active
+- (void)decommissionOldPagesWithPreviousPage:(DRPPageViewController *)prevPage
+{
+    for (UIView *view in self.view.subviews) {
+        if (![view isKindOfClass:[DRPPageViewController class]]) continue;
+        if (!(view == _currentPage.view || view == _upPage.view || view == _downPage.view)) {
+            [view removeFromSuperview];
+        }
+    }
+    
+    [prevPage didMoveFromCurrent];
+    [_currentPage didMoveToCurrent];
+}
+
 #pragma mark Touch Events
 
 - (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
@@ -201,6 +205,16 @@
         
         [self repositionPagesDuringDragWithGesture:gesture offset:offset];
         [self emphasizeCuesWithGesture:gesture offset:offset];
+        
+        // Call willMoveToCurrent...: when the DRPPage is revealed by the drag
+        if (!_panRevealedUpPage && _currentPage.view.frame.origin.y > 0) {
+            _panRevealedUpPage = YES;
+            [_upPage willMoveToCurrentWithUserInfo:nil];
+            
+        } else if (!_panRevealedDownPage && _currentPage.view.frame.origin.y < 0) {
+            _panRevealedDownPage = YES;
+            [_downPage willMoveToCurrentWithUserInfo:nil];
+        }
         
     } else if (gesture.state == UIGestureRecognizerStateEnded ||
                gesture.state == UIGestureRecognizerStateCancelled) {

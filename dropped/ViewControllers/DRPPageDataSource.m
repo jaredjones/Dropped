@@ -10,6 +10,7 @@
 
 #import "DRPPageViewController.h"
 #import "DRPPageListViewController.h"
+#import "DRPPageMatchmakerViewController.h"
 
 @interface DRPPageDataSource ()
 
@@ -59,11 +60,9 @@
     
     if (pageID == DRPPageList) {
         viewController = [[DRPPageListViewController alloc] init];
-        viewController.view.backgroundColor = [UIColor whiteColor];
         
     } else if (pageID == DRPPageMatchMaker) {
-        viewController = [[DRPPageViewController alloc] initWithPageID:pageID];
-        viewController.view.backgroundColor = [UIColor orangeColor];
+        viewController = [[DRPPageMatchmakerViewController alloc] init];
         
     } else if (pageID == DRPPageMatch) {
         viewController = [[DRPPageViewController alloc] initWithPageID:pageID];

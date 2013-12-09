@@ -40,11 +40,10 @@
     
     UILabel *cue;
     if (cueText) {
-        UIFont *font = [FRBSwatchist fontForKey:@"page.cueFont"];
-        CGSize size = [cueText sizeWithAttributes:@{NSFontAttributeName : font}];
+        CGSize size = [cueText sizeWithAttributes:@{NSFontAttributeName : [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"]}];
         cue = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
         cue.text = cueText;
-        cue.font = font;
+        cue.font = [FRBSwatchist fontForKey:@"page.cueFont"];
         [_view addSubview:cue];
         
         [self animateCue:cue inForPosition:position];

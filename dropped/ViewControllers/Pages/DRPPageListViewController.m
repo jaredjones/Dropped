@@ -78,8 +78,6 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (!scrollView.dragging) return;
-    
     // Let DRPMainViewController know about scrolling
     CGFloat offset = [self scrollViewPanOffset:scrollView];
     if (offset != 0) {

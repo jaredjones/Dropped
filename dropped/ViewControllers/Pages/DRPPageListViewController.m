@@ -42,9 +42,13 @@
 
 - (void)didMoveToCurrent
 {
+    [self resetCues];
+}
+
+- (void)didMoveFromCurrent
+{
     _topCueVisible = NO;
     _bottomCueVisible = NO;
-    [self resetCues];
 }
 
 - (void)resetCues

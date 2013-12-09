@@ -37,7 +37,6 @@
 - (void)cycleInCue:(NSString *)cueText inPosition:(DRPPageDirection)position
 {
     if (!(position == DRPPageDirectionUp || position == DRPPageDirectionDown)) return;
-    if ([[self cueForPosition:position].text isEqualToString:cueText]) return;
     
     [self cycleOutCueInPosition:position];
     UILabel *cue;
@@ -79,7 +78,7 @@
                           delay:0
          usingSpringWithDamping:[FRBSwatchist floatForKey:@"page.cueAnimationDamping"]
           initialSpringVelocity:0
-                        options:0
+                        options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{ cue.center = [self preCenterForPosition:position]; }
                      completion:^(BOOL finished) {
                          [cue removeFromSuperview];

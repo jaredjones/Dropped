@@ -19,11 +19,19 @@
 		A91D8F64183702EE00BEC6E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4C183702EE00BEC6E8 /* UIKit.framework */; };
 		A920405218370467006940B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A920405118370467006940B8 /* Security.framework */; };
 		A920405C18370BA0006940B8 /* DRPPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = A920405B18370BA0006940B8 /* DRPPosition.m */; };
+		A93E9F29184AAC3B0047575A /* DRPMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93E9F28184AAC3B0047575A /* DRPMainViewController.m */; };
 		A95A2C821847C3AB001AF846 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A95A2C811847C3AB001AF846 /* GameKit.framework */; };
 		A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */; };
 		A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48F18372DA800B7A9A8 /* DRPBoard.m */; };
 		A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB49318372DA800B7A9A8 /* DRPCharacter.m */; };
+		A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */; };
 		A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A99D97D218490C8300208FA0 /* DRPPlayer.m */; };
+		A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5BE1850ED5F0024E7D4 /* DRPPageListViewController.m */; };
+		A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */; };
+		A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9AC495F18539E44006E1D84 /* animation.plist */; };
+		A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C07B184CFCC100866029 /* DRPDropTransition.m */; };
+		A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C081184CFCDE00866029 /* DRPTransition.m */; };
+		A9B1C085184D042100866029 /* DRPLiftTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C084184D042100866029 /* DRPLiftTransition.m */; };
 		A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */; };
 		A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */; };
 		C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C024DF7818370AC300B5775B /* DRPDictionary.m */; };
@@ -43,6 +51,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		A9AC496118539E8E006E1D84 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = Swatches;
+			dstSubfolderSpec = 7;
+			files = (
+				A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C08CBC1918371B1E00CE678F /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -72,6 +90,8 @@
 		A920405118370467006940B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A920405A18370BA0006940B8 /* DRPPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPosition.h; path = Models/DRPPosition.h; sourceTree = "<group>"; };
 		A920405B18370BA0006940B8 /* DRPPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPosition.m; path = Models/DRPPosition.m; sourceTree = "<group>"; };
+		A93E9F27184AAC3B0047575A /* DRPMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMainViewController.h; path = ViewControllers/DRPMainViewController.h; sourceTree = "<group>"; };
+		A93E9F28184AAC3B0047575A /* DRPMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMainViewController.m; path = ViewControllers/DRPMainViewController.m; sourceTree = "<group>"; };
 		A95A2C811847C3AB001AF846 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A95BB48B18372D9C00B7A9A8 /* DRPMatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMatch.h; path = Models/DRPMatch.h; sourceTree = "<group>"; };
 		A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMatch.m; path = Models/DRPMatch.m; sourceTree = "<group>"; };
@@ -79,8 +99,21 @@
 		A95BB48F18372DA800B7A9A8 /* DRPBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPBoard.m; path = Models/DRPBoard.m; sourceTree = "<group>"; };
 		A95BB49218372DA800B7A9A8 /* DRPCharacter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCharacter.h; path = Models/DRPCharacter.h; sourceTree = "<group>"; };
 		A95BB49318372DA800B7A9A8 /* DRPCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCharacter.m; path = Models/DRPCharacter.m; sourceTree = "<group>"; };
+		A95C3219184BDD3200ECC3D4 /* DRPPageDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageDataSource.h; path = ViewControllers/DRPPageDataSource.h; sourceTree = "<group>"; };
+		A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageDataSource.m; path = ViewControllers/DRPPageDataSource.m; sourceTree = "<group>"; };
 		A99D97D118490C8300208FA0 /* DRPPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayer.h; path = Models/DRPPlayer.h; sourceTree = "<group>"; };
 		A99D97D218490C8300208FA0 /* DRPPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPlayer.m; path = Models/DRPPlayer.m; sourceTree = "<group>"; };
+		A9A9D5BD1850ED5F0024E7D4 /* DRPPageListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageListViewController.h; path = ViewControllers/Pages/DRPPageListViewController.h; sourceTree = "<group>"; };
+		A9A9D5BE1850ED5F0024E7D4 /* DRPPageListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageListViewController.m; path = ViewControllers/Pages/DRPPageListViewController.m; sourceTree = "<group>"; };
+		A9A9D5BF1850ED5F0024E7D4 /* DRPPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageViewController.h; path = ViewControllers/Pages/DRPPageViewController.h; sourceTree = "<group>"; };
+		A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageViewController.m; path = ViewControllers/Pages/DRPPageViewController.m; sourceTree = "<group>"; };
+		A9AC495F18539E44006E1D84 /* animation.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = animation.plist; path = Swatches/animation.plist; sourceTree = "<group>"; };
+		A9B1C07A184CFCC100866029 /* DRPDropTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDropTransition.h; path = ViewControllers/Transitions/DRPDropTransition.h; sourceTree = "<group>"; };
+		A9B1C07B184CFCC100866029 /* DRPDropTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPDropTransition.m; path = ViewControllers/Transitions/DRPDropTransition.m; sourceTree = "<group>"; };
+		A9B1C080184CFCDE00866029 /* DRPTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPTransition.h; path = ViewControllers/Transitions/DRPTransition.h; sourceTree = "<group>"; };
+		A9B1C081184CFCDE00866029 /* DRPTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPTransition.m; path = ViewControllers/Transitions/DRPTransition.m; sourceTree = "<group>"; };
+		A9B1C083184D042100866029 /* DRPLiftTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPLiftTransition.h; path = ViewControllers/Transitions/DRPLiftTransition.h; sourceTree = "<group>"; };
+		A9B1C084184D042100866029 /* DRPLiftTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPLiftTransition.m; path = ViewControllers/Transitions/DRPLiftTransition.m; sourceTree = "<group>"; };
 		A9C7BBB018395DFD003F585F /* DRPCharacterHistogram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCharacterHistogram.h; path = Models/DRPCharacterHistogram.h; sourceTree = "<group>"; };
 		A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCharacterHistogram.m; path = Models/DRPCharacterHistogram.m; sourceTree = "<group>"; };
 		A9D127B51837E0B40048AF25 /* DRPPlayedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayedWord.h; path = Models/DRPPlayedWord.h; sourceTree = "<group>"; };
@@ -191,6 +224,9 @@
 		A9204054183704B7006940B8 /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				A980FD14184BB56A00A7800F /* MainViewController */,
+				A9B1C070184CF90000866029 /* Transitions */,
+				A980FD15184BB8F700A7800F /* Pages */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -241,12 +277,64 @@
 			name = Match;
 			sourceTree = "<group>";
 		};
-		C08CBC121837168800CE678F /* Resources */ = {
+		A980FD14184BB56A00A7800F /* MainViewController */ = {
+			isa = PBXGroup;
+			children = (
+				A93E9F27184AAC3B0047575A /* DRPMainViewController.h */,
+				A93E9F28184AAC3B0047575A /* DRPMainViewController.m */,
+				A95C3219184BDD3200ECC3D4 /* DRPPageDataSource.h */,
+				A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */,
+			);
+			name = MainViewController;
+			sourceTree = "<group>";
+		};
+		A980FD15184BB8F700A7800F /* Pages */ = {
+			isa = PBXGroup;
+			children = (
+				A9A9D5BF1850ED5F0024E7D4 /* DRPPageViewController.h */,
+				A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */,
+				A9A9D5BD1850ED5F0024E7D4 /* DRPPageListViewController.h */,
+				A9A9D5BE1850ED5F0024E7D4 /* DRPPageListViewController.m */,
+			);
+			name = Pages;
+			sourceTree = "<group>";
+		};
+		A9AC495D18539E0D006E1D84 /* Database */ = {
 			isa = PBXGroup;
 			children = (
 				C08CBC131837168800CE678F /* Dropped.db */,
 				C08CBC141837168800CE678F /* importdatabase.sh */,
 				C08CBC151837168800CE678F /* US.dic */,
+			);
+			name = Database;
+			sourceTree = "<group>";
+		};
+		A9AC495E18539E15006E1D84 /* Swatches */ = {
+			isa = PBXGroup;
+			children = (
+				A9AC495F18539E44006E1D84 /* animation.plist */,
+			);
+			name = Swatches;
+			sourceTree = "<group>";
+		};
+		A9B1C070184CF90000866029 /* Transitions */ = {
+			isa = PBXGroup;
+			children = (
+				A9B1C080184CFCDE00866029 /* DRPTransition.h */,
+				A9B1C081184CFCDE00866029 /* DRPTransition.m */,
+				A9B1C07A184CFCC100866029 /* DRPDropTransition.h */,
+				A9B1C07B184CFCC100866029 /* DRPDropTransition.m */,
+				A9B1C083184D042100866029 /* DRPLiftTransition.h */,
+				A9B1C084184D042100866029 /* DRPLiftTransition.m */,
+			);
+			name = Transitions;
+			sourceTree = "<group>";
+		};
+		C08CBC121837168800CE678F /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A9AC495D18539E0D006E1D84 /* Database */,
+				A9AC495E18539E15006E1D84 /* Swatches */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -264,6 +352,7 @@
 				A91D8F43183702EE00BEC6E8 /* Resources */,
 				8142C07EB6364950BA9598DA /* Copy Pods Resources */,
 				C08CBC1918371B1E00CE678F /* CopyFiles */,
+				A9AC496118539E8E006E1D84 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -391,15 +480,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */,
 				A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */,
 				A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */,
 				A91D8F55183702EE00BEC6E8 /* main.m in Sources */,
 				A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */,
 				A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */,
+				A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */,
 				A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */,
 				C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */,
 				A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */,
+				A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */,
+				A9B1C085184D042100866029 /* DRPLiftTransition.m in Sources */,
+				A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */,
 				A920405C18370BA0006940B8 /* DRPPosition.m in Sources */,
+				A93E9F29184AAC3B0047575A /* DRPMainViewController.m in Sources */,
+				A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */,
 				A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

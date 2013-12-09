@@ -13,22 +13,25 @@
 
 @interface DRPDictionary()
 
-@property (strong, nonatomic) NSString *databasePath;
-@property (strong, nonatomic) FMDatabase *database;
+@property (strong, atomic) NSString *databasePath;
+@property (strong, atomic) FMDatabase *database;
 
 @end
 
 @implementation DRPDictionary
 
-static DRPDictionary *sharedDictionary = NULL;
-
 + (DRPDictionary *)sharedDictionary
 {
-    if (!sharedDictionary){
-        sharedDictionary = [[DRPDictionary alloc] initWithDatabase:@"Dropped"
-                                                     withExtension:@"db"
-                                                     withDirectory:@"Database"];
-    }
+    static DRPDictionary *sharedDictionary = nil;
+    static dispatch_once_t pred;
+    
+    dispatch_once(&pred, ^{
+        sharedDictionary = [DRPDictionary alloc];
+        sharedDictionary = [sharedDictionary initWithDatabase:@"Dropped"
+                                                withExtension:@"db"
+                                                withDirectory:@"Database"];
+    });
+    
     return sharedDictionary;
 }
 

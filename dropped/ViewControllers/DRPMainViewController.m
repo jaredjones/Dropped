@@ -170,6 +170,10 @@
             CGRect frame = prevPage.view.frame;
             frame.origin.y -= _currentPage.view.frame.size.height;
             _currentPage.view.frame = frame;
+        } else if (direction == DRPPageDirectionDown) {
+            CGRect frame = prevPage.view.frame;
+            frame.origin.y += prevPage.view.frame.size.height;
+            _currentPage.view.frame = frame;
         }
         
         [self repositionPagesAroundCurrentPage];

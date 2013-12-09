@@ -82,6 +82,8 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    if (self.mainViewController.currentPageID != self.pageID) return;
+    
     // Let DRPMainViewController know about scrolling
     CGFloat offset = [self scrollViewPanOffset:scrollView];
     if (offset != 0) {
@@ -93,6 +95,7 @@
         CGFloat offset = -[scrollView.panGestureRecognizer translationInView:self.view].y;
         [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
     }
+    
     [self resetCues];
 }
 

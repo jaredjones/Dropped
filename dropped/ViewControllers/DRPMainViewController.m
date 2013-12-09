@@ -56,6 +56,11 @@
 
 #pragma mark Child View Controllers
 
+- (DRPPageID)currentPageID
+{
+    return _currentPage.pageID;
+}
+
 - (void)setCurrentPageID:(DRPPageID)pageID animated:(BOOL)animated userInfo:(NSDictionary *)userInfo
 {
     if (pageID == DRPPageNil) return;

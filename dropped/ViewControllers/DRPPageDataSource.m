@@ -11,6 +11,8 @@
 #import "DRPPageViewController.h"
 #import "DRPPageListViewController.h"
 #import "DRPPageMatchmakerViewController.h"
+#import "DRPPageSplashViewController.h"
+#import "DRPPageLogInViewController.h"
 
 @interface DRPPageDataSource ()
 
@@ -58,7 +60,13 @@
     
     DRPPageViewController *viewController;
     
-    if (pageID == DRPPageList) {
+    if (pageID == DRPPageSplash) {
+        viewController = [[DRPPageSplashViewController alloc] init];
+        
+    } else if (pageID == DRPPageLogIn) {
+        viewController = [[DRPPageLogInViewController alloc] init];
+        
+    } else if (pageID == DRPPageList) {
         viewController = [[DRPPageListViewController alloc] init];
         
     } else if (pageID == DRPPageMatchMaker) {

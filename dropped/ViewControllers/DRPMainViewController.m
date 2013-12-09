@@ -51,7 +51,7 @@
     _cueKeeper = [[DRPCueKeeper alloc] init];
     _cueKeeper.view = self.view;
     
-    [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
+    [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
 }
 
 #pragma mark Child View Controllers
@@ -66,6 +66,9 @@
     if (pageID == DRPPageNil) return;
     
     DRPPageDirection animationDirection = [_dataSource directionFromPage:_currentPage.pageID to:pageID];
+    if (!_currentPage) {
+        animationDirection = DRPPageDirectionNil;
+    }
     DRPPageViewController *prevPage;
     
     // Compute and Configure new Pages based on direction
@@ -101,6 +104,8 @@
                                                          [self decommissionOldPagesWithPreviousPage:prevPage];
                                                          [self repositionPagesAroundCurrentPage];
                                                          _panGestureRecognizer.enabled = YES;
+                                                         _upPage.view.hidden = NO;
+                                                         _downPage.view.hidden = NO;
                                                      }];
         
         // The "velocity" of the drag is stored so there are no instaneous
@@ -156,6 +161,18 @@
         // to make sure the correct views are visible
         [self.view bringSubviewToFront:_currentPage.view];
         [self.view bringSubviewToFront:prevPage.view];
+        _upPage.view.hidden = YES;
+        _downPage.view.hidden = YES;
+        prevPage.view.hidden = NO;
+        
+        DRPPageDirection direction = [_dataSource directionFromPage:prevPage.pageID to:_currentPage.pageID];
+        if (direction == DRPPageDirectionUp) {
+            CGRect frame = prevPage.view.frame;
+            frame.origin.y -= _currentPage.view.frame.size.height;
+            _currentPage.view.frame = frame;
+        }
+        
+        [self repositionPagesAroundCurrentPage];
     }
     [_cueKeeper bringToFront];
 }

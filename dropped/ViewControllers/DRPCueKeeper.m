@@ -39,7 +39,6 @@
     if (!(position == DRPPageDirectionUp || position == DRPPageDirectionDown)) return;
     if ([[self cueForPosition:position].text isEqualToString:cueText]) return;
     
-    [self cycleOutCueInPosition:position];
     UILabel *cue;
     if (cueText) {
         UIFont *font = [FRBSwatchist fontForKey:@"page.cueFont"];
@@ -71,7 +70,7 @@
           initialSpringVelocity:0
                         options:0
                      animations:^{ cue.center = [self preCenterForPosition:position]; }
-                     completion:nil];
+                     completion:^(BOOL finished) { [cue removeFromSuperview]; }];
 }
 
 - (void)animateCue:(UILabel *)cue inForPosition:(DRPPageDirection)position

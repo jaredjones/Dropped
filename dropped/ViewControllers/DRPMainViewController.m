@@ -203,6 +203,12 @@
         // Pan ended, animate transition if necessary
         DRPPageDirection transitionDirection = [self panEndTransitionDirectionWithGesture:gesture offset:offset];
         if (transitionDirection != DRPPageDirectionNil) {
+            
+            if (transitionDirection != DRPPageDirectionSame) {
+                [self setCue:nil inPosition:DRPPageDirectionUp];
+                [self setCue:nil inPosition:DRPPageDirectionDown];
+            }
+            
             [self setCurrentPageID:[_dataSource pageIDInDirection:transitionDirection from:_currentPage.pageID]
                           animated:YES
                           userInfo:@{@"velocity" : @([gesture velocityInView:self.view].y)}];
@@ -253,7 +259,10 @@
 
 - (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position
 {
-    [_cueKeeper cycleInCue:cue inPosition:position];
+    [_cueKeeper cycleOutCueInPosition:position];
+    if (cue) {
+        [_cueKeeper cycleInCue:cue inPosition:position];
+    }
 }
 
 - (void)emphasizeCuesWithGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset

@@ -42,6 +42,8 @@
 
 - (void)didMoveToCurrent
 {
+    _topCueVisible = NO;
+    _bottomCueVisible = NO;
     [self resetCues];
 }
 

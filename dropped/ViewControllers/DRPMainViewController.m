@@ -10,7 +10,7 @@
 #import "DRPPageViewController.h"
 #import "DRPPageDataSource.h"
 #import "DRPTransition.h"
-#import "DRPCueView.h"
+#import "DRPCueKeeper.h"
 
 #import "FRBSwatchist.h"
 
@@ -18,7 +18,7 @@
 
 @property DRPPageDataSource *dataSource;
 @property DRPPageViewController *currentPage, *upPage, *downPage;
-@property DRPCueView *cueView;
+@property DRPCueKeeper *cueKeeper;
 
 @property UIPanGestureRecognizer *panGestureRecognizer;
 @property BOOL panRevealedUpPage, panRevealedDownPage;
@@ -50,8 +50,8 @@
     
     [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
     
-    _cueView = [[DRPCueView alloc] initWithFrame:self.view.frame];
-    [self.view addSubview:_cueView];
+    _cueKeeper = [[DRPCueKeeper alloc] init];
+    _cueKeeper.view = self.view;
 }
 
 #pragma mark Child View Controllers
@@ -168,8 +168,7 @@
         [self.view bringSubviewToFront:_currentPage.view];
         [self.view bringSubviewToFront:prevPage.view];
     }
-    
-    [self.view bringSubviewToFront:_cueView];
+    [_cueKeeper bringToFront];
 }
 
 - (void)repositionPagesAroundCurrentPage
@@ -254,9 +253,9 @@
 - (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position
 {
     if (cue) {
-        [_cueView cycleInCue:cue inPosition:position];
+        [_cueKeeper cycleInCue:cue inPosition:position];
     } else {
-        [_cueView cycleOutCueInPosition:position];
+        [_cueKeeper cycleOutCueInPosition:position];
     }
 }
 

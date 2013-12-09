@@ -1,28 +1,20 @@
 //
-//  DRPCueView.m
+//  DRPCueKeeper.m
 //  dropped
 //
 //  Created by Brad Zeis on 12/8/13.
 //  Copyright (c) 2013 Brad Zeis. All rights reserved.
 //
 
-#import "DRPCueView.h"
+#import "DRPCueKeeper.h"
 
-@interface DRPCueView ()
+@interface DRPCueKeeper ()
 
 @property UILabel *topCue, *bottomCue;
 
 @end
 
-@implementation DRPCueView
-
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-    }
-    return self;
-}
+@implementation DRPCueKeeper
 
 #pragma mark Cycling
 
@@ -46,6 +38,14 @@
 - (void)deemphasizeCueInPosition:(DRPPageDirection)position
 {
     
+}
+
+#pragma mark Superview
+
+- (void)bringToFront
+{
+    [_view bringSubviewToFront:_topCue];
+    [_view bringSubviewToFront:_bottomCue];
 }
 
 @end

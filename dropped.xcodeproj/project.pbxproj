@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A91C045818557C03002B6899 /* page.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A91C045618557B6A002B6899 /* page.plist */; };
-		A91C045B18557E9D002B6899 /* DRPCueView.m in Sources */ = {isa = PBXBuildFile; fileRef = A91C045A18557E9D002B6899 /* DRPCueView.m */; };
+		A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = A91C045E185582DC002B6899 /* DRPCueKeeper.m */; };
 		A91D8F49183702EE00BEC6E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F48183702EE00BEC6E8 /* Foundation.framework */; };
 		A91D8F4B183702EE00BEC6E8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4A183702EE00BEC6E8 /* CoreGraphics.framework */; };
 		A91D8F4D183702EE00BEC6E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4C183702EE00BEC6E8 /* UIKit.framework */; };
@@ -78,8 +78,8 @@
 
 /* Begin PBXFileReference section */
 		A91C045618557B6A002B6899 /* page.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = page.plist; path = Swatches/page.plist; sourceTree = "<group>"; };
-		A91C045918557E9D002B6899 /* DRPCueView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCueView.h; path = Views/DRPCueView.h; sourceTree = "<group>"; };
-		A91C045A18557E9D002B6899 /* DRPCueView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCueView.m; path = Views/DRPCueView.m; sourceTree = "<group>"; };
+		A91C045D185582DC002B6899 /* DRPCueKeeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCueKeeper.h; path = ViewControllers/DRPCueKeeper.h; sourceTree = "<group>"; };
+		A91C045E185582DC002B6899 /* DRPCueKeeper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCueKeeper.m; path = ViewControllers/DRPCueKeeper.m; sourceTree = "<group>"; };
 		A91D8F45183702EE00BEC6E8 /* dropped.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dropped.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A91D8F48183702EE00BEC6E8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A91D8F4A183702EE00BEC6E8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -160,15 +160,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A91C045C18557EA9002B6899 /* MainViewController */ = {
-			isa = PBXGroup;
-			children = (
-				A91C045918557E9D002B6899 /* DRPCueView.h */,
-				A91C045A18557E9D002B6899 /* DRPCueView.m */,
-			);
-			name = MainViewController;
-			sourceTree = "<group>";
-		};
 		A91D8F3C183702EE00BEC6E8 = {
 			isa = PBXGroup;
 			children = (
@@ -249,7 +240,6 @@
 		A9204055183704C1006940B8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A91C045C18557EA9002B6899 /* MainViewController */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -300,6 +290,8 @@
 				A93E9F28184AAC3B0047575A /* DRPMainViewController.m */,
 				A95C3219184BDD3200ECC3D4 /* DRPPageDataSource.h */,
 				A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */,
+				A91C045D185582DC002B6899 /* DRPCueKeeper.h */,
+				A91C045E185582DC002B6899 /* DRPCueKeeper.m */,
 			);
 			name = MainViewController;
 			sourceTree = "<group>";
@@ -499,6 +491,7 @@
 			files = (
 				A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */,
 				A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */,
+				A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */,
 				A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */,
 				A91D8F55183702EE00BEC6E8 /* main.m in Sources */,
 				A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */,
@@ -512,7 +505,6 @@
 				A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */,
 				A920405C18370BA0006940B8 /* DRPPosition.m in Sources */,
 				A93E9F29184AAC3B0047575A /* DRPMainViewController.m in Sources */,
-				A91C045B18557E9D002B6899 /* DRPCueView.m in Sources */,
 				A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */,
 				A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */,
 			);

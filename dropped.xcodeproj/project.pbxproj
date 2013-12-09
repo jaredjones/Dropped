@@ -28,6 +28,8 @@
 		A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB49318372DA800B7A9A8 /* DRPCharacter.m */; };
 		A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */; };
 		A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A99D97D218490C8300208FA0 /* DRPPlayer.m */; };
+		A9A485D1185627B00080A4B5 /* Centrale Sans Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9A485CF185627B00080A4B5 /* Centrale Sans Light.otf */; };
+		A9A485D2185627B00080A4B5 /* Centrale Sans Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9A485D0185627B00080A4B5 /* Centrale Sans Medium.otf */; };
 		A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5BE1850ED5F0024E7D4 /* DRPPageListViewController.m */; };
 		A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */; };
 		A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9AC495F18539E44006E1D84 /* animation.plist */; };
@@ -109,6 +111,8 @@
 		A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageDataSource.m; path = ViewControllers/DRPPageDataSource.m; sourceTree = "<group>"; };
 		A99D97D118490C8300208FA0 /* DRPPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayer.h; path = Models/DRPPlayer.h; sourceTree = "<group>"; };
 		A99D97D218490C8300208FA0 /* DRPPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPlayer.m; path = Models/DRPPlayer.m; sourceTree = "<group>"; };
+		A9A485CF185627B00080A4B5 /* Centrale Sans Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Centrale Sans Light.otf"; path = "Fonts/Centrale Sans Light.otf"; sourceTree = "<group>"; };
+		A9A485D0185627B00080A4B5 /* Centrale Sans Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Centrale Sans Medium.otf"; path = "Fonts/Centrale Sans Medium.otf"; sourceTree = "<group>"; };
 		A9A9D5BD1850ED5F0024E7D4 /* DRPPageListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageListViewController.h; path = ViewControllers/Pages/DRPPageListViewController.h; sourceTree = "<group>"; };
 		A9A9D5BE1850ED5F0024E7D4 /* DRPPageListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageListViewController.m; path = ViewControllers/Pages/DRPPageListViewController.m; sourceTree = "<group>"; };
 		A9A9D5BF1850ED5F0024E7D4 /* DRPPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageViewController.h; path = ViewControllers/Pages/DRPPageViewController.h; sourceTree = "<group>"; };
@@ -307,6 +311,15 @@
 			name = Pages;
 			sourceTree = "<group>";
 		};
+		A9A485CE1856279C0080A4B5 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				A9A485CF185627B00080A4B5 /* Centrale Sans Light.otf */,
+				A9A485D0185627B00080A4B5 /* Centrale Sans Medium.otf */,
+			);
+			name = Fonts;
+			sourceTree = "<group>";
+		};
 		A9AC495D18539E0D006E1D84 /* Database */ = {
 			isa = PBXGroup;
 			children = (
@@ -343,6 +356,7 @@
 			isa = PBXGroup;
 			children = (
 				A9AC495D18539E0D006E1D84 /* Database */,
+				A9A485CE1856279C0080A4B5 /* Fonts */,
 				A9AC495E18539E15006E1D84 /* Swatches */,
 			);
 			path = Resources;
@@ -437,6 +451,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A91D8F53183702EE00BEC6E8 /* InfoPlist.strings in Resources */,
+				A9A485D1185627B00080A4B5 /* Centrale Sans Light.otf in Resources */,
+				A9A485D2185627B00080A4B5 /* Centrale Sans Medium.otf in Resources */,
 				C08CBC171837168800CE678F /* importdatabase.sh in Resources */,
 				A91D8F5B183702EE00BEC6E8 /* Images.xcassets in Resources */,
 			);

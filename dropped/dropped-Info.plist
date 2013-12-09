@@ -46,5 +46,10 @@
 	<true/>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Centrale Sans Light.otf</string>
+		<string>Central Sans Medium.otf</string>
+	</array>
 </dict>
 </plist>

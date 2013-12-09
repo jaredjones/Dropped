@@ -37,7 +37,6 @@
 - (void)cycleInCue:(NSString *)cueText inPosition:(DRPPageDirection)position
 {
     if (!(position == DRPPageDirectionUp || position == DRPPageDirectionDown)) return;
-    if ([[self cueForPosition:position].text isEqualToString:cueText]) return;
     
     UILabel *cue;
     if (cueText) {
@@ -62,17 +61,6 @@
     }
 }
 
-- (void)animateCue:(UILabel *)cue outForPosition:(DRPPageDirection)position
-{
-    [UIView animateWithDuration:[FRBSwatchist floatForKey:@"page.cueAnimationDuration"]
-                          delay:0
-         usingSpringWithDamping:[FRBSwatchist floatForKey:@"page.cueAnimationDamping"]
-          initialSpringVelocity:0
-                        options:0
-                     animations:^{ cue.center = [self preCenterForPosition:position]; }
-                     completion:^(BOOL finished) { [cue removeFromSuperview]; }];
-}
-
 - (void)animateCue:(UILabel *)cue inForPosition:(DRPPageDirection)position
 {
     cue.center = [self preCenterForPosition:position];
@@ -83,6 +71,17 @@
                         options:0
                      animations:^{ cue.center = [self postCenterForPosition:position]; }
                      completion:nil];
+}
+
+- (void)animateCue:(UILabel *)cue outForPosition:(DRPPageDirection)position
+{
+    [UIView animateWithDuration:[FRBSwatchist floatForKey:@"page.cueAnimationDuration"]
+                          delay:0
+         usingSpringWithDamping:[FRBSwatchist floatForKey:@"page.cueAnimationDamping"]
+          initialSpringVelocity:0
+                        options:0
+                     animations:^{ cue.center = [self preCenterForPosition:position]; }
+                     completion:^(BOOL finished) { [cue removeFromSuperview]; }];
 }
 
 - (CGPoint)preCenterForPosition:(DRPPageDirection)position

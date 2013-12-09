@@ -10,6 +10,7 @@
 #import "DRPPageViewController.h"
 #import "DRPPageDataSource.h"
 #import "DRPTransition.h"
+#import "DRPCueView.h"
 
 #import "FRBSwatchist.h"
 
@@ -17,6 +18,7 @@
 
 @property DRPPageDataSource *dataSource;
 @property DRPPageViewController *currentPage, *upPage, *downPage;
+@property DRPCueView *cueView;
 
 @property UIPanGestureRecognizer *panGestureRecognizer;
 @property BOOL panRevealedUpPage, panRevealedDownPage;
@@ -47,6 +49,9 @@
     [self.view addGestureRecognizer:_panGestureRecognizer];
     
     [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
+    
+    _cueView = [[DRPCueView alloc] initWithFrame:self.view.frame];
+    [self.view addSubview:_cueView];
 }
 
 #pragma mark Child View Controllers
@@ -163,6 +168,8 @@
         [self.view bringSubviewToFront:_currentPage.view];
         [self.view bringSubviewToFront:prevPage.view];
     }
+    
+    [self.view bringSubviewToFront:_cueView];
 }
 
 - (void)repositionPagesAroundCurrentPage

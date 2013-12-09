@@ -34,6 +34,14 @@
     [self.view addSubview:scrollView];
 }
 
+#pragma mark DRPPageViewController
+
+- (void)didMoveToCurrent
+{
+    [self.mainViewController setCue:@"Pull for New Game" inPosition:DRPPageDirectionUp];
+    [self.mainViewController setCue:@"Et Cetera" inPosition:DRPPageDirectionDown];
+}
+
 #pragma mark ScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView

@@ -13,7 +13,7 @@
 
 @property UIView *view;
 
-- (void)cycleInCue:(NSString *)cue inPosition:(DRPPageDirection)position;
+- (void)cycleInCue:(NSString *)cueText inPosition:(DRPPageDirection)position;
 - (void)cycleOutCueInPosition:(DRPPageDirection)position;
 
 - (void)emphasizeCueInPosition:(DRPPageDirection)position;

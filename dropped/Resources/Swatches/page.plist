@@ -4,5 +4,25 @@
 <dict>
 	<key>transitionThreshold</key>
 	<integer>35</integer>
+	<key>cueFont</key>
+	<dict>
+		<key>name</key>
+		<string>Centrale Sans Light</string>
+		<key>size</key>
+		<integer>14</integer>
+	</dict>
+	<key>cueEmphasizedFont</key>
+	<dict>
+		<key>name</key>
+		<string>Centrale Sans Medium</string>
+		<key>size</key>
+		<integer>14</integer>
+	</dict>
+	<key>cueOffset</key>
+	<integer>20</integer>
+	<key>cueAnimationDuration</key>
+	<integer>1</integer>
+	<key>cueAnimationDamping</key>
+	<real>0.8</real>
 </dict>
 </plist>

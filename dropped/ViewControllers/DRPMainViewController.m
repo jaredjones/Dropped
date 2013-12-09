@@ -48,10 +48,10 @@
     _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     [self.view addGestureRecognizer:_panGestureRecognizer];
     
-    [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
-    
     _cueKeeper = [[DRPCueKeeper alloc] init];
     _cueKeeper.view = self.view;
+    
+    [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
 }
 
 #pragma mark Child View Controllers

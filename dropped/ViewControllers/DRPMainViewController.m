@@ -249,4 +249,15 @@
     return DRPPageDirectionNil;
 }
 
+#pragma mark Cues
+
+- (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position
+{
+    if (cue) {
+        [_cueView cycleInCue:cue inPosition:position];
+    } else {
+        [_cueView cycleOutCueInPosition:position];
+    }
+}
+
 @end

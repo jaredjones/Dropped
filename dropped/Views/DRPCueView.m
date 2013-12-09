@@ -26,12 +26,24 @@
 
 #pragma mark Cycling
 
-- (void)cycleInCue:(NSString *)cue inPosition:(DRPPageDirection)direction
+- (void)cycleInCue:(NSString *)cue inPosition:(DRPPageDirection)position
 {
     
 }
 
-- (void)cycleOutCueInPosition:(DRPPageDirection)direction
+- (void)cycleOutCueInPosition:(DRPPageDirection)position
+{
+    
+}
+
+#pragma mark Styling
+
+- (void)emphasizeCueInPosition:(DRPPageDirection)position
+{
+    
+}
+
+- (void)deemphasizeCueInPosition:(DRPPageDirection)position
 {
     
 }

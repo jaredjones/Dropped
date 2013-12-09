@@ -12,7 +12,10 @@
 
 @interface DRPCueView : UIView
 
-- (void)cycleInCue:(NSString *)cue inPosition:(DRPPageDirection)direction;
-- (void)cycleOutCueInPosition:(DRPPageDirection)direction;
+- (void)cycleInCue:(NSString *)cue inPosition:(DRPPageDirection)position;
+- (void)cycleOutCueInPosition:(DRPPageDirection)position;
+
+- (void)emphasizeCueInPosition:(DRPPageDirection)position;
+- (void)deemphasizeCueInPosition:(DRPPageDirection)position;
 
 @end

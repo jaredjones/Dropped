@@ -21,7 +21,6 @@
 @property DRPCueKeeper *cueKeeper;
 
 @property UIPanGestureRecognizer *panGestureRecognizer;
-@property BOOL panRevealedUpPage, panRevealedDownPage;
 
 @property DRPTransition *currentTransition;
 
@@ -121,17 +120,12 @@
 // Loads the new surround DRPPages and stores them in memory
 - (void)loadNewPagesAroundCurrentPageID:(DRPPageID)pageID userInfo:(NSDictionary *)userInfo
 {
-    DRPPageDirection direction = [_dataSource directionFromPage:_currentPage.pageID to:pageID];
-    
     _currentPage = [_dataSource pageForPageID:pageID];
     if (_currentPage.parentViewController != self) {
         [_currentPage willMoveToParentViewController:self];
         [self addChildViewController:_currentPage];
     }
-    if ((direction == DRPPageDirectionUp && !_panRevealedUpPage) ||
-        (direction == DRPPageDirectionDown && !_panRevealedDownPage)) {
-        [_currentPage willMoveToCurrentWithUserInfo:userInfo];
-    }
+    [_currentPage willMoveToCurrentWithUserInfo:userInfo];
     
     _upPage = [_dataSource pageForPageID:[_dataSource pageIDInDirection:DRPPageDirectionUp from:pageID]];
     if (_upPage && _upPage.parentViewController != self) {
@@ -206,16 +200,6 @@
         [self repositionPagesDuringDragWithGesture:gesture offset:offset];
         [self emphasizeCuesWithGesture:gesture offset:offset];
         
-        // Call willMoveToCurrent...: when the DRPPage is revealed by the drag
-        if (!_panRevealedUpPage && _currentPage.view.frame.origin.y > 0) {
-            _panRevealedUpPage = YES;
-            [_upPage willMoveToCurrentWithUserInfo:nil];
-            
-        } else if (!_panRevealedDownPage && _currentPage.view.frame.origin.y < 0) {
-            _panRevealedDownPage = YES;
-            [_downPage willMoveToCurrentWithUserInfo:nil];
-        }
-        
     } else if (gesture.state == UIGestureRecognizerStateEnded ||
                gesture.state == UIGestureRecognizerStateCancelled) {
         
@@ -234,9 +218,6 @@
         } else {
             [self setCurrentPageID:_currentPage.pageID animated:YES userInfo:nil];
         }
-        
-        _panRevealedUpPage = NO;
-        _panRevealedDownPage = NO;
     }
 }
 

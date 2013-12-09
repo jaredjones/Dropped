@@ -106,12 +106,12 @@
 
 - (void)emphasizeCueInPosition:(DRPPageDirection)position
 {
-    
+    [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"];
 }
 
 - (void)deemphasizeCueInPosition:(DRPPageDirection)position
 {
-    
+    [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueFont"];
 }
 
 #pragma mark Superview

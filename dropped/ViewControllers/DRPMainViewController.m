@@ -195,6 +195,7 @@
     } else if (gesture.state == UIGestureRecognizerStateChanged) {
         
         [self repositionPagesDuringDragWithGesture:gesture offset:offset];
+        [self emphasizeCuesWithGesture:gesture offset:offset];
         
     } else if (gesture.state == UIGestureRecognizerStateEnded ||
                gesture.state == UIGestureRecognizerStateCancelled) {
@@ -253,6 +254,18 @@
 - (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position
 {
     [_cueKeeper cycleInCue:cue inPosition:position];
+}
+
+- (void)emphasizeCuesWithGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset
+{
+    DRPPageDirection transitionDirection = [self panEndTransitionDirectionWithGesture:gesture offset:offset];
+    if (transitionDirection == DRPPageDirectionUp || transitionDirection == DRPPageDirectionDown) {
+        [_cueKeeper emphasizeCueInPosition:transitionDirection];
+        [_cueKeeper deemphasizeCueInPosition:!transitionDirection];
+    } else {
+        [_cueKeeper deemphasizeCueInPosition:DRPPageDirectionUp];
+        [_cueKeeper deemphasizeCueInPosition:DRPPageDirectionDown];
+    }
 }
 
 @end

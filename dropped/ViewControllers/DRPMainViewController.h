@@ -11,7 +11,10 @@
 
 @interface DRPMainViewController : UIViewController
 
+- (DRPPageID)currentPageID;
 - (void)setCurrentPageID:(DRPPageID)pageID animated:(BOOL)animated userInfo:(NSDictionary *)userInfo;
 - (void)handlePanGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset;
+
+- (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position;
 
 @end

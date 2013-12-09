@@ -10,11 +10,15 @@
 #import "DRPPageViewController.h"
 #import "DRPPageDataSource.h"
 #import "DRPTransition.h"
+#import "DRPCueKeeper.h"
+
+#import "FRBSwatchist.h"
 
 @interface DRPMainViewController ()
 
 @property DRPPageDataSource *dataSource;
 @property DRPPageViewController *currentPage, *upPage, *downPage;
+@property DRPCueKeeper *cueKeeper;
 
 @property UIPanGestureRecognizer *panGestureRecognizer;
 @property BOOL panRevealedUpPage, panRevealedDownPage;
@@ -44,10 +48,18 @@
     _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     [self.view addGestureRecognizer:_panGestureRecognizer];
     
+    _cueKeeper = [[DRPCueKeeper alloc] init];
+    _cueKeeper.view = self.view;
+    
     [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
 }
 
 #pragma mark Child View Controllers
+
+- (DRPPageID)currentPageID
+{
+    return _currentPage.pageID;
+}
 
 - (void)setCurrentPageID:(DRPPageID)pageID animated:(BOOL)animated userInfo:(NSDictionary *)userInfo
 {
@@ -161,6 +173,7 @@
         [self.view bringSubviewToFront:_currentPage.view];
         [self.view bringSubviewToFront:prevPage.view];
     }
+    [_cueKeeper bringToFront];
 }
 
 - (void)repositionPagesAroundCurrentPage
@@ -187,6 +200,7 @@
     } else if (gesture.state == UIGestureRecognizerStateChanged) {
         
         [self repositionPagesDuringDragWithGesture:gesture offset:offset];
+        [self emphasizeCuesWithGesture:gesture offset:offset];
         
     } else if (gesture.state == UIGestureRecognizerStateEnded ||
                gesture.state == UIGestureRecognizerStateCancelled) {
@@ -194,9 +208,17 @@
         // Pan ended, animate transition if necessary
         DRPPageDirection transitionDirection = [self panEndTransitionDirectionWithGesture:gesture offset:offset];
         if (transitionDirection != DRPPageDirectionNil) {
+            
+            if (transitionDirection != DRPPageDirectionSame) {
+                [self setCue:nil inPosition:DRPPageDirectionUp];
+                [self setCue:nil inPosition:DRPPageDirectionDown];
+            }
+            
             [self setCurrentPageID:[_dataSource pageIDInDirection:transitionDirection from:_currentPage.pageID]
                           animated:YES
                           userInfo:@{@"velocity" : @([gesture velocityInView:self.view].y)}];
+        } else {
+            [self setCurrentPageID:_currentPage.pageID animated:YES userInfo:nil];
         }
         
         _panRevealedUpPage = NO;
@@ -225,16 +247,36 @@
 {
     // It might be better to just look at the positions of the Page views?
     offset = [gesture translationInView:self.view].y + offset;
+    CGFloat threshold = [FRBSwatchist floatForKey:@"page.transitionThreshold"];
     
-    if (offset > 0) {
+    if (offset > threshold) {
         if ([gesture velocityInView:self.view].y < 0) return DRPPageDirectionSame;
         return DRPPageDirectionUp;
         
-    } else if (offset < 0) {
+    } else if (offset < -threshold) {
         if ([gesture velocityInView:self.view].y > 0) return DRPPageDirectionSame;
         return DRPPageDirectionDown;
     }
     return DRPPageDirectionNil;
+}
+
+#pragma mark Cues
+
+- (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position
+{
+    [_cueKeeper cycleInCue:cue inPosition:position];
+}
+
+- (void)emphasizeCuesWithGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset
+{
+    DRPPageDirection transitionDirection = [self panEndTransitionDirectionWithGesture:gesture offset:offset];
+    if (transitionDirection == DRPPageDirectionUp || transitionDirection == DRPPageDirectionDown) {
+        [_cueKeeper emphasizeCueInPosition:transitionDirection];
+        [_cueKeeper deemphasizeCueInPosition:!transitionDirection];
+    } else {
+        [_cueKeeper deemphasizeCueInPosition:DRPPageDirectionUp];
+        [_cueKeeper deemphasizeCueInPosition:DRPPageDirectionDown];
+    }
 }
 
 @end

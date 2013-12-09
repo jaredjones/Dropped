@@ -8,8 +8,12 @@
 
 #import "DRPPageListViewController.h"
 #import "DRPMainViewController.h"
+#import "FRBSwatchist.h"
 
 @interface DRPPageListViewController ()
+
+@property BOOL topCueVisible, bottomCueVisible, topCueVisibleOnDragStart, bottomCueVisibleOnDragStart;
+@property UIScrollView *scrollView;
 
 @end
 
@@ -28,22 +32,71 @@
 {
     [super viewDidLoad];
     
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-    scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 1000);
-    scrollView.delegate = self;
-    [self.view addSubview:scrollView];
+    _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    _scrollView.contentSize = CGSizeMake(self.view.frame.size.width, 1000);
+    _scrollView.delegate = self;
+    [self.view addSubview:_scrollView];
+}
+
+#pragma mark DRPPageViewController
+
+- (void)didMoveToCurrent
+{
+    [self resetCues];
+}
+
+- (void)didMoveFromCurrent
+{
+    _topCueVisible = NO;
+    _bottomCueVisible = NO;
+}
+
+- (void)resetCues
+{
+    if (_scrollView.contentOffset.y < [FRBSwatchist floatForKey:@"page.cueVisibleThreshold"]) {
+        if (!_topCueVisible) {
+            [self.mainViewController setCue:@"Pull for New Game" inPosition:DRPPageDirectionUp];
+            _topCueVisible = YES;
+        }
+    } else {
+        if (_topCueVisible) {
+            [self.mainViewController setCue:nil inPosition:DRPPageDirectionUp];
+            _topCueVisible = NO;
+        }
+    }
+    
+    if (_scrollView.contentSize.height - (_scrollView.contentOffset.y + _scrollView.frame.size.height) < [FRBSwatchist floatForKey:@"page.cueVisibleThreshold"]) {
+        if (!_bottomCueVisible) {
+            [self.mainViewController setCue:@"Et Cetera" inPosition:DRPPageDirectionDown];
+            _bottomCueVisible = YES;
+        }
+    } else {
+        if (_bottomCueVisible) {
+            [self.mainViewController setCue:nil inPosition:DRPPageDirectionDown];
+            _bottomCueVisible = NO;
+        }
+    }
 }
 
 #pragma mark ScrollViewDelegate
 
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    _topCueVisibleOnDragStart = _topCueVisible;
+    _bottomCueVisibleOnDragStart = _bottomCueVisible;
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (!scrollView.dragging) return;
+    if (self.mainViewController.currentPageID != self.pageID) return;
     
     // Let DRPMainViewController know about scrolling
     CGFloat offset = [self scrollViewPanOffset:scrollView];
     if (offset != 0) {
-        [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
+        if ((scrollView.contentOffset.y < 0 && _topCueVisibleOnDragStart) ||
+            (scrollView.contentOffset.y > 0 && _bottomCueVisibleOnDragStart)) {
+            [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
+        }
     } else if (self.view.frame.origin.y != 0) {
         // Centers the currentPage
         // Without this, you can "catch" a bit of the surrounding pages when dragging
@@ -51,6 +104,8 @@
         CGFloat offset = -[scrollView.panGestureRecognizer translationInView:self.view].y;
         [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
     }
+    
+    [self resetCues];
 }
 
 // Returns the offset to pass to handlePanGesture:offset:
@@ -71,7 +126,11 @@
     CGFloat offset = [self scrollViewPanOffset:scrollView];
     if (offset != 0) {
         // Only handle the gesture at the "edges" of the content
-        [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
+        // and only when the drag was started with the appropriate cue visible
+        if ((scrollView.contentOffset.y < 0 && _topCueVisibleOnDragStart) ||
+            (scrollView.contentOffset.y > 0 && _bottomCueVisibleOnDragStart)) {
+            [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
+        }
     }
 }
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>transitionThreshold</key>
+	<integer>35</integer>
+	<key>cueFont</key>
+	<dict>
+		<key>name</key>
+		<string>Centrale Sans Light</string>
+		<key>size</key>
+		<integer>14</integer>
+	</dict>
+	<key>cueEmphasizedFont</key>
+	<dict>
+		<key>name</key>
+		<string>Centrale Sans Medium</string>
+		<key>size</key>
+		<integer>14</integer>
+	</dict>
+	<key>cueOffset</key>
+	<integer>20</integer>
+	<key>cueVisibleThreshold</key>
+	<integer>65</integer>
+	<key>cueAnimationDuration</key>
+	<integer>1</integer>
+	<key>cueAnimationDamping</key>
+	<real>0.8</real>
+</dict>
+</plist>

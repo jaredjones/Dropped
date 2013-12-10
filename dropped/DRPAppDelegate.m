@@ -65,10 +65,16 @@
 
 - (void)loadSwatches
 {
-    [FRBSwatchist loadSwatch:[[NSBundle mainBundle] URLForResource:@"animation" withExtension:@"plist" subdirectory:@"Swatches"]
-                     forName:@"animation"];
-    [FRBSwatchist loadSwatch:[[NSBundle mainBundle] URLForResource:@"page" withExtension:@"plist" subdirectory:@"Swatches"]
-                     forName:@"page"];
+    [self loadSwatchNamed:@"animation"];
+    [self loadSwatchNamed:@"page"];
+    [self loadSwatchNamed:@"tileOffset"];
+    [self loadSwatchNamed:@"tileScalingOffset"];
+}
+
+- (void)loadSwatchNamed:(NSString *)name
+{
+    [FRBSwatchist loadSwatch:[[NSBundle mainBundle] URLForResource:name withExtension:@"plist" subdirectory:@"Swatches"]
+                     forName:name];
 }
 
 @end

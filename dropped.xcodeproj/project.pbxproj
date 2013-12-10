@@ -42,6 +42,10 @@
 		A9B1C085184D042100866029 /* DRPLiftTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C084184D042100866029 /* DRPLiftTransition.m */; };
 		A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */; };
 		A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */; };
+		A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E27CBE1857AE210043F6A9 /* DRPTileView.m */; };
+		A9E27CC11857AFBC0043F6A9 /* Rokkitt.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9E27CC01857AFBC0043F6A9 /* Rokkitt.otf */; };
+		A9E27CC61857B6170043F6A9 /* tileOffset.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9E27CC21857B4290043F6A9 /* tileOffset.plist */; };
+		A9E27CC81857B6250043F6A9 /* tileScalingOffset.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */; };
 		C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C024DF7818370AC300B5775B /* DRPDictionary.m */; };
 		C08CBC171837168800CE678F /* importdatabase.sh in Resources */ = {isa = PBXBuildFile; fileRef = C08CBC141837168800CE678F /* importdatabase.sh */; };
 		C08CBC1A18371B3700CE678F /* Dropped.db in CopyFiles */ = {isa = PBXBuildFile; fileRef = C08CBC131837168800CE678F /* Dropped.db */; };
@@ -67,6 +71,8 @@
 			files = (
 				A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */,
 				A91C045818557C03002B6899 /* page.plist in CopyFiles */,
+				A9E27CC61857B6170043F6A9 /* tileOffset.plist in CopyFiles */,
+				A9E27CC81857B6250043F6A9 /* tileScalingOffset.plist in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +146,11 @@
 		A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCharacterHistogram.m; path = Models/DRPCharacterHistogram.m; sourceTree = "<group>"; };
 		A9D127B51837E0B40048AF25 /* DRPPlayedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayedWord.h; path = Models/DRPPlayedWord.h; sourceTree = "<group>"; };
 		A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPlayedWord.m; path = Models/DRPPlayedWord.m; sourceTree = "<group>"; };
+		A9E27CBD1857AE210043F6A9 /* DRPTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPTileView.h; path = Views/DRPTileView.h; sourceTree = "<group>"; };
+		A9E27CBE1857AE210043F6A9 /* DRPTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPTileView.m; path = Views/DRPTileView.m; sourceTree = "<group>"; };
+		A9E27CC01857AFBC0043F6A9 /* Rokkitt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Rokkitt.otf; path = Fonts/Rokkitt.otf; sourceTree = "<group>"; };
+		A9E27CC21857B4290043F6A9 /* tileOffset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = tileOffset.plist; path = Swatches/tileOffset.plist; sourceTree = "<group>"; };
+		A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = tileScalingOffset.plist; path = Swatches/tileScalingOffset.plist; sourceTree = "<group>"; };
 		B0935A92C9664719B578E480 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C024DF7718370AC300B5775B /* DRPDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDictionary.h; path = Models/DRPDictionary.h; sourceTree = "<group>"; };
 		C024DF7818370AC300B5775B /* DRPDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPDictionary.m; path = Models/DRPDictionary.m; sourceTree = "<group>"; };
@@ -258,6 +269,7 @@
 		A9204055183704C1006940B8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A9E27CBC1857AE050043F6A9 /* Tiles */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -360,6 +372,7 @@
 			children = (
 				A9A485CF185627B00080A4B5 /* Centrale Sans Light.otf */,
 				A9A485D0185627B00080A4B5 /* Centrale Sans Medium.otf */,
+				A9E27CC01857AFBC0043F6A9 /* Rokkitt.otf */,
 			);
 			name = Fonts;
 			sourceTree = "<group>";
@@ -379,6 +392,8 @@
 			children = (
 				A9AC495F18539E44006E1D84 /* animation.plist */,
 				A91C045618557B6A002B6899 /* page.plist */,
+				A9E27CC21857B4290043F6A9 /* tileOffset.plist */,
+				A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */,
 			);
 			name = Swatches;
 			sourceTree = "<group>";
@@ -394,6 +409,15 @@
 				A9B1C084184D042100866029 /* DRPLiftTransition.m */,
 			);
 			name = Transitions;
+			sourceTree = "<group>";
+		};
+		A9E27CBC1857AE050043F6A9 /* Tiles */ = {
+			isa = PBXGroup;
+			children = (
+				A9E27CBD1857AE210043F6A9 /* DRPTileView.h */,
+				A9E27CBE1857AE210043F6A9 /* DRPTileView.m */,
+			);
+			name = Tiles;
 			sourceTree = "<group>";
 		};
 		C08CBC121837168800CE678F /* Resources */ = {
@@ -498,6 +522,7 @@
 				A9A485D1185627B00080A4B5 /* Centrale Sans Light.otf in Resources */,
 				A9A485D2185627B00080A4B5 /* Centrale Sans Medium.otf in Resources */,
 				C08CBC171837168800CE678F /* importdatabase.sh in Resources */,
+				A9E27CC11857AFBC0043F6A9 /* Rokkitt.otf in Resources */,
 				A91D8F5B183702EE00BEC6E8 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -560,6 +585,7 @@
 				A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */,
 				A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */,
 				C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */,
+				A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */,
 				A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */,
 				A93D77CF18567D4B006691AE /* DRPPageLogInViewController.m in Sources */,
 				A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */,

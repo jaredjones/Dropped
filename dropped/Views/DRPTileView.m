@@ -18,6 +18,9 @@
 
 @end
 
+static NSMutableDictionary *glyphCache;
+static NSMutableDictionary *glyphScaleTransformCache;
+
 #pragma mark - DRPTileView
 
 @implementation DRPTileView
@@ -30,6 +33,11 @@
         
         // Make sure to call the setter method, it has side effects
         [self setCharacter:character];
+        
+        [self addTarget:self action:@selector(touchDown) forControlEvents:UIControlEventTouchDown];
+        [self addTarget:self action:@selector(touchUpInside) forControlEvents:UIControlEventTouchUpInside];
+        [self addTarget:self action:@selector(touchUpOutside) forControlEvents:UIControlEventTouchUpOutside];
+        [self addTarget:self action:@selector(touchCancel) forControlEvents:UIControlEventTouchCancel];
     }
     return self;
 }
@@ -42,7 +50,7 @@
     _strokeLayer.lineWidth = 3;
     _strokeLayer.fillColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0].CGColor;
     _strokeLayer.strokeColor = [UIColor blackColor].CGColor;
-//    _strokeLayer.opacity = 0;
+    _strokeLayer.opacity = 0;
     [self.layer addSublayer:_strokeLayer];
 }
 
@@ -65,10 +73,77 @@
     // if (character.adjacentMultiplier) { ... }
 }
 
-#pragma mark Glyph Loading
+- (void)setStrokeLayerOpacity:(CGFloat)opacity
+{
+    CAKeyframeAnimation *anim = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
+    anim.values = @[@(opacity)];
+    self.strokeLayer.opacity = opacity;
+    anim.duration = 0;
+    [_strokeLayer addAnimation:anim forKey:@"opacity"];
+}
 
-static NSMutableDictionary *glyphCache;
-static NSMutableDictionary *glyphScaleTransformCache;
+#pragma mark Touch Events
+
+- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    return [super beginTrackingWithTouch:touch withEvent:event];
+}
+
+- (void)touchDown
+{
+    [self resetAppearence];
+}
+
+- (void)touchUpInside
+{
+    if (self.highlighted) {
+        self.selected = !self.selected;
+    }
+    self.highlighted = NO;
+    [self resetAppearence];
+}
+
+- (void)touchUpOutside
+{
+    self.highlighted = NO;
+    [self resetAppearence];
+}
+
+- (void)touchCancel
+{
+    self.highlighted = NO;
+    [self resetAppearence];
+}
+
+- (void)resetAppearence
+{
+    // Stroke Opacity
+    if (self.highlighted || self.selected) {
+        self.strokeLayerOpacity = 1;
+        
+    } else {
+        self.strokeLayerOpacity = 0;
+    }
+    
+    // Color
+    if (self.highlighted) {
+        // If adjacentMultiplier is active, set color
+        // for self.selected as well
+        self.backgroundColor = _color;
+    } else {
+        self.backgroundColor = [UIColor whiteColor];
+    }
+    
+    // Transform
+    if (self.highlighted) {
+        _glyphLayer.transform = [glyphScaleTransformCache[_character.character] CATransform3DValue];
+        
+    } else {
+        _glyphLayer.transform = CATransform3DIdentity;
+    }
+}
+
+#pragma mark Glyph Loading
 
 + (UIBezierPath *)pathForCharacter:(NSString *)character
 {

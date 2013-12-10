@@ -96,7 +96,8 @@
     }
     
     // Transition to new Page
-    if (animated) {
+    // Only run animation if necessary
+    if (animated && _currentPage.view.frame.origin.y != 0) {
         _currentTransition = [DRPTransition transitionWithStart:prevPage
                                                     destination:_currentPage
                                                       direction:animationDirection

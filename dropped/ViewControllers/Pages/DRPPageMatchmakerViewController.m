@@ -20,14 +20,13 @@
 {
     self = [super initWithPageID:DRPPageMatchMaker];
     if (self) {
-        self.view.backgroundColor = [UIColor orangeColor];
     }
     return self;
 }
 
 #pragma mark DRPPageViewController
 
-- (void)didMoveToCurrent
+- (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo
 {
     // Create new GKTurnBasedMatchMakerViewController
     GKMatchRequest *request = [[GKMatchRequest alloc] init];
@@ -35,9 +34,32 @@
     request.maxPlayers = 2;
     request.defaultNumberOfPlayers = 2;
     
-    GKTurnBasedMatchmakerViewController *gkMatchMakerViewController = [[GKTurnBasedMatchmakerViewController alloc] initWithMatchRequest:request];
-    [gkMatchMakerViewController willMoveToParentViewController:self];
-    // matchmaker must be presented modally
+    GKTurnBasedMatchmakerViewController *gkMatchmakerViewController = [[GKTurnBasedMatchmakerViewController alloc] initWithMatchRequest:request];
+    gkMatchmakerViewController.turnBasedMatchmakerDelegate = self;
+    [self presentViewController:gkMatchmakerViewController animated:YES completion:nil];
+}
+
+#pragma mark GKTurnBasedMatchMakerViewControllerDelegate
+
+- (void)turnBasedMatchmakerViewController:(GKTurnBasedMatchmakerViewController *)viewController didFindMatch:(GKTurnBasedMatch *)match
+{
+    
+}
+
+- (void)turnBasedMatchmakerViewControllerWasCancelled:(GKTurnBasedMatchmakerViewController *)viewController
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.mainViewController setCurrentPageID:DRPPageList animated:YES userInfo:nil];
+}
+
+- (void)turnBasedMatchmakerViewController:(GKTurnBasedMatchmakerViewController *)viewController playerQuitForMatch:(GKTurnBasedMatch *)match
+{
+    
+}
+
+- (void)turnBasedMatchmakerViewController:(GKTurnBasedMatchmakerViewController *)viewController didFailWithError:(NSError *)error
+{
+    
 }
 
 @end

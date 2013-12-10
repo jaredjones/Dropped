@@ -7,7 +7,8 @@
 //
 
 #import "DRPPageViewController.h"
+#import <GameKit/GameKit.h>
 
-@interface DRPPageMatchmakerViewController : DRPPageViewController
+@interface DRPPageMatchmakerViewController : DRPPageViewController <GKTurnBasedMatchmakerViewControllerDelegate>
 
 @end

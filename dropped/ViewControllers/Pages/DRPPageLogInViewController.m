@@ -44,13 +44,6 @@
     [signInButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [signInButton addTarget:self action:@selector(signInButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:signInButton];
-    
-    NSArray *letters = @[@"A", @"B", @"C", @"D", @"E", @"F"];
-    for (NSInteger i = 0; i < 6; i++) {
-        DRPTileView *tile = [[DRPTileView alloc] initWithCharacter:[DRPCharacter characterWithCharacter:letters[i]]];
-        tile.center = CGPointMake(27.5 + 53 * i, 27.5);
-        [self.view addSubview:tile];
-    }
 }
 
 - (void)signInButtonPressed:(id)sender

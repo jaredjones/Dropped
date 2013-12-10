@@ -68,7 +68,7 @@
 #pragma mark Glyph Loading
 
 static NSMutableDictionary *glyphCache;
-static NSMutableDictionary *glyphBoundsCache;
+static NSMutableDictionary *glyphScaleTransformCache;
 
 + (UIBezierPath *)pathForCharacter:(NSString *)character
 {
@@ -96,13 +96,13 @@ static NSMutableDictionary *glyphBoundsCache;
     [glyphBezierPath moveToPoint:CGPointZero];
     [glyphBezierPath appendPath:[UIBezierPath bezierPathWithCGPath:glyphPath]];
     
-//    CFRelease(glyphName);
     CGPathRelease(glyphPath);
     CFRelease(font);
     
     //// Apply Transforms
     CGRect glyphBounds = glyphBezierPath.bounds;
     
+    // Identity transform
     CGAffineTransform flipLetterTransform = CGAffineTransformMakeScale(1, -1);
     [glyphBezierPath applyTransform:flipLetterTransform];
     
@@ -112,13 +112,23 @@ static NSMutableDictionary *glyphBoundsCache;
     CGAffineTransform letterTransform = CGAffineTransformMakeTranslation(dx, dy);
     [glyphBezierPath applyTransform:letterTransform];
     
-    // Cache Path
+    // Scale Transform
+    offset = [[FRBSwatchist swatchForName:@"tileScaleingOffset"] pointForKey:character];
+    dx = -glyphBounds.size.width - glyphBounds.origin.x - offset.x;
+    dy = -glyphBounds.size.height - glyphBounds.origin.y - offset.y;
+    
+    CATransform3D scaleTransform = CATransform3DIdentity;
+    scaleTransform = CATransform3DTranslate(scaleTransform, -dx, -dy, 0);
+    scaleTransform = CATransform3DScale(scaleTransform, .82, .82, 1);
+    scaleTransform = CATransform3DTranslate(scaleTransform, dx, dy, 0);
+    
+    // Cache Path/Transform
     if (!glyphCache) {
         glyphCache = [[NSMutableDictionary alloc] init];
-        glyphBoundsCache = [[NSMutableDictionary alloc] init];
+        glyphScaleTransformCache = [[NSMutableDictionary alloc] init];
     }
     glyphCache[character] = glyphBezierPath;
-    glyphBoundsCache[character] = [NSValue valueWithCGRect:glyphBounds];
+    glyphScaleTransformCache[character] = [NSValue valueWithCATransform3D:scaleTransform];
     
     return glyphBezierPath;
 }

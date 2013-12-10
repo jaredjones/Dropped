@@ -24,6 +24,7 @@
 		A93D77C618566A8F006691AE /* DRPPageMatchmakerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77C518566A8F006691AE /* DRPPageMatchmakerViewController.m */; };
 		A93D77CC185673EF006691AE /* DRPPageSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77CB185673EF006691AE /* DRPPageSplashViewController.m */; };
 		A93D77CF18567D4B006691AE /* DRPPageLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77CE18567D4B006691AE /* DRPPageLogInViewController.m */; };
+		A93D77D21856A1F7006691AE /* DRPGameCenterInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77D11856A1F7006691AE /* DRPGameCenterInterface.m */; };
 		A93E9F29184AAC3B0047575A /* DRPMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93E9F28184AAC3B0047575A /* DRPMainViewController.m */; };
 		A95A2C821847C3AB001AF846 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A95A2C811847C3AB001AF846 /* GameKit.framework */; };
 		A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */; };
@@ -107,6 +108,8 @@
 		A93D77CB185673EF006691AE /* DRPPageSplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageSplashViewController.m; path = ViewControllers/Pages/DRPPageSplashViewController.m; sourceTree = "<group>"; };
 		A93D77CD18567D4B006691AE /* DRPPageLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageLogInViewController.h; path = ViewControllers/Pages/DRPPageLogInViewController.h; sourceTree = "<group>"; };
 		A93D77CE18567D4B006691AE /* DRPPageLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageLogInViewController.m; path = ViewControllers/Pages/DRPPageLogInViewController.m; sourceTree = "<group>"; };
+		A93D77D01856A1F7006691AE /* DRPGameCenterInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRPGameCenterInterface.h; sourceTree = "<group>"; };
+		A93D77D11856A1F7006691AE /* DRPGameCenterInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRPGameCenterInterface.m; sourceTree = "<group>"; };
 		A93E9F27184AAC3B0047575A /* DRPMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMainViewController.h; path = ViewControllers/DRPMainViewController.h; sourceTree = "<group>"; };
 		A93E9F28184AAC3B0047575A /* DRPMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMainViewController.m; path = ViewControllers/DRPMainViewController.m; sourceTree = "<group>"; };
 		A95A2C811847C3AB001AF846 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
@@ -236,6 +239,8 @@
 			children = (
 				A91D8F57183702EE00BEC6E8 /* DRPAppDelegate.h */,
 				A91D8F58183702EE00BEC6E8 /* DRPAppDelegate.m */,
+				A93D77D01856A1F7006691AE /* DRPGameCenterInterface.h */,
+				A93D77D11856A1F7006691AE /* DRPGameCenterInterface.m */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";
@@ -551,6 +556,7 @@
 				A91D8F55183702EE00BEC6E8 /* main.m in Sources */,
 				A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */,
 				A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */,
+				A93D77D21856A1F7006691AE /* DRPGameCenterInterface.m in Sources */,
 				A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */,
 				A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */,
 				C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */,

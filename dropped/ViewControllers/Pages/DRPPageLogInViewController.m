@@ -6,7 +6,9 @@
 //  Copyright (c) 2013 Brad Zeis. All rights reserved.
 //
 
+#import "DRPMainViewController.h"
 #import "DRPPageLogInViewController.h"
+#import "DRPGameCenterInterface.h"
 #import "FRBSwatchist.h"
 
 @interface DRPPageLogInViewController ()
@@ -19,18 +21,42 @@
 {
     self = [super initWithPageID:DRPPageLogIn];
     if (self) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localPlayerAuthenticated)
+                                                     name:DRPGameCenterLocalPlayerAuthenticatedNotificationName
+                                                   object:nil];
     }
     return self;
 }
 
 - (void)viewDidLoad
 {
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-    label.text = @"Log In";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.font = [FRBSwatchist fontForKey:@"page.cueFont"];
-    label.center = self.view.center;
-    [self.view addSubview:label];
+    UIButton *signInButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    signInButton.frame = CGRectMake(0, 0, 200, 200);
+    signInButton.center = self.view.center;
+    
+    NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"Sign In"
+                                                                attributes:@{NSFontAttributeName : [FRBSwatchist fontForKey:@"page.cueFont"]}];
+    
+    [signInButton setAttributedTitle:title forState:UIControlStateNormal];
+    [signInButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [signInButton addTarget:self action:@selector(signInButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:signInButton];
+}
+
+- (void)signInButtonPressed:(id)sender
+{
+    if ([DRPGameCenterInterface authenticationViewController]) {
+        [self presentViewController:[DRPGameCenterInterface authenticationViewController] animated:YES completion:nil];
+    }
+}
+
+#pragma mark Notifications
+
+- (void)localPlayerAuthenticated
+{
+    if (self.mainViewController.currentPageID == self.pageID) {
+        [self.mainViewController setCurrentPageID:DRPPageList animated:YES userInfo:nil];
+    }
 }
 
 @end

@@ -8,16 +8,12 @@
 
 #import "DRPAppDelegate.h"
 #import "DRPMainViewController.h"
+#import "DRPGameCenterInterface.h"
 #import "FRBSwatchist.h"
-
-#import <GameKit/GameKit.h>
 
 @interface DRPAppDelegate ()
 
-// Store the localPlayerID after authenticating
-// to determine when a different  Game Center
-// account logs in while Dropped is in background
-@property NSString *localPlayerID;
+@property DRPMainViewController *mainViewController;
 
 @end
 
@@ -25,11 +21,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    [self authenticateLocalPlayer];
+    [DRPGameCenterInterface authenticateLocalPlayer];
     [self loadSwatches];
     
+    _mainViewController = [[DRPMainViewController alloc] initWithNibName:nil bundle:nil];
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = [[DRPMainViewController alloc] initWithNibName:nil bundle:nil];
+    self.window.rootViewController = _mainViewController;
     
     [UIApplication sharedApplication].statusBarHidden = YES;
     [self.window makeKeyAndVisible];
@@ -71,44 +69,6 @@
                      forName:@"animation"];
     [FRBSwatchist loadSwatch:[[NSBundle mainBundle] URLForResource:@"page" withExtension:@"plist" subdirectory:@"Swatches"]
                      forName:@"page"];
-}
-
-#pragma mark Game Center
-
-- (void)authenticateLocalPlayer
-{
-    __weak GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
-    localPlayer.authenticateHandler = ^(UIViewController *viewController, NSError *error) {
-        if (viewController != nil) {
-            // User not authenticated, make sure they sign in
-            if (_localPlayerID) {
-                // User logged out while app running
-            } else {
-                // New launch, user not logged in
-            }
-        } else if (localPlayer.authenticated) {
-            // DEBUG: Kill all Game Center matches when authenticating.
-            // Trust me, super handy during testing.
-            [self killAllGameCenterMatches];
-            
-            if (_localPlayerID && ![localPlayer.playerID isEqualToString:_localPlayerID]) {
-                // Different user logged in
-            }
-            
-            _localPlayerID = localPlayer.playerID;
-        }
-    };
-}
-
-- (void)killAllGameCenterMatches
-{
-    [GKTurnBasedMatch loadMatchesWithCompletionHandler:^(NSArray *matches, NSError *error) {
-        for (GKTurnBasedMatch *match in matches) {
-            [match endMatchInTurnWithMatchData:nil completionHandler:^(NSError *error) {
-                [match removeWithCompletionHandler:nil];
-            }];
-        }
-    }];
 }
 
 @end

@@ -195,7 +195,7 @@
 - (void)decommissionOldPagesWithPreviousPage:(DRPPageViewController *)prevPage
 {
     for (UIView *view in self.view.subviews) {
-        if (![view isKindOfClass:[DRPPageViewController class]]) continue;
+        if ([view isKindOfClass:[UILabel class]]) continue;
         if (!(view == _currentPage.view || view == _upPage.view || view == _downPage.view)) {
             [view removeFromSuperview];
         }

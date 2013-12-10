@@ -47,6 +47,11 @@
 {
     if ([DRPGameCenterInterface authenticationViewController]) {
         [self presentViewController:[DRPGameCenterInterface authenticationViewController] animated:YES completion:nil];
+    } else {
+        // Dumb user hit Cancel. Only option now is to sign in through
+        // Game Center app.
+        // Fuck, I hate Game Center
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"gamecenter:"]];
     }
 }
 

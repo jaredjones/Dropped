@@ -46,6 +46,7 @@ static UIViewController *authenticationViewController;
             
         } else {
             NSLog(@"%@", error);
+            authenticationViewController = nil;
         }
     };
 }

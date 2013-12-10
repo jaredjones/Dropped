@@ -60,10 +60,17 @@ static UIViewController *authenticationViewController;
 {
     [GKTurnBasedMatch loadMatchesWithCompletionHandler:^(NSArray *matches, NSError *error) {
         for (GKTurnBasedMatch *match in matches) {
-            [match endMatchInTurnWithMatchData:nil completionHandler:^(NSError *error) {
+            
+            for (GKTurnBasedParticipant *participant in match.participants) {
+                participant.matchOutcome = GKTurnBasedMatchOutcomeQuit;
+            }
+            
+            [match endMatchInTurnWithMatchData:[[NSData alloc] init] completionHandler:^(NSError *error) {
                 [match removeWithCompletionHandler:nil];
             }];
         }
+        
+        NSLog(@"DEBUG: quit %ld %@", matches.count, matches.count == 1 ? @"match" : @"matches");
     }];
 }
 

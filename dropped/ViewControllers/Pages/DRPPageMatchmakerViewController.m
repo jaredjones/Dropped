@@ -8,6 +8,7 @@
 
 #import "DRPPageMatchmakerViewController.h"
 #import "DRPMainViewController.h"
+#import "DRPMatch.h"
 #import <GameKit/GameKit.h>
 
 @interface DRPPageMatchmakerViewController ()
@@ -41,25 +42,29 @@
 
 #pragma mark GKTurnBasedMatchMakerViewControllerDelegate
 
-- (void)turnBasedMatchmakerViewController:(GKTurnBasedMatchmakerViewController *)viewController didFindMatch:(GKTurnBasedMatch *)match
+- (void)turnBasedMatchmakerViewController:(GKTurnBasedMatchmakerViewController *)viewController didFindMatch:(GKTurnBasedMatch *)gkMatch
 {
-    
+    DRPMatch *match = [[DRPMatch alloc] initWithGKMatch:gkMatch];
+    [self.mainViewController setCurrentPageID:DRPPageMatch animated:YES userInfo:@{@"match" : match}];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)turnBasedMatchmakerViewControllerWasCancelled:(GKTurnBasedMatchmakerViewController *)viewController
 {
-    [self dismissViewControllerAnimated:YES completion:nil];
     [self.mainViewController setCurrentPageID:DRPPageList animated:YES userInfo:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)turnBasedMatchmakerViewController:(GKTurnBasedMatchmakerViewController *)viewController playerQuitForMatch:(GKTurnBasedMatch *)match
 {
-    
+    // The GKTurnBasedMatchmakerViewController doesn't show existing matches,
+    // so this delegate method will never be called
 }
 
 - (void)turnBasedMatchmakerViewController:(GKTurnBasedMatchmakerViewController *)viewController didFailWithError:(NSError *)error
 {
-    
+    [self.mainViewController setCurrentPageID:DRPPageList animated:YES userInfo:nil];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end

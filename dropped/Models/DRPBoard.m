@@ -66,7 +66,7 @@
         
         // Create board from scratch if data is nil
         
-        if (data == nil) {
+        if (data == nil || data.length == 0) {
             // Test data uses \ddd for non-ASCII characters
             NSMutableString *d = [NSMutableString stringWithString:@"\001ABCDEFG3IJKLMNOPQRSTUVWXYZABC4EFGHIJ"];
             

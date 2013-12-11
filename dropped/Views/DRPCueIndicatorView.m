@@ -28,9 +28,12 @@
             DRPTileView *tileView = [[DRPTileView alloc] initWithCharacter:nil];
             tileView.center = CGPointMake(27.5 + 53 * i, 25);
             tileView.strokeOpacity = 1;
+            tileView.userInteractionEnabled = NO;
             [self addSubview:tileView];
             [_tileViews addObject:tileView];
         }
+        
+        self.userInteractionEnabled = NO;
     }
     return self;
 }

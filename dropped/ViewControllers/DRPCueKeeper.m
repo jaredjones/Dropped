@@ -147,7 +147,9 @@
         _bottomEmphasized = YES;
     }
     [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"];
-    [[self indicatorForPosition:position] animateIn];
+    if ([self cueForPosition:position]) {
+        [[self indicatorForPosition:position] animateIn];
+    }
 }
 
 - (void)deemphasizeCueInPosition:(DRPPageDirection)position

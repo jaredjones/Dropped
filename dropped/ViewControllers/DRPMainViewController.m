@@ -52,8 +52,7 @@
     
     _cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
     
-//    [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
-    [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
+    [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
 }
 
 #pragma mark Child View Controllers

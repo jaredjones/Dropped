@@ -18,6 +18,7 @@
 
 - (void)emphasizeCueInPosition:(DRPPageDirection)position;
 - (void)deemphasizeCueInPosition:(DRPPageDirection)position;
+- (void)cycleOutIndicatorForPosition:(DRPPageDirection)position;
 
 - (void)bringToFront;
 

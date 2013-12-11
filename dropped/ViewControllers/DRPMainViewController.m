@@ -235,6 +235,8 @@
             if (transitionDirection != DRPPageDirectionSame) {
                 [self setCue:nil inPosition:DRPPageDirectionUp];
                 [self setCue:nil inPosition:DRPPageDirectionDown];
+                [_cueKeeper cycleOutIndicatorForPosition:DRPPageDirectionUp];
+                [_cueKeeper cycleOutIndicatorForPosition:DRPPageDirectionDown];
             }
             
             [self setCurrentPageID:[_dataSource pageIDInDirection:transitionDirection from:_currentPage.pageID]

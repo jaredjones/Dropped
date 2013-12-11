@@ -23,8 +23,12 @@
 	<key>cueVisibleThreshold</key>
 	<integer>65</integer>
 	<key>cueAnimationDuration</key>
-	<integer>1</integer>
+	<real>0.65</real>
 	<key>cueAnimationDamping</key>
 	<real>0.8</real>
+	<key>cueIndicatorAnimationDuration</key>
+	<real>0.12</real>
+	<key>cueIndicatorAnimationDelay</key>
+	<real>0.023</real>
 </dict>
 </plist>

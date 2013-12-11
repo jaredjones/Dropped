@@ -135,7 +135,7 @@
     return CGPointMake(_view.frame.size.width / 2, _view.frame.size.height - [FRBSwatchist floatForKey:@"page.cueOffset"]);
 }
 
-#pragma mark Styling
+#pragma mark Emphasis
 
 - (void)emphasizeCueInPosition:(DRPPageDirection)position
 {
@@ -146,7 +146,7 @@
         if (_bottomEmphasized) return;
         _bottomEmphasized = YES;
     }
-//    [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"];
+    [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"];
     [[self indicatorForPosition:position] animateIn];
 }
 
@@ -159,7 +159,12 @@
         if (!_bottomEmphasized) return;
         _bottomEmphasized = NO;
     }
-//    [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueFont"];
+    [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueFont"];
+    [[self indicatorForPosition:position] animateOut];
+}
+
+- (void)cycleOutIndicatorForPosition:(DRPPageDirection)position
+{
     [[self indicatorForPosition:position] animateOut];
 }
 

@@ -8,6 +8,7 @@
 
 #import "DRPCueIndicatorView.h"
 #import "DRPTileView.h"
+#import "FRBSwatchist.h"
 
 @interface DRPCueIndicatorView ()
 
@@ -41,7 +42,13 @@
     CGFloat offset = _position == DRPPageDirectionUp ? 6 : -6;
     for (NSInteger i = 0; i < 6; i++) {
         DRPTileView *tileView = _tileViews[i];
-        tileView.center = CGPointMake(27.5 + 53 * i, 25 + offset);
+        CGPoint center = CGPointMake(27.5 + 53 * i, 25 + offset);
+        
+        [UIView animateWithDuration:[FRBSwatchist floatForKey:@"page.cueIndicatorAnimationDuration"]
+                              delay:[FRBSwatchist floatForKey:@"page.cueIndicatorAnimationDelay"] * i
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{ tileView.center = center; }
+                         completion:nil];
     }
 }
 
@@ -49,7 +56,13 @@
 {
     for (NSInteger i = 0; i < 6; i++) {
         DRPTileView *tileView = _tileViews[i];
-        tileView.center = CGPointMake(27.5 + 53 * i, 25);
+        CGPoint center = CGPointMake(27.5 + 53 * i, 25);
+        
+        [UIView animateWithDuration:[FRBSwatchist floatForKey:@"page.cueIndicatorAnimationDuration"]
+                              delay:.03
+                            options:UIViewAnimationOptionBeginFromCurrentState
+                         animations:^{ tileView.center = center; }
+                         completion:nil];
     }
 }
 

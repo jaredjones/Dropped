@@ -95,14 +95,14 @@
     if (offset != 0) {
         if ((scrollView.contentOffset.y < 0 && _topCueVisibleOnDragStart) ||
             (scrollView.contentOffset.y > 0 && _bottomCueVisibleOnDragStart)) {
-            [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
+            [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset panPages:NO];
         }
     } else if (self.view.frame.origin.y != 0) {
         // Centers the currentPage
         // Without this, you can "catch" a bit of the surrounding pages when dragging
         // back past the scrollview content
         CGFloat offset = -[scrollView.panGestureRecognizer translationInView:self.view].y;
-        [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
+        [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset panPages:NO];
     }
     
     [self resetCues];
@@ -129,7 +129,7 @@
         // and only when the drag was started with the appropriate cue visible
         if ((scrollView.contentOffset.y < 0 && _topCueVisibleOnDragStart) ||
             (scrollView.contentOffset.y > 0 && _bottomCueVisibleOnDragStart)) {
-            [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset];
+            [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset panPages:NO];
         }
     }
 }

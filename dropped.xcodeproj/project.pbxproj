@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A9039FFB1858D579002AEB37 /* DRPPageEtCeteraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9039FFA1858D579002AEB37 /* DRPPageEtCeteraViewController.m */; };
 		A91C045818557C03002B6899 /* page.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A91C045618557B6A002B6899 /* page.plist */; };
 		A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = A91C045E185582DC002B6899 /* DRPCueKeeper.m */; };
 		A91D8F49183702EE00BEC6E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F48183702EE00BEC6E8 /* Foundation.framework */; };
@@ -90,6 +91,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A9039FF91858D579002AEB37 /* DRPPageEtCeteraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageEtCeteraViewController.h; path = ViewControllers/Pages/DRPPageEtCeteraViewController.h; sourceTree = "<group>"; };
+		A9039FFA1858D579002AEB37 /* DRPPageEtCeteraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageEtCeteraViewController.m; path = ViewControllers/Pages/DRPPageEtCeteraViewController.m; sourceTree = "<group>"; };
 		A91C045618557B6A002B6899 /* page.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = page.plist; path = Swatches/page.plist; sourceTree = "<group>"; };
 		A91C045D185582DC002B6899 /* DRPCueKeeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCueKeeper.h; path = ViewControllers/DRPCueKeeper.h; sourceTree = "<group>"; };
 		A91C045E185582DC002B6899 /* DRPCueKeeper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCueKeeper.m; path = ViewControllers/DRPCueKeeper.m; sourceTree = "<group>"; };
@@ -190,6 +193,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A9039FF81858D553002AEB37 /* Et Cetera */ = {
+			isa = PBXGroup;
+			children = (
+				A9039FF91858D579002AEB37 /* DRPPageEtCeteraViewController.h */,
+				A9039FFA1858D579002AEB37 /* DRPPageEtCeteraViewController.m */,
+			);
+			name = "Et Cetera";
+			sourceTree = "<group>";
+		};
 		A91D8F3C183702EE00BEC6E8 = {
 			isa = PBXGroup;
 			children = (
@@ -367,6 +379,7 @@
 				A93D77C7185672E1006691AE /* Startup */,
 				A93D77C91856730C006691AE /* List/MatchMaker */,
 				A93D77C8185672ED006691AE /* Match */,
+				A9039FF81858D553002AEB37 /* Et Cetera */,
 			);
 			name = Pages;
 			sourceTree = "<group>";
@@ -590,6 +603,7 @@
 				A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */,
 				A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */,
 				A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */,
+				A9039FFB1858D579002AEB37 /* DRPPageEtCeteraViewController.m in Sources */,
 				A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */,
 				A9B1206F1857F8CE0079BF72 /* DRPCueIndicatorView.m in Sources */,
 				A91D8F55183702EE00BEC6E8 /* main.m in Sources */,

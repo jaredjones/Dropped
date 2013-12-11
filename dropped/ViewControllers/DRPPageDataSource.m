@@ -13,6 +13,7 @@
 #import "DRPPageMatchmakerViewController.h"
 #import "DRPPageSplashViewController.h"
 #import "DRPPageLogInViewController.h"
+#import "DRPPageEtCeteraViewController.h"
 
 @interface DRPPageDataSource ()
 
@@ -77,8 +78,7 @@
         viewController.view.backgroundColor = [UIColor yellowColor];
     }
     else if (pageID == DRPPageEtCetera) {
-        viewController = [[DRPPageViewController alloc] initWithPageID:pageID];
-        viewController.view.backgroundColor = [UIColor greenColor];
+        viewController = [[DRPPageEtCeteraViewController alloc] init];
     }
     
     if (!viewController) return nil;

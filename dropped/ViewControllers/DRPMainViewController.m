@@ -52,7 +52,7 @@
     
     _cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
     
-    [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
+    [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
 }
 
 #pragma mark Child View Controllers
@@ -212,16 +212,18 @@
 
 - (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
 {
-    [self handlePanGesture:gesture offset:0];
+    [self handlePanGesture:gesture offset:0 panPages:YES];
 }
 
-- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset
+- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset panPages:(BOOL)panPages
 {
     if (gesture.state == UIGestureRecognizerStateBegan) {
         
     } else if (gesture.state == UIGestureRecognizerStateChanged) {
         
-        [self repositionPagesDuringDragWithGesture:gesture offset:offset];
+        if (panPages) {
+            [self repositionPagesDuringDragWithGesture:gesture offset:offset];
+        }
         [self emphasizeCuesWithGesture:gesture offset:offset];
         
     } else if (gesture.state == UIGestureRecognizerStateEnded ||

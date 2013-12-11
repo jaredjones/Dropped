@@ -7,17 +7,41 @@
 //
 
 #import "DRPCueKeeper.h"
+#import "DRPCueIndicatorView.h"
 #import "FRBSwatchist.h"
 
 @interface DRPCueKeeper ()
 
+@property UIView *view;
 @property UILabel *topCue, *bottomCue;
+@property BOOL topEmphasized, bottomEmphasized;
+@property DRPCueIndicatorView *topIndicatorView, *bottomIndicatorView;
 
 @end
 
 #pragma mark - DRPCueKeeper
 
 @implementation DRPCueKeeper
+
+- (instancetype)initWithView:(UIView *)view
+{
+    self = [super init];
+    if (self) {
+        _view = view;
+        
+        // Load CueIndicators
+        _topIndicatorView = [[DRPCueIndicatorView alloc] init];
+        _topIndicatorView.frame = CGRectOffset(_topIndicatorView.frame, 0, -_topIndicatorView.frame.size.height);
+        _topIndicatorView.position = DRPPageDirectionUp;
+        [_view addSubview:_topIndicatorView];
+        
+        _bottomIndicatorView = [[DRPCueIndicatorView alloc] init];
+        _bottomIndicatorView.frame = CGRectOffset(_bottomIndicatorView.frame, 0, _view.frame.size.height);
+        _bottomIndicatorView.position = DRPPageDirectionDown;
+        [_view addSubview:_bottomIndicatorView];
+    }
+    return self;
+}
 
 - (UILabel *)cueForPosition:(DRPPageDirection)position
 {
@@ -30,6 +54,13 @@
 {
     if (position == DRPPageDirectionUp) _topCue = cue;
     else _bottomCue = cue;
+}
+
+- (DRPCueIndicatorView *)indicatorForPosition:(DRPPageDirection)position
+{
+    if (!(position == DRPPageDirectionUp || position == DRPPageDirectionDown)) return nil;
+    
+    return position == DRPPageDirectionUp ? _topIndicatorView : _bottomIndicatorView;
 }
 
 #pragma mark Cycling
@@ -108,12 +139,28 @@
 
 - (void)emphasizeCueInPosition:(DRPPageDirection)position
 {
-    [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"];
+    if (position == DRPPageDirectionUp) {
+        if (_topEmphasized) return;
+        _topEmphasized = YES;
+    } else {
+        if (_bottomEmphasized) return;
+        _bottomEmphasized = YES;
+    }
+//    [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"];
+    [[self indicatorForPosition:position] animateIn];
 }
 
 - (void)deemphasizeCueInPosition:(DRPPageDirection)position
 {
-    [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueFont"];
+    if (position == DRPPageDirectionUp) {
+        if (!_topEmphasized) return;
+        _topEmphasized = NO;
+    } else {
+        if (!_bottomEmphasized) return;
+        _bottomEmphasized = NO;
+    }
+//    [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueFont"];
+    [[self indicatorForPosition:position] animateOut];
 }
 
 #pragma mark Superview
@@ -122,6 +169,8 @@
 {
     [_view bringSubviewToFront:_topCue];
     [_view bringSubviewToFront:_bottomCue];
+    [_view bringSubviewToFront:_topIndicatorView];
+    [_view bringSubviewToFront:_bottomIndicatorView];
 }
 
 @end

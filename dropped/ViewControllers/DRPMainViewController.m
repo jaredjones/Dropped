@@ -12,6 +12,8 @@
 #import "DRPTransition.h"
 #import "DRPCueKeeper.h"
 
+#import "DRPCueIndicatorView.h"
+
 #import "FRBSwatchist.h"
 
 @interface DRPMainViewController ()
@@ -48,10 +50,10 @@
     _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     [self.view addGestureRecognizer:_panGestureRecognizer];
     
-    _cueKeeper = [[DRPCueKeeper alloc] init];
-    _cueKeeper.view = self.view;
+    _cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
     
-    [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
+//    [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
+    [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
 }
 
 #pragma mark Child View Controllers
@@ -197,6 +199,7 @@
 {
     for (UIView *view in self.view.subviews) {
         if ([view isKindOfClass:[UILabel class]]) continue;
+        if ([view isKindOfClass:[DRPCueIndicatorView class]]) continue;
         if (!(view == _currentPage.view || view == _upPage.view || view == _downPage.view)) {
             [view removeFromSuperview];
         }

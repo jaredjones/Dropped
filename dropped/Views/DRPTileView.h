@@ -15,5 +15,6 @@
 - (instancetype)initWithCharacter:(DRPCharacter *)character;
 
 @property (nonatomic) DRPCharacter *character;
+@property (nonatomic) CGFloat strokeOpacity;
 
 @end

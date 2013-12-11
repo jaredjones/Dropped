@@ -56,6 +56,9 @@ static NSMutableDictionary *glyphScaleTransformCache;
 
 - (void)loadGlyphLayer
 {
+    if (!_character) return;
+    
+    [_glyphLayer removeFromSuperlayer];
     _glyphLayer = [[CAShapeLayer alloc] init];
     _glyphLayer.path = [DRPTileView pathForCharacter:_character.character].CGPath;
     _glyphLayer.fillColor = [UIColor blackColor].CGColor;
@@ -73,7 +76,12 @@ static NSMutableDictionary *glyphScaleTransformCache;
     // if (character.adjacentMultiplier) { ... }
 }
 
-- (void)setStrokeLayerOpacity:(CGFloat)opacity
+- (CGFloat)strokeOpacity
+{
+    return _strokeLayer.opacity;
+}
+
+- (void)setStrokeOpacity:(CGFloat)opacity
 {
     CAKeyframeAnimation *anim = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
     anim.values = @[@(opacity)];
@@ -119,10 +127,10 @@ static NSMutableDictionary *glyphScaleTransformCache;
 {
     // Stroke Opacity
     if (self.highlighted || self.selected) {
-        self.strokeLayerOpacity = 1;
+        self.strokeOpacity = 1;
         
     } else {
-        self.strokeLayerOpacity = 0;
+        self.strokeOpacity = 0;
     }
     
     // Color

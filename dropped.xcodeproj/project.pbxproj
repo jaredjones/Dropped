@@ -37,6 +37,7 @@
 		A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5BE1850ED5F0024E7D4 /* DRPPageListViewController.m */; };
 		A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */; };
 		A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9AC495F18539E44006E1D84 /* animation.plist */; };
+		A9B1206F1857F8CE0079BF72 /* DRPCueIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1206E1857F8CE0079BF72 /* DRPCueIndicatorView.m */; };
 		A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C07B184CFCC100866029 /* DRPDropTransition.m */; };
 		A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C081184CFCDE00866029 /* DRPTransition.m */; };
 		A9B1C085184D042100866029 /* DRPLiftTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C084184D042100866029 /* DRPLiftTransition.m */; };
@@ -136,6 +137,8 @@
 		A9A9D5BF1850ED5F0024E7D4 /* DRPPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageViewController.h; path = ViewControllers/Pages/DRPPageViewController.h; sourceTree = "<group>"; };
 		A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageViewController.m; path = ViewControllers/Pages/DRPPageViewController.m; sourceTree = "<group>"; };
 		A9AC495F18539E44006E1D84 /* animation.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = animation.plist; path = Swatches/animation.plist; sourceTree = "<group>"; };
+		A9B1206D1857F8CE0079BF72 /* DRPCueIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCueIndicatorView.h; path = Views/DRPCueIndicatorView.h; sourceTree = "<group>"; };
+		A9B1206E1857F8CE0079BF72 /* DRPCueIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCueIndicatorView.m; path = Views/DRPCueIndicatorView.m; sourceTree = "<group>"; };
 		A9B1C07A184CFCC100866029 /* DRPDropTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDropTransition.h; path = ViewControllers/Transitions/DRPDropTransition.h; sourceTree = "<group>"; };
 		A9B1C07B184CFCC100866029 /* DRPDropTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPDropTransition.m; path = ViewControllers/Transitions/DRPDropTransition.m; sourceTree = "<group>"; };
 		A9B1C080184CFCDE00866029 /* DRPTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPTransition.h; path = ViewControllers/Transitions/DRPTransition.h; sourceTree = "<group>"; };
@@ -269,6 +272,7 @@
 		A9204055183704C1006940B8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A9B1206C1857F8B80079BF72 /* Cues */,
 				A9E27CBC1857AE050043F6A9 /* Tiles */,
 			);
 			name = Views;
@@ -396,6 +400,15 @@
 				A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */,
 			);
 			name = Swatches;
+			sourceTree = "<group>";
+		};
+		A9B1206C1857F8B80079BF72 /* Cues */ = {
+			isa = PBXGroup;
+			children = (
+				A9B1206D1857F8CE0079BF72 /* DRPCueIndicatorView.h */,
+				A9B1206E1857F8CE0079BF72 /* DRPCueIndicatorView.m */,
+			);
+			name = Cues;
 			sourceTree = "<group>";
 		};
 		A9B1C070184CF90000866029 /* Transitions */ = {
@@ -578,6 +591,7 @@
 				A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */,
 				A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */,
 				A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */,
+				A9B1206F1857F8CE0079BF72 /* DRPCueIndicatorView.m in Sources */,
 				A91D8F55183702EE00BEC6E8 /* main.m in Sources */,
 				A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */,
 				A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */,

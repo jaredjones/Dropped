@@ -11,9 +11,6 @@
 #import "DRPGameCenterInterface.h"
 #import "FRBSwatchist.h"
 
-#import "DRPCharacter.h"
-#import "DRPTileView.h"
-
 @interface DRPPageLogInViewController ()
 
 @end

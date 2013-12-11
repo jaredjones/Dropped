@@ -11,7 +11,7 @@
 
 @interface DRPCueKeeper : NSObject
 
-@property UIView *view;
+- (instancetype)initWithView:(UIView *)view;
 
 - (void)cycleInCue:(NSString *)cueText inPosition:(DRPPageDirection)position;
 - (void)cycleOutCueInPosition:(DRPPageDirection)position;

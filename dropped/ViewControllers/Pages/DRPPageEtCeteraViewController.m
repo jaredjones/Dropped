@@ -19,13 +19,9 @@
 {
     self = [super initWithPageID:DRPPageEtCetera];
     if (self) {
+        self.topCue = @"Back";
     }
     return self;
-}
-
-- (void)didMoveToCurrent
-{
-    [self.mainViewController setCue:@"Back" inPosition:DRPPageDirectionUp];
 }
 
 @end

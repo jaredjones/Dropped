@@ -27,12 +27,13 @@ typedef NS_ENUM(NSInteger, DRPPageDirection) {
 
 @class DRPMainViewController;
 
-@interface DRPPageViewController : UIViewController
+@interface DRPPageViewController : UIViewController <UIScrollViewDelegate>
 
 - (instancetype)initWithPageID:(DRPPageID)pageID;
 
 @property (readonly) DRPPageID pageID;
 @property (readonly) DRPMainViewController *mainViewController;
+@property NSString *topCue, *bottomCue;
 
 - (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo;
 - (void)didMoveToCurrent;

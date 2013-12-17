@@ -46,13 +46,16 @@
 - (void)loadScrollView
 {
     _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-    _scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height);
+    _scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + 0.5);
     [self.view addSubview:_scrollView];
 }
 
 - (void)resetCues
 {
-    if (_scrollView.contentOffset.y < [FRBSwatchist floatForKey:@"page.cueVisibleThreshold"]) {
+    CGFloat offset = _scrollView.contentOffset.y;
+    CGFloat threshold = [FRBSwatchist floatForKey:@"page.transitionThreshold"];
+    
+    if (offset <= threshold) {
         if (!_topCueVisible) {
             [_mainViewController setCue:_topCue inPosition:DRPPageDirectionUp];
             _topCueVisible = YES;
@@ -63,8 +66,8 @@
             _topCueVisible = NO;
         }
     }
-    
-    if (_scrollView.contentSize.height - (_scrollView.contentOffset.y + _scrollView.frame.size.height) < [FRBSwatchist floatForKey:@"page.cueVisibleThreshold"]) {
+
+    if (offset + _scrollView.frame.size.height >= _scrollView.contentSize.height - threshold) {
         if (!_bottomCueVisible) {
             [_mainViewController setCue:_bottomCue inPosition:DRPPageDirectionDown];
             _bottomCueVisible = YES;
@@ -106,51 +109,47 @@
     _bottomCueVisibleOnDragStart = _bottomCueVisible;
 }
 
+- (DRPPageDirection)scrollViewShouldEmphasizeCue:(UIScrollView *)scrollView
+{
+    if (scrollView.panGestureRecognizer.state == UIGestureRecognizerStatePossible) return DRPPageDirectionNil;
+    
+    CGFloat offset = scrollView.contentOffset.y;
+    CGFloat threshold = [FRBSwatchist floatForKey:@"page.transitionThreshold"];
+    
+    if (offset <= -threshold) {
+        return DRPPageDirectionUp;
+        
+    } else if (offset + scrollView.frame.size.height >= threshold + scrollView.contentSize.height) {
+        return DRPPageDirectionDown;
+    }
+    return DRPPageDirectionNil;
+}
+
+- (BOOL)scrollView:(UIScrollView *)scrollView shouldTransitionInDirection:(DRPPageDirection)direction
+{
+    if (direction == DRPPageDirectionUp) {
+        return [scrollView.panGestureRecognizer velocityInView:self.view].y >= 0;
+    } else if (direction == DRPPageDirectionDown) {
+        return [scrollView.panGestureRecognizer velocityInView:self.view].y <= 0;
+    }
+    return NO;
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     if (self.mainViewController.currentPageID != self.pageID) return;
     
-    // Let DRPMainViewController know about scrolling
-    CGFloat offset = [self scrollViewPanOffset:scrollView];
-    if (offset != 0) {
-        if ((scrollView.contentOffset.y < 0 && _topCueVisibleOnDragStart) ||
-            (scrollView.contentOffset.y > 0 && _bottomCueVisibleOnDragStart)) {
-            [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset panPages:NO];
-        }
-    } else if (self.view.frame.origin.y != 0) {
-        // Centers the currentPage
-        // Without this, you can "catch" a bit of the surrounding pages when dragging
-        // back past the scrollview content
-        CGFloat offset = -[scrollView.panGestureRecognizer translationInView:self.view].y;
-        [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset panPages:NO];
-    }
-    
+    [_mainViewController emphasizeCueInPosition:[self scrollViewShouldEmphasizeCue:scrollView]];
     [self resetCues];
-}
-
-// Returns the offset to pass to handlePanGesture:offset:
-// when scrolling at the "edges" of the content.
-// Returns 0 otherwise
-- (CGFloat)scrollViewPanOffset:(UIScrollView *)scrollView
-{
-    if (scrollView.contentOffset.y < 0) {
-        return -[scrollView.panGestureRecognizer translationInView:self.view].y - scrollView.contentOffset.y;
-    } else if (scrollView.contentOffset.y + scrollView.frame.size.height - scrollView.contentSize.height > 0) {
-        return -[scrollView.panGestureRecognizer translationInView:self.view].y - (scrollView.contentOffset.y + scrollView.frame.size.height - scrollView.contentSize.height);
-    }
-    return 0;
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    CGFloat offset = [self scrollViewPanOffset:scrollView];
-    if (offset != 0) {
-        // Only handle the gesture at the "edges" of the content
-        // and only when the drag was started with the appropriate cue visible
-        if ((scrollView.contentOffset.y < 0 && _topCueVisibleOnDragStart) ||
-            (scrollView.contentOffset.y > 0 && _bottomCueVisibleOnDragStart)) {
-            [self.mainViewController handlePanGesture:scrollView.panGestureRecognizer offset:offset panPages:NO];
-        }
+    // Only handle the gesture at the "edges" of the content
+    // and only when the drag was started with the appropriate cue visible
+    DRPPageDirection direction = [self scrollViewShouldEmphasizeCue:scrollView];
+    if ([self scrollView:scrollView shouldTransitionInDirection:direction]) {
+        [_mainViewController transitionToPageInDirection:direction];
     }
 }
 

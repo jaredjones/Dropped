@@ -13,8 +13,9 @@
 
 - (DRPPageID)currentPageID;
 - (void)setCurrentPageID:(DRPPageID)pageID animated:(BOOL)animated userInfo:(NSDictionary *)userInfo;
-- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset panPages:(BOOL)panPages;
+- (void)transitionToPageInDirection:(DRPPageDirection)direction;
 
 - (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position;
+- (void)emphasizeCueInPosition:(DRPPageDirection)position;
 
 @end

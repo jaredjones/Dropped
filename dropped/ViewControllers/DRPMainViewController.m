@@ -22,8 +22,6 @@
 @property DRPPageViewController *currentPage, *upPage, *downPage;
 @property DRPCueKeeper *cueKeeper;
 
-@property UIPanGestureRecognizer *panGestureRecognizer;
-
 @property DRPTransition *currentTransition;
 
 @end
@@ -47,9 +45,6 @@
     [DRPTransition setReferenceView:self.view];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
-    [self.view addGestureRecognizer:_panGestureRecognizer];
-    
     _cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
     
     [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
@@ -70,31 +65,14 @@
     if (!_currentPage) {
         animationDirection = DRPPageDirectionNil;
     }
-    DRPPageViewController *prevPage;
     
     // Compute and Configure new Pages based on direction
-    if (animationDirection != DRPPageDirectionSame) {
-        // Only load new surrounding Pages when transitioning to a new Page
-        prevPage = _currentPage;
-        [prevPage willMoveFromCurrent];
-        
-        [self loadNewPagesAroundCurrentPageID:pageID userInfo:userInfo];
-        [self configurePageViewsForAnimationWithPreviousPage:prevPage animated:animated];
-        
-    } else {
-        // If animationDirection is DRPPageDirectionSame, that means the transition
-        // needs to animate back to _currentPage.
-        // Recompute the direction of the transition
-        DRPPageDirection prevPageDirection;
-        if (_currentPage.view.frame.origin.y < 0) {
-            animationDirection = DRPPageDirectionUp;
-            prevPageDirection = DRPPageDirectionDown;
-        } else {
-            animationDirection = DRPPageDirectionDown;
-            prevPageDirection = DRPPageDirectionUp;
-        }
-        prevPage = [_dataSource pageForPageID:[_dataSource pageIDInDirection:prevPageDirection from:_currentPage.pageID]];
-    }
+    // Only load new surrounding Pages when transitioning to a new Page
+    DRPPageViewController *prevPage = _currentPage;
+    [prevPage willMoveFromCurrent];
+    
+    [self loadNewPagesAroundCurrentPageID:pageID userInfo:userInfo];
+    [self configurePageViewsForAnimationWithPreviousPage:prevPage animated:animated];
     
     // Transition to new Page
     // Only run animation if necessary
@@ -105,7 +83,6 @@
                                                      completion:^{
                                                          [self decommissionOldPagesWithPreviousPage:prevPage];
                                                          [self repositionPagesAroundCurrentPage];
-                                                         _panGestureRecognizer.enabled = YES;
                                                          _upPage.view.hidden = NO;
                                                          _downPage.view.hidden = NO;
                                                      }];
@@ -114,14 +91,23 @@
         // velocity jerks in the animation
         _currentTransition.startingVelocity = [userInfo[@"velocity"] floatValue];
         
-        // Dragging is disabled during the animation. (reenabled in completion block)
-        _panGestureRecognizer.enabled = NO;
+        // Reset cues
+        [self setCue:nil inPosition:DRPPageDirectionUp];
+        [self setCue:nil inPosition:DRPPageDirectionDown];
+        [_cueKeeper cycleOutIndicatorForPosition:DRPPageDirectionUp];
+        [_cueKeeper cycleOutIndicatorForPosition:DRPPageDirectionDown];
         
         [_currentTransition execute];
         
     } else {
         [self decommissionOldPagesWithPreviousPage:prevPage];
     }
+}
+
+// Convenience method
+- (void)transitionToPageInDirection:(DRPPageDirection)direction
+{
+    [self setCurrentPageID:[_dataSource pageIDInDirection:direction from:_currentPage.pageID] animated:YES userInfo:nil];
 }
 
 // Loads the new surround DRPPages and stores them in memory
@@ -208,81 +194,6 @@
     [_currentPage didMoveToCurrent];
 }
 
-#pragma mark Touch Events
-
-- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
-{
-    [self handlePanGesture:gesture offset:0 panPages:YES];
-}
-
-- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset panPages:(BOOL)panPages
-{
-    if (gesture.state == UIGestureRecognizerStateBegan) {
-        
-    } else if (gesture.state == UIGestureRecognizerStateChanged) {
-        
-        if (panPages) {
-            [self repositionPagesDuringDragWithGesture:gesture offset:offset];
-        }
-        [self emphasizeCuesWithGesture:gesture offset:offset];
-        
-    } else if (gesture.state == UIGestureRecognizerStateEnded ||
-               gesture.state == UIGestureRecognizerStateCancelled) {
-        
-        // Pan ended, animate transition if necessary
-        DRPPageDirection transitionDirection = [self panEndTransitionDirectionWithGesture:gesture offset:offset];
-        if (transitionDirection != DRPPageDirectionNil) {
-            
-            if (transitionDirection != DRPPageDirectionSame) {
-                [self setCue:nil inPosition:DRPPageDirectionUp];
-                [self setCue:nil inPosition:DRPPageDirectionDown];
-                [_cueKeeper cycleOutIndicatorForPosition:DRPPageDirectionUp];
-                [_cueKeeper cycleOutIndicatorForPosition:DRPPageDirectionDown];
-            }
-            
-            [self setCurrentPageID:[_dataSource pageIDInDirection:transitionDirection from:_currentPage.pageID]
-                          animated:YES
-                          userInfo:@{@"velocity" : @([gesture velocityInView:self.view].y)}];
-        } else {
-            [self setCurrentPageID:_currentPage.pageID animated:YES userInfo:nil];
-        }
-    }
-}
-
-- (void)repositionPagesDuringDragWithGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset
-{
-    CGFloat translation = [gesture translationInView:self.view].y + offset;
-    DRPPageDirection direction = translation >= 0 ? DRPPageDirectionUp : DRPPageDirectionDown;
-    
-    // Make sure _currentPage is Scrollable
-    if ([_dataSource pageIDInDirection:direction from:_currentPage.pageID] != DRPPageNil) {
-        // Reposition DRPPage views
-        CGRect frame = self.view.frame;
-        frame.origin.y += translation;
-        _currentPage.view.frame = frame;
-    }
-    [self repositionPagesAroundCurrentPage];
-}
-
-// Return the direction to transition after a drag
-// Returns DRPPageDirectionSame if a transition is needed to _currentPage
-- (DRPPageDirection)panEndTransitionDirectionWithGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset
-{
-    // It might be better to just look at the positions of the Page views?
-    offset = [gesture translationInView:self.view].y + offset;
-    CGFloat threshold = [FRBSwatchist floatForKey:@"page.transitionThreshold"];
-    
-    if (offset > threshold) {
-        if ([gesture velocityInView:self.view].y < 0) return DRPPageDirectionSame;
-        return DRPPageDirectionUp;
-        
-    } else if (offset < -threshold) {
-        if ([gesture velocityInView:self.view].y > 0) return DRPPageDirectionSame;
-        return DRPPageDirectionDown;
-    }
-    return DRPPageDirectionNil;
-}
-
 #pragma mark Cues
 
 - (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position
@@ -290,12 +201,11 @@
     [_cueKeeper cycleInCue:cue inPosition:position];
 }
 
-- (void)emphasizeCuesWithGesture:(UIPanGestureRecognizer *)gesture offset:(CGFloat)offset
+- (void)emphasizeCueInPosition:(DRPPageDirection)position
 {
-    DRPPageDirection transitionDirection = [self panEndTransitionDirectionWithGesture:gesture offset:offset];
-    if (transitionDirection == DRPPageDirectionUp || transitionDirection == DRPPageDirectionDown) {
-        [_cueKeeper emphasizeCueInPosition:transitionDirection];
-        [_cueKeeper deemphasizeCueInPosition:!transitionDirection];
+    if (position == DRPPageDirectionUp || position == DRPPageDirectionDown) {
+        [_cueKeeper emphasizeCueInPosition:position];
+        [_cueKeeper deemphasizeCueInPosition:!position];
     } else {
         [_cueKeeper deemphasizeCueInPosition:DRPPageDirectionUp];
         [_cueKeeper deemphasizeCueInPosition:DRPPageDirectionDown];

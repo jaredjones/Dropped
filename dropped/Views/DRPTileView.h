@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DRPBoardViewController.h"
 
-@class DRPCharacter;
+@class DRPCharacter, DRPPosition;
 
 @interface DRPTileView : UIControl
 
@@ -16,5 +17,8 @@
 
 @property (nonatomic) DRPCharacter *character;
 @property (nonatomic) CGFloat strokeOpacity;
+@property DRPPosition *position;
+
+@property id<DRPTileDelegate> delegate;
 
 @end

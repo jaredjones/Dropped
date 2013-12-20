@@ -14,6 +14,7 @@
 #import "DRPPageSplashViewController.h"
 #import "DRPPageLogInViewController.h"
 #import "DRPPageEtCeteraViewController.h"
+#import "DRPPageMatchViewController.h"
 
 @interface DRPPageDataSource ()
 
@@ -36,6 +37,12 @@
         _neighbors = @{@(DRPPageList)       : @[@(DRPPageMatchMaker), @(DRPPageEtCetera)],
                        @(DRPPageMatch)      : @[[NSNull null], @(DRPPageList)],
                        @(DRPPageEtCetera)   : @[@(DRPPageList), [NSNull null]]};
+        
+        if (DEBUG_NO_MATCHMAKER) {
+            _neighbors = @{@(DRPPageList)       : @[@(DRPPageMatch), @(DRPPageEtCetera)],
+                           @(DRPPageMatch)      : @[[NSNull null], @(DRPPageList)],
+                           @(DRPPageEtCetera)   : @[@(DRPPageList), [NSNull null]]};
+        }
         
         // Directions stores directions from a DRPPage to another DRPPage
         // Look, Jared! A graph problem!
@@ -74,8 +81,8 @@
         viewController = [[DRPPageMatchmakerViewController alloc] init];
         
     } else if (pageID == DRPPageMatch) {
-        viewController = [[DRPPageViewController alloc] initWithPageID:pageID];
-        viewController.view.backgroundColor = [UIColor yellowColor];
+        viewController = [[DRPPageMatchViewController alloc] init];
+        
     }
     else if (pageID == DRPPageEtCetera) {
         viewController = [[DRPPageEtCeteraViewController alloc] init];

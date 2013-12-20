@@ -42,6 +42,8 @@
 		A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C07B184CFCC100866029 /* DRPDropTransition.m */; };
 		A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C081184CFCDE00866029 /* DRPTransition.m */; };
 		A9B1C085184D042100866029 /* DRPLiftTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C084184D042100866029 /* DRPLiftTransition.m */; };
+		A9C0FACC1864DB0A00377B0E /* DRPPageMatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FACB1864DB0A00377B0E /* DRPPageMatchViewController.m */; };
+		A9C0FACF1864DE7700377B0E /* DRPBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FACE1864DE7700377B0E /* DRPBoardViewController.m */; };
 		A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */; };
 		A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */; };
 		A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E27CBE1857AE210043F6A9 /* DRPTileView.m */; };
@@ -148,6 +150,10 @@
 		A9B1C081184CFCDE00866029 /* DRPTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPTransition.m; path = ViewControllers/Transitions/DRPTransition.m; sourceTree = "<group>"; };
 		A9B1C083184D042100866029 /* DRPLiftTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPLiftTransition.h; path = ViewControllers/Transitions/DRPLiftTransition.h; sourceTree = "<group>"; };
 		A9B1C084184D042100866029 /* DRPLiftTransition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPLiftTransition.m; path = ViewControllers/Transitions/DRPLiftTransition.m; sourceTree = "<group>"; };
+		A9C0FACA1864DB0A00377B0E /* DRPPageMatchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageMatchViewController.h; path = ViewControllers/Pages/DRPPageMatchViewController.h; sourceTree = "<group>"; };
+		A9C0FACB1864DB0A00377B0E /* DRPPageMatchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageMatchViewController.m; path = ViewControllers/Pages/DRPPageMatchViewController.m; sourceTree = "<group>"; };
+		A9C0FACD1864DE7700377B0E /* DRPBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPBoardViewController.h; path = ViewControllers/Pages/DRPBoardViewController.h; sourceTree = "<group>"; };
+		A9C0FACE1864DE7700377B0E /* DRPBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPBoardViewController.m; path = ViewControllers/Pages/DRPBoardViewController.m; sourceTree = "<group>"; };
 		A9C7BBB018395DFD003F585F /* DRPCharacterHistogram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCharacterHistogram.h; path = Models/DRPCharacterHistogram.h; sourceTree = "<group>"; };
 		A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCharacterHistogram.m; path = Models/DRPCharacterHistogram.m; sourceTree = "<group>"; };
 		A9D127B51837E0B40048AF25 /* DRPPlayedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayedWord.h; path = Models/DRPPlayedWord.h; sourceTree = "<group>"; };
@@ -332,6 +338,10 @@
 		A93D77C8185672ED006691AE /* Match */ = {
 			isa = PBXGroup;
 			children = (
+				A9C0FACA1864DB0A00377B0E /* DRPPageMatchViewController.h */,
+				A9C0FACB1864DB0A00377B0E /* DRPPageMatchViewController.m */,
+				A9C0FACD1864DE7700377B0E /* DRPBoardViewController.h */,
+				A9C0FACE1864DE7700377B0E /* DRPBoardViewController.m */,
 			);
 			name = Match;
 			sourceTree = "<group>";
@@ -607,6 +617,7 @@
 				A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */,
 				A9B1206F1857F8CE0079BF72 /* DRPCueIndicatorView.m in Sources */,
 				A91D8F55183702EE00BEC6E8 /* main.m in Sources */,
+				A9C0FACF1864DE7700377B0E /* DRPBoardViewController.m in Sources */,
 				A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */,
 				A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */,
 				A93D77D21856A1F7006691AE /* DRPGameCenterInterface.m in Sources */,
@@ -619,6 +630,7 @@
 				A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */,
 				A93D77CC185673EF006691AE /* DRPPageSplashViewController.m in Sources */,
 				A93D77C618566A8F006691AE /* DRPPageMatchmakerViewController.m in Sources */,
+				A9C0FACC1864DB0A00377B0E /* DRPPageMatchViewController.m in Sources */,
 				A9B1C085184D042100866029 /* DRPLiftTransition.m in Sources */,
 				A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */,
 				A920405C18370BA0006940B8 /* DRPPosition.m in Sources */,

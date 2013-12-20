@@ -80,7 +80,6 @@
             
             data = [d dataUsingEncoding:NSUTF8StringEncoding];
         }
-        NSLog(@"%@", data);
         
         [self loadData:data];
     }

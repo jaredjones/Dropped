@@ -44,6 +44,8 @@
 		A9B1C085184D042100866029 /* DRPLiftTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C084184D042100866029 /* DRPLiftTransition.m */; };
 		A9C0FACC1864DB0A00377B0E /* DRPPageMatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FACB1864DB0A00377B0E /* DRPPageMatchViewController.m */; };
 		A9C0FACF1864DE7700377B0E /* DRPBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FACE1864DE7700377B0E /* DRPBoardViewController.m */; };
+		A9C0FAD21864F63700377B0E /* colors.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9C0FAD01864F53700377B0E /* colors.plist */; };
+		A9C0FAD61864F6FC00377B0E /* DRPUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FAD51864F6FC00377B0E /* DRPUtility.m */; };
 		A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */; };
 		A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */; };
 		A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E27CBE1857AE210043F6A9 /* DRPTileView.m */; };
@@ -74,6 +76,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */,
+				A9C0FAD21864F63700377B0E /* colors.plist in CopyFiles */,
 				A91C045818557C03002B6899 /* page.plist in CopyFiles */,
 				A9E27CC61857B6170043F6A9 /* tileOffset.plist in CopyFiles */,
 				A9E27CC81857B6250043F6A9 /* tileScalingOffset.plist in CopyFiles */,
@@ -154,6 +157,9 @@
 		A9C0FACB1864DB0A00377B0E /* DRPPageMatchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageMatchViewController.m; path = ViewControllers/Pages/DRPPageMatchViewController.m; sourceTree = "<group>"; };
 		A9C0FACD1864DE7700377B0E /* DRPBoardViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPBoardViewController.h; path = ViewControllers/Pages/DRPBoardViewController.h; sourceTree = "<group>"; };
 		A9C0FACE1864DE7700377B0E /* DRPBoardViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPBoardViewController.m; path = ViewControllers/Pages/DRPBoardViewController.m; sourceTree = "<group>"; };
+		A9C0FAD01864F53700377B0E /* colors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = colors.plist; path = Swatches/colors.plist; sourceTree = "<group>"; };
+		A9C0FAD41864F6FC00377B0E /* DRPUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRPUtility.h; sourceTree = "<group>"; };
+		A9C0FAD51864F6FC00377B0E /* DRPUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRPUtility.m; sourceTree = "<group>"; };
 		A9C7BBB018395DFD003F585F /* DRPCharacterHistogram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCharacterHistogram.h; path = Models/DRPCharacterHistogram.h; sourceTree = "<group>"; };
 		A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCharacterHistogram.m; path = Models/DRPCharacterHistogram.m; sourceTree = "<group>"; };
 		A9D127B51837E0B40048AF25 /* DRPPlayedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayedWord.h; path = Models/DRPPlayedWord.h; sourceTree = "<group>"; };
@@ -248,6 +254,7 @@
 				A9204054183704B7006940B8 /* ViewControllers */,
 				A9204055183704C1006940B8 /* Views */,
 				A9204056183704D7006940B8 /* Models */,
+				A9C0FAD31864F6D000377B0E /* Utility */,
 				A91D8F5A183702EE00BEC6E8 /* Images.xcassets */,
 				C08CBC121837168800CE678F /* Resources */,
 				A91D8F4F183702EE00BEC6E8 /* Supporting Files */,
@@ -418,6 +425,7 @@
 			isa = PBXGroup;
 			children = (
 				A9AC495F18539E44006E1D84 /* animation.plist */,
+				A9C0FAD01864F53700377B0E /* colors.plist */,
 				A91C045618557B6A002B6899 /* page.plist */,
 				A9E27CC21857B4290043F6A9 /* tileOffset.plist */,
 				A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */,
@@ -445,6 +453,15 @@
 				A9B1C084184D042100866029 /* DRPLiftTransition.m */,
 			);
 			name = Transitions;
+			sourceTree = "<group>";
+		};
+		A9C0FAD31864F6D000377B0E /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				A9C0FAD41864F6FC00377B0E /* DRPUtility.h */,
+				A9C0FAD51864F6FC00377B0E /* DRPUtility.m */,
+			);
+			name = Utility;
 			sourceTree = "<group>";
 		};
 		A9E27CBC1857AE050043F6A9 /* Tiles */ = {
@@ -611,6 +628,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */,
+				A9C0FAD61864F6FC00377B0E /* DRPUtility.m in Sources */,
 				A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */,
 				A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */,
 				A9039FFB1858D579002AEB37 /* DRPPageEtCeteraViewController.m in Sources */,

@@ -66,6 +66,7 @@
 - (void)loadSwatches
 {
     [self loadSwatchNamed:@"animation"];
+    [self loadSwatchNamed:@"colors"];
     [self loadSwatchNamed:@"page"];
     [self loadSwatchNamed:@"tileOffset"];
     [self loadSwatchNamed:@"tileScalingOffset"];

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>white</key>
+	<string>#ffffff</string>
+	<key>blue</key>
+	<string>#4c9bf5</string>
+	<key>green</key>
+	<string>#66eb49</string>
+	<key>orange</key>
+	<string>#f5a045</string>
+	<key>purple</key>
+	<string>#8c43f6</string>
+	<key>yellow</key>
+	<string>#f5e345</string>
+	<key>pink</key>
+	<string>#f143b1</string>
+	<key>red</key>
+	<string>#f143b1</string>
+</dict>
+</plist>

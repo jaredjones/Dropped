@@ -31,7 +31,8 @@
     
     DRPCharacter *c = [DRPCharacter new];
     c.character = character;
-    c.multiplier = -1;
+    c.multiplier = 0;
+    c.color = DRPColorNil;
     return c;
 }
 
@@ -40,19 +41,20 @@
     DRPCharacter *c = [DRPCharacter new];
     switch (multiplier) {
         case 3:
-            c.character = @"3";
+            c.character = @"three";
             break;
         case 4:
-            c.character = @"4";
+            c.character = @"four";
             break;
         case 5:
-            c.character = @"5";
+            c.character = @"five";
             break;
         default:
             c = nil;
             break;
     }
     c.multiplier = multiplier;
+    c.color = DRPColorNil;
     return c;
 }
 

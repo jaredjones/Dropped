@@ -13,6 +13,7 @@
 
 @protocol DRPTileDelegate
 
+- (void)tileWasHighlighted:(DRPTileView *)tile;
 - (void)tileWasSelected:(DRPTileView *)tile;
 - (void)tileWasDeselected:(DRPTileView *)character;
 

@@ -9,6 +9,7 @@
 #import "DRPTileView.h"
 #import "DRPCharacter.h"
 #import "FRBSwatchist.h"
+#import "DRPUtility.h"
 #import <CoreText/CoreText.h>
 
 @interface DRPTileView ()
@@ -74,6 +75,15 @@ static NSMutableDictionary *glyphScaleTransformCache;
     
     // Load other stuff
     // if (character.adjacentMultiplier) { ... }
+    if (character.adjacentMultiplier) {
+        _color = colorForColor(character.adjacentMultiplier.color);
+    } else {
+        _color = colorForColor(character.color);
+    }
+    
+    if (character.multiplier) {
+        self.backgroundColor = _color;
+    }
 }
 
 - (CGFloat)strokeOpacity
@@ -91,11 +101,6 @@ static NSMutableDictionary *glyphScaleTransformCache;
 }
 
 #pragma mark Touch Events
-
-- (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event
-{
-    return [super beginTrackingWithTouch:touch withEvent:event];
-}
 
 - (void)touchDown
 {
@@ -139,7 +144,7 @@ static NSMutableDictionary *glyphScaleTransformCache;
         // for self.selected as well
         self.backgroundColor = _color;
     } else {
-        self.backgroundColor = [UIColor whiteColor];
+        self.backgroundColor = [FRBSwatchist colorForKey:@"colors.white"];
     }
     
     // Transform
@@ -155,11 +160,6 @@ static NSMutableDictionary *glyphScaleTransformCache;
 
 + (UIBezierPath *)pathForCharacter:(NSString *)character
 {
-    // Extract glyph name first
-    if ([character isEqualToString:@"3"]) character = @"three";
-    if ([character isEqualToString:@"4"]) character = @"four";
-    if ([character isEqualToString:@"5"]) character = @"five";
-    
     if (glyphCache[character]) return glyphCache[character];
     
     
@@ -196,7 +196,7 @@ static NSMutableDictionary *glyphScaleTransformCache;
     [glyphBezierPath applyTransform:letterTransform];
     
     // Scale Transform
-    offset = [[FRBSwatchist swatchForName:@"tileScaleingOffset"] pointForKey:character];
+    offset = [[FRBSwatchist swatchForName:@"tileScalingOffset"] pointForKey:character];
     dx = -glyphBounds.size.width - glyphBounds.origin.x - offset.x;
     dy = -glyphBounds.size.height - glyphBounds.origin.y - offset.y;
     

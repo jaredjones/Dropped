@@ -30,6 +30,7 @@
 // MatchData
 // First byte               - version number
 // Next 36 bytes            - initial characters
+// Next 2 bytes             - multiplier colors
 // Next 1 byte              - number of turns (n) taken so far
 // Following n sequences
 //      First byte                  - number of characters (m) in move
@@ -69,6 +70,7 @@
         if (data == nil || data.length == 0) {
             // Test data uses \ddd for non-ASCII characters
             NSMutableString *d = [NSMutableString stringWithString:@"\001ABCDEFG3IJKLMNOPQRSTUVWXYZABC4EFGHIJ"];
+            [d appendString:@"\000\001"];
             
             // 1 turn
             [d appendString:@"\001"];
@@ -263,6 +265,7 @@
 {
     NSString *initialState = [[NSString alloc] initWithData:[data subdataWithRange:NSMakeRange(0, 36)]
                                                    encoding:NSUTF8StringEncoding];
+    NSData *initialMultiplierColors = [data subdataWithRange:NSMakeRange(36, 2)];
     
     NSMutableDictionary *firstTurn = [[NSMutableDictionary alloc] init];
     
@@ -270,6 +273,14 @@
         for (NSInteger j = 0; j < 6; j++) {
             NSString *c = [initialState substringWithRange:NSMakeRange(i + 6 * j, 1)];
             DRPCharacter *character = [DRPCharacter characterWithCharacter:c];
+            
+            if (character.multiplier) {
+                DRPColor color = DRPColorNil;
+                [initialMultiplierColors getBytes:&color length:1];
+                initialMultiplierColors = [initialMultiplierColors subdataWithRange:NSMakeRange(1, initialMultiplierColors.length - 1)];
+                character.color = color;
+            }
+            
             firstTurn[[DRPPosition positionWithI:i j:j]] = character;
         }
     }
@@ -480,7 +491,7 @@
             DRPPosition *position = [DRPPosition positionWithI:i j:j];
             DRPCharacter *character = item[position];
             
-            if (character.multiplier == -1) continue;
+            if (!character.multiplier) continue;
             
             for (DRPDirection dir = 0; dir < 8; dir++) {
                 DRPPosition *adjacent = [position positionInDirection:dir];

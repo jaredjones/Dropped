@@ -14,6 +14,15 @@
 
 @implementation DRPPlayedWord
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        _positions = @[];
+    }
+    return self;
+}
+
 // Diff
 //  {
 //      start_position : end_position,

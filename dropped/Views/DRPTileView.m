@@ -104,6 +104,7 @@ static NSMutableDictionary *glyphScaleTransformCache;
 
 - (void)touchDown
 {
+    [_delegate tileWasHighlighted:self];
     [self resetAppearence];
 }
 
@@ -113,18 +114,28 @@ static NSMutableDictionary *glyphScaleTransformCache;
         self.selected = !self.selected;
     }
     self.highlighted = NO;
+    
+    if (self.selected) {
+        [_delegate tileWasSelected:self];
+    } else {
+        [_delegate tileWasDehighlighted:self];
+        [_delegate tileWasDeselected:self];
+    }
+    
     [self resetAppearence];
 }
 
 - (void)touchUpOutside
 {
     self.highlighted = NO;
+    [_delegate tileWasDehighlighted:self];
     [self resetAppearence];
 }
 
 - (void)touchCancel
 {
     self.highlighted = NO;
+    [_delegate tileWasDehighlighted:self];
     [self resetAppearence];
 }
 

@@ -46,6 +46,7 @@
 		A9C0FACF1864DE7700377B0E /* DRPBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FACE1864DE7700377B0E /* DRPBoardViewController.m */; };
 		A9C0FAD21864F63700377B0E /* colors.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9C0FAD01864F53700377B0E /* colors.plist */; };
 		A9C0FAD61864F6FC00377B0E /* DRPUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FAD51864F6FC00377B0E /* DRPUtility.m */; };
+		A9C0FAD9186507EC00377B0E /* NSArray+Mutable.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FAD8186507EC00377B0E /* NSArray+Mutable.m */; };
 		A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */; };
 		A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */; };
 		A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E27CBE1857AE210043F6A9 /* DRPTileView.m */; };
@@ -160,6 +161,8 @@
 		A9C0FAD01864F53700377B0E /* colors.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = colors.plist; path = Swatches/colors.plist; sourceTree = "<group>"; };
 		A9C0FAD41864F6FC00377B0E /* DRPUtility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRPUtility.h; sourceTree = "<group>"; };
 		A9C0FAD51864F6FC00377B0E /* DRPUtility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRPUtility.m; sourceTree = "<group>"; };
+		A9C0FAD7186507EC00377B0E /* NSArray+Mutable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSArray+Mutable.h"; sourceTree = "<group>"; };
+		A9C0FAD8186507EC00377B0E /* NSArray+Mutable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Mutable.m"; sourceTree = "<group>"; };
 		A9C7BBB018395DFD003F585F /* DRPCharacterHistogram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCharacterHistogram.h; path = Models/DRPCharacterHistogram.h; sourceTree = "<group>"; };
 		A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCharacterHistogram.m; path = Models/DRPCharacterHistogram.m; sourceTree = "<group>"; };
 		A9D127B51837E0B40048AF25 /* DRPPlayedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayedWord.h; path = Models/DRPPlayedWord.h; sourceTree = "<group>"; };
@@ -460,6 +463,8 @@
 			children = (
 				A9C0FAD41864F6FC00377B0E /* DRPUtility.h */,
 				A9C0FAD51864F6FC00377B0E /* DRPUtility.m */,
+				A9C0FAD7186507EC00377B0E /* NSArray+Mutable.h */,
+				A9C0FAD8186507EC00377B0E /* NSArray+Mutable.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -645,6 +650,7 @@
 				A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */,
 				A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */,
 				A93D77CF18567D4B006691AE /* DRPPageLogInViewController.m in Sources */,
+				A9C0FAD9186507EC00377B0E /* NSArray+Mutable.m in Sources */,
 				A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */,
 				A93D77CC185673EF006691AE /* DRPPageSplashViewController.m in Sources */,
 				A93D77C618566A8F006691AE /* DRPPageMatchmakerViewController.m in Sources */,

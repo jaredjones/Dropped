@@ -7,14 +7,19 @@
 //
 
 #import "DRPBoardViewController.h"
+#import "NSArray+Mutable.h"
 
 #import "DRPTileView.h"
 
 #import "DRPBoard.h"
 #import "DRPPosition.h"
 #import "DRPCharacter.h"
+#import "DRPPlayedWord.h"
 
 @interface DRPBoardViewController ()
+
+@property DRPBoard *board;
+@property DRPPlayedWord *currentWord;
 
 @property NSMutableDictionary *tiles;
 
@@ -39,13 +44,14 @@
 
 - (void)loadBoard:(DRPBoard *)board
 {
+    _board = board;
     _tiles = [[NSMutableDictionary alloc] init];
     
     for (NSInteger i = 0; i < 6; i++) {
         for (NSInteger j = 0; j < 6; j++) {
             DRPPosition *position = [DRPPosition positionWithI:i j:j];
             
-            DRPTileView *tile = [[DRPTileView alloc] initWithCharacter:[board characterAtPosition:position]];
+            DRPTileView *tile = [[DRPTileView alloc] initWithCharacter:[_board characterAtPosition:position]];
             tile.position = position;
             tile.center = [self centerForPosition:position];
             [self.view addSubview:tile];
@@ -54,6 +60,8 @@
             tile.delegate = self;
         }
     }
+    
+    _currentWord = [[DRPPlayedWord alloc] init];
 }
 
 - (CGPoint)centerForPosition:(DRPPosition *)position
@@ -65,17 +73,24 @@
 
 - (void)tileWasHighlighted:(DRPTileView *)tile
 {
-    
+    // highlight tiles around adjacentMultiplier if it is activated
+}
+
+- (void)tileWasDehighlighted:(DRPTileView *)tile
+{
+    // dehighlight tiles around adjacentMultiplier if necessary
 }
 
 - (void)tileWasSelected:(DRPTileView *)tile
 {
-    
+    // add character to current word, update delegate
+    _currentWord.positions = [_currentWord.positions arrayByAddingObject:tile.position];
 }
 
-- (void)tileWasDeselected:(DRPTileView *)character
+- (void)tileWasDeselected:(DRPTileView *)tile
 {
-    
+    // remove character from current word, update delegate
+    _currentWord.positions = [_currentWord.positions arrayByRemovingObject:tile.position];
 }
 
 @end

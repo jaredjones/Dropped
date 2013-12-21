@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "DRPPageMatchViewController.h"
 
-@class DRPTileView, DRPBoard;
+@class DRPTileView, DRPBoard, DRPPlayedWord;
 
 @protocol DRPTileDelegate
 
@@ -24,6 +24,10 @@
 
 @property id<DRPBoardViewControllerDelegate> delegate;
 
+@property (readonly) NSString *currentWord;
+@property (readonly) NSArray *currentPositions;
+
 - (void)loadBoard:(DRPBoard *)board;
+- (void)dropPlayedWord:(DRPPlayedWord *)playedWord;
 
 @end

@@ -19,7 +19,7 @@
 @interface DRPBoardViewController ()
 
 @property DRPBoard *board;
-@property DRPPlayedWord *currentWord;
+@property DRPPlayedWord *currentPlayedWord;
 
 @property NSMutableDictionary *tiles;
 
@@ -61,7 +61,7 @@
         }
     }
     
-    _currentWord = [[DRPPlayedWord alloc] init];
+    _currentPlayedWord = [[DRPPlayedWord alloc] init];
 }
 
 - (CGPoint)centerForPosition:(DRPPosition *)position
@@ -84,13 +84,41 @@
 - (void)tileWasSelected:(DRPTileView *)tile
 {
     // add character to current word, update delegate
-    _currentWord.positions = [_currentWord.positions arrayByAddingObject:tile.position];
+    _currentPlayedWord.positions = [_currentPlayedWord.positions arrayByAddingObject:tile.position];
+    [_delegate characterAddedToCurrentWord:tile.character];
 }
 
 - (void)tileWasDeselected:(DRPTileView *)tile
 {
     // remove character from current word, update delegate
-    _currentWord.positions = [_currentWord.positions arrayByRemovingObject:tile.position];
+    _currentPlayedWord.positions = [_currentPlayedWord.positions arrayByRemovingObject:tile.position];
+    [_delegate characterRemovedFromCurrentWord:tile.character];
+}
+
+#pragma mark Current Word
+
+- (NSString *)currentWord
+{
+    return [_board wordForPositions:_currentPlayedWord.positions];
+}
+
+- (NSArray *)currentPositions
+{
+    return _currentPlayedWord.positions;
+}
+
+- (void)resetCurrentWord
+{
+    _currentPlayedWord.positions = @[];
+}
+
+#pragma mark Move Submission
+
+- (void)dropPlayedWord:(DRPPlayedWord *)playedWord
+{
+    // drop tilesviews
+    
+    [self resetCurrentWord];
 }
 
 @end

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <GameKit/GameKit.h>
 
-@class DRPPlayer, DRPBoard;
+@class DRPPlayer, DRPBoard, DRPPlayedWord;
 
 @interface DRPMatch : NSObject
 
@@ -26,5 +26,7 @@
 
 - (DRPPlayer *)localPlayer;
 - (DRPPlayer *)currentPlayer;
+
+- (void)submitTurnForPositions:(NSArray *)positions;
 
 @end

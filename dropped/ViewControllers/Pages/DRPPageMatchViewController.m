@@ -9,6 +9,7 @@
 #import "DRPPageMatchViewController.h"
 #import "DRPBoardViewController.h"
 #import "DRPMatch.h"
+#import "DRPPlayedWord.h"
 
 @interface DRPPageMatchViewController ()
 
@@ -60,5 +61,27 @@
 
 #pragma mark DRPBoardViewControllerDelegate
 
+- (void)characterAddedToCurrentWord:(DRPCharacter *)character
+{
+    // change bottom cue
+}
+
+- (void)characterRemovedFromCurrentWord:(DRPCharacter *)character
+{
+    // change bottom cue
+    // if no characters left, change DRPPlayedWordView message
+}
+
+#pragma mark DRPPlayedWordViewDelegate
+
+- (void)playedWordViewTapped
+{
+    [_match submitTurnForPositions:_boardViewController.currentPositions];
+    // register for nsnotification to find out when GC receives move
+}
+
+- (void)playedWordViewSwiped
+{
+}
 
 @end

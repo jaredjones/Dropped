@@ -8,7 +8,17 @@
 
 #import "DRPPageViewController.h"
 
+@class DRPCharacter;
+
 @protocol DRPBoardViewControllerDelegate
+
+- (void)characterAddedToCurrentWord:(DRPCharacter *)character;
+- (void)characterRemovedFromCurrentWord:(DRPCharacter *)character;
+
+@end
+
+@protocol DRPPlayedWordViewDelegate
+
 @end
 
 @interface DRPPageMatchViewController : DRPPageViewController <DRPBoardViewControllerDelegate>

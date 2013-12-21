@@ -144,15 +144,12 @@ static NSMutableDictionary *glyphScaleTransformCache;
     // Stroke Opacity
     if (self.highlighted || self.selected) {
         self.strokeOpacity = 1;
-        
     } else {
         self.strokeOpacity = 0;
     }
     
     // Color
-    if (self.highlighted) {
-        // If adjacentMultiplier is active, set color
-        // for self.selected as well
+    if (self.highlighted || (self.selected && _character.adjacentMultiplier.multiplierActive)) {
         self.backgroundColor = _color;
     } else {
         self.backgroundColor = [FRBSwatchist colorForKey:@"colors.white"];
@@ -161,7 +158,6 @@ static NSMutableDictionary *glyphScaleTransformCache;
     // Transform
     if (self.highlighted) {
         _glyphLayer.transform = [glyphScaleTransformCache[_character.character] CATransform3DValue];
-        
     } else {
         _glyphLayer.transform = CATransform3DIdentity;
     }

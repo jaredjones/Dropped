@@ -21,4 +21,6 @@
 
 @property id<DRPTileDelegate> delegate;
 
+- (void)resetAppearence;
+
 @end

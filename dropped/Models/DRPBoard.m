@@ -336,7 +336,7 @@
     for (DRPCharacter *character in playedWord.appendedCharacters) {
         // Load colors
         if (character.multiplier != -1) {
-            DRPColor color = 0;
+            DRPColor color = DRPColorNil;
             [turnData getBytes:&color length:1];
             [turnData setData:[turnData subdataWithRange:NSMakeRange(1, turnData.length - 1)]];
             

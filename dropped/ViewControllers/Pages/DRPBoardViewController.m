@@ -21,7 +21,7 @@
 @property DRPBoard *board;
 @property DRPPlayedWord *currentPlayedWord;
 
-@property NSMutableDictionary *tiles;
+@property NSMutableDictionary *tiles, *adjacentMultipliers;
 
 @end
 
@@ -31,6 +31,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        _adjacentMultipliers = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -73,12 +74,46 @@
 
 - (void)tileWasHighlighted:(DRPTileView *)tile
 {
-    // highlight tiles around adjacentMultiplier if it is activated
+    // Highlight tiles around adjacentMultiplier if it is activated
+    DRPCharacter *adjacentMultiplier = tile.character.adjacentMultiplier;
+    if (adjacentMultiplier) {
+        NSMutableArray *adjacent = _adjacentMultipliers[adjacentMultiplier];
+        
+        if (!adjacent) {
+            adjacent = [[NSMutableArray alloc] init];
+            _adjacentMultipliers[adjacentMultiplier] = adjacent;
+        }
+        
+        if (![adjacent containsObject:tile]) {
+            [adjacent addObject:tile];
+        }
+        
+        if (adjacent.count >= adjacentMultiplier.multiplier) {
+            adjacentMultiplier.multiplierActive = YES;
+            
+            for (DRPTileView *tile in adjacent) {
+                [tile resetAppearence];
+            }
+        }
+    }
 }
 
 - (void)tileWasDehighlighted:(DRPTileView *)tile
 {
-    // dehighlight tiles around adjacentMultiplier if necessary
+    // Dehighlight tiles around adjacentMultiplier if necessary
+    DRPCharacter *adjacentMultiplier = tile.character.adjacentMultiplier;
+    if (adjacentMultiplier) {
+        NSMutableArray *adjacent = _adjacentMultipliers[adjacentMultiplier];
+        
+        [adjacent removeObject:tile];
+        if (adjacent.count < adjacentMultiplier.multiplier) {
+            adjacentMultiplier.multiplierActive = NO;
+            
+            for (DRPTileView *tile in adjacent) {
+                [tile resetAppearence];
+            }
+        }
+    }
 }
 
 - (void)tileWasSelected:(DRPTileView *)tile

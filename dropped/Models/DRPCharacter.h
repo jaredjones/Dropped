@@ -27,6 +27,7 @@ typedef NS_ENUM(NSInteger, DRPColor) {
 
 // -1 if not a multiplier
 @property (readonly) NSInteger multiplier;
+@property BOOL multiplierActive;
 @property DRPColor color;
 
 // Non-nil if this tile is next to a multiplier

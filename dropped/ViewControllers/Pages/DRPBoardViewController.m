@@ -45,6 +45,8 @@
 
 - (void)loadBoard:(DRPBoard *)board
 {
+    [self clearCurrentBoard];
+    
     _board = board;
     _tiles = [[NSMutableDictionary alloc] init];
     

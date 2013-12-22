@@ -70,7 +70,7 @@
         if (data == nil || data.length == 0) {
             // Test data uses \ddd for non-ASCII characters
             NSMutableString *d = [NSMutableString stringWithString:@"\001ABCDEFG3IJKLMNOPQRSTUVWXYZABC4EFGHIJ"];
-            [d appendString:@"\000\001"];
+            [d appendString:@"\003\001"];
             
             // 1 turn
             [d appendString:@"\001"];
@@ -256,7 +256,7 @@
     _histogram = [[DRPCharacterHistogram alloc] init];
     
     [self loadInitialState:[data subdataWithRange:NSMakeRange(1, data.length - 1)]];
-    [self loadTurns:[data subdataWithRange:NSMakeRange(37, data.length - 37)]];
+    [self loadTurns:[data subdataWithRange:NSMakeRange(39, data.length - 39)]];
 }
 
 // Load the state of the board at the beginning of the match
@@ -293,7 +293,9 @@
 {
     NSInteger numberTurns = 0;
     [turnsData getBytes:&numberTurns length:1];
-    if (numberTurns == 0) return;
+    if (numberTurns == 0) {
+        return;
+    }
     
     NSMutableData *mturnsData = [NSMutableData dataWithData:[turnsData subdataWithRange:NSMakeRange(1, turnsData.length - 1)]];
     
@@ -338,7 +340,10 @@
         if (character.multiplier != -1) {
             DRPColor color = DRPColorNil;
             [turnData getBytes:&color length:1];
-            [turnData setData:[turnData subdataWithRange:NSMakeRange(1, turnData.length - 1)]];
+            if (turnData.length > 1) {
+                // Don't worry about setting data at the end of the rope
+                [turnData setData:[turnData subdataWithRange:NSMakeRange(1, turnData.length - 1)]];
+            }
             
             character.color = color;
         }
@@ -451,6 +456,7 @@
             DRPPosition *position = [DRPPosition positionWithI:i j:j];
             DRPCharacter *old = item[position];
             DRPCharacter *newCharacter = [DRPCharacter characterWithCharacter:old.character];
+            newCharacter.color = old.color;
             copied[position] = newCharacter;
         }
     }

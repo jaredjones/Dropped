@@ -169,7 +169,6 @@ static NSMutableDictionary *glyphScaleTransformCache;
 {
     if (glyphCache[character]) return glyphCache[character];
     
-    
     //// Load Glyph
     // Create a Core Text font reference
     CTFontRef font = CTFontCreateWithName(CFSTR("Rokkitt"), 48, NULL);

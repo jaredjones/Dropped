@@ -283,8 +283,13 @@
     tile.selected = YES;
     [tile resetAppearence];
     
-    [UIView animateWithDuration:0.6 animations:^{
-        tile.center = [self centerForPosition:position];
+    CGPoint dest = [self centerForPosition:position];
+    CGFloat dist = dest.y - tile.center.y;
+    CGFloat rate = 120;
+    CGFloat duration = MIN(MAX(dist / rate, 0.2), 0.78);
+    
+    [UIView animateWithDuration:duration animations:^{
+        tile.center = dest;
     } completion:^(BOOL finished) {
         tile.selected = NO;
         [tile resetAppearence];

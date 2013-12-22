@@ -65,6 +65,13 @@
     _currentPlayedWord = [[DRPPlayedWord alloc] init];
 }
 
+- (void)clearCurrentBoard
+{
+    for (DRPPosition *position in _tiles) {
+        [_tiles[position] removeFromSuperview];
+    }
+}
+
 - (CGPoint)centerForPosition:(DRPPosition *)position
 {
     return CGPointMake(160 + 53 * (position.i - 2.5), 160 + 53 * (position.j - 2.5));

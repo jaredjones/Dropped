@@ -157,9 +157,7 @@
     
     // Add Move to History
     NSMutableDictionary *historyItem = [self deepCopyHistoryItem:[_history lastObject]];
-//    [self prettyPrintHistoryItem:historyItem];
     [self applyDiff:playedWord toHistoryItem:historyItem];
-//    [self prettyPrintHistoryItem:historyItem];
     [self appendHistoryItem:historyItem];
     [_playedWords addObject:playedWord];
     
@@ -226,18 +224,18 @@
 - (DRPPosition *)additionMultiplierForPositions:(NSArray *)positions inColumn:(NSInteger)column
 {
     DRPPosition *multiplier;
-    for (NSInteger j = 5; j >= 0; j++) {
+    for (NSInteger j = 5; j >= 0; j--) {
         DRPPosition *position = [DRPPosition positionWithI:column j:j];
         if ([positions containsObject:position]) {
             continue;
         }
         
-        if ([self characterAtPosition:position].multiplier != -1) {
+        if ([self characterAtPosition:position].multiplier) {
             multiplier = position;
         }
         break;
     }
-    return nil;
+    return multiplier;
 }
 
 #pragma mark MatchData Loading
@@ -515,7 +513,7 @@
         for (NSInteger j = 0; j < 6; j++) {
             DRPPosition *position = [DRPPosition positionWithI:i j:j];
             DRPCharacter *character = item[position];
-            if (character.multiplier != -1) {
+            if (character.multiplier) {
                 [multipliers addObject:position];
             }
         }

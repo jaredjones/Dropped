@@ -34,11 +34,6 @@ static NSMutableDictionary *glyphScaleTransformCache;
         
         // Make sure to call the setter method, it has side effects
         [self setCharacter:character];
-        
-        [self addTarget:self action:@selector(touchDown) forControlEvents:UIControlEventTouchDown];
-        [self addTarget:self action:@selector(touchUpInside) forControlEvents:UIControlEventTouchUpInside];
-        [self addTarget:self action:@selector(touchUpOutside) forControlEvents:UIControlEventTouchUpOutside];
-        [self addTarget:self action:@selector(touchCancel) forControlEvents:UIControlEventTouchCancel];
     }
     return self;
 }
@@ -84,6 +79,8 @@ static NSMutableDictionary *glyphScaleTransformCache;
     if (character.multiplier) {
         self.backgroundColor = _color;
     }
+    
+    [self resetTargets];
 }
 
 - (CGFloat)strokeOpacity
@@ -160,6 +157,25 @@ static NSMutableDictionary *glyphScaleTransformCache;
         _glyphLayer.transform = [glyphScaleTransformCache[_character.character] CATransform3DValue];
     } else {
         _glyphLayer.transform = CATransform3DIdentity;
+    }
+}
+
+// Multipliers shouldn't have any targets
+// This method cleanly resets targets between
+// different character assignments
+- (void)resetTargets
+{
+    if (_character.multiplier) {
+        [self removeTarget:self action:@selector(touchDown) forControlEvents:UIControlEventTouchDown];
+        [self removeTarget:self action:@selector(touchUpInside) forControlEvents:UIControlEventTouchUpInside];
+        [self removeTarget:self action:@selector(touchUpOutside) forControlEvents:UIControlEventTouchUpOutside];
+        [self removeTarget:self action:@selector(touchCancel) forControlEvents:UIControlEventTouchCancel];
+        
+    } else if (!([self actionsForTarget:self forControlEvent:UIControlEventTouchDown]).count) {
+        [self addTarget:self action:@selector(touchDown) forControlEvents:UIControlEventTouchDown];
+        [self addTarget:self action:@selector(touchUpInside) forControlEvents:UIControlEventTouchUpInside];
+        [self addTarget:self action:@selector(touchUpOutside) forControlEvents:UIControlEventTouchUpOutside];
+        [self addTarget:self action:@selector(touchCancel) forControlEvents:UIControlEventTouchCancel];
     }
 }
 

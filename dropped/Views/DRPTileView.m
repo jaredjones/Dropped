@@ -183,6 +183,11 @@ static NSMutableDictionary *glyphScaleTransformCache;
 
 + (UIBezierPath *)pathForCharacter:(NSString *)character
 {
+    // Find correct character first
+    if ([character isEqualToString:@"3"]) character = @"three";
+    if ([character isEqualToString:@"4"]) character = @"four";
+    if ([character isEqualToString:@"5"]) character = @"five";
+    
     if (glyphCache[character]) return glyphCache[character];
     
     //// Load Glyph

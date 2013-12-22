@@ -105,7 +105,7 @@
 - (void)submitTurnForPositions:(NSArray *)positions
 {
     // Add move to history (assumed correct, don't do further error checking)
-    [_board appendMoveForPositions:positions];
+    DRPPlayedWord *playedWord = [_board appendMoveForPositions:positions];
     
     // Send move off to Game Center
     NSArray *paricipants = @[self.currentPlayer];
@@ -113,6 +113,13 @@
     [_gkMatch endTurnWithNextParticipants:paricipants turnTimeout:GKTurnTimeoutNone matchData:data completionHandler:^(NSError *error) {
         // Post NSNotification to signal ViewControllers
     }];
+    
+    // Debugging
+    if (!_gkMatch) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:DRPGameCenterReceivedTurnNotificationName
+                                                            object:nil
+                                                          userInfo:@{@"playedWord" : playedWord}];
+    }
 }
 
 #pragma mark Player

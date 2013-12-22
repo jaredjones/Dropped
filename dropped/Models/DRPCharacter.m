@@ -41,13 +41,13 @@
     DRPCharacter *c = [DRPCharacter new];
     switch (multiplier) {
         case 3:
-            c.character = @"three";
+            c.character = @"3";
             break;
         case 4:
-            c.character = @"four";
+            c.character = @"4";
             break;
         case 5:
-            c.character = @"five";
+            c.character = @"5";
             break;
         default:
             c = nil;
@@ -56,6 +56,11 @@
     c.multiplier = multiplier;
     c.color = DRPColorNil;
     return c;
+}
+
+- (NSString *)description
+{
+    return [NSString stringWithFormat:@"<DRPCharacter: %@>", _character];
 }
 
 #pragma mark NSCopying

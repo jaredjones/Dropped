@@ -151,9 +151,66 @@
 
 - (void)dropPlayedWord:(DRPPlayedWord *)playedWord
 {
-    // drop tilesviews
+    
+    // First, drop positions
+    [self dropPositions:playedWord.positions];
+    [self dropPositions:playedWord.multipliers];
+    [self dropPositions:playedWord.additionalMultipliers];
+    
+    NSMutableDictionary *diff = [[NSMutableDictionary alloc] initWithDictionary:playedWord.diff];
+    
+    // Move everything else down
+    for (NSInteger i = 0; i < 6; i++) {
+        for (NSInteger j = 5; j >= 0; j--) {
+            DRPPosition *start = [DRPPosition positionWithI:i j:j];
+            DRPPosition *end = diff[start] ?: start;
+            
+            DRPTileView *tile = _tiles[start];
+            tile.character = [_board characterAtPosition:end];
+            tile.position = end;
+            _tiles[end] = tile;
+            
+            if (![start isEqual:end]) {
+                [self transitionTile:tile toPosition:end];
+            }
+        }
+    }
+    
+    // Create DRPTileViews at the top
+    for (NSInteger i = 0; i < 6; i++) {
+        for (NSInteger j = -1; j >= -6; j--) {
+            DRPPosition *start = [DRPPosition positionWithI:i j:j];
+            if (!diff[start]) break;
+            
+            DRPCharacter *character = diff[start][0];
+            DRPPosition *end = diff[start][1];
+            
+            DRPTileView *tile = [[DRPTileView alloc] initWithCharacter:character];
+            tile.position = end;
+            tile.center = [self centerForPosition:start];
+            tile.delegate = self;
+            [self.view addSubview:tile];
+            _tiles[end] = tile;
+            
+            [self transitionTile:tile toPosition:end];
+        }
+    }
     
     [self resetCurrentWord];
+}
+
+- (void)dropPositions:(NSArray *)positions
+{
+    for (DRPPosition *position in positions) {
+        [_tiles[position] removeFromSuperview];
+    }
+}
+
+- (void)transitionTile:(DRPTileView *)tile toPosition:(DRPPosition *)position
+{
+    [UIView animateWithDuration:0.4 animations:^{
+        tile.center = [self centerForPosition:position];
+    }];
 }
 
 @end

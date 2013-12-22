@@ -58,7 +58,7 @@
 
 + (BOOL)isValidWord:(NSString *)word
 {
-    return [DRPDictionary indexPositionForWord:word] > 0;
+    return [DRPDictionary indexPositionForWord:word.lowercaseString] > 0;
 }
 
 + (NSInteger)indexPositionForWord:(NSString *)word

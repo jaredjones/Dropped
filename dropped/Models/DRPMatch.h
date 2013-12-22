@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <GameKit/GameKit.h>
 
+#define DRPGameCenterReceivedTurnNotificationName @"DRPGameCenterReceivedTurnNotification"
+
 @class DRPPlayer, DRPBoard, DRPPlayedWord;
 
 @interface DRPMatch : NSObject

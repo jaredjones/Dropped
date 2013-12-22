@@ -10,6 +10,7 @@
 #import "DRPBoardViewController.h"
 #import "DRPMatch.h"
 #import "DRPPlayedWord.h"
+#import "DRPDictionary.h"
 
 @interface DRPPageMatchViewController ()
 
@@ -25,8 +26,17 @@
     self = [super initWithPageID:DRPPageMatch];
     if (self) {
         self.bottomCue = @"Back";
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(gameCenterReceivedTurn:)
+                                                     name:DRPGameCenterReceivedTurnNotificationName
+                                                   object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewDidLoad
@@ -64,6 +74,9 @@
 - (void)characterAddedToCurrentWord:(DRPCharacter *)character
 {
     // change bottom cue
+    if (_boardViewController.currentPositions.count >= 3 && [DRPDictionary isValidWord:_boardViewController.currentWord]) {
+        [self playedWordViewTapped];
+    }
 }
 
 - (void)characterRemovedFromCurrentWord:(DRPCharacter *)character
@@ -78,6 +91,11 @@
 {
     [_match submitTurnForPositions:_boardViewController.currentPositions];
     // register for nsnotification to find out when GC receives move
+}
+
+- (void)gameCenterReceivedTurn:(NSNotification *)notification
+{
+    [_boardViewController dropPlayedWord:notification.userInfo[@"playedWord"]];
 }
 
 - (void)playedWordViewSwiped

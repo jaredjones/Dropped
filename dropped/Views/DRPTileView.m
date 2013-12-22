@@ -78,6 +78,7 @@ static NSMutableDictionary *glyphScaleTransformCache;
     
     if (character.multiplier) {
         self.backgroundColor = _color;
+        _glyphLayer.fillColor = [FRBSwatchist colorForKey:@"colors.white"].CGColor;
     }
     
     [self resetTargets];
@@ -139,14 +140,14 @@ static NSMutableDictionary *glyphScaleTransformCache;
 - (void)resetAppearence
 {
     // Stroke Opacity
-    if (self.highlighted || self.selected) {
+    if (self.highlighted || (self.selected && !_character.multiplier)) {
         self.strokeOpacity = 1;
     } else {
         self.strokeOpacity = 0;
     }
     
     // Color
-    if (self.highlighted || (self.selected && _character.adjacentMultiplier.multiplierActive)) {
+    if (self.highlighted || (self.selected && _character.adjacentMultiplier.multiplierActive) || _character.multiplier) {
         self.backgroundColor = _color;
     } else {
         self.backgroundColor = [FRBSwatchist colorForKey:@"colors.white"];

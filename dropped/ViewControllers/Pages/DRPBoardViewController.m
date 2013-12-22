@@ -218,8 +218,14 @@
 
 - (void)transitionTile:(DRPTileView *)tile toPosition:(DRPPosition *)position
 {
+    tile.selected = YES;
+    [tile resetAppearence];
+    
     [UIView animateWithDuration:0.4 animations:^{
         tile.center = [self centerForPosition:position];
+    } completion:^(BOOL finished) {
+        tile.selected = NO;
+        [tile resetAppearence];
     }];
 }
 

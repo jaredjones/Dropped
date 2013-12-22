@@ -38,6 +38,11 @@ static NSMutableDictionary *glyphScaleTransformCache;
     return self;
 }
 
+- (id)copyWithZone:(NSZone *)zone
+{
+    return self;
+}
+
 - (void)loadStrokeLayer
 {
     _strokeLayer = [[CAShapeLayer alloc] init];

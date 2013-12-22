@@ -16,6 +16,8 @@
 #import "DRPCharacter.h"
 #import "DRPPlayedWord.h"
 
+#import "FRBSwatchist.h"
+
 @interface DRPBoardViewController ()
 
 @property DRPBoard *board;
@@ -23,6 +25,11 @@
 
 @property NSMutableDictionary *tiles, *adjacentMultipliers;
 @property NSMutableArray *queuedTiles;
+
+@property UIDynamicAnimator *animator;
+@property UIGravityBehavior *gravity;
+@property UICollisionBehavior *collision;
+@property NSMutableDictionary *pushes;
 
 @end
 
@@ -33,6 +40,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         _adjacentMultipliers = [[NSMutableDictionary alloc] init];
+        _pushes = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -40,6 +48,17 @@
 - (void)loadView
 {
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 320)];
+    _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
+    
+    _gravity = [[UIGravityBehavior alloc] init];
+    _gravity.magnitude = [FRBSwatchist floatForKey:@"animation.gravity"];
+    [_animator addBehavior:_gravity];
+    
+    _collision = [[UICollisionBehavior alloc] init];
+    [_collision addBoundaryWithIdentifier:@"bottom" fromPoint:CGPointMake(0, 960) toPoint:CGPointMake(self.view.frame.size.width, 960)];
+    _collision.collisionDelegate = self;
+    _collision.collisionMode = UICollisionBehaviorModeBoundaries;
+    [_animator addBehavior:_collision];
 }
 
 #pragma mark Loading
@@ -60,6 +79,7 @@
             tile.position = position;
             tile.center = [self centerForPosition:position];
             [self.view addSubview:tile];
+            [self.view sendSubviewToBack:tile];
             
             _tiles[position] = tile;
             tile.delegate = self;
@@ -230,10 +250,32 @@
 - (void)dropPositions:(NSArray *)positions
 {
     for (DRPPosition *position in positions) {
-        [_tiles[position] removeFromSuperview];
-        [self queueReusableTile:_tiles[position]];
+        DRPTileView *tile = _tiles[position];
         [_tiles removeObjectForKey:position];
+        
+        UIPushBehavior *push = [[UIPushBehavior alloc] initWithItems:@[tile] mode:UIPushBehaviorModeInstantaneous];
+        CGFloat angleRange = .05;
+        CGFloat magRange = .046;
+        push.angle = -M_PI_2 + (float)rand() / RAND_MAX * angleRange - angleRange / 2;
+        push.magnitude = 0.23 + (float)rand() / RAND_MAX * magRange - magRange / 2;
+        [push setTargetOffsetFromCenter:UIOffsetMake(0, 24) forItem:tile];
+        [_animator addBehavior:push];
+        _pushes[tile] = push;
+        
+        [_gravity addItem:tile];
+        [_collision addItem:tile];
+        
+        [self.view bringSubviewToFront:tile];
     }
+}
+
+- (void)collisionBehavior:(UICollisionBehavior *)behavior beganContactForItem:(id<UIDynamicItem>)item withBoundaryIdentifier:(id<NSCopying>)identifier atPoint:(CGPoint)p
+{
+    [self queueReusableTile:(DRPTileView *)item];
+    
+    [behavior removeItem:item];
+    [_gravity removeItem:item];
+    [_animator removeBehavior:_pushes[item]];
 }
 
 - (void)transitionTile:(DRPTileView *)tile toPosition:(DRPPosition *)position
@@ -241,7 +283,7 @@
     tile.selected = YES;
     [tile resetAppearence];
     
-    [UIView animateWithDuration:0.4 animations:^{
+    [UIView animateWithDuration:0.6 animations:^{
         tile.center = [self centerForPosition:position];
     } completion:^(BOOL finished) {
         tile.selected = NO;

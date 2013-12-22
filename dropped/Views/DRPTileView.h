@@ -11,7 +11,7 @@
 
 @class DRPCharacter, DRPPosition;
 
-@interface DRPTileView : UIControl
+@interface DRPTileView : UIControl <NSCopying>
 
 - (instancetype)initWithCharacter:(DRPCharacter *)character;
 

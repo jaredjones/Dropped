@@ -20,7 +20,7 @@
 
 @end
 
-@interface DRPBoardViewController : UIViewController <DRPTileDelegate>
+@interface DRPBoardViewController : UIViewController <DRPTileDelegate, UICollisionBehaviorDelegate>
 
 @property id<DRPBoardViewControllerDelegate> delegate;
 

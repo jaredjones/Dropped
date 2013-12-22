@@ -94,11 +94,9 @@
 - (NSArray *)sortedPositionsFromPositions:(NSArray *)positions
 {
     NSArray *sorted = [positions sortedArrayUsingComparator:^NSComparisonResult(DRPPosition *a, DRPPosition *b) {
-        if (a.i < b.i) {
-            return NSOrderedAscending;
-        } else if (a.i == a.i && a.j < b.j) {
-            return NSOrderedAscending;
-        }
+        if (a.i < b.i) return NSOrderedAscending;
+        if (a.i > b.i) return NSOrderedDescending;
+        if (a.j < b.j) return NSOrderedAscending;
         return NSOrderedDescending;
     }];
     NSInteger p = 0;
@@ -166,7 +164,7 @@
     if (occupiedColumn < 3) {
         range = NSMakeRange(0, occupiedColumn + 3);
     } else {
-        range = NSMakeRange(occupiedColumn - 1, 5);
+        range = NSMakeRange(occupiedColumn - 2, 5);
     }
     
     NSMutableArray *new = [[NSMutableArray alloc] init];

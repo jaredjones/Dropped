@@ -145,6 +145,7 @@
 - (void)resetCurrentWord
 {
     _currentPlayedWord.positions = @[];
+    [_adjacentMultipliers removeAllObjects];
 }
 
 #pragma mark Move Submission

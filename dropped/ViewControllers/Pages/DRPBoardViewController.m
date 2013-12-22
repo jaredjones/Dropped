@@ -22,6 +22,7 @@
 @property DRPPlayedWord *currentPlayedWord;
 
 @property NSMutableDictionary *tiles, *adjacentMultipliers;
+@property NSMutableArray *queuedTiles;
 
 @end
 
@@ -54,7 +55,8 @@
         for (NSInteger j = 0; j < 6; j++) {
             DRPPosition *position = [DRPPosition positionWithI:i j:j];
             
-            DRPTileView *tile = [[DRPTileView alloc] initWithCharacter:[_board characterAtPosition:position]];
+            DRPTileView *tile = [self dequeueResusableTile];
+            tile.character = [_board characterAtPosition:position];
             tile.position = position;
             tile.center = [self centerForPosition:position];
             [self.view addSubview:tile];
@@ -72,6 +74,21 @@
     for (DRPPosition *position in _tiles) {
         [_tiles[position] removeFromSuperview];
     }
+}
+
+- (DRPTileView *)dequeueResusableTile
+{
+    if (!_queuedTiles) _queuedTiles = [[NSMutableArray alloc] init];
+    if (!_queuedTiles.count) return [[DRPTileView alloc] initWithCharacter:nil];
+    
+    DRPTileView *tile = [_queuedTiles lastObject];
+    [_queuedTiles removeLastObject];
+    return tile;
+}
+
+- (void)queueReusableTile:(DRPTileView *)tile
+{
+    [_queuedTiles addObject:tile];
 }
 
 - (CGPoint)centerForPosition:(DRPPosition *)position
@@ -176,6 +193,7 @@
             DRPPosition *end = diff[start] ?: start;
             
             DRPTileView *tile = _tiles[start];
+            if (!tile) continue;
             tile.character = [_board characterAtPosition:end];
             tile.position = end;
             _tiles[end] = tile;
@@ -213,6 +231,8 @@
 {
     for (DRPPosition *position in positions) {
         [_tiles[position] removeFromSuperview];
+        [self queueReusableTile:_tiles[position]];
+        [_tiles removeObjectForKey:position];
     }
 }
 

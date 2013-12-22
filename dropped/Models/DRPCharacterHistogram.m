@@ -61,7 +61,11 @@
 {
     //3-5
     //60 30 10
-    return [DRPCharacter characterWithMulitplier:arc4random_uniform(3) + 3];
+    NSInteger multiplier = arc4random_uniform(3) + 3;
+    
+    DRPCharacter *character = [DRPCharacter characterWithMulitplier:multiplier];
+    character.color = arc4random_uniform(DRPColorNil);
+    return character;
 }
 
 #pragma mark AppendedCharacters Generation

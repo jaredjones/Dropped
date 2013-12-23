@@ -78,6 +78,7 @@
             tile.character = [_board characterAtPosition:position];
             tile.position = position;
             tile.center = [self centerForPosition:position];
+            tile.userInteractionEnabled = YES;
             [self.view addSubview:tile];
             [self.view sendSubviewToBack:tile];
             
@@ -265,6 +266,7 @@
         [_gravity addItem:tile];
         [_collision addItem:tile];
         
+        tile.userInteractionEnabled = NO;
         [self.view bringSubviewToFront:tile];
     }
 }
@@ -281,6 +283,7 @@
 - (void)transitionTile:(DRPTileView *)tile toPosition:(DRPPosition *)position
 {
     tile.selected = YES;
+    tile.userInteractionEnabled = NO;
     [tile resetAppearence];
     
     CGPoint dest = [self centerForPosition:position];
@@ -292,6 +295,7 @@
         tile.center = dest;
     } completion:^(BOOL finished) {
         tile.selected = NO;
+        tile.userInteractionEnabled = YES;
         [tile resetAppearence];
     }];
 }

@@ -150,6 +150,9 @@
     
     NSMutableArray *droppedMultipliers = [NSMutableArray arrayWithArray:playedWord.multipliers];
     [droppedMultipliers addObjectsFromArray:playedWord.additionalMultipliers];
+    for (DRPPosition *position in droppedMultipliers) {
+        [_histogram unregisterColor:[self characterAtPosition:position].color];
+    }
     
     playedWord.appendedCharacters = [_histogram appendedCharactersForPositions:positions
                                                             droppedMultipliers:droppedMultipliers
@@ -277,6 +280,7 @@
                 [initialMultiplierColors getBytes:&color length:1];
                 initialMultiplierColors = [initialMultiplierColors subdataWithRange:NSMakeRange(1, initialMultiplierColors.length - 1)];
                 character.color = color;
+                [_histogram registerColor:color];
             }
             
             firstTurn[[DRPPosition positionWithI:i j:j]] = character;
@@ -333,9 +337,14 @@
     playedWord.appendedCharacters = [self loadCharactersFromData:turnData numberCharacters:numberPositions];
     [turnData setData:[turnData subdataWithRange:NSMakeRange(numberPositions, turnData.length - numberPositions)]];
     
+    for (DRPPosition *position in [playedWord.multipliers arrayByAddingObjectsFromArray:playedWord.additionalMultipliers]) {
+        DRPCharacter *character = [self characterAtPosition:position];
+        [_histogram unregisterColor:character.color];
+    }
+    
     for (DRPCharacter *character in playedWord.appendedCharacters) {
         // Load colors
-        if (character.multiplier != -1) {
+        if (character.multiplier) {
             DRPColor color = DRPColorNil;
             [turnData getBytes:&color length:1];
             if (turnData.length > 1) {
@@ -344,6 +353,7 @@
             }
             
             character.color = color;
+            [_histogram registerColor:color];
         }
     }
     

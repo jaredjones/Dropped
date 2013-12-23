@@ -7,11 +7,15 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DRPCharacter.h"
 
-@class DRPCharacter, DRPPlayedWord;
+@class DRPPlayedWord;
 
 @interface DRPCharacterHistogram : NSObject
 
 - (NSArray *)appendedCharactersForPositions:(NSArray *)positions droppedMultipliers:(NSArray *)droppedMultipliers multipliers:(NSArray *)multipliers;
+
+- (void)registerColor:(DRPColor)color;
+- (void)unregisterColor:(DRPColor)color;
 
 @end

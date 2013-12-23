@@ -15,10 +15,12 @@
 
 @interface DRPCharacterHistogram ()
 
-@property NSMutableDictionary *letters, *multipliers;
-@property NSInteger numberLetters, numberMultipliers;
-@property NSDictionary *letterPercentages;
-@property NSArray *keys;
+@property NSDictionary *letterPercentages, *multiplierPercentages;
+@property NSArray *letters, *multipliers;
+
+// colorsUsed keeps track of the cycle of colors
+// currentColors are the colors of the multipliers on the board
+@property NSMutableDictionary *colorsUsed, *currentColors;
 
 @end
 
@@ -28,10 +30,14 @@
 {
     self = [super init];
     if (self) {
-        _letters = [[NSMutableDictionary alloc] init];
-        _multipliers = [[NSMutableDictionary alloc] init];
         _letterPercentages = @{@"A" : @8.4966, @"B" : @2.0720, @"C" : @4.5388, @"D" : @3.3844, @"E" : @11.1607, @"F" : @1.8121, @"G" : @2.4705, @"H" : @3.0034, @"I" : @7.5448, @"J" : @0.1965, @"K" : @1.1016, @"L" : @5.4893, @"M" : @3.0129, @"N" : @6.6544, @"O" : @7.1635, @"P" : @3.1671, @"Q" : @0.1962, @"R" : @7.5809, @"S" : @5.7351, @"T" : @6.9509, @"U" : @3.6308, @"V" : @1.0074, @"W" : @1.2899, @"X" : @0.2902, @"Y" : @1.7779, @"Z" : @0.2722};
-        _keys = _letterPercentages.allKeys;
+        _letters = _letterPercentages.allKeys;
+        
+        _multiplierPercentages = @{@"3" : @60, @"4" : @30, @"5" : @10};
+        _multipliers = _multiplierPercentages.allKeys;
+        
+        _colorsUsed = [[NSMutableDictionary alloc] init];
+        _currentColors = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -40,32 +46,68 @@
 
 // Generates a new DRPCharacter based on data in histogram
 #define ARC4RANDOM_MAX 0x100000000
-- (DRPCharacter *)randomCharacter
+- (NSString *)randomCharacterFromKeys:(NSArray *)keys percentages:(NSDictionary *)percentages
 {
     double r = ((double)arc4random() / ARC4RANDOM_MAX) * 100.0f;
     double sum = 0.0;
     
     NSString *prev = nil;
-    for (NSString *letter in _keys)
+    for (NSString *key in keys)
     {
-        sum += [_letterPercentages[letter] doubleValue];
-         prev = letter;
+        sum += [percentages[key] doubleValue];
+        prev = key;
         if (sum > r)
             break;
     }
     
-    return [DRPCharacter characterWithCharacter:prev];
+    return prev;
+}
+
+- (DRPCharacter *)randomCharacter
+{
+    return [DRPCharacter characterWithCharacter:[self randomCharacterFromKeys:_letters percentages:_letterPercentages]];
 }
 
 - (DRPCharacter *)randomMultiplier
 {
-    //3-5
-    //60 30 10
-    NSInteger multiplier = arc4random_uniform(3) + 3;
-    
-    DRPCharacter *character = [DRPCharacter characterWithMulitplier:multiplier];
-    character.color = arc4random_uniform(DRPColorNil);
+//    DRPCharacter *character = [DRPCharacter characterWithCharacter:[self randomCharacterFromKeys:_multipliers percentages:_multiplierPercentages]];
+    DRPCharacter *character = [DRPCharacter characterWithMulitplier:3];
+    character.color = [self randomColor];
     return character;
+}
+
+#pragma mark Colors
+
+- (DRPColor)randomColor
+{
+    DRPColor color;
+    do {
+        color = arc4random_uniform(DRPColorRed);
+    } while (_colorsUsed[@(color)] || _currentColors[@(color)]);
+    
+    [self registerColor:color];
+    return color;
+}
+
+- (void)registerColor:(DRPColor)color
+{
+    if (_colorsUsed.count >= 6) {
+        [_colorsUsed removeAllObjects];
+    } else if (_colorsUsed.count == 5) {
+        for (NSNumber *color in _currentColors) {
+            if (!_colorsUsed[color]) {
+                [_colorsUsed removeAllObjects];
+            }
+        }
+    }
+    
+    _colorsUsed[@(color)] = @YES;
+    _currentColors[@(color)] = @YES;
+}
+
+- (void)unregisterColor:(DRPColor)color
+{
+    [_currentColors removeObjectForKey:@(color)];
 }
 
 #pragma mark AppendedCharacters Generation
@@ -150,6 +192,7 @@
         NSInteger newColumn = [validColumns[arc4random_uniform(validColumns.count)] integerValue];
         
         DRPCharacter *multiplier = [self randomMultiplier];
+        [self registerColor:multiplier.color];
         NSInteger rows = ((NSMutableArray *)positions[newColumn]).count;
         ((NSMutableArray *)positions[newColumn])[arc4random_uniform(rows)] = multiplier;
         occupiedColumn = newColumn;
@@ -184,7 +227,6 @@
             // Reuse newly added multipliers (they were added in a previous step)
             if ([sortedPositions[i][p] isKindOfClass:[DRPCharacter class]]) {
                 DRPCharacter *multiplier = sortedPositions[i][p];
-                // [self addMultiplier:multiplier];
                 [appendedCharacters addObject:multiplier];
             } else {
                 // Add new character

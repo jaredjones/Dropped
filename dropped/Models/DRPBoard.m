@@ -154,10 +154,8 @@
         [_histogram unregisterColor:[self characterAtPosition:position].color];
     }
     
-    // TODO: make sure droppedMultipliers doesn't contain duplicates
-    
     playedWord.appendedCharacters = [_histogram appendedCharactersForPositions:positions
-                                                            droppedMultipliers:droppedMultipliers
+                                                            droppedMultipliers:[NSSet setWithArray:droppedMultipliers].allObjects
                                                                    multipliers:[_multiplierHistory lastObject]];
     
     // Add Move to History

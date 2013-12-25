@@ -154,6 +154,8 @@
         [_histogram unregisterColor:[self characterAtPosition:position].color];
     }
     
+    // TODO: make sure droppedMultipliers doesn't contain duplicates
+    
     playedWord.appendedCharacters = [_histogram appendedCharactersForPositions:positions
                                                             droppedMultipliers:droppedMultipliers
                                                                    multipliers:[_multiplierHistory lastObject]];

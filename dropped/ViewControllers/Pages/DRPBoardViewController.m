@@ -255,10 +255,11 @@
         [_tiles removeObjectForKey:position];
         
         UIPushBehavior *push = [[UIPushBehavior alloc] initWithItems:@[tile] mode:UIPushBehaviorModeInstantaneous];
-        CGFloat angleRange = .05;
-        CGFloat magRange = .046;
+        CGFloat angleRange = [FRBSwatchist floatForKey:@"animation.tileDropAngleRange"];
+        CGFloat baseMag = [FRBSwatchist floatForKey:@"animation.tileDropBaseMagnitude"];
+        CGFloat magRange = [FRBSwatchist floatForKey:@"animation.tileDropMagnitudeRange"];
         push.angle = -M_PI_2 + (float)rand() / RAND_MAX * angleRange - angleRange / 2;
-        push.magnitude = 0.23 + (float)rand() / RAND_MAX * magRange - magRange / 2;
+        push.magnitude = baseMag + (float)rand() / RAND_MAX * magRange - magRange / 2;
         [push setTargetOffsetFromCenter:UIOffsetMake(0, 24) forItem:tile];
         [_animator addBehavior:push];
         _pushes[tile] = push;
@@ -288,10 +289,13 @@
     
     CGPoint dest = [self centerForPosition:position];
     CGFloat dist = dest.y - tile.center.y;
-    CGFloat rate = 120;
-    CGFloat duration = MIN(MAX(dist / rate, 0.2), 0.78);
+    CGFloat rate = [FRBSwatchist floatForKey:@"animation.newTileDropSpeed"];
+    CGFloat duration = MIN(MAX(dist / rate, [FRBSwatchist floatForKey:@"animation.newTileDropMinDuration"]),
+                           [FRBSwatchist floatForKey:@"animation.newTileDropMaxDuration"]);
+    CGFloat delay = [FRBSwatchist floatForKey:@"animation.newTileDropDelay"];
     
-    [UIView animateWithDuration:duration animations:^{
+    
+    [UIView animateWithDuration:duration delay:delay options:0 animations:^{
         tile.center = dest;
     } completion:^(BOOL finished) {
         tile.selected = NO;

@@ -45,11 +45,10 @@
 #pragma mark Character Generation
 
 // Generates a new DRPCharacter based on data in histogram
-#define ARC4RANDOM_MAX 0x100000000
 - (NSString *)randomCharacterFromKeys:(NSArray *)keys percentages:(NSDictionary *)percentages
 {
-    double r = ((double)arc4random() / ARC4RANDOM_MAX) * 100.0f;
-    double sum = 0.0;
+    float r = ((float)rand() / (float)RAND_MAX) * 100.0f;
+    float sum = 0.0;
     
     NSString *prev = nil;
     for (NSString *key in keys)
@@ -71,6 +70,8 @@
 - (DRPCharacter *)randomMultiplier
 {
 //    DRPCharacter *character = [DRPCharacter characterWithCharacter:[self randomCharacterFromKeys:_multipliers percentages:_multiplierPercentages]];
+    
+    // Force 3 multipliers to make testing easier
     DRPCharacter *character = [DRPCharacter characterWithMulitplier:3];
     character.color = [self randomColor];
     return character;

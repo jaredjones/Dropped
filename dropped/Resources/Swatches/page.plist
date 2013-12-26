@@ -30,5 +30,7 @@
 	<real>0.12</real>
 	<key>cueIndicatorAnimationDelay</key>
 	<real>0.023</real>
+	<key>matchCurrentWordLetterSpacing</key>
+	<integer>3</integer>
 </dict>
 </plist>

@@ -103,7 +103,7 @@
     CGPoint *centers = malloc(sizeof(CGPoint) * _tiles.count);
     
     _wordWidth = 0;
-    CGFloat letterSpacing = [FRBSwatchist floatForKey:@"animation.currentWordLetterSpacing"];
+    CGFloat letterSpacing = [FRBSwatchist floatForKey:@"page.matchCurrentWordLetterSpacing"];
     
     // Initial Spacing
     for (NSInteger i = 0; i < _tiles.count; i++) {
@@ -126,7 +126,8 @@
 {
     // Ignore advancement when the first letter is being added
     CGFloat tileWidth = _wordWidth > 0 ? tile.frame.size.width : 0;
-    CGFloat letterSpacing = _wordWidth > 0 ? [FRBSwatchist floatForKey:@"animation.currentWordLetterSpacing"] : -[FRBSwatchist floatForKey:@"animation.currentWordLetterSpacing"];
+    CGFloat letterSpacing = [FRBSwatchist floatForKey:@"page.matchCurrentWordLetterSpacing"];
+    letterSpacing = _wordWidth > 0 ? letterSpacing : -letterSpacing;
     return CGPointMake((self.frame.size.width + _wordWidth + tileWidth + letterSpacing) / 2, 25);
 }
 

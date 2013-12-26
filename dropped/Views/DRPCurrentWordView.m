@@ -51,18 +51,13 @@
 
 - (void)characterRemovedFromCurrentWord:(DRPCharacter *)character
 {
-    DRPTileView *removedTile;
-    for (DRPTileView *tile in _tiles) {
-        if (tile.character != character) continue;
-        
-        removedTile = tile;
+    DRPTileView *removedTile = [self tileForCharacter:character];
+    
+    if (removedTile) {
+        [removedTile removeFromSuperview];
+        [_tiles removeObject:removedTile];
+        [self repositionTiles];
     }
-    
-    if (!removedTile) return;
-    
-    [removedTile removeFromSuperview];
-    [_tiles removeObject:removedTile];
-    [self repositionTiles];
 }
 
 - (void)removeAllCharactersFromCurrentWord
@@ -72,6 +67,20 @@
         [view removeFromSuperview];
     }
     _wordWidth = 0;
+}
+
+- (DRPTileView *)tileForCharacter:(DRPCharacter *)character
+{
+    NSInteger i = [_tiles indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+        if (((DRPTileView *)obj).character == character) {
+            *stop = YES;
+            return YES;
+        }
+        return NO;
+    }];
+    
+    if (i != NSNotFound) return _tiles[i];
+    return nil;
 }
 
 #pragma mark Repositioning

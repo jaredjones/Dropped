@@ -93,8 +93,7 @@
 - (void)characterAddedToCurrentWord:(DRPCharacter *)character
 {
     // change bottom cue
-    
-    [_currentWordView characterAddedToCurrentWord:character];
+    [_currentWordView characterWasDehighlighted:character];
     
     // DEBUG: "submit" first word found
     if (_boardViewController.currentPositions.count >= 3 && [DRPDictionary isValidWord:_boardViewController.currentWord]) {
@@ -109,6 +108,16 @@
     // if no characters left, change DRPPlayedWordView message
     
     [_currentWordView characterRemovedFromCurrentWord:character];
+}
+
+- (void)characterWasHighlighted:(DRPCharacter *)character
+{
+    [_currentWordView characterWasHighlighted:character];
+}
+
+- (void)characterWasDehighlighted:(DRPCharacter *)character
+{
+    [_currentWordView characterWasDehighlighted:character];
 }
 
 #pragma mark DRPCurrentWordViewDelegate

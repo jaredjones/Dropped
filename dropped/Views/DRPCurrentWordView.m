@@ -11,6 +11,7 @@
 #import "DRPTileView.h"
 #import "DRPBoardViewController.h"
 #import "FRBSwatchist.h"
+#import "DRPUtility.h"
 
 @interface DRPCurrentWordView ()
 
@@ -34,18 +35,34 @@
 
 #pragma mark DRPBoardViewControllerDelegate
 
-- (void)characterAddedToCurrentWord:(DRPCharacter *)character
+- (void)characterWasHighlighted:(DRPCharacter *)character
 {
-    DRPTileView *tile = [DRPTileView dequeueResusableTile];
+    DRPTileView *tile = [self tileForCharacter:character];
+    if (!tile) {
+        tile = [DRPTileView dequeueResusableTile];
+        tile.scaleCharacter = NO;
+        tile.selected = NO;
+        tile.highlighted = YES;
+        tile.character = character;
+        tile.transform = CGAffineTransformIdentity;
+        tile.center = [self centerForNewTile:tile];
+        [_tiles addObject:tile];
+        [self addSubview:tile];
+    } else {
+        [self bringSubviewToFront:tile];
+        tile.selected = YES;
+        tile.highlighted = YES;
+        [tile resetAppearence];
+        [self repositionTiles];
+    }
+}
+
+- (void)characterWasDehighlighted:(DRPCharacter *)character
+{
+    DRPTileView *tile = [self tileForCharacter:character];
     tile.selected = NO;
     tile.highlighted = NO;
-    tile.character = character;
-    tile.backgroundColor = [UIColor clearColor];
-    tile.transform = CGAffineTransformIdentity;
-    tile.center = [self centerForNewTile:tile];
-    [_tiles addObject:tile];
-    [self addSubview:tile];
-    
+    [tile resetAppearence];
     [self repositionTiles];
 }
 
@@ -89,11 +106,15 @@
 {
     CGPoint *centers = [self tileCenters];
     
-    [UIView animateWithDuration:[FRBSwatchist floatForKey:@"animation.currentWordManipulationDuration"] animations:^{
-        for (NSInteger i = 0; i < _tiles.count; i++) {
-            ((UIView *)_tiles[i]).center = centers[i];
-        }
-    }];
+    [UIView animateWithDuration:[FRBSwatchist floatForKey:@"animation.currentWordManipulationDuration"]
+                          delay:0
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         for (NSInteger i = 0; i < _tiles.count; i++) {
+                             ((UIView *)_tiles[i]).center = centers[i];
+                         }
+                     }
+                     completion:nil];
     
     free(centers);
 }
@@ -108,7 +129,8 @@
     // Initial Spacing
     for (NSInteger i = 0; i < _tiles.count; i++) {
         DRPTileView *tile = _tiles[i];
-        CGFloat advancement = [DRPTileView advancementForCharacter:tile.character.character];
+        
+        CGFloat advancement = tile.selected ? 50 : [DRPTileView advancementForCharacter:tile.character.character];
         centers[i] = CGPointMake(_wordWidth + advancement / 2, 25);
         _wordWidth += advancement + letterSpacing;
     }

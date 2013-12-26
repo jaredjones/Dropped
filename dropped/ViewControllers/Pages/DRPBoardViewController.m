@@ -127,6 +127,8 @@
             }
         }
     }
+    
+    [_delegate characterWasHighlighted:tile.character];
 }
 
 - (void)tileWasDehighlighted:(DRPTileView *)tile
@@ -145,6 +147,8 @@
             }
         }
     }
+    
+    [_delegate characterWasDehighlighted:tile.character];
 }
 
 - (void)tileWasSelected:(DRPTileView *)tile

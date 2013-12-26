@@ -9,9 +9,13 @@
 #import <UIKit/UIKit.h>
 #import "DRPPageMatchViewController.h"
 
-@interface DRPCurrentWordView : UIView <DRPBoardViewControllerDelegate>
+@interface DRPCurrentWordView : UIView
 
 @property id<DRPCurrentWordViewDelegate> delegate;
+
+- (void)characterWasHighlighted:(DRPCharacter *)character;
+- (void)characterWasDehighlighted:(DRPCharacter *)character;
+- (void)characterRemovedFromCurrentWord:(DRPCharacter *)character;
 
 - (void)removeAllCharactersFromCurrentWord;
 

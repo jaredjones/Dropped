@@ -37,6 +37,8 @@ static NSMutableDictionary *glyphAdvancesCache;
         
         // Make sure to call the setter method, it has side effects
         [self setCharacter:character];
+        
+        _scaleCharacter = YES;
     }
     return self;
 }
@@ -77,6 +79,7 @@ static NSMutableDictionary *glyphAdvancesCache;
     if (!queuedTiles.count) return [[DRPTileView alloc] initWithCharacter:nil];
     
     DRPTileView *tile = [queuedTiles lastObject];
+    tile.scaleCharacter = YES;
     [queuedTiles removeLastObject];
     return tile;
 }
@@ -177,11 +180,11 @@ static NSMutableDictionary *glyphAdvancesCache;
     if (self.highlighted || (self.selected && _character.adjacentMultiplier.multiplierActive) || _character.multiplier) {
         self.backgroundColor = _color;
     } else {
-        self.backgroundColor = [FRBSwatchist colorForKey:@"colors.white"];
+        self.backgroundColor = [UIColor clearColor];
     }
     
     // Transform
-    if (self.highlighted) {
+    if (self.highlighted && _scaleCharacter) {
         _glyphLayer.transform = [glyphScaleTransformCache[_character.character] CATransform3DValue];
     } else {
         _glyphLayer.transform = CATransform3DIdentity;

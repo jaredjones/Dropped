@@ -15,6 +15,9 @@
 - (void)characterAddedToCurrentWord:(DRPCharacter *)character;
 - (void)characterRemovedFromCurrentWord:(DRPCharacter *)character;
 
+- (void)characterWasHighlighted:(DRPCharacter *)character;
+- (void)characterWasDehighlighted:(DRPCharacter *)character;
+
 @end
 
 @protocol DRPCurrentWordViewDelegate

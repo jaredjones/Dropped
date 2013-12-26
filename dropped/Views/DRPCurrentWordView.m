@@ -27,7 +27,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.backgroundColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1];
         _tiles = [[NSMutableArray alloc] init];
     }
     return self;
@@ -41,13 +40,18 @@
     if (!tile) {
         tile = [DRPTileView dequeueResusableTile];
         tile.scaleCharacter = NO;
-        tile.selected = NO;
+        tile.selected = YES;
         tile.highlighted = YES;
         tile.character = character;
         tile.transform = CGAffineTransformIdentity;
         tile.center = [self centerForNewTile:tile];
         [_tiles addObject:tile];
         [self addSubview:tile];
+        
+        if (CGRectGetMaxX(tile.frame) > self.frame.size.width) {
+            [self repositionTiles];
+        }
+        
     } else {
         [self bringSubviewToFront:tile];
         tile.selected = YES;
@@ -136,7 +140,12 @@
     }
     
     // Recenter entire word
+    // Word is sometimes too long to fit. Favor right side of the word
     CGFloat offset = self.frame.size.width / 2 - _wordWidth / 2;
+    if (_wordWidth > self.frame.size.width) {
+        offset = self.frame.size.width - _wordWidth;
+    }
+    
     for (NSInteger i = 0; i < _tiles.count; i++) {
         centers[i].x = centers[i].x + offset;
     }

@@ -71,7 +71,7 @@
     
     // positions approximate for now
     CGPoint center = self.scrollView.center;
-    center.y += 9 + 160 + 25 + 3;
+    center.y += 9 + 160 + 25 + 3 + 9;
     _currentWordView.center = center;
     
     [self.scrollView addSubview:_currentWordView];

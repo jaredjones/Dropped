@@ -17,10 +17,13 @@
 
 @end
 
-@protocol DRPPlayedWordViewDelegate
+@protocol DRPCurrentWordViewDelegate
+
+- (void)currentWordViewTapped;
+- (void)currentWordViewSwiped;
 
 @end
 
-@interface DRPPageMatchViewController : DRPPageViewController <DRPBoardViewControllerDelegate>
+@interface DRPPageMatchViewController : DRPPageViewController <DRPBoardViewControllerDelegate, DRPCurrentWordViewDelegate>
 
 @end

@@ -13,7 +13,6 @@
 @interface DRPPageViewController ()
 
 @property BOOL topCueVisible, bottomCueVisible, topCueVisibleOnDragStart, bottomCueVisibleOnDragStart;
-@property UIScrollView *scrollView;
 
 @end
 
@@ -38,6 +37,7 @@
 {
     [super viewDidLoad];
     [self loadScrollView];
+    _scrollView.delaysContentTouches = NO;
     _scrollView.delegate = self;
 }
 

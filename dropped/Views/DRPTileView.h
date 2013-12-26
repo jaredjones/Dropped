@@ -23,4 +23,6 @@
 
 - (void)resetAppearence;
 
++ (CGFloat)advancementForCharacter:(NSString *)character;
+
 @end

@@ -32,6 +32,7 @@
 		A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48F18372DA800B7A9A8 /* DRPBoard.m */; };
 		A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB49318372DA800B7A9A8 /* DRPCharacter.m */; };
 		A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */; };
+		A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9813323186BC00300FC3277 /* DRPCurrentWordView.m */; };
 		A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A99D97D218490C8300208FA0 /* DRPPlayer.m */; };
 		A9A485D1185627B00080A4B5 /* Centrale Sans Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9A485CF185627B00080A4B5 /* Centrale Sans Light.otf */; };
 		A9A485D2185627B00080A4B5 /* Centrale Sans Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9A485D0185627B00080A4B5 /* Centrale Sans Medium.otf */; };
@@ -137,6 +138,8 @@
 		A95BB49318372DA800B7A9A8 /* DRPCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCharacter.m; path = Models/DRPCharacter.m; sourceTree = "<group>"; };
 		A95C3219184BDD3200ECC3D4 /* DRPPageDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageDataSource.h; path = ViewControllers/DRPPageDataSource.h; sourceTree = "<group>"; };
 		A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageDataSource.m; path = ViewControllers/DRPPageDataSource.m; sourceTree = "<group>"; };
+		A9813322186BC00300FC3277 /* DRPCurrentWordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCurrentWordView.h; path = Views/DRPCurrentWordView.h; sourceTree = "<group>"; };
+		A9813323186BC00300FC3277 /* DRPCurrentWordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCurrentWordView.m; path = Views/DRPCurrentWordView.m; sourceTree = "<group>"; };
 		A99D97D118490C8300208FA0 /* DRPPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayer.h; path = Models/DRPPlayer.h; sourceTree = "<group>"; };
 		A99D97D218490C8300208FA0 /* DRPPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPlayer.m; path = Models/DRPPlayer.m; sourceTree = "<group>"; };
 		A9A485CF185627B00080A4B5 /* Centrale Sans Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Centrale Sans Light.otf"; path = "Fonts/Centrale Sans Light.otf"; sourceTree = "<group>"; };
@@ -474,6 +477,8 @@
 			children = (
 				A9E27CBD1857AE210043F6A9 /* DRPTileView.h */,
 				A9E27CBE1857AE210043F6A9 /* DRPTileView.m */,
+				A9813322186BC00300FC3277 /* DRPCurrentWordView.h */,
+				A9813323186BC00300FC3277 /* DRPCurrentWordView.m */,
 			);
 			name = Tiles;
 			sourceTree = "<group>";
@@ -649,6 +654,7 @@
 				C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */,
 				A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */,
 				A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */,
+				A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */,
 				A93D77CF18567D4B006691AE /* DRPPageLogInViewController.m in Sources */,
 				A9C0FAD9186507EC00377B0E /* NSArray+Mutable.m in Sources */,
 				A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */,

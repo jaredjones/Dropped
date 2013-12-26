@@ -8,6 +8,7 @@
 
 #import "DRPPageMatchViewController.h"
 #import "DRPBoardViewController.h"
+#import "DRPCurrentWordView.h"
 #import "DRPMatch.h"
 #import "DRPPlayedWord.h"
 #import "DRPDictionary.h"
@@ -15,6 +16,8 @@
 @interface DRPPageMatchViewController ()
 
 @property DRPBoardViewController *boardViewController;
+@property DRPCurrentWordView *currentWordView;
+
 @property DRPMatch *match;
 
 @end
@@ -43,6 +46,7 @@
 {
     [super viewDidLoad];
     
+    [self loadCurrentWordView];
     [self loadBoardViewController];
 }
 
@@ -54,8 +58,23 @@
     [_boardViewController willMoveToParentViewController:self];
     [self addChildViewController:_boardViewController];
     
-    _boardViewController.view.center = self.view.center;
-    [self.view addSubview:_boardViewController.view];
+    CGPoint center = self.scrollView.center;
+    center.y += 9;
+    _boardViewController.view.center = center;
+    [self.scrollView addSubview:_boardViewController.view];
+}
+
+- (void)loadCurrentWordView
+{
+    _currentWordView = [[DRPCurrentWordView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+    _currentWordView.delegate = self;
+    
+    // positions approximate for now
+    CGPoint center = self.scrollView.center;
+    center.y += 9 + 160 + 25 + 3;
+    _currentWordView.center = center;
+    
+    [self.scrollView addSubview:_currentWordView];
 }
 
 #pragma mark DRPPageViewController
@@ -64,7 +83,7 @@
 {
     [super willMoveToCurrentWithUserInfo:userInfo];
     
-    // extract match, load it up
+    // extract DRPMatch, load it up
     _match = [[DRPMatch alloc] initWithGKMatch:nil];
     [_boardViewController loadBoard:_match.board];
 }
@@ -74,8 +93,12 @@
 - (void)characterAddedToCurrentWord:(DRPCharacter *)character
 {
     // change bottom cue
+    
+    [_currentWordView characterAddedToCurrentWord:character];
+    
+    // DEBUG: "submit" first word found
     if (_boardViewController.currentPositions.count >= 3 && [DRPDictionary isValidWord:_boardViewController.currentWord]) {
-        [self playedWordViewTapped];
+        [self currentWordViewTapped];
     }
 }
 
@@ -83,23 +106,25 @@
 {
     // change bottom cue
     // if no characters left, change DRPPlayedWordView message
+    
+    [_currentWordView characterRemovedFromCurrentWord:character];
 }
 
-#pragma mark DRPPlayedWordViewDelegate
+#pragma mark DRPCurrentWordViewDelegate
 
-- (void)playedWordViewTapped
+- (void)currentWordViewTapped
 {
     [_match submitTurnForPositions:_boardViewController.currentPositions];
     // register for nsnotification to find out when GC receives move
 }
 
+- (void)currentWordViewSwiped
+{
+}
+
 - (void)gameCenterReceivedTurn:(NSNotification *)notification
 {
     [_boardViewController dropPlayedWord:notification.userInfo[@"playedWord"]];
-}
-
-- (void)playedWordViewSwiped
-{
 }
 
 @end

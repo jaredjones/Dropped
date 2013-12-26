@@ -88,6 +88,7 @@ static NSMutableDictionary *glyphAdvancesCache;
     }
     
     [self resetTargets];
+    [self resetAppearence];
 }
 
 - (CGFloat)strokeOpacity
@@ -255,6 +256,15 @@ static NSMutableDictionary *glyphAdvancesCache;
     glyphAdvancesCache[character] = @(advancement.width);
     
     return glyphBezierPath;
+}
+
++ (CGFloat)advancementForCharacter:(NSString *)character
+{
+    if (!glyphAdvancesCache[character]) {
+        [DRPTileView pathForCharacter:character];
+    }
+    
+    return [glyphAdvancesCache[character] floatValue];
 }
 
 @end

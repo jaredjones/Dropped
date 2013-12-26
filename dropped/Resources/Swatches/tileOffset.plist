@@ -103,9 +103,9 @@
 	<key>O</key>
 	<dict>
 		<key>x</key>
-		<integer>0</integer>
+		<real>0.2</real>
 		<key>y</key>
-		<real>-1.1</real>
+		<real>-0.9</real>
 	</dict>
 	<key>P</key>
 	<dict>

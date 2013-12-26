@@ -24,7 +24,6 @@
 @property DRPPlayedWord *currentPlayedWord;
 
 @property NSMutableDictionary *tiles, *adjacentMultipliers;
-@property NSMutableArray *queuedTiles;
 
 @property UIDynamicAnimator *animator;
 @property UIGravityBehavior *gravity;
@@ -74,7 +73,7 @@
         for (NSInteger j = 0; j < 6; j++) {
             DRPPosition *position = [DRPPosition positionWithI:i j:j];
             
-            DRPTileView *tile = [self dequeueResusableTile];
+            DRPTileView *tile = [DRPTileView dequeueResusableTile];
             tile.character = [_board characterAtPosition:position];
             tile.position = position;
             tile.center = [self centerForPosition:position];
@@ -95,21 +94,6 @@
     for (DRPPosition *position in _tiles) {
         [_tiles[position] removeFromSuperview];
     }
-}
-
-- (DRPTileView *)dequeueResusableTile
-{
-    if (!_queuedTiles) _queuedTiles = [[NSMutableArray alloc] init];
-    if (!_queuedTiles.count) return [[DRPTileView alloc] initWithCharacter:nil];
-    
-    DRPTileView *tile = [_queuedTiles lastObject];
-    [_queuedTiles removeLastObject];
-    return tile;
-}
-
-- (void)queueReusableTile:(DRPTileView *)tile
-{
-    [_queuedTiles addObject:tile];
 }
 
 - (CGPoint)centerForPosition:(DRPPosition *)position
@@ -274,7 +258,7 @@
 
 - (void)collisionBehavior:(UICollisionBehavior *)behavior beganContactForItem:(id<UIDynamicItem>)item withBoundaryIdentifier:(id<NSCopying>)identifier atPoint:(CGPoint)p
 {
-    [self queueReusableTile:(DRPTileView *)item];
+    [DRPTileView queueReusableTile:(DRPTileView *)item];
     
     [behavior removeItem:item];
     [_gravity removeItem:item];

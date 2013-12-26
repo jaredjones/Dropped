@@ -13,4 +13,6 @@
 
 @property id<DRPCurrentWordViewDelegate> delegate;
 
+- (void)removeAllCharactersFromCurrentWord;
+
 @end

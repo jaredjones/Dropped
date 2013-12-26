@@ -99,6 +99,7 @@
     // DEBUG: "submit" first word found
     if (_boardViewController.currentPositions.count >= 3 && [DRPDictionary isValidWord:_boardViewController.currentWord]) {
         [self currentWordViewTapped];
+        [_currentWordView removeAllCharactersFromCurrentWord];
     }
 }
 

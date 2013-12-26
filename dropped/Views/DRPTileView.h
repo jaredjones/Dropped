@@ -13,16 +13,18 @@
 
 @interface DRPTileView : UIControl <NSCopying>
 
-- (instancetype)initWithCharacter:(DRPCharacter *)character;
-
 @property (nonatomic) DRPCharacter *character;
 @property (nonatomic) CGFloat strokeOpacity;
 @property DRPPosition *position;
 
 @property id<DRPTileDelegate> delegate;
 
-- (void)resetAppearence;
+- (instancetype)initWithCharacter:(DRPCharacter *)character;
 
++ (DRPTileView *)dequeueResusableTile;
++ (void)queueReusableTile:(DRPTileView *)tile;
+
+- (void)resetAppearence;
 + (CGFloat)advancementForCharacter:(NSString *)character;
 
 @end

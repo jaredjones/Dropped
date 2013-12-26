@@ -19,6 +19,8 @@
 
 @end
 
+static NSMutableArray *queuedTiles;
+
 static NSMutableDictionary *glyphCache;
 static NSMutableDictionary *glyphScaleTransformCache;
 static NSMutableDictionary *glyphAdvancesCache;
@@ -65,6 +67,24 @@ static NSMutableDictionary *glyphAdvancesCache;
     _glyphLayer.path = [DRPTileView pathForCharacter:_character.character].CGPath;
     _glyphLayer.fillColor = [UIColor blackColor].CGColor;
     [self.layer addSublayer:_glyphLayer];
+}
+
+#pragma mark Reusable DRPTileViews
+
++ (DRPTileView *)dequeueResusableTile
+{
+    if (!queuedTiles) queuedTiles = [[NSMutableArray alloc] init];
+    if (!queuedTiles.count) return [[DRPTileView alloc] initWithCharacter:nil];
+    
+    DRPTileView *tile = [queuedTiles lastObject];
+    [queuedTiles removeLastObject];
+    return tile;
+}
+
++ (void)queueReusableTile:(DRPTileView *)tile
+{
+    if (!queuedTiles) queuedTiles = [[NSMutableArray alloc] init];
+    [queuedTiles addObject:tile];
 }
 
 #pragma mark Properties

@@ -149,6 +149,9 @@
     }
     
     [_delegate characterWasDehighlighted:tile.character];
+    if (!tile.selected) {
+        [_delegate characterRemovedFromCurrentWord:tile.character];
+    }
 }
 
 - (void)tileWasSelected:(DRPTileView *)tile

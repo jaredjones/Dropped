@@ -93,13 +93,20 @@
 - (void)characterAddedToCurrentWord:(DRPCharacter *)character
 {
     // change bottom cue
+    if (_boardViewController.currentPositions.count >=3 && [DRPDictionary isValidWord:_boardViewController.currentWord]) {
+        // change cue
+    } else {
+        
+    }
+    
+    // `character` was selected, which means the user touchedUp.
     [_currentWordView characterWasDehighlighted:character];
     
-    // DEBUG: "submit" first word found
-    if (_boardViewController.currentPositions.count >= 3 && [DRPDictionary isValidWord:_boardViewController.currentWord]) {
-        [self currentWordViewTapped];
-        [_currentWordView removeAllCharactersFromCurrentWord];
-    }
+//    // DEBUG: "submit" first word found
+//    if (_boardViewController.currentPositions.count >= 3 && [DRPDictionary isValidWord:_boardViewController.currentWord]) {
+//        [self currentWordViewTapped];
+//        [_currentWordView removeAllCharactersFromCurrentWord];
+//    }
 }
 
 - (void)characterRemovedFromCurrentWord:(DRPCharacter *)character

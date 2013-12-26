@@ -26,7 +26,7 @@
 	<key>D</key>
 	<dict>
 		<key>x</key>
-		<real>1.5</real>
+		<real>0.75</real>
 		<key>y</key>
 		<integer>0</integer>
 	</dict>
@@ -89,7 +89,7 @@
 	<key>M</key>
 	<dict>
 		<key>x</key>
-		<real>0.25</real>
+		<real>0.18</real>
 		<key>y</key>
 		<integer>0</integer>
 	</dict>
@@ -117,7 +117,7 @@
 	<key>Q</key>
 	<dict>
 		<key>x</key>
-		<real>0.75</real>
+		<real>0.55</real>
 		<key>y</key>
 		<real>-8.800000000000001</real>
 	</dict>

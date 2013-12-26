@@ -21,6 +21,7 @@
 
 static NSMutableDictionary *glyphCache;
 static NSMutableDictionary *glyphScaleTransformCache;
+static NSMutableDictionary *glyphAdvancesCache;
 
 #pragma mark - DRPTileView
 
@@ -204,6 +205,11 @@ static NSMutableDictionary *glyphScaleTransformCache;
     CFStringRef glyphName = (__bridge CFStringRef)character;
     CGGlyph aGlyph = CTFontGetGlyphWithName(font, glyphName);
     
+    // Compute glyph advancement
+    CGSize advancement = CGSizeZero;
+    const CGGlyph glyphs[] = { aGlyph };
+    CTFontGetAdvancesForGlyphs(font, kCTFontOrientationHorizontal, glyphs, &advancement, 1);
+    
     // Find a reference to the Core Graphics path for the glyph
     CGPathRef glyphPath = CTFontCreatePathForGlyph(font, aGlyph, NULL);
     
@@ -242,9 +248,11 @@ static NSMutableDictionary *glyphScaleTransformCache;
     if (!glyphCache) {
         glyphCache = [[NSMutableDictionary alloc] init];
         glyphScaleTransformCache = [[NSMutableDictionary alloc] init];
+        glyphAdvancesCache = [[NSMutableDictionary alloc] init];
     }
     glyphCache[character] = glyphBezierPath;
     glyphScaleTransformCache[character] = [NSValue valueWithCATransform3D:scaleTransform];
+    glyphAdvancesCache[character] = @(advancement.width);
     
     return glyphBezierPath;
 }

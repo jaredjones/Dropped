@@ -39,6 +39,7 @@ static NSMutableDictionary *glyphAdvancesCache;
         [self setCharacter:character];
         
         _scaleCharacter = YES;
+        _allowSelection = YES;
     }
     return self;
 }
@@ -80,6 +81,7 @@ static NSMutableDictionary *glyphAdvancesCache;
     
     DRPTileView *tile = [queuedTiles lastObject];
     tile.scaleCharacter = YES;
+    tile.allowSelection = YES;
     [queuedTiles removeLastObject];
     return tile;
 }
@@ -126,6 +128,12 @@ static NSMutableDictionary *glyphAdvancesCache;
     self.strokeLayer.opacity = opacity;
     anim.duration = 0;
     [_strokeLayer addAnimation:anim forKey:@"opacity"];
+}
+
+- (void)setAllowSelection:(BOOL)allowSelection
+{
+    _allowSelection = allowSelection;
+    [self resetTargets];
 }
 
 #pragma mark Touch Events
@@ -196,7 +204,7 @@ static NSMutableDictionary *glyphAdvancesCache;
 // different character assignments
 - (void)resetTargets
 {
-    if (_character.multiplier) {
+    if (_character.multiplier || !_allowSelection) {
         [self removeTarget:self action:@selector(touchDown) forControlEvents:UIControlEventTouchDown];
         [self removeTarget:self action:@selector(touchUpInside) forControlEvents:UIControlEventTouchUpInside];
         [self removeTarget:self action:@selector(touchUpOutside) forControlEvents:UIControlEventTouchUpOutside];

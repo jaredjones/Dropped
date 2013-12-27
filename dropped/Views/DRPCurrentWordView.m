@@ -40,6 +40,7 @@
     if (!tile) {
         tile = [DRPTileView dequeueResusableTile];
         tile.scaleCharacter = NO;
+        tile.allowSelection = NO;
         tile.selected = YES;
         tile.highlighted = YES;
         tile.character = character;

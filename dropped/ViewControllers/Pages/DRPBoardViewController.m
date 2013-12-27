@@ -190,7 +190,6 @@
 
 - (void)dropPlayedWord:(DRPPlayedWord *)playedWord
 {
-    
     // First, drop positions
     NSArray *droppedTiles = [self dropPositions:[[playedWord.positions arrayByAddingObjectsFromArray:playedWord.multipliers] arrayByAddingObjectsFromArray:playedWord.additionalMultipliers]];
     
@@ -248,10 +247,11 @@
     
     for (DRPPosition *position in positions) {
         DRPTileView *tile = _tiles[position];
+        if (!tile) continue;
         [_tiles removeObjectForKey:position];
         
         tile.scaleCharacter = NO;
-        tile.highlighted = YES;
+        tile.selected = YES;
         [tile resetAppearence];
         
         UIPushBehavior *push = [[UIPushBehavior alloc] initWithItems:@[tile] mode:UIPushBehaviorModeInstantaneous];

@@ -183,7 +183,7 @@ static NSMutableDictionary *glyphAdvancesCache;
         _character.multiplier) {
         self.backgroundColor = _color;
     } else {
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [FRBSwatchist colorForKey:@"colors.white"];
     }
     
     // Transform

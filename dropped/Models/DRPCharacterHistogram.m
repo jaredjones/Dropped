@@ -69,10 +69,7 @@
 
 - (DRPCharacter *)randomMultiplier
 {
-//    DRPCharacter *character = [DRPCharacter characterWithCharacter:[self randomCharacterFromKeys:_multipliers percentages:_multiplierPercentages]];
-    
-    // Force 3 multipliers to make testing easier
-    DRPCharacter *character = [DRPCharacter characterWithMulitplier:3];
+    DRPCharacter *character = [DRPCharacter characterWithCharacter:[self randomCharacterFromKeys:_multipliers percentages:_multiplierPercentages]];
     character.color = [self randomColor];
     return character;
 }

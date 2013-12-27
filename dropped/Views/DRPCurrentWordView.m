@@ -74,6 +74,7 @@
     tile.selected = NO;
     tile.highlighted = NO;
     [tile resetAppearence];
+    tile.backgroundColor = [UIColor clearColor];
     [self repositionTiles];
 }
 

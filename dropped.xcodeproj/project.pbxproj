@@ -33,6 +33,7 @@
 		A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB49318372DA800B7A9A8 /* DRPCharacter.m */; };
 		A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */; };
 		A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9813323186BC00300FC3277 /* DRPCurrentWordView.m */; };
+		A9813327186DFBA100FC3277 /* DRPGreedyScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9813326186DFBA100FC3277 /* DRPGreedyScrollView.m */; };
 		A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A99D97D218490C8300208FA0 /* DRPPlayer.m */; };
 		A9A485D1185627B00080A4B5 /* Centrale Sans Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9A485CF185627B00080A4B5 /* Centrale Sans Light.otf */; };
 		A9A485D2185627B00080A4B5 /* Centrale Sans Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9A485D0185627B00080A4B5 /* Centrale Sans Medium.otf */; };
@@ -140,6 +141,8 @@
 		A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageDataSource.m; path = ViewControllers/DRPPageDataSource.m; sourceTree = "<group>"; };
 		A9813322186BC00300FC3277 /* DRPCurrentWordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCurrentWordView.h; path = Views/DRPCurrentWordView.h; sourceTree = "<group>"; };
 		A9813323186BC00300FC3277 /* DRPCurrentWordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCurrentWordView.m; path = Views/DRPCurrentWordView.m; sourceTree = "<group>"; };
+		A9813325186DFBA100FC3277 /* DRPGreedyScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPGreedyScrollView.h; path = Views/DRPGreedyScrollView.h; sourceTree = "<group>"; };
+		A9813326186DFBA100FC3277 /* DRPGreedyScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPGreedyScrollView.m; path = Views/DRPGreedyScrollView.m; sourceTree = "<group>"; };
 		A99D97D118490C8300208FA0 /* DRPPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayer.h; path = Models/DRPPlayer.h; sourceTree = "<group>"; };
 		A99D97D218490C8300208FA0 /* DRPPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPlayer.m; path = Models/DRPPlayer.m; sourceTree = "<group>"; };
 		A9A485CF185627B00080A4B5 /* Centrale Sans Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Centrale Sans Light.otf"; path = "Fonts/Centrale Sans Light.otf"; sourceTree = "<group>"; };
@@ -305,6 +308,8 @@
 			children = (
 				A9B1206C1857F8B80079BF72 /* Cues */,
 				A9E27CBC1857AE050043F6A9 /* Tiles */,
+				A9813325186DFBA100FC3277 /* DRPGreedyScrollView.h */,
+				A9813326186DFBA100FC3277 /* DRPGreedyScrollView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -660,6 +665,7 @@
 				A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */,
 				A93D77CC185673EF006691AE /* DRPPageSplashViewController.m in Sources */,
 				A93D77C618566A8F006691AE /* DRPPageMatchmakerViewController.m in Sources */,
+				A9813327186DFBA100FC3277 /* DRPGreedyScrollView.m in Sources */,
 				A9C0FACC1864DB0A00377B0E /* DRPPageMatchViewController.m in Sources */,
 				A9B1C085184D042100866029 /* DRPLiftTransition.m in Sources */,
 				A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */,

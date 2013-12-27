@@ -16,7 +16,7 @@
 @property (nonatomic) DRPCharacter *character;
 @property (nonatomic) CGFloat strokeOpacity;
 @property DRPPosition *position;
-@property (nonatomic) BOOL scaleCharacter, allowSelection;
+@property (nonatomic) BOOL scaleCharacter;
 
 @property id<DRPTileDelegate> delegate;
 

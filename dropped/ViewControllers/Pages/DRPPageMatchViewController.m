@@ -12,6 +12,7 @@
 #import "DRPMatch.h"
 #import "DRPPlayedWord.h"
 #import "DRPDictionary.h"
+#import "DRPGreedyScrollView.h"
 
 @interface DRPPageMatchViewController ()
 
@@ -50,6 +51,13 @@
     [self loadBoardViewController];
 }
 
+- (void)loadScrollView
+{
+    self.scrollView = [[DRPGreedyScrollView alloc] initWithFrame:self.view.bounds];
+    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + 0.5);
+    [self.view addSubview:self.scrollView];
+}
+
 - (void)loadBoardViewController
 {
     _boardViewController = [[DRPBoardViewController alloc] initWithNibName:nil bundle:nil];
@@ -62,6 +70,8 @@
     center.y += 9;
     _boardViewController.view.center = center;
     [self.scrollView addSubview:_boardViewController.view];
+    
+    self.scrollView.canCancelContentTouches = YES;
 }
 
 - (void)loadCurrentWordView
@@ -86,6 +96,8 @@
     // extract DRPMatch, load it up
     _match = [[DRPMatch alloc] initWithGKMatch:nil];
     [_boardViewController loadBoard:_match.board];
+    
+    [_currentWordView removeAllCharactersFromCurrentWord];
 }
 
 #pragma mark DRPBoardViewControllerDelegate

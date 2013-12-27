@@ -40,7 +40,7 @@
     if (!tile) {
         tile = [DRPTileView dequeueResusableTile];
         tile.scaleCharacter = NO;
-        tile.allowSelection = NO;
+        tile.enabled = NO;
         tile.selected = YES;
         tile.highlighted = YES;
         tile.character = character;
@@ -105,7 +105,7 @@
     return nil;
 }
 
-#pragma mark Repositioning
+#pragma mark Repositioning Tiles
 
 - (void)repositionTiles
 {
@@ -161,6 +161,13 @@
     CGFloat letterSpacing = [FRBSwatchist floatForKey:@"page.matchCurrentWordLetterSpacing"];
     letterSpacing = _wordWidth > 0 ? letterSpacing : -letterSpacing;
     return CGPointMake((self.frame.size.width + _wordWidth + tileWidth + letterSpacing) / 2, 25);
+}
+
+#pragma mark Touch Events
+
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    NSLog(@"touches began");
 }
 
 @end

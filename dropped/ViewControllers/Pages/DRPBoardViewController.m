@@ -192,13 +192,11 @@
 {
     
     // First, drop positions
-    [self dropPositions:playedWord.positions];
-    [self dropPositions:playedWord.multipliers];
-    [self dropPositions:playedWord.additionalMultipliers];
-    
-    NSMutableDictionary *diff = [[NSMutableDictionary alloc] initWithDictionary:playedWord.diff];
+    NSArray *droppedTiles = [self dropPositions:[[playedWord.positions arrayByAddingObjectsFromArray:playedWord.multipliers] arrayByAddingObjectsFromArray:playedWord.additionalMultipliers]];
     
     // Move everything else down
+    NSMutableDictionary *diff = [[NSMutableDictionary alloc] initWithDictionary:playedWord.diff];
+    
     for (NSInteger i = 0; i < 6; i++) {
         for (NSInteger j = 5; j >= 0; j--) {
             DRPPosition *start = [DRPPosition positionWithI:i j:j];
@@ -236,14 +234,25 @@
         }
     }
     
+    // Bring Dropped Tiles to Front
+    for (UIView *tile in droppedTiles) {
+        [self.view bringSubviewToFront:tile];
+    }
+    
     [self resetCurrentWord];
 }
 
-- (void)dropPositions:(NSArray *)positions
+- (NSArray *)dropPositions:(NSArray *)positions
 {
+    NSMutableArray *droppedTiles = [[NSMutableArray alloc] init];
+    
     for (DRPPosition *position in positions) {
         DRPTileView *tile = _tiles[position];
         [_tiles removeObjectForKey:position];
+        
+        tile.scaleCharacter = NO;
+        tile.highlighted = YES;
+        [tile resetAppearence];
         
         UIPushBehavior *push = [[UIPushBehavior alloc] initWithItems:@[tile] mode:UIPushBehaviorModeInstantaneous];
         CGFloat angleRange = [FRBSwatchist floatForKey:@"animation.tileDropAngleRange"];
@@ -260,7 +269,11 @@
         
         tile.userInteractionEnabled = NO;
         [self.view bringSubviewToFront:tile];
+        
+        [droppedTiles addObject:tile];
     }
+    
+    return droppedTiles;
 }
 
 - (void)collisionBehavior:(UICollisionBehavior *)behavior beganContactForItem:(id<UIDynamicItem>)item withBoundaryIdentifier:(id<NSCopying>)identifier atPoint:(CGPoint)p

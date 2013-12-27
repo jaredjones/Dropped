@@ -19,6 +19,9 @@
 
 @property CGFloat wordWidth;
 
+@property UITapGestureRecognizer *tapGestureRecognizer;
+@property UIPanGestureRecognizer *panGestureRecognizer;
+
 @end
 
 @implementation DRPCurrentWordView
@@ -28,6 +31,9 @@
     self = [super initWithFrame:frame];
     if (self) {
         _tiles = [[NSMutableArray alloc] init];
+        
+        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+        [self addGestureRecognizer:_tapGestureRecognizer];
     }
     return self;
 }
@@ -165,9 +171,9 @@
 
 #pragma mark Touch Events
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)handleTapGesture:(UITapGestureRecognizer *)gesture
 {
-    NSLog(@"touches began");
+    [_delegate currentWordViewTapped];
 }
 
 @end

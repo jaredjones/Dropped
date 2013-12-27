@@ -105,7 +105,7 @@
 - (void)characterAddedToCurrentWord:(DRPCharacter *)character
 {
     // change bottom cue
-    if (_boardViewController.currentPositions.count >=3 && [DRPDictionary isValidWord:_boardViewController.currentWord]) {
+    if ([self currentWordIsValid]) {
         // change cue
     } else {
         
@@ -113,12 +113,6 @@
     
     // `character` was selected, which means the user touchedUp.
     [_currentWordView characterWasDehighlighted:character];
-    
-//    // DEBUG: "submit" first word found
-//    if (_boardViewController.currentPositions.count >= 3 && [DRPDictionary isValidWord:_boardViewController.currentWord]) {
-//        [self currentWordViewTapped];
-//        [_currentWordView removeAllCharactersFromCurrentWord];
-//    }
 }
 
 - (void)characterRemovedFromCurrentWord:(DRPCharacter *)character
@@ -139,12 +133,20 @@
     [_currentWordView characterWasDehighlighted:character];
 }
 
+- (BOOL)currentWordIsValid
+{
+    return _boardViewController.currentPositions.count >=3 && [DRPDictionary isValidWord:_boardViewController.currentWord];
+}
+
 #pragma mark DRPCurrentWordViewDelegate
 
 - (void)currentWordViewTapped
 {
-    [_match submitTurnForPositions:_boardViewController.currentPositions];
-    // register for nsnotification to find out when GC receives move
+    if ([self currentWordIsValid]) {
+        [_match submitTurnForPositions:_boardViewController.currentPositions];
+        [_currentWordView removeAllCharactersFromCurrentWord];
+    }
+    // TODO: register for nsnotification to find out when GC receives move
 }
 
 - (void)currentWordViewSwiped

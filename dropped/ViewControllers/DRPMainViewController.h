@@ -13,7 +13,7 @@
 
 - (DRPPageID)currentPageID;
 - (void)setCurrentPageID:(DRPPageID)pageID animated:(BOOL)animated userInfo:(NSDictionary *)userInfo;
-- (void)transitionToPageInDirection:(DRPPageDirection)direction;
+- (void)transitionToPageInDirection:(DRPPageDirection)direction userInfo:(NSDictionary *)userInfo;
 
 - (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position;
 - (void)emphasizeCueInPosition:(DRPPageDirection)position;

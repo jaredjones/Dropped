@@ -105,9 +105,9 @@
 }
 
 // Convenience method
-- (void)transitionToPageInDirection:(DRPPageDirection)direction
+- (void)transitionToPageInDirection:(DRPPageDirection)direction userInfo:(NSDictionary *)userInfo
 {
-    [self setCurrentPageID:[_dataSource pageIDInDirection:direction from:_currentPage.pageID] animated:YES userInfo:nil];
+    [self setCurrentPageID:[_dataSource pageIDInDirection:direction from:_currentPage.pageID] animated:YES userInfo:userInfo];
 }
 
 // Loads the new surround DRPPages and stores them in memory

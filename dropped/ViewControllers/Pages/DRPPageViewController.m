@@ -149,7 +149,8 @@
     // and only when the drag was started with the appropriate cue visible
     DRPPageDirection direction = [self scrollViewShouldEmphasizeCue:scrollView];
     if ([self scrollView:scrollView shouldTransitionInDirection:direction]) {
-        [_mainViewController transitionToPageInDirection:direction];
+        [_mainViewController transitionToPageInDirection:direction
+                                                userInfo:@{@"velocity" : @([scrollView.panGestureRecognizer velocityInView:scrollView].y)}];
     }
 }
 

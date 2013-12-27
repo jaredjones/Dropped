@@ -178,7 +178,9 @@ static NSMutableDictionary *glyphAdvancesCache;
     }
     
     // Color
-    if (self.highlighted || (self.selected && _character.adjacentMultiplier.multiplierActive) || _character.multiplier) {
+    if (self.highlighted ||
+        (self.selected && (_character.adjacentMultiplier.multiplierActive || (!self.enabled && _character.adjacentMultiplier))) ||
+        _character.multiplier) {
         self.backgroundColor = _color;
     } else {
         self.backgroundColor = [UIColor clearColor];

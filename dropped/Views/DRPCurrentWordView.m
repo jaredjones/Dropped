@@ -17,7 +17,7 @@
 
 @property NSMutableArray *tiles;
 
-@property CGFloat wordWidth;
+@property CGFloat wordWidth, tileScale;
 
 @property UITapGestureRecognizer *tapGestureRecognizer;
 @property UIPanGestureRecognizer *panGestureRecognizer;
@@ -123,7 +123,9 @@
                         options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
                          for (NSInteger i = 0; i < _tiles.count; i++) {
-                             ((UIView *)_tiles[i]).center = centers[i];
+                             DRPTileView *tile = _tiles[i];
+                             tile.center = centers[i];
+                             tile.transform = CGAffineTransformMakeScale(_tileScale, _tileScale);
                          }
                      }
                      completion:nil];
@@ -149,13 +151,15 @@
     
     // Recenter entire word
     // Word is sometimes too long to fit. Favor right side of the word
-    CGFloat offset = self.frame.size.width / 2 - _wordWidth / 2;
+    _tileScale = 1;
     if (_wordWidth > self.frame.size.width) {
-        offset = self.frame.size.width - _wordWidth;
+        _tileScale = self.frame.size.width / _wordWidth;
     }
     
+    CGFloat offset = self.frame.size.width / 2 - _wordWidth / 2;
+    
     for (NSInteger i = 0; i < _tiles.count; i++) {
-        centers[i].x = centers[i].x + offset;
+        centers[i].x = 160 + (centers[i].x + offset - 160) * _tileScale;
     }
     
     return centers;

@@ -54,7 +54,8 @@
 static UIDynamicAnimator *sharedAnimator;
 + (void)setReferenceView:(UIView *)reference
 {
-    sharedAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:reference];
+    if (!sharedAnimator)
+        sharedAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:reference];
 }
 
 + (UIDynamicAnimator *)sharedDynamicAnimator

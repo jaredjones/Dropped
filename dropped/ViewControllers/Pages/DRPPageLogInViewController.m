@@ -51,7 +51,7 @@
         // Dumb user hit Cancel. Only option now is to sign in through
         // Game Center app.
         // Fuck, I hate Game Center
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"gamecenter:"]];
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"gamecenter://"]];
     }
 }
 

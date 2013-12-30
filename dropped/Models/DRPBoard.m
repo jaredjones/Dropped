@@ -191,7 +191,6 @@
         }
     }
     
-    NSLog(@"%ld", activatedMultipliers.count);
     return activatedMultipliers;
 }
 

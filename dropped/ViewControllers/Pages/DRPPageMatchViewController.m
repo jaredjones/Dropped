@@ -7,6 +7,7 @@
 //
 
 #import "DRPPageMatchViewController.h"
+#import "DRPMainViewController.h"
 #import "DRPBoardViewController.h"
 #import "DRPCurrentWordView.h"
 #import "DRPMatch.h"
@@ -104,12 +105,7 @@
 
 - (void)characterAddedToCurrentWord:(DRPCharacter *)character
 {
-    // change bottom cue
-    if ([self currentWordIsValid]) {
-        // change cue
-    } else {
-        
-    }
+    [self resetCues];
     
     // `character` was selected, which means the user touchedUp.
     [_currentWordView characterWasDehighlighted:character];
@@ -117,9 +113,7 @@
 
 - (void)characterRemovedFromCurrentWord:(DRPCharacter *)character
 {
-    // change bottom cue
-    // if no characters left, change DRPPlayedWordView message
-    
+    [self resetCues];
     [_currentWordView characterRemovedFromCurrentWord:character];
 }
 
@@ -138,6 +132,23 @@
     return _boardViewController.currentPositions.count >=3 && [DRPDictionary isValidWord:_boardViewController.currentWord];
 }
 
+- (void)resetCues
+{
+    if (_boardViewController.currentWord.length == 0) {
+        [self.mainViewController setCue:@"Back" inPosition:DRPPageDirectionDown];
+        // change DRPCurrentWordView message
+        
+    } else {
+        // Make sure DRPCurrentWordView is visible
+        
+        if ([self currentWordIsValid]) {
+            [self.mainViewController setCue:@"Tap to Submit" inPosition:DRPPageDirectionDown];
+        } else {
+            [self.mainViewController setCue:@"Swipe to Clear" inPosition:DRPPageDirectionDown];
+        }
+    }
+}
+
 #pragma mark DRPCurrentWordViewDelegate
 
 - (void)currentWordViewTapped
@@ -145,6 +156,7 @@
     if ([self currentWordIsValid]) {
         [_match submitTurnForPositions:_boardViewController.currentPositions];
         [_currentWordView removeAllCharactersFromCurrentWord];
+        [self resetCues];
     }
     // TODO: register for nsnotification to find out when GC receives move
 }

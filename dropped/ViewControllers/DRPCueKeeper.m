@@ -68,6 +68,7 @@
 - (void)cycleInCue:(NSString *)cueText inPosition:(DRPPageDirection)position
 {
     if (!(position == DRPPageDirectionUp || position == DRPPageDirectionDown)) return;
+    if ([[self cueForPosition:position].text isEqualToString:cueText]) return;
     
     [self cycleOutCueInPosition:position];
     UILabel *cue;

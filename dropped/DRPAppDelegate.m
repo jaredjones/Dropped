@@ -21,6 +21,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    srandomdev();
+    
     [DRPGameCenterInterface authenticateLocalPlayer];
     [self loadSwatches];
     

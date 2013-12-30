@@ -47,7 +47,7 @@
 // Generates a new DRPCharacter based on data in histogram
 - (NSString *)randomCharacterFromKeys:(NSArray *)keys percentages:(NSDictionary *)percentages
 {
-    float r = ((float)rand() / (float)RAND_MAX) * 100.0f;
+    float r = ((float)random() / (float)RAND_MAX) * 100.0f;
     float sum = 0.0;
     
     NSString *prev = nil;

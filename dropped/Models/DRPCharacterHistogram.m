@@ -122,9 +122,9 @@
     
     // Compute any new multipliers to add to appendedCharacters
     // Mutate sortedPositions in place
-    [self insertNewMultipliersInSortedPositions:sortedPositions
-                             droppedMultipliers:droppedMultipliers
-                                    multipliers:multipliers];
+    sortedPositions = [self insertNewMultipliersInSortedPositions:sortedPositions
+                                               droppedMultipliers:droppedMultipliers
+                                                      multipliers:multipliers];
     
     // Generate the rest of the appendedCharacters and
     // convert to flat array
@@ -154,11 +154,11 @@
     return columns;
 }
 
-- (void)insertNewMultipliersInSortedPositions:(NSArray *)positions
-                           droppedMultipliers:(NSArray *)droppedMultipliers
-                                  multipliers:(NSArray *)multipliers
+- (NSArray *)insertNewMultipliersInSortedPositions:(NSArray *)positions
+                                droppedMultipliers:(NSArray *)droppedMultipliers
+                                       multipliers:(NSArray *)multipliers
 {
-    if (!droppedMultipliers.count) return;
+    if (!droppedMultipliers.count) return positions;
     
     NSInteger occupiedColumn = -1;
     // If only one multiplier is being dropped, find the column
@@ -171,30 +171,14 @@
         }
     }
     
-    // Keep a list of valid columns to place a multiplier in
-    // Determine which columns can receive multipliers
-    NSMutableArray *validColumns = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < 6; i++) {
-        if (((NSArray *)positions[i]).count) {
-            [validColumns addObject:@(i)];
-        }
-    }
+    // Sometimes the generated positions aren't valid.
+    // Keep trying until a valid one is guessed. "Computers are fast." - Novak
+    NSArray *newPositions;
+    do {
+        newPositions = [self insertMultipliersIntoSortedPositions:positions withOccupiedColumn:occupiedColumn];
+    } while (newPositions == nil);
     
-    // Generate the new multipliers by picking a valid column
-    for (NSInteger i = 0; i < droppedMultipliers.count; i++) {
-        // First, remove any columns that are invalidated because
-        // they are too close to an occupied column
-        validColumns = [self removeInvalidColumnsFromArray:validColumns
-                                         forOccupiedColumn:occupiedColumn];
-        
-        NSInteger newColumn = [validColumns[arc4random_uniform(validColumns.count)] integerValue];
-        
-        DRPCharacter *multiplier = [self randomMultiplier];
-        [self registerColor:multiplier.color];
-        NSInteger rows = ((NSMutableArray *)positions[newColumn]).count;
-        ((NSMutableArray *)positions[newColumn])[arc4random_uniform(rows)] = multiplier;
-        occupiedColumn = newColumn;
-    }
+    return newPositions;
 }
 
 - (NSMutableArray *)removeInvalidColumnsFromArray:(NSArray *)validColumns forOccupiedColumn:(NSInteger)occupiedColumn
@@ -215,6 +199,45 @@
         }
     }
     return new;
+}
+
+- (NSMutableArray *)insertMultipliersIntoSortedPositions:(NSArray *)positions withOccupiedColumn:(NSInteger)occupiedColumn
+{
+    NSInteger count = occupiedColumn == -1 ? 2 : 1;
+    
+    NSMutableArray *newPositions = [[NSMutableArray alloc] init];
+    for (NSMutableArray *column in positions) {
+        [newPositions addObject:[NSMutableArray arrayWithArray:column]];
+    }
+    
+    // Keep a list of valid columns to place a multiplier in
+    // Determine which columns can receive multipliers
+    NSMutableArray *validColumns = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < 6; i++) {
+        if (((NSArray *)newPositions[i]).count) {
+            [validColumns addObject:@(i)];
+        }
+    }
+
+    // Generate the new multipliers by picking a valid column
+    for (NSInteger i = 0; i < count; i++) {
+        // First, remove any columns that are invalidated because
+        // they are too close to an occupied column
+        validColumns = [self removeInvalidColumnsFromArray:validColumns
+                                         forOccupiedColumn:occupiedColumn];
+        
+        if (validColumns.count == 0) return nil;
+
+        NSInteger newColumn = [validColumns[arc4random_uniform(validColumns.count)] integerValue];
+
+        DRPCharacter *multiplier = [self randomMultiplier];
+        [self registerColor:multiplier.color];
+        NSInteger rows = ((NSMutableArray *)positions[newColumn]).count;
+        ((NSMutableArray *)newPositions[newColumn])[arc4random_uniform(rows)] = multiplier;
+        occupiedColumn = newColumn;
+    }
+    
+    return newPositions;
 }
 
 - (NSArray *)appendedCharactersForSortedPositions:(NSArray *)sortedPositions

@@ -256,14 +256,18 @@
     NSInteger occupiedColumn = -1;
     
     for (NSInteger m = 0; m < 2; m++) {
+        DRPCharacter *multiplier = [self randomMultiplier];
+        [self registerColor:multiplier.color];
+        
         validColumns = [self removeInvalidColumnsFromArray:validColumns forOccupiedColumn:occupiedColumn];
         
         NSInteger column = [validColumns[arc4random_uniform(validColumns.count)] integerValue];
         NSInteger row = arc4random_uniform(6);
+        if (multiplier.multiplier >= 4 && (column == 0 || column == 5)) {
+            row = arc4random_uniform(5);
+        }
         DRPPosition *position = [DRPPosition positionWithI:column j:row];
         
-        DRPCharacter *multiplier = [self randomMultiplier];
-        [self registerColor:multiplier.color];
         board[position] = multiplier;
         
         occupiedColumn = column;

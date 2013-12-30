@@ -18,4 +18,6 @@
 - (void)registerColor:(DRPColor)color;
 - (void)unregisterColor:(DRPColor)color;
 
+- (NSDictionary *)generateNewBoard;
+
 @end

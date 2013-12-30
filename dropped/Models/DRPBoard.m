@@ -68,22 +68,11 @@
         // Create board from scratch if data is nil
         
         if (data == nil || data.length == 0) {
-            // Test data uses \ddd for non-ASCII characters
-            NSMutableString *d = [NSMutableString stringWithString:@"\001ABCDEFG3IJKLMNOPQRSTUVWXYZABC4EFGHIJ"];
-            [d appendString:@"\003\001"];
+            [self generateNewBoard];
             
-            // 1 turn
-            [d appendString:@"\001"];
-            
-            // 3 characters, 0 multipliers, 0 additional
-            [d appendString:@"\003\000\000"];
-            // Positions
-            [d appendString:@"\000\001\001\003\004\004KLZ"];
-            
-            data = [d dataUsingEncoding:NSUTF8StringEncoding];
+        } else {
+            [self loadData:data];
         }
-        
-        [self loadData:data];
     }
     return self;
 }
@@ -243,6 +232,18 @@
 }
 
 #pragma mark MatchData Loading
+
+- (void)generateNewBoard
+{
+    _history = [[NSMutableArray alloc] init];
+    _multiplierHistory = [[NSMutableArray alloc] init];
+    _playedWords = [[NSMutableArray alloc] init];
+    _histogram = [[DRPCharacterHistogram alloc] init];
+    
+    NSDictionary *initialState = [_histogram generateNewBoard];
+    [self updateAdjacentMultipliersForHistoryItem:initialState];
+    [self appendHistoryItem:initialState];
+}
 
 // These methods care very much about state. Do not call any
 // of them directly except loadData.

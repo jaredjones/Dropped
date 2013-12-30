@@ -236,4 +236,40 @@
     return appendedCharacters;
 }
 
+#pragma mark Board Generation
+
+- (NSDictionary *)generateNewBoard
+{
+    NSMutableDictionary *board = [[NSMutableDictionary alloc] init];
+    
+    // Generate Letters
+    for (NSInteger i = 0; i < 6; i++) {
+        for (NSInteger j = 0; j < 6; j++) {
+            DRPPosition *position = [DRPPosition positionWithI:i j:j];
+            DRPCharacter *character = [self randomCharacter];
+            board[position] = character;
+        }
+    }
+    
+    // Generate Multipliers
+    NSArray *validColumns = @[@(0), @(1), @(2), @(3), @(4), @(5)];
+    NSInteger occupiedColumn = -1;
+    
+    for (NSInteger m = 0; m < 2; m++) {
+        validColumns = [self removeInvalidColumnsFromArray:validColumns forOccupiedColumn:occupiedColumn];
+        
+        NSInteger column = [validColumns[arc4random_uniform(validColumns.count)] integerValue];
+        NSInteger row = arc4random_uniform(6);
+        DRPPosition *position = [DRPPosition positionWithI:column j:row];
+        
+        DRPCharacter *multiplier = [self randomMultiplier];
+        [self registerColor:multiplier.color];
+        board[position] = multiplier;
+        
+        occupiedColumn = column;
+    }
+    
+    return board;
+}
+
 @end

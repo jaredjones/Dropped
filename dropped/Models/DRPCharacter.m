@@ -29,7 +29,7 @@
         return [DRPCharacter characterWithMulitplier:5];
     }
     
-    DRPCharacter *c = [DRPCharacter new];
+    DRPCharacter *c = [[DRPCharacter alloc] init];
     c.character = character;
     c.multiplier = 0;
     c.color = DRPColorNil;
@@ -38,7 +38,7 @@
 
 + (instancetype)characterWithMulitplier:(NSInteger)multiplier
 {
-    DRPCharacter *c = [DRPCharacter new];
+    DRPCharacter *c = [[DRPCharacter alloc] init];
     switch (multiplier) {
         case 3:
             c.character = @"3";
@@ -68,16 +68,6 @@
 - (id)copyWithZone:(NSZone *)zone
 {
     return self;
-}
-
-- (BOOL)isEqual:(DRPCharacter *)object {
-    if (![_character isEqual:object.character]) {
-        return NO;
-    }
-    if (_multiplier != object.multiplier) {
-        return NO;
-    }
-    return _adjacentMultiplier == object.adjacentMultiplier;
 }
 
 @end

@@ -81,6 +81,8 @@ static NSMutableDictionary *glyphAdvancesCache;
     DRPTileView *tile = [queuedTiles lastObject];
     tile.scaleCharacter = YES;
     tile.enabled = YES;
+    tile.selected = NO;
+    tile.highlighted = NO;
     [queuedTiles removeLastObject];
     return tile;
 }

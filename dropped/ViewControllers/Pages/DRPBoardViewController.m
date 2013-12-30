@@ -77,6 +77,7 @@
             tile.character = [_board characterAtPosition:position];
             tile.position = position;
             tile.center = [self centerForPosition:position];
+            tile.transform = CGAffineTransformIdentity;
             tile.userInteractionEnabled = YES;
             [self.view addSubview:tile];
             [self.view sendSubviewToBack:tile];
@@ -205,6 +206,7 @@
             if (!tile) continue;
             tile.character = [_board characterAtPosition:end];
             tile.position = end;
+            tile.character.multiplierActive = NO;
             _tiles[end] = tile;
             
             if (![start isEqual:end]) {

@@ -187,7 +187,7 @@
     // enough adjacent DRPCharacters selected
     NSMutableArray *activatedMultipliers = [[NSMutableArray alloc] init];
     for (DRPCharacter *multiplier in multiplierAdjacentCount) {
-        if (multiplier.multiplier <= [multiplierAdjacentCount[multiplier] intValue]) {
+        if ([multiplierAdjacentCount[multiplier] intValue] >= multiplier.multiplier) {
             
             // Find the DRPPosition of multiplier
             // This is necessary since DRPCharacters don't hold position information
@@ -202,6 +202,7 @@
         }
     }
     
+    NSLog(@"%ld", activatedMultipliers.count);
     return activatedMultipliers;
 }
 

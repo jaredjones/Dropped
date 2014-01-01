@@ -91,6 +91,8 @@ static NSMutableDictionary *glyphAdvancesCache;
 {
     if (!queuedTiles) queuedTiles = [[NSMutableArray alloc] init];
     [queuedTiles addObject:tile];
+    [tile removeFromSuperview];
+    tile.center = CGPointZero;
 }
 
 #pragma mark Properties

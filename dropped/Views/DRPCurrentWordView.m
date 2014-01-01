@@ -55,10 +55,14 @@
         tile.selected = YES;
         tile.highlighted = YES;
         tile.character = character;
+        tile.position = nil;
         tile.transform = CGAffineTransformIdentity;
-        tile.center = [self centerForNewTile:tile];
         [_tiles addObject:tile];
         [self addSubview:tile];
+        
+        tile.center = [self centerForNewTile:tile];
+        
+        // TODO: sometimes these tiles visibly shoot up from below
         
     } else {
         [self bringSubviewToFront:tile];
@@ -67,7 +71,18 @@
         [tile resetAppearence];
     }
     
-    [self repositionTiles];
+    // There's a (very) visibly noticeable jump in the animation
+    // when  the repositioning happens at the same time as adding
+    // a dequeued tile. Delaying by a tiny amount fixes the problem.
+    //
+    // The source of the problem is that UIViewAnimationOptionsBeginFromCurrentState
+    // for repositioning animations (which should be the case). For some
+    // reason the animation still thinks the center of the tile is in its
+    // previous location.
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.001 * NSEC_PER_SEC));
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        [self repositionTiles];
+    });
 }
 
 - (void)characterWasDehighlighted:(DRPCharacter *)character
@@ -131,7 +146,7 @@
     
     [UIView animateWithDuration:[FRBSwatchist floatForKey:@"animation.currentWordManipulationDuration"]
                           delay:0
-                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationCurveEaseOut
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
                      animations:^{
                          for (NSInteger i = 0; i < _tiles.count; i++) {
                              DRPTileView *tile = _tiles[i];

@@ -293,9 +293,9 @@
     
     [behavior removeItem:item];
     [_gravity removeItem:item];
+    [_pushes[item] removeItem:item];
     [_animator removeBehavior:_pushes[item]];
-    
-    [(UIView *)item removeFromSuperview];
+    [_pushes removeObjectForKey:item];
 }
 
 - (void)transitionTile:(DRPTileView *)tile toPosition:(DRPPosition *)position

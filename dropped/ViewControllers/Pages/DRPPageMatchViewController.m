@@ -160,6 +160,7 @@
 
 - (void)currentWordViewSwiped
 {
+    [_boardViewController deselectCurrentWord];
 }
 
 - (void)gameCenterReceivedTurn:(NSNotification *)notification

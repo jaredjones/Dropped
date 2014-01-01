@@ -30,4 +30,6 @@
 - (void)loadBoard:(DRPBoard *)board;
 - (void)dropPlayedWord:(DRPPlayedWord *)playedWord;
 
+- (void)deselectCurrentWord;
+
 @end

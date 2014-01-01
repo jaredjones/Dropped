@@ -184,6 +184,18 @@
     [_adjacentMultipliers removeAllObjects];
 }
 
+- (void)deselectCurrentWord
+{
+    for (DRPPosition *position in _currentPlayedWord.positions) {
+        DRPTileView *tile = _tiles[position];
+        tile.selected = NO;
+        tile.highlighted = NO;
+        [tile resetAppearence];
+    }
+    
+    [self resetCurrentWord];
+}
+
 #pragma mark Move Submission
 
 - (void)dropPlayedWord:(DRPPlayedWord *)playedWord

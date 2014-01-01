@@ -34,6 +34,9 @@
         
         _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
         [self addGestureRecognizer:_tapGestureRecognizer];
+        
+        _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+        [self addGestureRecognizer:_panGestureRecognizer];
     }
     return self;
 }
@@ -57,17 +60,14 @@
         [_tiles addObject:tile];
         [self addSubview:tile];
         
-        if (CGRectGetMaxX(tile.frame) > self.frame.size.width) {
-            [self repositionTiles];
-        }
-        
     } else {
         [self bringSubviewToFront:tile];
         tile.selected = YES;
         tile.highlighted = YES;
         [tile resetAppearence];
-        [self repositionTiles];
     }
+    
+    [self repositionTiles];
 }
 
 - (void)characterWasDehighlighted:(DRPCharacter *)character
@@ -115,6 +115,15 @@
 }
 
 #pragma mark Repositioning Tiles
+
+- (CGPoint)centerForNewTile:(DRPTileView *)tile
+{
+    // Ignore advancement when the first letter is being added
+    CGFloat tileWidth = _wordWidth > 0 ? tile.frame.size.width : 0;
+    CGFloat letterSpacing = [FRBSwatchist floatForKey:@"page.matchCurrentWordLetterSpacing"];
+    letterSpacing = _wordWidth > 0 ? letterSpacing : -letterSpacing;
+    return CGPointMake((self.frame.size.width + _wordWidth + tileWidth + letterSpacing) / 2, 25);
+}
 
 - (void)repositionTiles
 {
@@ -171,13 +180,18 @@
     return centers;
 }
 
-- (CGPoint)centerForNewTile:(DRPTileView *)tile
+// Following two methods deal with the swipeclears
+- (void)swipeAwayTilesWithVelocity:(CGFloat)velocity
 {
-    // Ignore advancement when the first letter is being added
-    CGFloat tileWidth = _wordWidth > 0 ? tile.frame.size.width : 0;
-    CGFloat letterSpacing = [FRBSwatchist floatForKey:@"page.matchCurrentWordLetterSpacing"];
-    letterSpacing = _wordWidth > 0 ? letterSpacing : -letterSpacing;
-    return CGPointMake((self.frame.size.width + _wordWidth + tileWidth + letterSpacing) / 2, 25);
+    [_delegate currentWordViewSwiped];
+    
+    [self removeAllCharactersFromCurrentWord];
+    self.center = CGPointMake(160, self.center.y);
+}
+
+- (void)snapBackTilesWithVelocity:(CGFloat)velocity
+{
+    self.center = CGPointMake(160, self.center.y);
 }
 
 #pragma mark Touch Events
@@ -185,6 +199,26 @@
 - (void)handleTapGesture:(UITapGestureRecognizer *)gesture
 {
     [_delegate currentWordViewTapped];
+}
+
+- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
+{
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        
+    } else if (gesture.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [gesture translationInView:self];
+        self.center = CGPointMake(160 + translation.x, self.center.y);
+        
+    } else if (gesture.state == UIGestureRecognizerStateEnded) {
+        
+        CGPoint velocity = [gesture velocityInView:self];
+        
+        if (fabs(velocity.x) > 100) {
+            [self swipeAwayTilesWithVelocity:velocity.x];
+        } else {
+            [self snapBackTilesWithVelocity:velocity.x];
+        }
+    }
 }
 
 @end

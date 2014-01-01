@@ -106,9 +106,6 @@
 - (void)characterAddedToCurrentWord:(DRPCharacter *)character
 {
     [self resetCues];
-    
-    // `character` was selected, which means the user touchedUp.
-    [_currentWordView characterWasDehighlighted:character];
 }
 
 - (void)characterRemovedFromCurrentWord:(DRPCharacter *)character

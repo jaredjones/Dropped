@@ -134,6 +134,18 @@
 
 - (void)tileWasDehighlighted:(DRPTileView *)tile
 {
+    [_delegate characterWasDehighlighted:tile.character];
+}
+
+- (void)tileWasSelected:(DRPTileView *)tile
+{
+    // add character to current word, update delegate
+    _currentPlayedWord.positions = [_currentPlayedWord.positions arrayByAddingObject:tile.position];
+    [_delegate characterAddedToCurrentWord:tile.character];
+}
+
+- (void)tileWasDeselected:(DRPTileView *)tile
+{
     // Dehighlight tiles around adjacentMultiplier if necessary
     DRPCharacter *adjacentMultiplier = tile.character.adjacentMultiplier;
     if (adjacentMultiplier) {
@@ -149,21 +161,6 @@
         }
     }
     
-    [_delegate characterWasDehighlighted:tile.character];
-    if (!tile.selected) {
-        [_delegate characterRemovedFromCurrentWord:tile.character];
-    }
-}
-
-- (void)tileWasSelected:(DRPTileView *)tile
-{
-    // add character to current word, update delegate
-    _currentPlayedWord.positions = [_currentPlayedWord.positions arrayByAddingObject:tile.position];
-    [_delegate characterAddedToCurrentWord:tile.character];
-}
-
-- (void)tileWasDeselected:(DRPTileView *)tile
-{
     // remove character from current word, update delegate
     _currentPlayedWord.positions = [_currentPlayedWord.positions arrayByRemovingObject:tile.position];
     [_delegate characterRemovedFromCurrentWord:tile.character];
@@ -285,6 +282,8 @@
     [behavior removeItem:item];
     [_gravity removeItem:item];
     [_animator removeBehavior:_pushes[item]];
+    
+    [(UIView *)item removeFromSuperview];
 }
 
 - (void)transitionTile:(DRPTileView *)tile toPosition:(DRPPosition *)position

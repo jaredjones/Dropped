@@ -43,7 +43,9 @@
 - (void)characterWasHighlighted:(DRPCharacter *)character
 {
     DRPTileView *tile = [self tileForCharacter:character];
+    
     if (!tile) {
+        // Tile doesn't exist in the current word, add a new one to the end
         tile = [DRPTileView dequeueResusableTile];
         tile.scaleCharacter = NO;
         tile.enabled = NO;
@@ -120,12 +122,16 @@
     
     [UIView animateWithDuration:[FRBSwatchist floatForKey:@"animation.currentWordManipulationDuration"]
                           delay:0
-                        options:UIViewAnimationOptionBeginFromCurrentState
+                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationCurveEaseOut
                      animations:^{
                          for (NSInteger i = 0; i < _tiles.count; i++) {
                              DRPTileView *tile = _tiles[i];
                              tile.center = centers[i];
-                             tile.transform = CGAffineTransformMakeScale(_tileScale, _tileScale);
+                             if (tile.selected) {
+                                 tile.transform = CGAffineTransformIdentity;
+                             } else {
+                                 tile.transform = CGAffineTransformMakeScale(_tileScale, _tileScale);
+                             }
                          }
                      }
                      completion:nil];

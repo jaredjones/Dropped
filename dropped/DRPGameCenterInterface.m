@@ -70,7 +70,7 @@ static UIViewController *authenticationViewController;
             }];
         }
         
-        NSLog(@"DEBUG: quit %ld %@", matches.count, matches.count == 1 ? @"match" : @"matches");
+        NSLog(@"DEBUG: quit %ld %@", (long)matches.count, matches.count == 1 ? @"match" : @"matches");
     }];
 }
 

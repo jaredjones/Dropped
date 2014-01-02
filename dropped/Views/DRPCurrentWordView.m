@@ -24,7 +24,7 @@
 
 @property UIView *tileContainer;
 @property UILabel *turnsLeftLabel;
-@property UIView *currentContainer;
+@property (nonatomic) UIView *currentContainer;
 
 @end
 
@@ -91,15 +91,6 @@
         [_tiles addObject:tile];
         [_tileContainer addSubview:tile];
         
-        // TODO: this works brilliantly, but the code is a little eh
-        // and repeated multiple times. Refactor.
-        if (_currentContainer == _turnsLeftLabel) {
-            _currentContainer = _tileContainer;
-            _tileContainer.frame = self.leftFrame;
-            [self swipeAwayContainer:_turnsLeftLabel withVelocity:1200];
-            [self snapBackContainer:_tileContainer withVelocity:1];
-        }
-        
     } else {
         [_tileContainer bringSubviewToFront:tile];
         tile.selected = YES;
@@ -119,6 +110,8 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self repositionTiles];
     });
+    
+    [self setCurrentContainer:_tileContainer];
 }
 
 - (void)characterWasDehighlighted:(DRPCharacter *)character
@@ -139,6 +132,11 @@
         [removedTile removeFromSuperview];
         [_tiles removeObject:removedTile];
         [self repositionTiles];
+        
+        // Last tile removed, move back to _turnsLeftLabel
+        if (_tiles.count == 0) {
+            [self setCurrentContainer:_turnsLeftLabel];
+        }
     }
 }
 
@@ -150,13 +148,7 @@
     [_tiles removeAllObjects];
     _wordWidth = 0;
     
-    if (_currentContainer == _tileContainer) {
-        _currentContainer = _turnsLeftLabel;
-        _turnsLeftLabel.frame = self.leftFrame;
-        
-        [self swipeAwayContainer:_tileContainer withVelocity:1200];
-        [self snapBackContainer:_turnsLeftLabel withVelocity:1];
-    }
+    [self setCurrentContainer:_turnsLeftLabel];
 }
 
 - (DRPTileView *)tileForCharacter:(DRPCharacter *)character
@@ -173,7 +165,7 @@
     return nil;
 }
 
-#pragma mark Repositioning Tiles
+#pragma mark Containers
 
 - (CGRect)leftFrame
 {
@@ -184,6 +176,20 @@
 {
     return CGRectOffset(self.bounds, self.bounds.size.width, 0);
 }
+
+- (void)setCurrentContainer:(UIView *)currentContainer
+{
+    if (_currentContainer == currentContainer) return;
+    
+    UIView *old = _currentContainer;
+    _currentContainer = currentContainer;
+    _currentContainer.frame = self.leftFrame;
+    
+    [self swipeAwayContainer:old withVelocity:1200];
+    [self snapBackContainer:_currentContainer withVelocity:1];
+}
+
+#pragma mark Repositioning Tiles
 
 - (CGPoint)centerForNewTile:(DRPTileView *)tile
 {
@@ -275,8 +281,6 @@
         _currentContainer = _turnsLeftLabel;
         [self snapBackContainer:_turnsLeftLabel withVelocity:velocity];
     }
-    
-    [_delegate currentWordViewSwiped];
 }
 
 - (void)snapBackContainer:(UIView *)container withVelocity:(CGFloat)velocity
@@ -312,11 +316,13 @@
         CGPoint velocity = [gesture velocityInView:self];
         
         if (_currentContainer == _turnsLeftLabel) {
+            // No swiping the _turnsLeftLabel
             [self snapBackContainer:_turnsLeftLabel withVelocity:velocity.x];
             
         } else {
             if (fabs(velocity.x) > 200) {
                 [self swipeAwayContainer:_tileContainer withVelocity:velocity.x];
+                [_delegate currentWordViewSwiped];
             } else {
                 [self snapBackContainer:_tileContainer withVelocity:velocity.x];
             }

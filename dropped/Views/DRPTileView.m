@@ -231,7 +231,8 @@ static NSMutableDictionary *glyphAdvancesCache;
     
     //// Load Glyph
     // Create a Core Text font reference
-    CTFontRef font = CTFontCreateWithName(CFSTR("Rokkitt"), 48, NULL);
+    UIFont *tileFont = [FRBSwatchist fontForKey:@"page.tileFont"];
+    CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)tileFont.fontName, tileFont.pointSize, NULL);
     
     // Get the glyph index for a named character in the font
     CFStringRef glyphName = (__bridge CFStringRef)character;

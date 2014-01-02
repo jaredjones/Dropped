@@ -22,6 +22,10 @@
 @property UITapGestureRecognizer *tapGestureRecognizer;
 @property UIPanGestureRecognizer *panGestureRecognizer;
 
+@property UIView *tileContainer;
+@property UILabel *turnsLeftLabel;
+@property UIView *currentContainer;
+
 @end
 
 @implementation DRPCurrentWordView
@@ -30,15 +34,41 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        [self loadTurnsLeftLabel];
+        [self loadTileContainer];
+        [self loadGestureRecognizers];
+        
+        _currentContainer = _turnsLeftLabel;
+        
         _tiles = [[NSMutableArray alloc] init];
-        
-        _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-        [self addGestureRecognizer:_tapGestureRecognizer];
-        
-        _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
-        [self addGestureRecognizer:_panGestureRecognizer];
     }
     return self;
+}
+
+- (void)loadTileContainer
+{
+    _tileContainer = [[UIView alloc] initWithFrame:self.leftFrame];
+    [self addSubview:_tileContainer];
+}
+
+- (void)loadTurnsLeftLabel
+{
+    _turnsLeftLabel = [[UILabel alloc] initWithFrame:self.bounds];
+    _turnsLeftLabel.font = [FRBSwatchist fontForKey:@"page.tileFont"];
+    _turnsLeftLabel.textColor = [UIColor blackColor];
+    _turnsLeftLabel.text = @"26 turns left";
+    _turnsLeftLabel.textAlignment = NSTextAlignmentCenter;
+    _turnsLeftLabel.userInteractionEnabled = YES;
+    [self addSubview:_turnsLeftLabel];
+}
+
+- (void)loadGestureRecognizers
+{
+    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    [self addGestureRecognizer:_tapGestureRecognizer];
+    
+    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    [self addGestureRecognizer:_panGestureRecognizer];
 }
 
 #pragma mark DRPBoardViewControllerDelegate
@@ -57,15 +87,21 @@
         tile.character = character;
         tile.position = nil;
         tile.transform = CGAffineTransformIdentity;
-        [_tiles addObject:tile];
-        [self addSubview:tile];
-        
         tile.center = [self centerForNewTile:tile];
+        [_tiles addObject:tile];
+        [_tileContainer addSubview:tile];
         
-        // TODO: sometimes these tiles visibly shoot up from below
+        // TODO: this works brilliantly, but the code is a little eh
+        // and repeated multiple times. Refactor.
+        if (_currentContainer == _turnsLeftLabel) {
+            _currentContainer = _tileContainer;
+            _tileContainer.frame = self.leftFrame;
+            [self swipeAwayContainer:_turnsLeftLabel withVelocity:1200];
+            [self snapBackContainer:_tileContainer withVelocity:1];
+        }
         
     } else {
-        [self bringSubviewToFront:tile];
+        [_tileContainer bringSubviewToFront:tile];
         tile.selected = YES;
         tile.highlighted = YES;
         [tile resetAppearence];
@@ -108,11 +144,19 @@
 
 - (void)removeAllCharactersFromCurrentWord
 {
-    [_tiles removeAllObjects];
-    for (UIView *view in self.subviews) {
-        [view removeFromSuperview];
+    for (DRPTileView *tile in _tiles) {
+        [tile removeFromSuperview];
     }
+    [_tiles removeAllObjects];
     _wordWidth = 0;
+    
+    if (_currentContainer == _tileContainer) {
+        _currentContainer = _turnsLeftLabel;
+        _turnsLeftLabel.frame = self.leftFrame;
+        
+        [self swipeAwayContainer:_tileContainer withVelocity:1200];
+        [self snapBackContainer:_turnsLeftLabel withVelocity:1];
+    }
 }
 
 - (DRPTileView *)tileForCharacter:(DRPCharacter *)character
@@ -131,13 +175,24 @@
 
 #pragma mark Repositioning Tiles
 
+- (CGRect)leftFrame
+{
+    return CGRectOffset(self.bounds, -self.bounds.size.width, 0);
+}
+
+- (CGRect)rightFrame
+{
+    return CGRectOffset(self.bounds, self.bounds.size.width, 0);
+}
+
 - (CGPoint)centerForNewTile:(DRPTileView *)tile
 {
     // Ignore advancement when the first letter is being added
     CGFloat tileWidth = _wordWidth > 0 ? tile.frame.size.width : 0;
     CGFloat letterSpacing = [FRBSwatchist floatForKey:@"page.matchCurrentWordLetterSpacing"];
     letterSpacing = _wordWidth > 0 ? letterSpacing : -letterSpacing;
-    return CGPointMake((self.frame.size.width + _wordWidth + tileWidth + letterSpacing) / 2, 25);
+    return CGPointMake((self.frame.size.width + _wordWidth + tileWidth + letterSpacing) / 2,
+                       self.bounds.size.height / 2);
 }
 
 - (void)repositionTiles
@@ -174,8 +229,8 @@
     for (NSInteger i = 0; i < _tiles.count; i++) {
         DRPTileView *tile = _tiles[i];
         
-        CGFloat advancement = tile.selected ? 50 : [DRPTileView advancementForCharacter:tile.character.character];
-        centers[i] = CGPointMake(_wordWidth + advancement / 2, 25);
+        CGFloat advancement = tile.selected ? tile.frame.size.width : [DRPTileView advancementForCharacter:tile.character.character];
+        centers[i] = CGPointMake(_wordWidth + advancement / 2, self.bounds.size.height / 2);
         _wordWidth += advancement + letterSpacing;
     }
     
@@ -188,37 +243,43 @@
     
     CGFloat offset = self.frame.size.width / 2 - _wordWidth / 2;
     
+    CGFloat hw = self.bounds.size.width / 2;
     for (NSInteger i = 0; i < _tiles.count; i++) {
-        centers[i].x = 160 + (centers[i].x + offset - 160) * _tileScale;
+        centers[i].x = hw + (centers[i].x + offset - hw) * _tileScale;
     }
     
     return centers;
 }
 
 // Following two methods deal with the swipeclears
-- (void)swipeAwayTilesWithVelocity:(CGFloat)velocity
+- (void)swipeAwayContainer:(UIView *)container withVelocity:(CGFloat)velocity
 {
-    CGPoint destination = CGPointMake(160 + 320 * (velocity < 0 ? -1 : 1), self.center.y);
-    CGFloat dist = destination.x - self.center.x;
+    CGRect destFrame = velocity < 0 ? [self leftFrame] : [self rightFrame];
+    CGFloat dist = destFrame.origin.x - container.frame.origin.x;
     CGFloat t = dist / fabs(velocity);
     
     [UIView animateWithDuration:t
                           delay:0
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^{
-                         self.center = destination;
+                         container.frame = destFrame;
                      }
                      completion:^(BOOL finished) {
-                         [self removeAllCharactersFromCurrentWord];
-                         
-                         // tmp
-                         self.center = CGPointMake(160, self.center.y);
+                         if (container == _tileContainer) {
+                            [self removeAllCharactersFromCurrentWord];
+                         }
                      }];
+    
+    if (container == _tileContainer) {
+        _turnsLeftLabel.frame = velocity < 0 ? self.rightFrame : self.leftFrame;
+        _currentContainer = _turnsLeftLabel;
+        [self snapBackContainer:_turnsLeftLabel withVelocity:velocity];
+    }
     
     [_delegate currentWordViewSwiped];
 }
 
-- (void)snapBackTilesWithVelocity:(CGFloat)velocity
+- (void)snapBackContainer:(UIView *)container withVelocity:(CGFloat)velocity
 {
     [UIView animateWithDuration:0.4
                           delay:0
@@ -226,7 +287,7 @@
           initialSpringVelocity:velocity * 0.001
                         options:0
                      animations:^{
-                         self.center = CGPointMake(160, self.center.y);
+                         container.frame = self.bounds;
                      }
                      completion:nil];
 }
@@ -244,16 +305,21 @@
         
     } else if (gesture.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [gesture translationInView:self];
-        self.center = CGPointMake(160 + translation.x, self.center.y);
+        _currentContainer.center = CGPointMake(160 + translation.x, _currentContainer.center.y);
         
     } else if (gesture.state == UIGestureRecognizerStateEnded) {
         
         CGPoint velocity = [gesture velocityInView:self];
         
-        if (fabs(velocity.x) > 200) {
-            [self swipeAwayTilesWithVelocity:velocity.x];
+        if (_currentContainer == _turnsLeftLabel) {
+            [self snapBackContainer:_turnsLeftLabel withVelocity:velocity.x];
+            
         } else {
-            [self snapBackTilesWithVelocity:velocity.x];
+            if (fabs(velocity.x) > 200) {
+                [self swipeAwayContainer:_tileContainer withVelocity:velocity.x];
+            } else {
+                [self snapBackContainer:_tileContainer withVelocity:velocity.x];
+            }
         }
     }
 }

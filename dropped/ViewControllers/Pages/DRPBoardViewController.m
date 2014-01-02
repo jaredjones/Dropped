@@ -181,6 +181,9 @@
 - (void)resetCurrentWord
 {
     _currentPlayedWord.positions = @[];
+    for (DRPCharacter *multiplier in _adjacentMultipliers) {
+        multiplier.multiplierActive = NO;
+    }
     [_adjacentMultipliers removeAllObjects];
 }
 

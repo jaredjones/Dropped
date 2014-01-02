@@ -198,15 +198,37 @@
 // Following two methods deal with the swipeclears
 - (void)swipeAwayTilesWithVelocity:(CGFloat)velocity
 {
-    [_delegate currentWordViewSwiped];
+    CGPoint destination = CGPointMake(160 + 320 * (velocity < 0 ? -1 : 1), self.center.y);
+    CGFloat dist = destination.x - self.center.x;
+    CGFloat t = dist / fabs(velocity);
     
-    [self removeAllCharactersFromCurrentWord];
-    self.center = CGPointMake(160, self.center.y);
+    [UIView animateWithDuration:t
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseOut
+                     animations:^{
+                         self.center = destination;
+                     }
+                     completion:^(BOOL finished) {
+                         [self removeAllCharactersFromCurrentWord];
+                         
+                         // tmp
+                         self.center = CGPointMake(160, self.center.y);
+                     }];
+    
+    [_delegate currentWordViewSwiped];
 }
 
 - (void)snapBackTilesWithVelocity:(CGFloat)velocity
 {
-    self.center = CGPointMake(160, self.center.y);
+    [UIView animateWithDuration:0.4
+                          delay:0
+         usingSpringWithDamping:0.8
+          initialSpringVelocity:velocity * 0.001
+                        options:0
+                     animations:^{
+                         self.center = CGPointMake(160, self.center.y);
+                     }
+                     completion:nil];
 }
 
 #pragma mark Touch Events
@@ -228,7 +250,7 @@
         
         CGPoint velocity = [gesture velocityInView:self];
         
-        if (fabs(velocity.x) > 100) {
+        if (fabs(velocity.x) > 200) {
             [self swipeAwayTilesWithVelocity:velocity.x];
         } else {
             [self snapBackTilesWithVelocity:velocity.x];

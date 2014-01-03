@@ -14,9 +14,11 @@
 #import "DRPPlayedWord.h"
 #import "DRPDictionary.h"
 #import "DRPGreedyScrollView.h"
+#import "DRPMatchHeaderView.h"
 
 @interface DRPPageMatchViewController ()
 
+@property DRPMatchHeaderView *headerView;
 @property DRPBoardViewController *boardViewController;
 @property DRPCurrentWordView *currentWordView;
 
@@ -48,6 +50,7 @@
 {
     [super viewDidLoad];
     
+    [self loadHeaderView];
     [self loadCurrentWordView];
     [self loadBoardViewController];
 }
@@ -57,6 +60,13 @@
     self.scrollView = [[DRPGreedyScrollView alloc] initWithFrame:self.view.bounds];
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + 0.5);
     [self.view addSubview:self.scrollView];
+}
+
+- (void)loadHeaderView
+{
+    _headerView = [[DRPMatchHeaderView alloc] init];
+    _headerView.backgroundColor = [UIColor orangeColor];
+    [self.view addSubview:_headerView];
 }
 
 - (void)loadBoardViewController
@@ -133,11 +143,8 @@
 {
     if (_boardViewController.currentWord.length == 0) {
         [self.mainViewController setCue:@"Back" inPosition:DRPPageDirectionDown];
-        // change DRPCurrentWordView message
         
     } else {
-        // Make sure DRPCurrentWordView is visible
-        
         if ([self currentWordIsValid]) {
             [self.mainViewController setCue:@"Tap to Submit" inPosition:DRPPageDirectionDown];
         } else {
@@ -152,10 +159,7 @@
 {
     if ([self currentWordIsValid]) {
         [_match submitTurnForPositions:_boardViewController.currentPositions];
-        [_currentWordView removeAllCharactersFromCurrentWord];
-        [self resetCues];
     }
-    // TODO: register for nsnotification to find out when GC receives move
 }
 
 - (void)currentWordViewSwiped
@@ -167,6 +171,8 @@
 - (void)gameCenterReceivedTurn:(NSNotification *)notification
 {
     [_boardViewController dropPlayedWord:notification.userInfo[@"playedWord"]];
+    [_currentWordView removeAllCharactersFromCurrentWord];
+    [self resetCues];
 }
 
 @end

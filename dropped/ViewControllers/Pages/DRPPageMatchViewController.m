@@ -14,11 +14,11 @@
 #import "DRPPlayedWord.h"
 #import "DRPDictionary.h"
 #import "DRPGreedyScrollView.h"
-#import "DRPMatchHeaderView.h"
+#import "DRPMatchHeaderViewController.h"
 
 @interface DRPPageMatchViewController ()
 
-@property DRPMatchHeaderView *headerView;
+@property DRPMatchHeaderViewController *headerViewController;
 @property DRPBoardViewController *boardViewController;
 @property DRPCurrentWordView *currentWordView;
 
@@ -50,7 +50,7 @@
 {
     [super viewDidLoad];
     
-    [self loadHeaderView];
+    [self loadHeaderViewController];
     [self loadCurrentWordView];
     [self loadBoardViewController];
 }
@@ -62,11 +62,13 @@
     [self.view addSubview:self.scrollView];
 }
 
-- (void)loadHeaderView
+- (void)loadHeaderViewController
 {
-    _headerView = [[DRPMatchHeaderView alloc] init];
-    _headerView.backgroundColor = [UIColor orangeColor];
-    [self.view addSubview:_headerView];
+    _headerViewController = [[DRPMatchHeaderViewController alloc] init];
+    
+    [_headerViewController willMoveToParentViewController:self];
+    [self addChildViewController:_headerViewController];
+    [self.view addSubview:_headerViewController.view];
 }
 
 - (void)loadBoardViewController

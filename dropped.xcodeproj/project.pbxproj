@@ -22,6 +22,7 @@
 		A91D8F64183702EE00BEC6E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4C183702EE00BEC6E8 /* UIKit.framework */; };
 		A920405218370467006940B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A920405118370467006940B8 /* Security.framework */; };
 		A920405C18370BA0006940B8 /* DRPPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = A920405B18370BA0006940B8 /* DRPPosition.m */; };
+		A9323D281878BA650045287A /* board.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9323D261878BA4F0045287A /* board.plist */; };
 		A93D77C618566A8F006691AE /* DRPPageMatchmakerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77C518566A8F006691AE /* DRPPageMatchmakerViewController.m */; };
 		A93D77CC185673EF006691AE /* DRPPageSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77CB185673EF006691AE /* DRPPageSplashViewController.m */; };
 		A93D77CF18567D4B006691AE /* DRPPageLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77CE18567D4B006691AE /* DRPPageLogInViewController.m */; };
@@ -81,6 +82,7 @@
 			dstSubfolderSpec = 7;
 			files = (
 				A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */,
+				A9323D281878BA650045287A /* board.plist in CopyFiles */,
 				A9C0FAD21864F63700377B0E /* colors.plist in CopyFiles */,
 				A91C045818557C03002B6899 /* page.plist in CopyFiles */,
 				A9E27CC61857B6170043F6A9 /* tileOffset.plist in CopyFiles */,
@@ -122,6 +124,7 @@
 		A920405118370467006940B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A920405A18370BA0006940B8 /* DRPPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPosition.h; path = Models/DRPPosition.h; sourceTree = "<group>"; };
 		A920405B18370BA0006940B8 /* DRPPosition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPosition.m; path = Models/DRPPosition.m; sourceTree = "<group>"; };
+		A9323D261878BA4F0045287A /* board.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = board.plist; path = Swatches/board.plist; sourceTree = "<group>"; };
 		A93D77C418566A8F006691AE /* DRPPageMatchmakerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageMatchmakerViewController.h; path = ViewControllers/Pages/DRPPageMatchmakerViewController.h; sourceTree = "<group>"; };
 		A93D77C518566A8F006691AE /* DRPPageMatchmakerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageMatchmakerViewController.m; path = ViewControllers/Pages/DRPPageMatchmakerViewController.m; sourceTree = "<group>"; };
 		A93D77CA185673EF006691AE /* DRPPageSplashViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageSplashViewController.h; path = ViewControllers/Pages/DRPPageSplashViewController.h; sourceTree = "<group>"; };
@@ -465,6 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				A9AC495F18539E44006E1D84 /* animation.plist */,
+				A9323D261878BA4F0045287A /* board.plist */,
 				A9C0FAD01864F53700377B0E /* colors.plist */,
 				A91C045618557B6A002B6899 /* page.plist */,
 				A9E27CC21857B4290043F6A9 /* tileOffset.plist */,

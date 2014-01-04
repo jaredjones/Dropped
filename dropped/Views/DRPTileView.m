@@ -31,7 +31,10 @@ static NSMutableDictionary *glyphAdvancesCache;
 
 - (id)initWithCharacter:(DRPCharacter *)character
 {
-    self = [super initWithFrame:CGRectMake(0, 0, 50, 50)];
+    self = [super initWithFrame:({
+        CGFloat l = [FRBSwatchist floatForKey:@"board.tileLength"];
+        CGRectMake(0, 0, l, l);
+    })];
     if (self) {
         [self loadStrokeLayer];
         
@@ -51,11 +54,14 @@ static NSMutableDictionary *glyphAdvancesCache;
 - (void)loadStrokeLayer
 {
     _strokeLayer = [[CAShapeLayer alloc] init];
-    UIBezierPath *strokePath = [UIBezierPath bezierPathWithRect:CGRectInset(self.bounds, 1.5, 1.5)];
+    UIBezierPath *strokePath = ({
+        CGFloat strokeWidth = [FRBSwatchist floatForKey:@"board.tileStrokeWidth"];
+        [UIBezierPath bezierPathWithRect:CGRectInset(self.bounds, strokeWidth / 2, strokeWidth / 2)];
+    });
     _strokeLayer.path = strokePath.CGPath;
-    _strokeLayer.lineWidth = 3;
-    _strokeLayer.fillColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0].CGColor;
-    _strokeLayer.strokeColor = [UIColor blackColor].CGColor;
+    _strokeLayer.lineWidth = [FRBSwatchist floatForKey:@"board.tileStrokeWidth"];
+    _strokeLayer.fillColor = [UIColor clearColor].CGColor;
+    _strokeLayer.strokeColor = [FRBSwatchist colorForKey:@"colors.black"].CGColor;
     _strokeLayer.opacity = 0;
     [self.layer addSublayer:_strokeLayer];
 }
@@ -231,7 +237,7 @@ static NSMutableDictionary *glyphAdvancesCache;
     
     //// Load Glyph
     // Create a Core Text font reference
-    UIFont *tileFont = [FRBSwatchist fontForKey:@"page.tileFont"];
+    UIFont *tileFont = [FRBSwatchist fontForKey:@"board.tileFont"];
     CTFontRef font = CTFontCreateWithName((__bridge CFStringRef)tileFont.fontName, tileFont.pointSize, NULL);
     
     // Get the glyph index for a named character in the font

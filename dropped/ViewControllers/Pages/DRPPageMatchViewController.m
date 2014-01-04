@@ -82,39 +82,40 @@
     [_boardViewController willMoveToParentViewController:self];
     [self addChildViewController:_boardViewController];
     
-    CGPoint center = self.scrollView.center;
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-        if (runningPhone5()) {
-            center.y += 11;
+    _boardViewController.view.center = ({
+        CGPoint center = self.scrollView.center;
+        if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+            if (runningPhone5()) {
+                center.y += [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPhone5"];
+            } else {
+                center.y += [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPhone4"];
+            }
         } else {
-            center.y += -5;
+            center.y += [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPad"];
         }
-    } else {
-        
-    }
-    
-    _boardViewController.view.center = center;
+        center;
+    });
     [self.scrollView addSubview:_boardViewController.view];
 }
 
 - (void)loadCurrentWordView
 {
-    _currentWordView = [[DRPCurrentWordView alloc] initWithFrame:CGRectMake(0, 0, 320, 50)];
+    _currentWordView = [[DRPCurrentWordView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"])];
     _currentWordView.delegate = self;
     
-    // positions approximate for now
-    CGPoint center = self.scrollView.center;
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-        center.y += -25 + 160;
-        if (runningPhone5()) {
-            center.y += 11 + 68;
-            
-        } else {
-            center.y += -5 + 53;
+    _currentWordView.center = ({
+        CGFloat height = _currentWordView.frame.size.height;
+        CGPoint center = CGPointMake(self.view.center.x, CGRectGetMaxY(_boardViewController.view.frame) - height / 2);
+        
+        if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+            if (runningPhone5()) {
+                center.y += 68;
+            } else {
+                center.y += 53;
+            }
         }
-    }
-    
-    _currentWordView.center = center;
+        center;
+    });
     
     [self.scrollView addSubview:_currentWordView];
 }

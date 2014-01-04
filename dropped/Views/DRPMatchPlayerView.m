@@ -41,62 +41,70 @@
 {
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
         if (runningPhone5()) {
-            [self loadViewsPhone5];
+            [self loadViewsWithTile:YES];
         } else {
-            [self loadViewsPhone4];
+            [self loadViewsWithTile:NO];
         }
     } else {
-        [self loadViewsPad];
+        [self loadViewsWithTile:YES];
     }
 }
 
-- (void)loadViewsPhone4
+- (void)loadViewsWithTile:(BOOL)withTile
 {
-    UIFont *font = [FRBSwatchist fontForKey:@"page.tileFont"];
-    CGFloat offset = -font.ascender + font.capHeight / 2 + 50 / 2 - 1;
+    NSTextAlignment textAlignment = _alignment == DRPDirectionLeft ? NSTextAlignmentLeft : NSTextAlignmentRight;
+    CGFloat y = [FRBSwatchist floatForKey:@"board.boardPadding"];
     
-    _score = [[UILabel alloc] initWithFrame:CGRectInset(CGRectMake(0, 5 + offset, 160, 50), 5, 0)];
-    _score.font = [FRBSwatchist fontForKey:@"page.tileFont"];
-    _score.textAlignment = _alignment == DRPDirectionLeft ? NSTextAlignmentLeft : NSTextAlignmentRight;
+    if (withTile) {
+        _tile = ({
+            DRPTileView *tile = [DRPTileView dequeueResusableTile];
+            tile.center = ({
+                CGFloat l = [FRBSwatchist floatForKey:@"board.tileLength"];
+                CGFloat padding = [FRBSwatchist floatForKey:@"board.boardPadding"];
+                CGFloat x = _alignment == DRPDirectionLeft ? padding + l / 2 : self.bounds.size.width - padding - l / 2;
+                CGPoint center = CGPointMake(x, l / 2 + y);
+                center;
+            });
+            
+            tile.enabled = NO;
+            tile.selected = YES;
+            [self addSubview:tile];
+            tile;
+        });
+        _tile.character = [DRPCharacter characterWithCharacter:@"B"];
+        
+        y += _tile.frame.size.height + [FRBSwatchist floatForKey:@"board.tileMargin"];
+    }
+    
+    _score = ({
+        UIFont *font = [FRBSwatchist fontForKey:@"board.tileFont"];
+        UILabel *label = [[UILabel alloc] initWithFrame:({
+            CGFloat height = [FRBSwatchist floatForKey:@"board.tileLength"];
+            CGRect frame = CGRectMake(0, y + labelOffset(font, height), self.bounds.size.width, height);
+            CGRectInset(frame, [FRBSwatchist floatForKey:@"board.boardPadding"], 0);
+        })];
+        label.font = font;
+        label.textAlignment = textAlignment;
+        [self addSubview:label];
+        label;
+    });
     _score.text = @"795";
-    [self addSubview:_score];
     
-    _alias =[[UILabel alloc] initWithFrame:CGRectInset(CGRectMake(0, 58, 160, 17), 5, 0)];
-    _alias.font = [FRBSwatchist fontForKey:@"page.cueFont"];
-    _alias.textAlignment = _alignment == DRPDirectionLeft ? NSTextAlignmentLeft : NSTextAlignmentRight;
+    y += _score.frame.size.height + [FRBSwatchist floatForKey:@"board.tileMargin"];
+    
+    _alias = ({
+        UIFont *font = [FRBSwatchist fontForKey:@"page.cueFont"];
+        UILabel *label = [[UILabel alloc] initWithFrame:({
+            CGFloat height = 17;
+            CGRect frame = CGRectMake(0, y, self.bounds.size.width, height);
+            CGRectInset(frame, [FRBSwatchist floatForKey:@"board.boardPadding"], 0);
+        })];
+        label.font = font;
+        label.textAlignment = textAlignment;
+        [self addSubview:label];
+        label;
+    });
     _alias.text = @"bradzeis";
-    [self addSubview:_alias];
-}
-
-- (void)loadViewsPhone5
-{
-    _tile = [DRPTileView dequeueResusableTile];
-    _tile.center = _alignment == DRPDirectionLeft ? CGPointMake(30, 30) : CGPointMake(self.frame.size.width - 30, 30);
-    _tile.enabled = NO;
-    _tile.selected = YES;
-    _tile.character = [DRPCharacter characterWithCharacter:@"B"];
-    [_tile resetAppearence];
-    [self addSubview:_tile];
-    
-    UIFont *font = [FRBSwatchist fontForKey:@"page.tileFont"];
-    CGFloat offset = -font.ascender + font.capHeight / 2 + 50 / 2 - 1;
-    
-    _score = [[UILabel alloc] initWithFrame:CGRectInset(CGRectMake(0, 58 + offset, 160, 50), 5, 0)];
-    _score.font = [FRBSwatchist fontForKey:@"page.tileFont"];
-    _score.textAlignment = _alignment == DRPDirectionLeft ? NSTextAlignmentLeft : NSTextAlignmentRight;
-    _score.text = @"795";
-    [self addSubview:_score];
-    
-    _alias =[[UILabel alloc] initWithFrame:CGRectInset(CGRectMake(0, 111, 160, 17), 5, 0)];
-    _alias.font = [FRBSwatchist fontForKey:@"page.cueFont"];
-    _alias.textAlignment = _alignment == DRPDirectionLeft ? NSTextAlignmentLeft : NSTextAlignmentRight;
-    _alias.text = @"bradzeis";
-    [self addSubview:_alias];
-}
-
-- (void)loadViewsPad
-{
-    
 }
 
 - (void)observePlayer:(DRPPlayer *)player

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>tileFont</key>
+	<dict>
+		<key>name</key>
+		<string>Rokkitt</string>
+		<key>size</key>
+		<integer>48</integer>
+	</dict>
+	<key>tileLength</key>
+	<integer>50</integer>
+	<key>tileStrokeWidth</key>
+	<string>3</string>
+	<key>tileMargin</key>
+	<integer>3</integer>
+	<key>boardWidth</key>
+	<integer>320</integer>
+	<key>boardPadding</key>
+	<integer>5</integer>
+	<key>boardVerticalOffsetPhone5</key>
+	<integer>11</integer>
+	<key>boardVerticalOffsetPhone4</key>
+	<integer>-5</integer>
+	<key>boardVerticalOffsetPad</key>
+	<integer>0</integer>
+</dict>
+</plist>

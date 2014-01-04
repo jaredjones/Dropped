@@ -67,11 +67,10 @@
 
 - (void)loadSwatches
 {
-    [self loadSwatchNamed:@"animation"];
-    [self loadSwatchNamed:@"colors"];
-    [self loadSwatchNamed:@"page"];
-    [self loadSwatchNamed:@"tileOffset"];
-    [self loadSwatchNamed:@"tileScalingOffset"];
+    NSArray *swatches = @[@"animation", @"board", @"colors", @"page", @"tileOffset", @"tileScalingOffset"];
+    for (NSString *swatch in swatches) {
+        [self loadSwatchNamed:swatch];
+    }
 }
 
 - (void)loadSwatchNamed:(NSString *)name

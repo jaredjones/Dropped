@@ -54,7 +54,7 @@
 - (void)loadTurnsLeftLabel
 {
     _turnsLeftLabel = [[UILabel alloc] initWithFrame:self.bounds];
-    _turnsLeftLabel.font = [FRBSwatchist fontForKey:@"page.tileFont"];
+    _turnsLeftLabel.font = [FRBSwatchist fontForKey:@"board.tileFont"];
     _turnsLeftLabel.textColor = [UIColor blackColor];
     _turnsLeftLabel.text = @"26 turns left";
     _turnsLeftLabel.textAlignment = NSTextAlignmentCenter;

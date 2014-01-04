@@ -66,12 +66,12 @@
 
 + (CGRect)phone4Frame
 {
-    return CGRectMake(0, 0, 320, 480 / 2 - 160 + -5);
+    return CGRectMake(0, 0, 320, 480 / 2 - [FRBSwatchist floatForKey:@"board.boardWidth"] / 2 + [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPhone4"]);
 }
 
 + (CGRect)phone5Frame
 {
-    return CGRectMake(0, 0, 320, 568 / 2 - 160 + 11);
+    return CGRectMake(0, 0, 320, 568 / 2 - [FRBSwatchist floatForKey:@"board.boardWidth"] / 2 + [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPhone4"]);
 }
 
 + (CGRect)padFrame

@@ -34,12 +34,5 @@
 	<real>0.023</real>
 	<key>matchCurrentWordLetterSpacing</key>
 	<integer>3</integer>
-	<key>tileFont</key>
-	<dict>
-		<key>name</key>
-		<string>Rokkitt</string>
-		<key>size</key>
-		<integer>48</integer>
-	</dict>
 </dict>
 </plist>

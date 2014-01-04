@@ -29,3 +29,8 @@ BOOL runningPhone5()
 {
     return [UIScreen mainScreen].applicationFrame.size.height > 480;
 }
+
+CGFloat labelOffset(UIFont *font, CGFloat height)
+{
+    return -font.ascender + (font.capHeight / 2) + (height / 2) - 1;
+}

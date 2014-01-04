@@ -119,6 +119,12 @@
     [self.scrollView addSubview:_currentWordView];
 }
 
+#pragma mark Rotation
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+}
+
 #pragma mark DRPPageViewController
 
 - (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo

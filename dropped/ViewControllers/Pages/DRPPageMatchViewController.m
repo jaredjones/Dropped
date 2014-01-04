@@ -16,6 +16,7 @@
 #import "DRPGreedyScrollView.h"
 #import "DRPMatchHeaderViewController.h"
 #import "FRBSwatchist.h"
+#import "DRPUtility.h"
 
 @interface DRPPageMatchViewController ()
 
@@ -60,6 +61,7 @@
 {
     self.scrollView = [[DRPGreedyScrollView alloc] initWithFrame:self.view.bounds];
     self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + 0.5);
+    self.scrollView.canCancelContentTouches = YES;
     [self.view addSubview:self.scrollView];
 }
 
@@ -81,11 +83,18 @@
     [self addChildViewController:_boardViewController];
     
     CGPoint center = self.scrollView.center;
-    center.y += 11;
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        if (runningPhone5()) {
+            center.y += 11;
+        } else {
+            center.y += -5;
+        }
+    } else {
+        
+    }
+    
     _boardViewController.view.center = center;
     [self.scrollView addSubview:_boardViewController.view];
-    
-    self.scrollView.canCancelContentTouches = YES;
 }
 
 - (void)loadCurrentWordView
@@ -95,7 +104,16 @@
     
     // positions approximate for now
     CGPoint center = self.scrollView.center;
-    center.y += -25 + 11 + 160 + 68;
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        center.y += -25 + 160;
+        if (runningPhone5()) {
+            center.y += 11 + 68;
+            
+        } else {
+            center.y += -5 + 53;
+        }
+    }
+    
     _currentWordView.center = center;
     
     [self.scrollView addSubview:_currentWordView];

@@ -24,3 +24,8 @@ UIColor *colorForColor(DRPColor color)
     }
     return [[FRBSwatchist swatchForName:@"colors"] colorForKey:colors[@(color)]];
 }
+
+BOOL runningPhone5()
+{
+    return [UIScreen mainScreen].applicationFrame.size.height > 480;
+}

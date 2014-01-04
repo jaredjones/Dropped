@@ -10,6 +10,7 @@
 #import "DRPTileView.h"
 #import "DRPCharacter.h"
 #import "FRBSwatchist.h"
+#import "DRPUtility.h"
 
 @interface DRPMatchPlayerView ()
 
@@ -38,7 +39,33 @@
 
 - (void)loadViews
 {
-    [self loadViewsPhone5];
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        if (runningPhone5()) {
+            [self loadViewsPhone5];
+        } else {
+            [self loadViewsPhone4];
+        }
+    } else {
+        [self loadViewsPad];
+    }
+}
+
+- (void)loadViewsPhone4
+{
+    UIFont *font = [FRBSwatchist fontForKey:@"page.tileFont"];
+    CGFloat offset = -font.ascender + font.capHeight / 2 + 50 / 2 - 1;
+    
+    _score = [[UILabel alloc] initWithFrame:CGRectInset(CGRectMake(0, 5 + offset, 160, 50), 5, 0)];
+    _score.font = [FRBSwatchist fontForKey:@"page.tileFont"];
+    _score.textAlignment = _alignment == DRPDirectionLeft ? NSTextAlignmentLeft : NSTextAlignmentRight;
+    _score.text = @"795";
+    [self addSubview:_score];
+    
+    _alias =[[UILabel alloc] initWithFrame:CGRectInset(CGRectMake(0, 58, 160, 17), 5, 0)];
+    _alias.font = [FRBSwatchist fontForKey:@"page.cueFont"];
+    _alias.textAlignment = _alignment == DRPDirectionLeft ? NSTextAlignmentLeft : NSTextAlignmentRight;
+    _alias.text = @"bradzeis";
+    [self addSubview:_alias];
 }
 
 - (void)loadViewsPhone5
@@ -65,6 +92,11 @@
     _alias.textAlignment = _alignment == DRPDirectionLeft ? NSTextAlignmentLeft : NSTextAlignmentRight;
     _alias.text = @"bradzeis";
     [self addSubview:_alias];
+}
+
+- (void)loadViewsPad
+{
+    
 }
 
 - (void)observePlayer:(DRPPlayer *)player

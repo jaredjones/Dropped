@@ -10,3 +10,4 @@
 #import "DRPCharacter.h"
 
 UIColor *colorForColor(DRPColor color);
+BOOL runningPhone5();

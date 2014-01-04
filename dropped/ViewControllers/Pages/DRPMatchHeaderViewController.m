@@ -10,6 +10,7 @@
 #import "DRPMatchPlayerView.h"
 #import "DRPPosition.h"
 #import "FRBSwatchist.h"
+#import "DRPUtility.h"
 
 @interface DRPMatchHeaderViewController ()
 
@@ -54,26 +55,26 @@
 + (CGRect)frame
 {
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-        if ([UIScreen mainScreen].bounds.size.height > 480) {
-            return [DRPMatchHeaderViewController iphone5Frame];
+        if (runningPhone5()) {
+            return [DRPMatchHeaderViewController phone5Frame];
         }
-        return [DRPMatchHeaderViewController iphone4Frame];
+        return [DRPMatchHeaderViewController phone4Frame];
         
     }
-    return [DRPMatchHeaderViewController ipadFrame];
+    return [DRPMatchHeaderViewController padFrame];
 }
 
-+ (CGRect)iphone4Frame
++ (CGRect)phone4Frame
 {
-    return CGRectZero;
+    return CGRectMake(0, 0, 320, 480 / 2 - 160 + -5);
 }
 
-+ (CGRect)iphone5Frame
++ (CGRect)phone5Frame
 {
     return CGRectMake(0, 0, 320, 568 / 2 - 160 + 11);
 }
 
-+ (CGRect)ipadFrame
++ (CGRect)padFrame
 {
     return CGRectZero;
 }

@@ -46,7 +46,10 @@
 
 - (void)loadView
 {
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, 320)];
+    self.view = [[UIView alloc] initWithFrame:({
+        CGFloat l = [FRBSwatchist floatForKey:@"board.boardWidth"];
+        CGRectMake(0, 0, l, l);
+    })];
     _animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     
     _gravity = [[UIGravityBehavior alloc] init];
@@ -99,7 +102,11 @@
 
 - (CGPoint)centerForPosition:(DRPPosition *)position
 {
-    return CGPointMake(160 + 53 * (position.i - 2.5), 160 + 53 * (position.j - 2.5));
+    CGFloat width = [FRBSwatchist floatForKey:@"board.boardWidth"];
+    CGFloat tileLength = [FRBSwatchist floatForKey:@"board.tileLength"];
+    CGFloat tileMargin = [FRBSwatchist floatForKey:@"board.tileMargin"];
+    return CGPointMake((width / 2) + (tileLength + tileMargin) * (position.i - 2.5),
+                       (width / 2) + (tileLength + tileMargin) * (position.j - 2.5));
 }
 
 #pragma mark DRPTileDelegate

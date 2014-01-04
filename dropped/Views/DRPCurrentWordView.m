@@ -309,7 +309,7 @@
         
     } else if (gesture.state == UIGestureRecognizerStateChanged) {
         CGPoint translation = [gesture translationInView:self];
-        _currentContainer.center = CGPointMake(160 + translation.x, _currentContainer.center.y);
+        _currentContainer.center = CGPointMake(self.bounds.size.width / 2 + translation.x, _currentContainer.center.y);
         
     } else if (gesture.state == UIGestureRecognizerStateEnded) {
         

@@ -113,6 +113,8 @@
             } else {
                 center.y += 53;
             }
+        } else {
+            center.y += 150;
         }
         center;
     });

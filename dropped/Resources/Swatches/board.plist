@@ -9,16 +9,33 @@
 		<key>size</key>
 		<integer>48</integer>
 	</dict>
+	<key>tileFontPad</key>
+	<dict>
+		<key>name</key>
+		<string>Rokkitt</string>
+		<key>size</key>
+		<integer>84</integer>
+	</dict>
 	<key>tileLength</key>
 	<integer>50</integer>
+	<key>tileLengthPad</key>
+	<real>87.5</real>
 	<key>tileStrokeWidth</key>
 	<string>3</string>
+	<key>tileStrokeWidthPad</key>
+	<string>5.25</string>
 	<key>tileMargin</key>
 	<integer>3</integer>
+	<key>tileMarginPad</key>
+	<real>5.25</real>
 	<key>boardWidth</key>
 	<integer>320</integer>
+	<key>boardWidthPad</key>
+	<integer>560</integer>
 	<key>boardPadding</key>
 	<integer>5</integer>
+	<key>boardPaddingPad</key>
+	<real>8.75</real>
 	<key>boardVerticalOffsetPhone5</key>
 	<integer>11</integer>
 	<key>boardVerticalOffsetPhone4</key>

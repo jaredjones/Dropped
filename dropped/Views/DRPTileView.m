@@ -268,8 +268,9 @@ static NSMutableDictionary *glyphAdvancesCache;
     [glyphBezierPath applyTransform:flipLetterTransform];
     
     CGPoint offset = [[FRBSwatchist swatchForName:@"tileOffset"] pointForKey:character];
-    CGFloat dx = -glyphBounds.origin.x + 25 - glyphBounds.size.width / 2 + offset.x;
-    CGFloat dy = -glyphBounds.origin.y + 25 + glyphBounds.size.height / 2 + offset.y;
+    CGFloat hw = [FRBSwatchist floatForKey:@"board.tileLength"] / 2;
+    CGFloat dx = -glyphBounds.origin.x + hw - glyphBounds.size.width / 2 + offset.x;
+    CGFloat dy = -glyphBounds.origin.y + hw + glyphBounds.size.height / 2 + offset.y;
     CGAffineTransform letterTransform = CGAffineTransformMakeTranslation(dx, dy);
     [glyphBezierPath applyTransform:letterTransform];
     

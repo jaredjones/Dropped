@@ -123,17 +123,17 @@
 - (CGPoint)preCenterForPosition:(DRPPageDirection)position
 {
     if (position == DRPPageDirectionUp) {
-        return CGPointMake(_view.frame.size.width / 2, -[FRBSwatchist floatForKey:@"page.cueOffset"]);
+        return CGPointMake(_view.frame.size.width / 2, -[FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
     }
-    return CGPointMake(_view.frame.size.width / 2, _view.frame.size.height + [FRBSwatchist floatForKey:@"page.cueOffset"]);
+    return CGPointMake(_view.frame.size.width / 2, _view.frame.size.height + [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
 }
 
 - (CGPoint)postCenterForPosition:(DRPPageDirection)position
 {
     if (position == DRPPageDirectionUp) {
-        return CGPointMake(_view.frame.size.width / 2, [FRBSwatchist floatForKey:@"page.cueOffset"]);
+        return CGPointMake(_view.frame.size.width / 2, [FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
     }
-    return CGPointMake(_view.frame.size.width / 2, _view.frame.size.height - [FRBSwatchist floatForKey:@"page.cueOffset"]);
+    return CGPointMake(_view.frame.size.width / 2, _view.frame.size.height - [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
 }
 
 #pragma mark Emphasis

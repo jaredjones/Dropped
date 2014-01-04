@@ -8,6 +8,8 @@
 
 #import "DRPMatchHeaderViewController.h"
 #import "DRPMatchPlayerView.h"
+#import "DRPPosition.h"
+#import "FRBSwatchist.h"
 
 @interface DRPMatchHeaderViewController ()
 
@@ -33,9 +35,18 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor orangeColor];
+    
+    self.view.backgroundColor = [FRBSwatchist colorForKey:@"colors.white"];
     
     // TODO: load DRPMatchPlayerViews
+    
+    [self.view addSubview:[[DRPMatchPlayerView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width / 2, self.view.frame.size.height)
+                                                          alignment:DRPDirectionLeft
+                                                               tile:YES]];
+    
+    [self.view addSubview:[[DRPMatchPlayerView alloc] initWithFrame:CGRectMake(self.view.frame.size.width / 2, 0, self.view.frame.size.width / 2, self.view.frame.size.height)
+                                                          alignment:DRPDirectionRight
+                                                               tile:YES]];
 }
 
 #pragma mark View Loading
@@ -59,7 +70,7 @@
 
 + (CGRect)iphone5Frame
 {
-    return CGRectMake(0, 0, 320, 5 + 106);
+    return CGRectMake(0, 0, 320, 568 / 2 - 160 + 11);
 }
 
 + (CGRect)ipadFrame

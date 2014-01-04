@@ -9,17 +9,19 @@
 		<key>name</key>
 		<string>Centrale Sans Light</string>
 		<key>size</key>
-		<integer>14</integer>
+		<integer>18</integer>
 	</dict>
 	<key>cueEmphasizedFont</key>
 	<dict>
 		<key>name</key>
 		<string>Centrale Sans Medium</string>
 		<key>size</key>
-		<integer>14</integer>
+		<integer>18</integer>
 	</dict>
-	<key>cueOffset</key>
+	<key>cueOffsetTop</key>
 	<integer>20</integer>
+	<key>cueOffsetBottom</key>
+	<integer>18</integer>
 	<key>cueVisibleThreshold</key>
 	<integer>65</integer>
 	<key>cueAnimationDuration</key>

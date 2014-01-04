@@ -7,11 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DRPPosition.h"
 
 @class DRPPlayer;
 
 @interface DRPMatchPlayerView : UIView
 
+- (instancetype)initWithFrame:(CGRect)frame alignment:(DRPDirection)alignment tile:(BOOL)tile;
 - (void)observePlayer:(DRPPlayer *)player;
 
 @end

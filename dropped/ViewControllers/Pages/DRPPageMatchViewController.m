@@ -15,6 +15,7 @@
 #import "DRPDictionary.h"
 #import "DRPGreedyScrollView.h"
 #import "DRPMatchHeaderViewController.h"
+#import "FRBSwatchist.h"
 
 @interface DRPPageMatchViewController ()
 
@@ -50,9 +51,9 @@
 {
     [super viewDidLoad];
     
-    [self loadHeaderViewController];
-    [self loadCurrentWordView];
     [self loadBoardViewController];
+    [self loadCurrentWordView];
+    [self loadHeaderViewController];
 }
 
 - (void)loadScrollView
@@ -68,7 +69,7 @@
     
     [_headerViewController willMoveToParentViewController:self];
     [self addChildViewController:_headerViewController];
-    [self.view addSubview:_headerViewController.view];
+    [self.scrollView addSubview:_headerViewController.view];
 }
 
 - (void)loadBoardViewController
@@ -80,7 +81,7 @@
     [self addChildViewController:_boardViewController];
     
     CGPoint center = self.scrollView.center;
-    center.y += 9;
+    center.y += 11;
     _boardViewController.view.center = center;
     [self.scrollView addSubview:_boardViewController.view];
     
@@ -94,7 +95,7 @@
     
     // positions approximate for now
     CGPoint center = self.scrollView.center;
-    center.y += 9 + 160 + 25 + 3 + 14;
+    center.y += -25 + 11 + 160 + 68;
     _currentWordView.center = center;
     
     [self.scrollView addSubview:_currentWordView];

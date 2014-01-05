@@ -33,11 +33,21 @@
         _topIndicatorView = [[DRPCueIndicatorView alloc] init];
         _topIndicatorView.frame = CGRectOffset(_topIndicatorView.frame, 0, -_topIndicatorView.frame.size.height);
         _topIndicatorView.position = DRPPageDirectionUp;
+        _topIndicatorView.center = ({
+            CGPoint center = _topIndicatorView.center;
+            center.x = _view.center.x;
+            center;
+        });
         [_view addSubview:_topIndicatorView];
         
         _bottomIndicatorView = [[DRPCueIndicatorView alloc] init];
         _bottomIndicatorView.frame = CGRectOffset(_bottomIndicatorView.frame, 0, _view.frame.size.height);
         _bottomIndicatorView.position = DRPPageDirectionDown;
+        _bottomIndicatorView.center = ({
+            CGPoint center = _bottomIndicatorView.center;
+            center.x = _view.center.x;
+            center;
+        });
         [_view addSubview:_bottomIndicatorView];
     }
     return self;

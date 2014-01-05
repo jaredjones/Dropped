@@ -20,13 +20,17 @@
 
 - (id)init
 {
-    self = [super initWithFrame:CGRectMake(0, 0, 320, 50)];
+    self = [super initWithFrame:({
+        CGFloat width = [FRBSwatchist floatForKey:@"board.boardWidth"];
+        CGFloat height = [FRBSwatchist floatForKey:@"board.tileLength"];
+        CGRectMake(0, 0, width, height);
+    })];
     if (self) {
-        
         _tileViews = [[NSMutableArray alloc] init];
+        
         for (NSInteger i = 0; i < 6; i++) {
             DRPTileView *tileView = [[DRPTileView alloc] initWithCharacter:nil];
-            tileView.center = CGPointMake(27.5 + 53 * i, 25);
+            tileView.center = [DRPCueIndicatorView centerForPosition:i];
             tileView.strokeOpacity = 1;
             tileView.userInteractionEnabled = NO;
             [self addSubview:tileView];
@@ -40,12 +44,26 @@
 
 #pragma mark Animations
 
++ (CGPoint)centerForPosition:(NSInteger)i
+{
+    CGFloat padding = [FRBSwatchist floatForKey:@"board.boardPadding"];
+    CGFloat margin = [FRBSwatchist floatForKey:@"board.tileMargin"];
+    CGFloat tileLength = [FRBSwatchist floatForKey:@"board.tileLength"];
+    
+    return CGPointMake((padding + tileLength / 2) + (tileLength + margin) * i, tileLength / 2);
+}
+
 - (void)animateIn
 {
-    CGFloat offset = _position == DRPPageDirectionUp ? 6 : -6;
+    CGFloat offset = 2 * [FRBSwatchist floatForKey:@"board.tileStrokeWidth"];
+    offset = _position == DRPPageDirectionUp ? offset : -offset;
     for (NSInteger i = 0; i < 6; i++) {
         DRPTileView *tileView = _tileViews[i];
-        CGPoint center = CGPointMake(27.5 + 53 * i, 25 + offset);
+        CGPoint center = ({
+            CGPoint center = [DRPCueIndicatorView centerForPosition:i];
+            center.y += offset;
+            center;
+        });
         
         [UIView animateWithDuration:[FRBSwatchist floatForKey:@"page.cueIndicatorAnimationDuration"]
                               delay:[FRBSwatchist floatForKey:@"page.cueIndicatorAnimationDelay"] * i
@@ -59,7 +77,7 @@
 {
     for (NSInteger i = 0; i < 6; i++) {
         DRPTileView *tileView = _tileViews[i];
-        CGPoint center = CGPointMake(27.5 + 53 * i, 25);
+        CGPoint center = [DRPCueIndicatorView centerForPosition:i];
         
         [UIView animateWithDuration:[FRBSwatchist floatForKey:@"page.cueIndicatorAnimationDuration"]
                               delay:.03

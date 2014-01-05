@@ -33,9 +33,9 @@
 	<key>boardWidthPad</key>
 	<integer>560</integer>
 	<key>boardPadding</key>
-	<integer>5</integer>
+	<real>2.5</real>
 	<key>boardPaddingPad</key>
-	<real>8.75</real>
+	<real>4.375</real>
 	<key>boardVerticalOffsetPhone5</key>
 	<integer>11</integer>
 	<key>boardVerticalOffsetPhone4</key>

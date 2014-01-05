@@ -26,6 +26,15 @@
 @property UILabel *turnsLeftLabel;
 @property (nonatomic) UIView *currentContainer;
 
+// When swiping away the current word, the tiles need
+// to be cleared at the end of the animation.
+// However, a new word can be started before the animation
+// completes. In that case, the tiles need to be cleared
+// then.
+// This flag stores whether the tiles are "dirty" so
+// they can be cleared in the appropriate places.
+@property BOOL tileContainerNeedsClearing;
+
 @end
 
 @implementation DRPCurrentWordView
@@ -75,6 +84,10 @@
 
 - (void)characterWasHighlighted:(DRPCharacter *)character
 {
+    if (_tileContainerNeedsClearing) {
+        [self removeAllCharactersFromCurrentWord];
+    }
+    
     DRPTileView *tile = [self tileForCharacter:character];
     
     if (!tile) {
@@ -147,8 +160,7 @@
     }
     [_tiles removeAllObjects];
     _wordWidth = 0;
-    
-    [self setCurrentContainer:_turnsLeftLabel];
+    _tileContainerNeedsClearing = NO;
 }
 
 - (DRPTileView *)tileForCharacter:(DRPCharacter *)character
@@ -179,13 +191,18 @@
 
 - (void)setCurrentContainer:(UIView *)currentContainer
 {
+    [self setCurrentContainer:currentContainer withVelocity:1200];
+}
+
+- (void)setCurrentContainer:(UIView *)currentContainer withVelocity:(CGFloat)velocity
+{
     if (_currentContainer == currentContainer) return;
     
     UIView *old = _currentContainer;
     _currentContainer = currentContainer;
     _currentContainer.frame = self.leftFrame;
     
-    [self swipeAwayContainer:old withVelocity:1200];
+    [self swipeAwayContainer:old withVelocity:velocity];
     [self snapBackContainer:_currentContainer withVelocity:1];
 }
 
@@ -271,15 +288,13 @@
                          container.frame = destFrame;
                      }
                      completion:^(BOOL finished) {
-                         if (container == _tileContainer) {
+                         if (_tileContainerNeedsClearing) {
                             [self removeAllCharactersFromCurrentWord];
                          }
                      }];
     
     if (container == _tileContainer) {
-        _turnsLeftLabel.frame = velocity < 0 ? self.rightFrame : self.leftFrame;
-        _currentContainer = _turnsLeftLabel;
-        [self snapBackContainer:_turnsLeftLabel withVelocity:velocity];
+        _tileContainerNeedsClearing = YES;
     }
 }
 
@@ -321,7 +336,7 @@
             
         } else {
             if (fabs(velocity.x) > 200) {
-                [self swipeAwayContainer:_tileContainer withVelocity:velocity.x];
+                [self setCurrentContainer:_turnsLeftLabel withVelocity:velocity.x];
                 [_delegate currentWordViewSwiped];
             } else {
                 [self snapBackContainer:_tileContainer withVelocity:velocity.x];

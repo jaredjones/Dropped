@@ -18,24 +18,38 @@
 @property UILabel *score, *alias;
 
 @property DRPDirection alignment;
-@property BOOL renderTile;
 
 @end
 
 @implementation DRPMatchPlayerView
 
-- (id)initWithFrame:(CGRect)frame alignment:(DRPDirection)alignment tile:(BOOL)tile
+- (instancetype)initWithOrigin:(CGPoint)origin alignment:(DRPDirection)alignment
 {
-    self = [super initWithFrame:frame];
+    self = [super initWithFrame:({
+        CGRect frame = CGRectZero;
+        frame.origin = origin;
+        frame.size = self.frameSize;
+        frame;
+    })];
     if (self) {
         _alignment = alignment;
-        _renderTile = tile;
         [self loadViews];
     }
     return self;
 }
 
 #pragma mark View Loading
+
+- (CGSize)frameSize
+{
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        if (runningPhone5()) {
+            return CGSizeMake(160, 135);
+        }
+        return CGSizeMake(160, 75);
+    }
+    return CGSizeMake(384, 232);
+}
 
 - (void)loadViews
 {

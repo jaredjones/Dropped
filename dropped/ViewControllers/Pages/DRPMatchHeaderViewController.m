@@ -14,7 +14,7 @@
 
 @interface DRPMatchHeaderViewController ()
 
-@property NSMutableArray *playerViews;
+@property NSArray *playerViews;
 
 @end
 
@@ -38,17 +38,25 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [FRBSwatchist colorForKey:@"colors.white"];
-    self.view.backgroundColor = [UIColor yellowColor];
     
-    
-    // TODO: load real DRPMatchPlayerViews
-    [self.view addSubview:[[DRPMatchPlayerView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width / 2, self.view.frame.size.height)
-                                                          alignment:DRPDirectionLeft
-                                                               tile:YES]];
-    
-    [self.view addSubview:[[DRPMatchPlayerView alloc] initWithFrame:CGRectMake(self.view.frame.size.width / 2, 0, self.view.frame.size.width / 2, self.view.frame.size.height)
-                                                          alignment:DRPDirectionRight
-                                                               tile:YES]];
+    [self loadPlayerViews];
+}
+
+- (void)loadPlayerViews
+{
+    _playerViews = @[({
+        UIView *view = [[DRPMatchPlayerView alloc] initWithOrigin:[self originForPlayerView:0
+                                                                    forInterfaceOrientation:self.interfaceOrientation]
+                                                       alignment:DRPDirectionLeft];
+        [self.view addSubview:view];
+        view;
+    }), ({
+        UIView *view = [[DRPMatchPlayerView alloc] initWithOrigin:[self originForPlayerView:1
+                                                                    forInterfaceOrientation:self.interfaceOrientation]
+                                                       alignment:DRPDirectionRight];
+        [self.view addSubview:view];
+        view;
+    })];
 }
 
 #pragma mark View Loading
@@ -83,6 +91,30 @@
     return CGRectMake(0, 0, 1024, 768 / 2 - [FRBSwatchist floatForKey:@"board.boardWidth"] / 2 + [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPadLandscape"]);
 }
 
+- (CGPoint)originForPlayerView:(NSInteger)i forInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    UIView *view = _playerViews[i];
+    if (i == 0) {
+        if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+            return CGPointMake(0, 0);
+            
+        } else {
+            return CGPointMake(0, 0);
+        }
+    } else if (i == 1) {
+        if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+            return CGPointMake(self.view.frame.size.width / 2, 0);
+            
+        } else {
+            if (UIInterfaceOrientationIsLandscape(interfaceOrientation)) {
+                return CGPointMake(1024 - view.frame.size.width, 0);
+            }
+            return CGPointMake(self.view.frame.size.width / 2, 0);
+        }
+    }
+    return CGPointZero;
+}
+
 #pragma mark Rotation
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
@@ -90,6 +122,18 @@
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) return;
     
     self.view.frame = [DRPMatchHeaderViewController padFrameForInterfaceOrientation:toInterfaceOrientation];
+    [self resetPlayerViewLocationForInterfaceOrientation:toInterfaceOrientation];
+}
+
+- (void)resetPlayerViewLocationForInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    for (NSInteger i = 0; i < 2; i++) {
+        ((UIView *)_playerViews[i]).frame = ({
+            CGRect frame = ((UIView *)_playerViews[i]).frame;
+            frame.origin = [self originForPlayerView:i forInterfaceOrientation:toInterfaceOrientation];
+            frame;
+        });
+    }
 }
 
 #pragma mark Player Observing

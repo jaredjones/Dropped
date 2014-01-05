@@ -42,4 +42,6 @@ typedef NS_ENUM(NSInteger, DRPPageDirection) {
 - (void)willMoveFromCurrent;
 - (void)didMoveFromCurrent;
 
+- (CGRect)targetBoundsForRotatingToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
+
 @end

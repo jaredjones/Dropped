@@ -91,7 +91,11 @@
                 center.y += [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPhone4"];
             }
         } else {
-            center.y += [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPad"];
+            if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+                center.y += [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPad"];
+            } else {
+                center.y += [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPadLandscape"];
+            }
         }
         center;
     });
@@ -126,6 +130,21 @@
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
+    
+    CGRect targetBounds = [self targetBoundsForRotatingToInterfaceOrientation:toInterfaceOrientation];
+    
+    _boardViewController.view.center = ({
+        CGPoint center = CGPointMake(CGRectGetMidX(targetBounds), CGRectGetMidY(targetBounds));
+        if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+            center.y += [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPad"];
+        } else {
+            center.y += [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPadLandscape"];
+        }
+        center;
+    });
+    
+    // TODO: move subviews around
 }
 
 #pragma mark DRPPageViewController

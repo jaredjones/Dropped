@@ -50,14 +50,6 @@
     [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
-{
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-        return UIInterfaceOrientationMaskPortrait;
-    }
-    return UIInterfaceOrientationMaskAll;
-}
-
 #pragma mark Child View Controllers
 
 - (DRPPageID)currentPageID
@@ -218,6 +210,16 @@
         [_cueKeeper deemphasizeCueInPosition:DRPPageDirectionUp];
         [_cueKeeper deemphasizeCueInPosition:DRPPageDirectionDown];
     }
+}
+
+#pragma mark Rotation
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+        return UIInterfaceOrientationMaskPortrait;
+    }
+    return UIInterfaceOrientationMaskAll;
 }
 
 @end

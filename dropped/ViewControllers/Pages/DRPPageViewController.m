@@ -154,4 +154,27 @@
     }
 }
 
+#pragma mark Rotation
+
+- (CGRect)targetBoundsForRotatingToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    CGRect bounds = self.view.bounds;
+    
+    // If it's not a 180 degree rotation, swapping the width and height of
+    // current bounds yields targetBounds. If it is 180 degree rotation,
+    // bounds and targetBounds are equivalent
+    if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation) ^ UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
+        CGFloat tmp = bounds.size.width;
+        bounds.size.width = bounds.size.height;
+        bounds.size.height = tmp;
+    }
+    
+    return bounds;
+}
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    self.scrollView.frame = [self targetBoundsForRotatingToInterfaceOrientation:toInterfaceOrientation];
+}
+
 @end

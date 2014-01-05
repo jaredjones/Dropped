@@ -30,7 +30,7 @@
 
 - (void)loadView
 {
-    self.view = [[UIView alloc] initWithFrame:[DRPMatchHeaderViewController frame]];
+    self.view = [[UIView alloc] initWithFrame:self.headerFrame];
 }
 
 - (void)viewDidLoad
@@ -38,9 +38,10 @@
     [super viewDidLoad];
     
     self.view.backgroundColor = [FRBSwatchist colorForKey:@"colors.white"];
+    self.view.backgroundColor = [UIColor yellowColor];
     
-    // TODO: load DRPMatchPlayerViews
     
+    // TODO: load real DRPMatchPlayerViews
     [self.view addSubview:[[DRPMatchPlayerView alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width / 2, self.view.frame.size.height)
                                                           alignment:DRPDirectionLeft
                                                                tile:YES]];
@@ -52,7 +53,7 @@
 
 #pragma mark View Loading
 
-+ (CGRect)frame
+- (CGRect)headerFrame
 {
     if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
         if (runningPhone5()) {
@@ -61,7 +62,7 @@
         return [DRPMatchHeaderViewController phone4Frame];
         
     }
-    return [DRPMatchHeaderViewController padFrame];
+    return [DRPMatchHeaderViewController padFrameForInterfaceOrientation:self.interfaceOrientation];
 }
 
 + (CGRect)phone4Frame
@@ -71,12 +72,24 @@
 
 + (CGRect)phone5Frame
 {
-    return CGRectMake(0, 0, 320, 568 / 2 - [FRBSwatchist floatForKey:@"board.boardWidth"] / 2 + [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPhone4"]);
+    return CGRectMake(0, 0, 320, 568 / 2 - [FRBSwatchist floatForKey:@"board.boardWidth"] / 2 + [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPhone5"]);
 }
 
-+ (CGRect)padFrame
++ (CGRect)padFrameForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return CGRectZero;
+    if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
+        return CGRectMake(0, 0, 768, 1024 / 2 - [FRBSwatchist floatForKey:@"board.boardWidth"] / 2 + [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPad"]);
+    }
+    return CGRectMake(0, 0, 1024, 768 / 2 - [FRBSwatchist floatForKey:@"board.boardWidth"] / 2 + [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPadLandscape"]);
+}
+
+#pragma mark Rotation
+
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) return;
+    
+    self.view.frame = [DRPMatchHeaderViewController padFrameForInterfaceOrientation:toInterfaceOrientation];
 }
 
 #pragma mark Player Observing

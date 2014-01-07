@@ -208,6 +208,17 @@
 
 #pragma mark Repositioning Tiles
 
+- (void)repositionCurrentContainer
+{
+    if (_currentContainer == _tileContainer) {
+        [self repositionTiles];
+        _turnsLeftLabel.frame = self.leftFrame;
+    } else {
+        _turnsLeftLabel.frame = self.bounds;
+        _tileContainer.frame = self.leftFrame;
+    }
+}
+
 - (CGPoint)centerForNewTile:(DRPTileView *)tile
 {
     // Ignore advancement when the first letter is being added
@@ -277,7 +288,7 @@
 // Following two methods deal with the swipeclears
 - (void)swipeAwayContainer:(UIView *)container withVelocity:(CGFloat)velocity
 {
-    CGRect destFrame = velocity < 0 ? [self leftFrame] : [self rightFrame];
+    CGRect destFrame = velocity < 0 ? self.leftFrame : self.rightFrame;
     CGFloat dist = destFrame.origin.x - container.frame.origin.x;
     CGFloat t = dist / fabs(velocity);
     

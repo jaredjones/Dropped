@@ -106,10 +106,17 @@
 {
     _currentWordView = [[DRPCurrentWordView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"])];
     _currentWordView.delegate = self;
-    
+    [self repositionCurrentWordViewWithTargetBounds:self.view.bounds];
+    _currentWordView.backgroundColor = [UIColor yellowColor];
+    [self.scrollView addSubview:_currentWordView];
+}
+
+- (void)repositionCurrentWordViewWithTargetBounds:(CGRect)targetBounds
+{
+    _currentWordView.frame = CGRectMake(0, 0, targetBounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"]);
     _currentWordView.center = ({
         CGFloat height = _currentWordView.frame.size.height;
-        CGPoint center = CGPointMake(self.view.center.x, CGRectGetMaxY(_boardViewController.view.frame) - height / 2);
+        CGPoint center = CGPointMake(CGRectGetMidX(targetBounds), CGRectGetMaxY(_boardViewController.view.frame) - height / 2);
         
         if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
             if (runningPhone5()) {
@@ -122,8 +129,7 @@
         }
         center;
     });
-    
-    [self.scrollView addSubview:_currentWordView];
+    [_currentWordView repositionCurrentContainer];
 }
 
 #pragma mark Rotation
@@ -145,6 +151,7 @@
     });
     
     // TODO: move subviews around
+    [self repositionCurrentWordViewWithTargetBounds:targetBounds];
 }
 
 #pragma mark DRPPageViewController

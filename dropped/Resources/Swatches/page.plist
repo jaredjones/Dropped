@@ -34,8 +34,12 @@
 	</dict>
 	<key>cueOffsetTop</key>
 	<integer>20</integer>
+	<key>cueOffsetTopPad</key>
+	<integer>26</integer>
 	<key>cueOffsetBottom</key>
 	<integer>18</integer>
+	<key>cueOffsetBottomPad</key>
+	<integer>22</integer>
 	<key>cueVisibleThreshold</key>
 	<integer>65</integer>
 	<key>cueAnimationDuration</key>

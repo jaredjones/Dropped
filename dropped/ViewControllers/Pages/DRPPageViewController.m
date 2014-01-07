@@ -183,6 +183,11 @@
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     self.scrollView.frame = [self targetBoundsForRotatingToInterfaceOrientation:toInterfaceOrientation];
+    self.scrollView.contentSize = ({
+        CGSize size = self.scrollView.frame.size;
+        size.height += 0.5;
+        size;
+    });
 }
 
 @end

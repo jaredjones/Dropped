@@ -43,6 +43,6 @@
 	<key>boardVerticalOffsetPad</key>
 	<integer>0</integer>
 	<key>boardVerticalOffsetPadLandscape</key>
-	<integer>0</integer>
+	<integer>-52</integer>
 </dict>
 </plist>

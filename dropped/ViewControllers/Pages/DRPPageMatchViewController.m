@@ -104,15 +104,15 @@
 
 - (void)loadCurrentWordView
 {
-    _currentWordView = [[DRPCurrentWordView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"])];
+    _currentWordView = [[DRPCurrentWordView alloc] initWithFrame:CGRectZero];
     _currentWordView.delegate = self;
-    [self repositionCurrentWordViewWithTargetBounds:self.view.bounds];
-    _currentWordView.backgroundColor = [UIColor yellowColor];
+    [self repositionCurrentWordViewForInterfaceOrientation:self.interfaceOrientation];
     [self.scrollView addSubview:_currentWordView];
 }
 
-- (void)repositionCurrentWordViewWithTargetBounds:(CGRect)targetBounds
+- (void)repositionCurrentWordViewForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
+    CGRect targetBounds = [self targetBoundsForRotatingToInterfaceOrientation:interfaceOrientation];
     _currentWordView.frame = CGRectMake(0, 0, targetBounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"]);
     _currentWordView.center = ({
         CGFloat height = _currentWordView.frame.size.height;
@@ -125,7 +125,11 @@
                 center.y += 53;
             }
         } else {
-            center.y += 150;
+            if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
+                center.y += 150;
+            } else {
+                center.y += 102;
+            }
         }
         center;
     });
@@ -150,8 +154,7 @@
         center;
     });
     
-    // TODO: move subviews around
-    [self repositionCurrentWordViewWithTargetBounds:targetBounds];
+    [self repositionCurrentWordViewForInterfaceOrientation:toInterfaceOrientation];
 }
 
 #pragma mark DRPPageViewController

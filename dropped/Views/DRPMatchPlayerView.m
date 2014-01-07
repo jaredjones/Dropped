@@ -109,12 +109,13 @@
     _alias = ({
         UIFont *font = [FRBSwatchist fontForKey:@"page.cueFont"];
         UILabel *label = [[UILabel alloc] initWithFrame:({
-            CGFloat height = 17;
-            CGRect frame = CGRectMake(0, y, self.bounds.size.width, height);
+            CGFloat height = [FRBSwatchist floatForKey:@"board.tileLength"] / 2;
+            CGRect frame = CGRectMake(0, y - labelOffset(font, height), self.bounds.size.width, height);
             CGRectInset(frame, [FRBSwatchist floatForKey:@"board.boardPadding"], 0);
         })];
         label.font = font;
         label.textAlignment = textAlignment;
+        label.lineBreakMode = NSLineBreakByTruncatingMiddle;
         [self addSubview:label];
         label;
     });

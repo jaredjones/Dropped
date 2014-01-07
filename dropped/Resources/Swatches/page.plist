@@ -11,12 +11,26 @@
 		<key>size</key>
 		<integer>18</integer>
 	</dict>
+	<key>cueFontPad</key>
+	<dict>
+		<key>name</key>
+		<string>Centrale Sans Light</string>
+		<key>size</key>
+		<integer>22</integer>
+	</dict>
 	<key>cueEmphasizedFont</key>
 	<dict>
 		<key>name</key>
 		<string>Centrale Sans Medium</string>
 		<key>size</key>
 		<integer>18</integer>
+	</dict>
+	<key>cueEmphasizedFontPad</key>
+	<dict>
+		<key>name</key>
+		<string>Centrale Sans Medium</string>
+		<key>size</key>
+		<integer>22</integer>
 	</dict>
 	<key>cueOffsetTop</key>
 	<integer>20</integer>

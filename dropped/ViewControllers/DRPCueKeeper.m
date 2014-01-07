@@ -30,25 +30,13 @@
         _view = view;
         
         // Load CueIndicators
-        _topIndicatorView = [[DRPCueIndicatorView alloc] init];
-        _topIndicatorView.frame = CGRectOffset(_topIndicatorView.frame, 0, -_topIndicatorView.frame.size.height);
-        _topIndicatorView.position = DRPPageDirectionUp;
-        _topIndicatorView.center = ({
-            CGPoint center = _topIndicatorView.center;
-            center.x = _view.center.x;
-            center;
-        });
+        _topIndicatorView = [[DRPCueIndicatorView alloc] initWithPosition:DRPPageDirectionUp];
         [_view addSubview:_topIndicatorView];
         
-        _bottomIndicatorView = [[DRPCueIndicatorView alloc] init];
-        _bottomIndicatorView.frame = CGRectOffset(_bottomIndicatorView.frame, 0, _view.frame.size.height);
-        _bottomIndicatorView.position = DRPPageDirectionDown;
-        _bottomIndicatorView.center = ({
-            CGPoint center = _bottomIndicatorView.center;
-            center.x = _view.center.x;
-            center;
-        });
+        _bottomIndicatorView = [[DRPCueIndicatorView alloc] initWithPosition:DRPPageDirectionDown];
         [_view addSubview:_bottomIndicatorView];
+        
+        [self repositionCueIndicators];
     }
     return self;
 }
@@ -73,6 +61,18 @@
     return position == DRPPageDirectionUp ? _topIndicatorView : _bottomIndicatorView;
 }
 
+- (void)repositionCueIndicators
+{
+    _topIndicatorView.center = ({
+        CGPoint center = CGPointMake(CGRectGetMidX(_view.bounds), -_topIndicatorView.frame.size.height / 2);
+        center;
+    });
+    
+    _bottomIndicatorView.center = ({
+        CGPointMake(CGRectGetMidX(_view.bounds), _view.bounds.size.height + _bottomIndicatorView.frame.size.height / 2);
+    });
+}
+
 #pragma mark Cycling
 
 - (void)cycleInCue:(NSString *)cueText inPosition:(DRPPageDirection)position
@@ -91,6 +91,8 @@
         
         [self setCue:cue forPosition:position];
         [self animateCue:cue inForPosition:position];
+    } else {
+        [self setCue:nil forPosition:position];
     }
 }
 
@@ -105,12 +107,16 @@
 - (void)animateCue:(UILabel *)cue inForPosition:(DRPPageDirection)position
 {
     cue.center = [self preCenterForPosition:position];
+    cue.alpha = 0;
     [UIView animateWithDuration:[FRBSwatchist floatForKey:@"page.cueAnimationDuration"]
                           delay:0
          usingSpringWithDamping:[FRBSwatchist floatForKey:@"page.cueAnimationDamping"]
           initialSpringVelocity:0
                         options:0
-                     animations:^{ cue.center = [self postCenterForPosition:position]; }
+                     animations:^{
+                         cue.center = [self postCenterForPosition:position];
+                         cue.alpha = 1;
+                     }
                      completion:nil];
 }
 
@@ -121,9 +127,14 @@
          usingSpringWithDamping:[FRBSwatchist floatForKey:@"page.cueAnimationDamping"]
           initialSpringVelocity:0
                         options:UIViewAnimationOptionBeginFromCurrentState
-                     animations:^{ cue.center = [self preCenterForPosition:position]; }
+                     animations:^{
+                         cue.center = [self preCenterForPosition:position];
+                         cue.alpha = 0;
+                     }
                      completion:^(BOOL finished) {
                          [cue removeFromSuperview];
+                         
+                         // Make sure to clear out the old cue
                          if ([self cueForPosition:position] == cue) {
                              [self setCue:nil forPosition:position];
                          }
@@ -133,17 +144,17 @@
 - (CGPoint)preCenterForPosition:(DRPPageDirection)position
 {
     if (position == DRPPageDirectionUp) {
-        return CGPointMake(_view.frame.size.width / 2, -[FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
+        return CGPointMake(_view.bounds.size.width / 2, -[FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
     }
-    return CGPointMake(_view.frame.size.width / 2, _view.frame.size.height + [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
+    return CGPointMake(_view.bounds.size.width / 2, _view.bounds.size.height + [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
 }
 
 - (CGPoint)postCenterForPosition:(DRPPageDirection)position
 {
     if (position == DRPPageDirectionUp) {
-        return CGPointMake(_view.frame.size.width / 2, [FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
+        return CGPointMake(_view.bounds.size.width / 2, [FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
     }
-    return CGPointMake(_view.frame.size.width / 2, _view.frame.size.height - [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
+    return CGPointMake(_view.bounds.size.width / 2, _view.bounds.size.height - [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
 }
 
 #pragma mark Emphasis
@@ -179,6 +190,21 @@
 - (void)cycleOutIndicatorForPosition:(DRPPageDirection)position
 {
     [[self indicatorForPosition:position] animateOut];
+}
+
+#pragma mark Rotation
+
+- (void)hideIndicators
+{
+    [self indicatorForPosition:DRPPageDirectionUp].hidden = YES;
+    [self indicatorForPosition:DRPPageDirectionDown].hidden = YES;
+}
+
+- (void)showIndicators
+{
+    [self repositionCueIndicators];
+    [self indicatorForPosition:DRPPageDirectionUp].hidden = NO;
+    [self indicatorForPosition:DRPPageDirectionDown].hidden = NO;
 }
 
 #pragma mark Superview

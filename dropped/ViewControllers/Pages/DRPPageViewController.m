@@ -80,6 +80,14 @@
     }
 }
 
+- (void)hideCues
+{
+    [_mainViewController setCue:nil inPosition:DRPPageDirectionUp];
+    [_mainViewController setCue:nil inPosition:DRPPageDirectionDown];
+    _topCueVisible = NO;
+    _bottomCueVisible = NO;
+}
+
 - (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo
 {
     

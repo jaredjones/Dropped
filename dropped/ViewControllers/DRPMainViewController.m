@@ -222,4 +222,16 @@
     return UIInterfaceOrientationMaskAll;
 }
 
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [_cueKeeper hideIndicators];
+    [_currentPage hideCues];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [_cueKeeper showIndicators];
+    [_currentPage resetCues];
+}
+
 @end

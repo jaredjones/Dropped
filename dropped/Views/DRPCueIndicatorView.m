@@ -18,7 +18,7 @@
 
 @implementation DRPCueIndicatorView
 
-- (id)init
+- (instancetype)initWithPosition:(DRPPageDirection)position
 {
     self = [super initWithFrame:({
         CGFloat width = [FRBSwatchist floatForKey:@"board.boardWidth"];
@@ -26,6 +26,8 @@
         CGRectMake(0, 0, width, height);
     })];
     if (self) {
+        _position = position;
+        
         _tileViews = [[NSMutableArray alloc] init];
         
         for (NSInteger i = 0; i < 6; i++) {

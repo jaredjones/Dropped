@@ -20,6 +20,9 @@
 - (void)deemphasizeCueInPosition:(DRPPageDirection)position;
 - (void)cycleOutIndicatorForPosition:(DRPPageDirection)position;
 
+- (void)hideIndicators;
+- (void)showIndicators;
+
 - (void)bringToFront;
 
 @end

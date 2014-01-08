@@ -104,7 +104,7 @@
 
 - (void)loadCurrentWordView
 {
-    _currentWordView = [[DRPCurrentWordView alloc] initWithFrame:CGRectZero];
+    _currentWordView = [[DRPCurrentWordView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"])];
     _currentWordView.delegate = self;
     [self repositionCurrentWordViewForInterfaceOrientation:self.interfaceOrientation];
     [self.scrollView addSubview:_currentWordView];
@@ -112,11 +112,10 @@
 
 - (void)repositionCurrentWordViewForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    CGRect targetBounds = [self targetBoundsForRotatingToInterfaceOrientation:interfaceOrientation];
-    _currentWordView.frame = CGRectMake(0, 0, targetBounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"]);
+    _currentWordView.frame = CGRectMake(0, 0, self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"]);
     _currentWordView.center = ({
         CGFloat height = _currentWordView.frame.size.height;
-        CGPoint center = CGPointMake(CGRectGetMidX(targetBounds), CGRectGetMaxY(_boardViewController.view.frame) - height / 2);
+        CGPoint center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMaxY(_boardViewController.view.frame) - height / 2);
         
         if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
             if (runningPhone5()) {
@@ -138,14 +137,12 @@
 
 #pragma mark Rotation
 
-- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [super willRotateToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    CGRect targetBounds = [self targetBoundsForRotatingToInterfaceOrientation:toInterfaceOrientation];
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
     
     _boardViewController.view.center = ({
-        CGPoint center = CGPointMake(CGRectGetMidX(targetBounds), CGRectGetMidY(targetBounds));
+        CGPoint center = self.view.center;
         if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
             center.y += [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPad"];
         } else {

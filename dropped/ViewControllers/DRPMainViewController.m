@@ -142,7 +142,7 @@
     [self.view addSubview:_downPage.view];
     
     if (!animated) {
-        _currentPage.view.frame = self.view.frame;
+        _currentPage.view.frame = self.view.bounds;
         [self repositionPagesAroundCurrentPage];
     } else {
         // Mess with the layering within parent view

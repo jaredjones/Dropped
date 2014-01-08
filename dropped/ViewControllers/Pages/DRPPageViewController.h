@@ -45,6 +45,4 @@ typedef NS_ENUM(NSInteger, DRPPageDirection) {
 - (void)resetCues;
 - (void)hideCues;
 
-- (CGRect)targetBoundsForRotatingToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation;
-
 @end

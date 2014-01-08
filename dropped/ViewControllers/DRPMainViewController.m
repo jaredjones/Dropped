@@ -42,11 +42,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     [DRPTransition setReferenceView:self.view];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    _cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
+    // TODO: keep showing launch image so interface doesn't flash white briefly
+}
+
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
     
+    _cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
     [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
 }
 
@@ -83,8 +91,8 @@
                                                      completion:^{
                                                          [self decommissionOldPagesWithPreviousPage:prevPage];
                                                          [self repositionPagesAroundCurrentPage];
-                                                         _upPage.view.hidden = NO;
-                                                         _downPage.view.hidden = NO;
+                                                         _upPage.view.hidden = YES;
+                                                         _downPage.view.hidden = YES;
                                                      }];
         
         // The "velocity" of the drag is stored so there are no instaneous
@@ -97,10 +105,13 @@
         [_cueKeeper cycleOutIndicatorForPosition:DRPPageDirectionUp];
         [_cueKeeper cycleOutIndicatorForPosition:DRPPageDirectionDown];
         
+        _currentPage.view.hidden = NO;
         [_currentTransition execute];
         
     } else {
         [self decommissionOldPagesWithPreviousPage:prevPage];
+        _upPage.view.hidden = YES;
+        _downPage.view.hidden = YES;
     }
 }
 
@@ -213,6 +224,11 @@
 }
 
 #pragma mark Rotation
+
+- (BOOL)shouldAutorotate
+{
+    return !_currentTransition.active;
+}
 
 - (NSUInteger)supportedInterfaceOrientations
 {

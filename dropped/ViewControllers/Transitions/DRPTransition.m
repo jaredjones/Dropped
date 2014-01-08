@@ -15,6 +15,8 @@
 @property UIViewController *start, *destination;
 @property (strong) void (^completion)();
 
+@property (readwrite) BOOL active;
+
 - (instancetype)initWithStart:(UIViewController *)start destination:(UIViewController *)destination completion:(void (^)())completion;
 
 @end
@@ -27,7 +29,12 @@
     if (self) {
         _start = start;
         _destination = destination;
-        _completion = completion;
+        
+        __block DRPTransition *wkself = self;
+        _completion = ^void() {
+            completion();
+            wkself.active = NO;
+        };
     }
     return self;
 }

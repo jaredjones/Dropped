@@ -15,6 +15,8 @@
 @property (readonly, strong) void (^completion)();
 @property CGFloat startingVelocity;
 
+@property (readonly) BOOL active;
+
 + (void)setReferenceView:(UIView *)reference;
 + (UIDynamicAnimator *)sharedDynamicAnimator;
 

@@ -33,12 +33,15 @@
     _mainViewController = (DRPMainViewController *)parent;
 }
 
-- (void)viewDidLoad
+- (void)viewWillLayoutSubviews
 {
-    [super viewDidLoad];
-    [self loadScrollView];
-    _scrollView.delaysContentTouches = NO;
-    _scrollView.delegate = self;
+    if (!_scrollView) {
+        [self loadScrollView];
+        _scrollView.delaysContentTouches = NO;
+        _scrollView.delegate = self;
+        
+        _scrollView.backgroundColor = [UIColor orangeColor];
+    }
 }
 
 #pragma mark DRPPage

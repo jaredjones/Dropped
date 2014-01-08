@@ -48,13 +48,16 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)viewDidLoad
+- (void)viewWillLayoutSubviews
 {
-    [super viewDidLoad];
+    [super viewWillLayoutSubviews];
     
-    [self loadBoardViewController];
-    [self loadCurrentWordView];
-    [self loadHeaderViewController];
+    if (!(_boardViewController || _currentWordView || _headerViewController)) {
+        [self loadBoardViewController];
+        [self loadCurrentWordView];
+        [self loadHeaderViewController];
+        self.scrollView.backgroundColor = [UIColor yellowColor];
+    }
 }
 
 - (void)loadScrollView
@@ -112,7 +115,7 @@
 
 - (void)repositionCurrentWordViewForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    _currentWordView.frame = CGRectMake(0, 0, self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"]);
+    _currentWordView.bounds = CGRectMake(0, 0, self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"]);
     _currentWordView.center = ({
         CGFloat height = _currentWordView.frame.size.height;
         CGPoint center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMaxY(_boardViewController.view.frame) - height / 2);

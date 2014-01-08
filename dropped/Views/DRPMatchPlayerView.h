@@ -13,7 +13,7 @@
 
 @interface DRPMatchPlayerView : UIView
 
-- (instancetype)initWithOrigin:(CGPoint)origin alignment:(DRPDirection)alignment;
+- (instancetype)initWithAlignment:(DRPDirection)alignment;
 - (void)observePlayer:(DRPPlayer *)player;
 
 @end

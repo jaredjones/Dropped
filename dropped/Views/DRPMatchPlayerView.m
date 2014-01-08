@@ -23,11 +23,10 @@
 
 @implementation DRPMatchPlayerView
 
-- (instancetype)initWithOrigin:(CGPoint)origin alignment:(DRPDirection)alignment
+- (instancetype)initWithAlignment:(DRPDirection)alignment
 {
     self = [super initWithFrame:({
         CGRect frame = CGRectZero;
-        frame.origin = origin;
         frame.size = self.frameSize;
         frame;
     })];

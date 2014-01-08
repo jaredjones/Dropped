@@ -212,10 +212,8 @@
 {
     if (_currentContainer == _tileContainer) {
         [self repositionTiles];
-        _turnsLeftLabel.frame = self.leftFrame;
     } else {
         _turnsLeftLabel.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
-        _tileContainer.frame = self.leftFrame;
     }
 }
 

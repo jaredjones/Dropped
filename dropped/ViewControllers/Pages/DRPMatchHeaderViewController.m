@@ -44,19 +44,26 @@
 
 - (void)loadPlayerViews
 {
+    NSLog(@"load player");
+    
     _playerViews = @[({
-        UIView *view = [[DRPMatchPlayerView alloc] initWithOrigin:[self originForPlayerView:0
-                                                                    forInterfaceOrientation:self.interfaceOrientation]
-                                                       alignment:DRPDirectionLeft];
+        UIView *view = [[DRPMatchPlayerView alloc] initWithAlignment:DRPDirectionLeft];
         [self.view addSubview:view];
         view;
     }), ({
-        UIView *view = [[DRPMatchPlayerView alloc] initWithOrigin:[self originForPlayerView:1
-                                                                    forInterfaceOrientation:self.interfaceOrientation]
-                                                       alignment:DRPDirectionRight];
+        UIView *view = [[DRPMatchPlayerView alloc] initWithAlignment:DRPDirectionRight];
         [self.view addSubview:view];
         view;
     })];
+    
+    for (NSInteger i = 0; i < 2; i++) {
+        UIView *view = _playerViews[i];
+        view.frame = ({
+            CGRect frame = view.frame;
+            frame.origin = [self originForPlayerView:i forInterfaceOrientation:self.interfaceOrientation];
+            frame;
+        });
+    }
 }
 
 #pragma mark View Loading

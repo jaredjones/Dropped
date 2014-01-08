@@ -106,6 +106,8 @@
 
 - (void)animateCue:(UILabel *)cue inForPosition:(DRPPageDirection)position
 {
+    if (!cue) return;
+    
     cue.center = [self preCenterForPosition:position];
     cue.alpha = 0;
     [UIView animateWithDuration:[FRBSwatchist floatForKey:@"page.cueAnimationDuration"]
@@ -114,7 +116,11 @@
           initialSpringVelocity:0
                         options:0
                      animations:^{
-                         cue.center = [self postCenterForPosition:position];
+                         cue.center = ({
+                             CGPoint center = [self postCenterForPosition:position];
+//                             center.x = cue.center.x;
+                             center;
+                         });
                          cue.alpha = 1;
                      }
                      completion:nil];
@@ -122,13 +128,15 @@
 
 - (void)animateCue:(UILabel *)cue outForPosition:(DRPPageDirection)position
 {
+    if (!cue) return;
+    
     [UIView animateWithDuration:[FRBSwatchist floatForKey:@"page.cueAnimationDuration"]
                           delay:0
          usingSpringWithDamping:[FRBSwatchist floatForKey:@"page.cueAnimationDamping"]
           initialSpringVelocity:0
                         options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
-                         cue.center = [self preCenterForPosition:position];
+                         cue.center = [self preCenterForPosition:position fromCenter:cue.center];
                          cue.alpha = 0;
                      }
                      completion:^(BOOL finished) {
@@ -147,6 +155,16 @@
         return CGPointMake(_view.bounds.size.width / 2, -[FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
     }
     return CGPointMake(_view.bounds.size.width / 2, _view.bounds.size.height + [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
+}
+
+- (CGPoint)preCenterForPosition:(DRPPageDirection)position fromCenter:(CGPoint)currentCenter
+{
+    // Calculated for animations out.
+    // This is a special case that keeps the old cues heading in the right direction during an orientation change
+    if (position == DRPPageDirectionUp) {
+        return CGPointMake(currentCenter.x, currentCenter.y - 2 * [FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
+    }
+    return CGPointMake(currentCenter.x, currentCenter.y + 2 * [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
 }
 
 - (CGPoint)postCenterForPosition:(DRPPageDirection)position

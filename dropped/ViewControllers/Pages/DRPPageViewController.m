@@ -169,12 +169,19 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
+    [self hideCues];
+    
     self.scrollView.frame = self.view.bounds;
     self.scrollView.contentSize = ({
         CGSize size = self.scrollView.frame.size;
         size.height += 0.5;
         size;
     });
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [self resetCues];
 }
 
 @end

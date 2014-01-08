@@ -44,8 +44,6 @@
 
 - (void)loadPlayerViews
 {
-    NSLog(@"load player");
-    
     _playerViews = @[({
         UIView *view = [[DRPMatchPlayerView alloc] initWithAlignment:DRPDirectionLeft];
         [self.view addSubview:view];

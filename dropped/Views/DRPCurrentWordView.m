@@ -50,6 +50,8 @@
         _currentContainer = _turnsLeftLabel;
         
         _tiles = [[NSMutableArray alloc] init];
+        
+        // TODO: hide inactive container
     }
     return self;
 }
@@ -63,11 +65,14 @@
 - (void)loadTurnsLeftLabel
 {
     _turnsLeftLabel = [[UILabel alloc] initWithFrame:self.bounds];
-    _turnsLeftLabel.font = [FRBSwatchist fontForKey:@"board.tileFont"];
-    _turnsLeftLabel.textColor = [UIColor blackColor];
-    _turnsLeftLabel.text = @"26 turns left";
-    _turnsLeftLabel.textAlignment = NSTextAlignmentCenter;
     _turnsLeftLabel.userInteractionEnabled = YES;
+    
+    _turnsLeftLabel.font = [FRBSwatchist fontForKey:@"board.tileFont"];
+    _turnsLeftLabel.textColor = [FRBSwatchist colorForKey:@"colors.black"];
+    
+    _turnsLeftLabel.textAlignment = NSTextAlignmentCenter;
+    _turnsLeftLabel.text = @"26 turns left";
+    
     [self addSubview:_turnsLeftLabel];
 }
 

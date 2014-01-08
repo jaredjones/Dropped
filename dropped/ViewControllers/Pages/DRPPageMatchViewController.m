@@ -55,8 +55,8 @@
     if (!(_boardViewController || _currentWordView || _headerViewController)) {
         [self loadBoardViewController];
         [self loadCurrentWordView];
+        [self.view bringSubviewToFront:_boardViewController.view];
         [self loadHeaderViewController];
-        self.scrollView.backgroundColor = [UIColor yellowColor];
     }
 }
 

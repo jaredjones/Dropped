@@ -39,8 +39,7 @@
         [self loadScrollView];
         _scrollView.delaysContentTouches = NO;
         _scrollView.delegate = self;
-        
-        _scrollView.backgroundColor = [UIColor orangeColor];
+        self.scrollView.clipsToBounds = NO;
     }
 }
 

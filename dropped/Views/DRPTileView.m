@@ -73,7 +73,7 @@ static NSMutableDictionary *glyphAdvancesCache;
     [_glyphLayer removeFromSuperlayer];
     _glyphLayer = [[CAShapeLayer alloc] init];
     _glyphLayer.path = [DRPTileView pathForCharacter:_character.character].CGPath;
-    _glyphLayer.fillColor = [UIColor blackColor].CGColor;
+    _glyphLayer.fillColor = [FRBSwatchist colorForKey:@"colors.black"].CGColor;
     [self.layer addSublayer:_glyphLayer];
 }
 

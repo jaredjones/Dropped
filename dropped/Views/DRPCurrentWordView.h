@@ -17,8 +17,7 @@
 - (void)characterWasDehighlighted:(DRPCharacter *)character;
 - (void)characterRemovedFromCurrentWord:(DRPCharacter *)character;
 
-- (void)repositionCurrentContainer;
-
-- (void)removeAllCharactersFromCurrentWord;
+- (void)cycleOutTiles;
+- (void)recenter;
 
 @end

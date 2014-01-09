@@ -55,7 +55,7 @@
     if (!(_boardViewController || _currentWordView || _headerViewController)) {
         [self loadBoardViewController];
         [self loadCurrentWordView];
-        [self.view bringSubviewToFront:_boardViewController.view];
+        [self.scrollView bringSubviewToFront:_boardViewController.view];
         [self loadHeaderViewController];
     }
 }
@@ -135,7 +135,7 @@
         }
         center;
     });
-    [_currentWordView repositionCurrentContainer];
+    [_currentWordView recenter];
 }
 
 #pragma mark Rotation
@@ -167,7 +167,7 @@
     _match = [[DRPMatch alloc] initWithGKMatch:nil];
     [_boardViewController loadBoard:_match.board];
     
-    [_currentWordView removeAllCharactersFromCurrentWord];
+    [_currentWordView cycleOutTiles];
 }
 
 #pragma mark DRPBoardViewControllerDelegate
@@ -230,7 +230,7 @@
 - (void)gameCenterReceivedTurn:(NSNotification *)notification
 {
     [_boardViewController dropPlayedWord:notification.userInfo[@"playedWord"]];
-    [_currentWordView removeAllCharactersFromCurrentWord];
+    [_currentWordView cycleOutTiles];
     [self resetCues];
 }
 

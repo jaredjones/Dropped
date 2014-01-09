@@ -48,10 +48,6 @@
         [self loadGestureRecognizers];
         
         _currentContainer = _turnsLeftLabel;
-        
-        _tiles = [[NSMutableArray alloc] init];
-        
-        // TODO: hide inactive container
     }
     return self;
 }
@@ -60,6 +56,8 @@
 {
     _tileContainer = [[UIView alloc] initWithFrame:self.leftFrame];
     [self addSubview:_tileContainer];
+    
+    _tiles = [[NSMutableArray alloc] init];
 }
 
 - (void)loadTurnsLeftLabel
@@ -120,7 +118,7 @@
     // when  the repositioning happens at the same time as adding
     // a dequeued tile. Delaying by a tiny amount fixes the problem.
     //
-    // The source of the problem is that UIViewAnimationOptionsBeginFromCurrentState
+    // The source of the problem is UIViewAnimationOptionsBeginFromCurrentState
     // for repositioning animations (which should be the case). For some
     // reason the animation still thinks the center of the tile is in its
     // previous location.
@@ -153,7 +151,7 @@
         
         // Last tile removed, move back to _turnsLeftLabel
         if (_tiles.count == 0) {
-            [self setCurrentContainer:_turnsLeftLabel];
+            [self cycleOutTiles];
         }
     }
 }
@@ -211,9 +209,18 @@
     [self snapBackContainer:_currentContainer withVelocity:1];
 }
 
+- (void)cycleOutTiles
+{
+    if (_currentContainer == _tileContainer) {
+        [self setCurrentContainer:_turnsLeftLabel];
+    }
+}
+
 #pragma mark Repositioning Tiles
 
-- (void)repositionCurrentContainer
+// Called during orientation changes to make sure the current
+// container is properly centered
+- (void)recenter
 {
     if (_currentContainer == _tileContainer) {
         [self repositionTiles];
@@ -222,16 +229,7 @@
     }
 }
 
-- (CGPoint)centerForNewTile:(DRPTileView *)tile
-{
-    // Ignore advancement when the first letter is being added
-    CGFloat tileWidth = _wordWidth > 0 ? tile.frame.size.width : 0;
-    CGFloat letterSpacing = [FRBSwatchist floatForKey:@"page.matchCurrentWordLetterSpacing"];
-    letterSpacing = _wordWidth > 0 ? letterSpacing : -letterSpacing;
-    return CGPointMake((self.frame.size.width + _wordWidth + tileWidth + letterSpacing) / 2,
-                       self.bounds.size.height / 2);
-}
-
+// Animates repositioning of tiles in _tileContainer (from adding/removing/selecting a character)
 - (void)repositionTiles
 {
     CGPoint *centers = [self tileCenters];
@@ -255,6 +253,9 @@
     free(centers);
 }
 
+// Returns an array of CGPoints that represent the center
+// of the tiles in _tileContainer
+// Be sure to free() the returned array
 - (CGPoint *)tileCenters
 {
     CGPoint *centers = malloc(sizeof(CGPoint) * _tiles.count);
@@ -288,6 +289,20 @@
     return centers;
 }
 
+// The center point for a tile in the process of being added
+// to the current word (highlighted the tile, have not touched up yet)
+- (CGPoint)centerForNewTile:(DRPTileView *)tile
+{
+    // Ignore advancement when the first letter is being added
+    CGFloat tileWidth = _wordWidth > 0 ? tile.frame.size.width : 0;
+    CGFloat letterSpacing = [FRBSwatchist floatForKey:@"page.matchCurrentWordLetterSpacing"];
+    letterSpacing = _wordWidth > 0 ? letterSpacing : -letterSpacing;
+    return CGPointMake((self.frame.size.width + _wordWidth + tileWidth + letterSpacing) / 2,
+                       self.bounds.size.height / 2);
+}
+
+#pragma mark Animations
+
 // Following two methods deal with the swipeclears
 - (void)swipeAwayContainer:(UIView *)container withVelocity:(CGFloat)velocity
 {
@@ -305,6 +320,10 @@
                          if (_tileContainerNeedsClearing) {
                             [self removeAllCharactersFromCurrentWord];
                          }
+                         
+                         if (_currentContainer != container) {
+                             container.hidden = YES;
+                         }
                      }];
     
     if (container == _tileContainer) {
@@ -314,6 +333,7 @@
 
 - (void)snapBackContainer:(UIView *)container withVelocity:(CGFloat)velocity
 {
+    container.hidden = NO;
     [UIView animateWithDuration:0.4
                           delay:0
          usingSpringWithDamping:0.8

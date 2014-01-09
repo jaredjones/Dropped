@@ -39,6 +39,12 @@
         [self loadScrollView];
         _scrollView.delaysContentTouches = NO;
         _scrollView.delegate = self;
+        
+        // This is vital for performant orientation changes
+        // Note that extra care must be taken to ensure views
+        // are not visible outside of the scrollView, otherwise
+        // they will be potentially visible during the orientation
+        // change
         self.scrollView.clipsToBounds = NO;
     }
 }

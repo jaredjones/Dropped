@@ -45,17 +45,17 @@
     
     [DRPTransition setReferenceView:self.view];
     self.view.backgroundColor = [UIColor whiteColor];
-    
-    // TODO: keep showing launch image so interface doesn't flash white briefly
 }
 
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewWillLayoutSubviews
 {
-    [super viewDidAppear:animated];
-    
-    _cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
-    [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
+    // Only load views when everything is unitialized
+    // This pattern is used heavily throughout the app
+    if (!_cueKeeper) {
+        _cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
+        [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
+    }
 }
 
 #pragma mark Child View Controllers

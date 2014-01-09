@@ -51,6 +51,7 @@
         _currentContainer = _turnsLeftLabel;
         
         // TODO: this view looks like crap when tapping on tiles rapidly
+        // TODO: scroll performance tanks once there are >= 3 tiles
     }
     return self;
 }
@@ -197,7 +198,7 @@
 
 - (void)setCurrentContainer:(UIView *)currentContainer
 {
-    [self setCurrentContainer:currentContainer withVelocity:1200];
+    [self setCurrentContainer:currentContainer withVelocity:1 / 50.0];
 }
 
 - (void)setCurrentContainer:(UIView *)currentContainer withVelocity:(CGFloat)velocity
@@ -312,22 +313,22 @@
 - (void)swipeAwayContainer:(UIView *)container withVelocity:(CGFloat)velocity
 {
     CGRect destFrame = velocity < 0 ? self.leftFrame : self.rightFrame;
-    CGFloat dist = destFrame.origin.x - container.frame.origin.x;
-    CGFloat t = dist / fabs(velocity);
     
-    [UIView animateWithDuration:t
+    [UIView animateWithDuration:0.4
                           delay:0
-                        options:UIViewAnimationOptionCurveEaseOut
+         usingSpringWithDamping:0.8
+          initialSpringVelocity:velocity * .05
+                        options:0
                      animations:^{
                          container.frame = destFrame;
                      }
                      completion:^(BOOL finished) {
                          if (!finished) return;
-                         
+
                          if (_tileContainerNeedsClearing) {
                             [self removeAllCharactersFromCurrentWord];
                          }
-                         
+
                          if (_currentContainer != container) {
                              container.hidden = YES;
                          }

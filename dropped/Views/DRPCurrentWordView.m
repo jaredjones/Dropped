@@ -12,6 +12,7 @@
 #import "DRPBoardViewController.h"
 #import "FRBSwatchist.h"
 #import "DRPUtility.h"
+#import "UIView+Introspective.h"
 
 @interface DRPCurrentWordView ()
 
@@ -48,6 +49,8 @@
         [self loadGestureRecognizers];
         
         _currentContainer = _turnsLeftLabel;
+        
+        // TODO: this view looks like crap when tapping on tiles rapidly
     }
     return self;
 }
@@ -203,7 +206,9 @@
     
     UIView *old = _currentContainer;
     _currentContainer = currentContainer;
-    _currentContainer.frame = self.leftFrame;
+    if (!_currentContainer.hasAnimationsRunning) {
+        _currentContainer.frame = self.leftFrame;
+    }
     
     [self swipeAwayContainer:old withVelocity:velocity];
     [self snapBackContainer:_currentContainer withVelocity:1];
@@ -317,6 +322,8 @@
                          container.frame = destFrame;
                      }
                      completion:^(BOOL finished) {
+                         if (!finished) return;
+                         
                          if (_tileContainerNeedsClearing) {
                             [self removeAllCharactersFromCurrentWord];
                          }
@@ -333,7 +340,12 @@
 
 - (void)snapBackContainer:(UIView *)container withVelocity:(CGFloat)velocity
 {
+    if (container.hasAnimationsRunning) {
+        [container setPositionToPresentationPosition];
+        [container.layer removeAllAnimations];
+    }
     container.hidden = NO;
+    
     [UIView animateWithDuration:0.4
                           delay:0
          usingSpringWithDamping:0.8
@@ -342,7 +354,9 @@
                      animations:^{
                          container.frame = self.bounds;
                      }
-                     completion:nil];
+                     completion:^(BOOL finished) {
+                         if (!finished) return;
+                     }];
 }
 
 #pragma mark Touch Events

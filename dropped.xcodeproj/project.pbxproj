@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A902429A187F5C6500FE4CA5 /* UIView+Introspective.m in Sources */ = {isa = PBXBuildFile; fileRef = A9024299187F5C6500FE4CA5 /* UIView+Introspective.m */; };
 		A9039FFB1858D579002AEB37 /* DRPPageEtCeteraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9039FFA1858D579002AEB37 /* DRPPageEtCeteraViewController.m */; };
 		A91C045818557C03002B6899 /* page.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A91C045618557B6A002B6899 /* page.plist */; };
 		A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = A91C045E185582DC002B6899 /* DRPCueKeeper.m */; };
@@ -103,6 +104,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A9024298187F5C6500FE4CA5 /* UIView+Introspective.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Introspective.h"; sourceTree = "<group>"; };
+		A9024299187F5C6500FE4CA5 /* UIView+Introspective.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Introspective.m"; sourceTree = "<group>"; };
 		A9039FF91858D579002AEB37 /* DRPPageEtCeteraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageEtCeteraViewController.h; path = ViewControllers/Pages/DRPPageEtCeteraViewController.h; sourceTree = "<group>"; };
 		A9039FFA1858D579002AEB37 /* DRPPageEtCeteraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageEtCeteraViewController.m; path = ViewControllers/Pages/DRPPageEtCeteraViewController.m; sourceTree = "<group>"; };
 		A91C045618557B6A002B6899 /* page.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = page.plist; path = Swatches/page.plist; sourceTree = "<group>"; };
@@ -506,6 +509,8 @@
 				A9C0FAD51864F6FC00377B0E /* DRPUtility.m */,
 				A9C0FAD7186507EC00377B0E /* NSArray+Mutable.h */,
 				A9C0FAD8186507EC00377B0E /* NSArray+Mutable.m */,
+				A9024298187F5C6500FE4CA5 /* UIView+Introspective.h */,
+				A9024299187F5C6500FE4CA5 /* UIView+Introspective.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -666,6 +671,7 @@
 			files = (
 				A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */,
 				A9C0FAD61864F6FC00377B0E /* DRPUtility.m in Sources */,
+				A902429A187F5C6500FE4CA5 /* UIView+Introspective.m in Sources */,
 				A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */,
 				A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */,
 				A9039FFB1858D579002AEB37 /* DRPPageEtCeteraViewController.m in Sources */,

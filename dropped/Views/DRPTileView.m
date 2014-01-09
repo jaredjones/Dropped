@@ -176,6 +176,9 @@ static NSMutableDictionary *glyphAdvancesCache;
 {
     self.highlighted = NO;
     [_delegate tileWasDehighlighted:self];
+    if (!self.selected) {
+        [_delegate tileWasDeselected:self];
+    }
     [self resetAppearence];
 }
 

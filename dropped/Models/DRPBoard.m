@@ -113,9 +113,20 @@
     NSMutableDictionary *scores = [NSMutableDictionary dictionaryWithDictionary:@{@0 : @0, @1 : @0}];
     for (NSInteger i = 0; i < _playedWords.count; i++) {
         DRPPlayedWord *playedWord = _playedWords[i];
-        scores[@(i % 2)] = @([scores[@(i % 2)] integerValue] + playedWord.score);
+        scores[@(i % 2)] = @([scores[@(i % 2)] integerValue] + [self scoreForPlayedWord:playedWord forTurn:i]);
     }
     return scores;
+}
+
+- (NSInteger)scoreForPlayedWord:(DRPPlayedWord *)playedWord forTurn:(NSInteger)turn
+{
+    NSInteger multiplier = 0;
+    for (DRPPosition *position in playedWord.multipliers) {
+        multiplier += [self characterAtPosition:position forTurn:turn].multiplier;
+    }
+    
+    multiplier = multiplier == 0 ? 1 : multiplier;
+    return multiplier * playedWord.positions.count;
 }
 
 - (NSInteger)currentTurn

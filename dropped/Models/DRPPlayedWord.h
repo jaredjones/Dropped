@@ -18,6 +18,5 @@
 @property NSArray *multipliers, *additionalMultipliers;
 
 - (NSDictionary *)diff;
-- (NSInteger)score;
 
 @end

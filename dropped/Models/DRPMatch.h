@@ -26,6 +26,8 @@
 // Created fresh
 - (instancetype)initWithGKMatch:(GKTurnBasedMatch *)gkMatch;
 
+- (NSInteger)currentTurn;
+
 - (DRPPlayer *)localPlayer;
 - (DRPPlayer *)currentPlayer;
 

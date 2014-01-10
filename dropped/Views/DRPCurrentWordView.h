@@ -17,6 +17,7 @@
 - (void)characterWasDehighlighted:(DRPCharacter *)character;
 - (void)characterRemovedFromCurrentWord:(DRPCharacter *)character;
 
+- (void)setTurnsLeft:(NSInteger)turnsLeft;
 - (void)cycleOutTiles;
 - (void)recenter;
 

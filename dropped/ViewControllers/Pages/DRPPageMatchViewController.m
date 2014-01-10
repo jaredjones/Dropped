@@ -171,6 +171,7 @@
     _match = [[DRPMatch alloc] initWithGKMatch:nil];
     [_boardViewController loadBoard:_match.board];
     [_headerViewController observePlayers:_match.players];
+    [_currentWordView setTurnsLeft:26 - _match.currentTurn];
 }
 
 #pragma mark DRPBoardViewControllerDelegate
@@ -233,6 +234,7 @@
 - (void)gameCenterReceivedTurn:(NSNotification *)notification
 {
     [_boardViewController dropPlayedWord:notification.userInfo[@"playedWord"]];
+    [_currentWordView setTurnsLeft:26 - _match.currentTurn];
     [_currentWordView cycleOutTiles];
     [self resetCues];
 }

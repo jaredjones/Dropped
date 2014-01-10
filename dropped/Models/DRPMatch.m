@@ -116,6 +116,7 @@
     NSData *data = _board.matchData;
     [_gkMatch endTurnWithNextParticipants:paricipants turnTimeout:GKTurnTimeoutNone matchData:data completionHandler:^(NSError *error) {
         // Post NSNotification to signal ViewControllers
+        [self reloadPlayerScores];
     }];
     
     // Debugging
@@ -123,7 +124,15 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:DRPGameCenterReceivedTurnNotificationName
                                                             object:nil
                                                           userInfo:@{@"playedWord" : playedWord}];
+        [self reloadPlayerScores];
     }
+}
+
+#pragma mark Match Data
+
+- (NSInteger)currentTurn
+{
+    return _board.currentTurn;
 }
 
 #pragma mark Player

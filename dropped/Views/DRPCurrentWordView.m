@@ -73,7 +73,6 @@
     _turnsLeftLabel.textColor = [FRBSwatchist colorForKey:@"colors.black"];
     
     _turnsLeftLabel.textAlignment = NSTextAlignmentCenter;
-    _turnsLeftLabel.text = @"26 turns left";
     
     [self addSubview:_turnsLeftLabel];
 }
@@ -85,6 +84,12 @@
     
     _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     [self addGestureRecognizer:_panGestureRecognizer];
+}
+
+
+- (void)setTurnsLeft:(NSInteger)turnsLeft
+{
+    _turnsLeftLabel.text = [NSString stringWithFormat:@"%ld turns left", (long)turnsLeft];
 }
 
 #pragma mark DRPBoardViewControllerDelegate

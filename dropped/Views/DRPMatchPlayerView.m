@@ -11,6 +11,9 @@
 #import "DRPCharacter.h"
 #import "FRBSwatchist.h"
 #import "DRPUtility.h"
+#import "DRPPlayer.h"
+
+static long const PrivateKVOContext;
 
 @interface DRPMatchPlayerView ()
 
@@ -18,6 +21,8 @@
 @property UILabel *score, *alias;
 
 @property DRPDirection alignment;
+
+@property DRPPlayer *player;
 
 @end
 
@@ -35,6 +40,12 @@
         [self loadViews];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [_player removeObserver:self forKeyPath:@"alias"];
+    [_player removeObserver:self forKeyPath:@"score"];
 }
 
 #pragma mark View Loading
@@ -84,7 +95,6 @@
             [self addSubview:tile];
             tile;
         });
-        _tile.character = [DRPCharacter characterWithCharacter:@"B"];
         
         y += _tile.frame.size.height + [FRBSwatchist floatForKey:@"board.tileMargin"];
     }
@@ -101,7 +111,6 @@
         [self addSubview:label];
         label;
     });
-    _score.text = @"795";
     
     y += _score.frame.size.height + [FRBSwatchist floatForKey:@"board.tileMargin"];
     
@@ -118,11 +127,50 @@
         [self addSubview:label];
         label;
     });
-    _alias.text = @"bradzeis";
 }
+
+#pragma mark Key-Value Observing
 
 - (void)observePlayer:(DRPPlayer *)player
 {
+    [_player removeObserver:self forKeyPath:@"alias"];
+    [_player removeObserver:self forKeyPath:@"score"];
+    
+    _player = player;
+    
+    [player addObserver:self forKeyPath:@"alias" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
+    [player addObserver:self forKeyPath:@"score" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if (object == _player) {
+        if ([keyPath isEqualToString:@"alias"]) {
+            [self updatePlayerAlias:change[NSKeyValueChangeNewKey]];
+            
+        } else if ([keyPath isEqualToString:@"score"]) {
+            [self updatePlayerScore:change[NSKeyValueChangeNewKey]];
+        }
+        
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
+}
+
+- (void)updatePlayerAlias:(NSString *)alias
+{
+    _alias.text = _player.alias;
+    _tile.character = [self characterForAlias:_player.alias];
+}
+                       
+- (DRPCharacter *)characterForAlias:(NSString *)alias
+{
+    return [DRPCharacter characterWithCharacter:[[alias substringToIndex:1] uppercaseString]];
+}
+
+- (void)updatePlayerScore:(NSValue *)score
+{
+    _score.text = [NSString stringWithFormat:@"%@", score];
 }
 
 @end

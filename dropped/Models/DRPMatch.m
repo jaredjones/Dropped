@@ -73,10 +73,14 @@
 {
     NSMutableArray *identifiers = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < 2; i++) {
-        if (((DRPPlayer *)_players[i]).participant.playerID) {
+        DRPPlayer *player = _players[i];
+        
+        if (player.participant.playerID) {
             [identifiers addObject:((DRPPlayer *)_players[i]).participant.playerID];
+            
         } else {
-            // Stock alias?
+            // Load stock alias "PlayerN"
+            player.alias = [NSString stringWithFormat:@"player%ld", (long)i+1];
         }
     }
     

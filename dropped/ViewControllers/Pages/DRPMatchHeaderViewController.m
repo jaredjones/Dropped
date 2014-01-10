@@ -145,7 +145,9 @@
 
 - (void)observePlayers:(NSArray *)players
 {
-    
+    for (NSInteger i = 0; i < 2; i++) {
+        [(DRPMatchPlayerView *)_playerViews[i] observePlayer:players[i]];
+    }
 }
 
 @end

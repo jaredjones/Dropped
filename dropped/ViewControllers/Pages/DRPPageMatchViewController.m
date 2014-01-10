@@ -163,11 +163,14 @@
 {
     [super willMoveToCurrentWithUserInfo:userInfo];
     
-    // extract DRPMatch, load it up
+    // Clear out old match
+    [_currentWordView cycleOutTiles];
+    
+    
+    // Extract DRPMatch, load it up
     _match = [[DRPMatch alloc] initWithGKMatch:nil];
     [_boardViewController loadBoard:_match.board];
-    
-    [_currentWordView cycleOutTiles];
+    [_headerViewController observePlayers:_match.players];
 }
 
 #pragma mark DRPBoardViewControllerDelegate

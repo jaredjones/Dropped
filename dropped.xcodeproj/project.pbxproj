@@ -44,6 +44,7 @@
 		A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5BE1850ED5F0024E7D4 /* DRPPageListViewController.m */; };
 		A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */; };
 		A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9AC495F18539E44006E1D84 /* animation.plist */; };
+		A9ACB3C5188312C900B0B9D9 /* DRPLocalPlayerListener.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB3C4188312C900B0B9D9 /* DRPLocalPlayerListener.m */; };
 		A9B1206F1857F8CE0079BF72 /* DRPCueIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1206E1857F8CE0079BF72 /* DRPCueIndicatorView.m */; };
 		A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C07B184CFCC100866029 /* DRPDropTransition.m */; };
 		A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C081184CFCDE00866029 /* DRPTransition.m */; };
@@ -164,6 +165,8 @@
 		A9A9D5BF1850ED5F0024E7D4 /* DRPPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageViewController.h; path = ViewControllers/Pages/DRPPageViewController.h; sourceTree = "<group>"; };
 		A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageViewController.m; path = ViewControllers/Pages/DRPPageViewController.m; sourceTree = "<group>"; };
 		A9AC495F18539E44006E1D84 /* animation.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = animation.plist; path = Swatches/animation.plist; sourceTree = "<group>"; };
+		A9ACB3C3188312C900B0B9D9 /* DRPLocalPlayerListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRPLocalPlayerListener.h; sourceTree = "<group>"; };
+		A9ACB3C4188312C900B0B9D9 /* DRPLocalPlayerListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRPLocalPlayerListener.m; sourceTree = "<group>"; };
 		A9B1206D1857F8CE0079BF72 /* DRPCueIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCueIndicatorView.h; path = Views/DRPCueIndicatorView.h; sourceTree = "<group>"; };
 		A9B1206E1857F8CE0079BF72 /* DRPCueIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCueIndicatorView.m; path = Views/DRPCueIndicatorView.m; sourceTree = "<group>"; };
 		A9B1C07A184CFCC100866029 /* DRPDropTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDropTransition.h; path = ViewControllers/Transitions/DRPDropTransition.h; sourceTree = "<group>"; };
@@ -275,6 +278,7 @@
 				A9204054183704B7006940B8 /* ViewControllers */,
 				A9204055183704C1006940B8 /* Views */,
 				A9204056183704D7006940B8 /* Models */,
+				A9ACB3C21883129800B0B9D9 /* Game Center */,
 				A9C0FAD31864F6D000377B0E /* Utility */,
 				A91D8F5A183702EE00BEC6E8 /* Images.xcassets */,
 				C08CBC121837168800CE678F /* Resources */,
@@ -299,8 +303,6 @@
 			children = (
 				A91D8F57183702EE00BEC6E8 /* DRPAppDelegate.h */,
 				A91D8F58183702EE00BEC6E8 /* DRPAppDelegate.m */,
-				A93D77D01856A1F7006691AE /* DRPGameCenterInterface.h */,
-				A93D77D11856A1F7006691AE /* DRPGameCenterInterface.m */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";
@@ -478,6 +480,17 @@
 				A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */,
 			);
 			name = Swatches;
+			sourceTree = "<group>";
+		};
+		A9ACB3C21883129800B0B9D9 /* Game Center */ = {
+			isa = PBXGroup;
+			children = (
+				A93D77D01856A1F7006691AE /* DRPGameCenterInterface.h */,
+				A93D77D11856A1F7006691AE /* DRPGameCenterInterface.m */,
+				A9ACB3C3188312C900B0B9D9 /* DRPLocalPlayerListener.h */,
+				A9ACB3C4188312C900B0B9D9 /* DRPLocalPlayerListener.m */,
+			);
+			name = "Game Center";
 			sourceTree = "<group>";
 		};
 		A9B1206C1857F8B80079BF72 /* Cues */ = {
@@ -687,6 +700,7 @@
 				C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */,
 				A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */,
 				A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */,
+				A9ACB3C5188312C900B0B9D9 /* DRPLocalPlayerListener.m in Sources */,
 				A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */,
 				A93D77CF18567D4B006691AE /* DRPPageLogInViewController.m in Sources */,
 				A9C0FAD9186507EC00377B0E /* NSArray+Mutable.m in Sources */,

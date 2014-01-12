@@ -34,9 +34,14 @@
         _pages = [[NSMutableDictionary alloc] init];
         
         // Neighbors are DRPPages that you can directly *drag* to.
+        // Format: { currentPage : [upPage, downPage] }
+        
+        // DRPPageMatchMaker needs an up neighbor to force the DRPPageMatch
+        // to load before willMoveToCurrent is called on it.
         _neighbors = @{@(DRPPageList)       : @[@(DRPPageMatchMaker), @(DRPPageEtCetera)],
                        @(DRPPageMatch)      : @[[NSNull null], @(DRPPageList)],
-                       @(DRPPageEtCetera)   : @[@(DRPPageList), [NSNull null]]};
+                       @(DRPPageEtCetera)   : @[@(DRPPageList), [NSNull null]],
+                       @(DRPPageMatchMaker) : @[@(DRPPageMatch), [NSNull null]]};
         
         // Directions stores directions from a DRPPage to another DRPPage
         // Look, Jared! A graph problem!

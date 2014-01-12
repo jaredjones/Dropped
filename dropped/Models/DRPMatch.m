@@ -54,6 +54,13 @@
         [self loadGKPlayers];
         _board = [[DRPBoard alloc] initWithMatchData:_gkMatch.matchData];
         [self reloadPlayerScores];
+        
+        // Make sure matchData is saved as soon as the board is generated
+        // so it isn't regenerated later if the first player doesn't make
+        // a move immediately.
+        if (_board.currentTurn == 0) {
+            [self saveMatchData];
+        }
     }
     return self;
 }
@@ -112,20 +119,26 @@
     DRPPlayedWord *playedWord = [_board appendMoveForPositions:positions];
     
     // Send move off to Game Center
-    NSArray *paricipants = @[self.currentPlayer];
+    NSArray *paricipants = @[self.currentPlayer.participant];
     NSData *data = _board.matchData;
     [_gkMatch endTurnWithNextParticipants:paricipants turnTimeout:GKTurnTimeoutNone matchData:data completionHandler:^(NSError *error) {
-        // Post NSNotification to signal ViewControllers
-        [self reloadPlayerScores];
-    }];
-    
-    // Debugging
-    if (!_gkMatch) {
+        if (error) {
+            NSLog(@"endTurn error: %@", error.localizedDescription);
+            return;
+        }
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:DRPGameCenterReceivedTurnNotificationName
                                                             object:nil
                                                           userInfo:@{@"playedWord" : playedWord}];
+        
         [self reloadPlayerScores];
-    }
+    }];
+}
+
+- (void)saveMatchData
+{
+    [_gkMatch saveCurrentTurnWithMatchData:_board.matchData completionHandler:^(NSError *error) {
+    }];
 }
 
 #pragma mark Match Data

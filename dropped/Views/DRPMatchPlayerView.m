@@ -159,8 +159,10 @@ static long const PrivateKVOContext;
 
 - (void)updatePlayerAlias:(NSString *)alias
 {
-    _alias.text = _player.alias;
-    _tile.character = [self characterForAlias:_player.alias];
+    if ((id)alias != [NSNull null]) {
+        _alias.text = _player.alias;
+        _tile.character = [self characterForAlias:_player.alias];
+    }
 }
                        
 - (DRPCharacter *)characterForAlias:(NSString *)alias

@@ -25,6 +25,11 @@
     return self;
 }
 
+- (void)loadScrollView
+{
+    // Intentionally left blank
+}
+
 #pragma mark DRPPageViewController
 
 - (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo

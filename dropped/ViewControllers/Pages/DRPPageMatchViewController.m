@@ -168,10 +168,15 @@
     
     
     // Extract DRPMatch, load it up
-    _match = [[DRPMatch alloc] initWithGKMatch:nil];
-    [_boardViewController loadBoard:_match.board];
-    [_headerViewController observePlayers:_match.players];
-    [_currentWordView setTurnsLeft:26 - _match.currentTurn];
+    _match = userInfo[@"match"];
+    if (_match) {
+        [_boardViewController loadBoard:_match.board];
+        [_headerViewController observePlayers:_match.players];
+        [_currentWordView setTurnsLeft:26 - _match.currentTurn];
+    
+    } else {
+        // TODO: How the hell did you get here? Display an error message where the board usually is
+    }
 }
 
 #pragma mark DRPBoardViewControllerDelegate
@@ -237,6 +242,11 @@
     [_currentWordView setTurnsLeft:26 - _match.currentTurn];
     [_currentWordView cycleOutTiles];
     [self resetCues];
+}
+
+- (void)gameCenterReceivedRemoveTurn:(NSNotification *)notification
+{
+    
 }
 
 @end

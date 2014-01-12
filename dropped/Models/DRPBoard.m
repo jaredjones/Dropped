@@ -268,6 +268,9 @@
     _playedWords = [[NSMutableArray alloc] init];
     _histogram = [[DRPCharacterHistogram alloc] init];
     
+    
+    // TODO: shit, not loading the data
+    
     [self loadInitialState:[data subdataWithRange:NSMakeRange(1, data.length - 1)]];
     [self loadTurns:[data subdataWithRange:NSMakeRange(39, data.length - 39)]];
 }
@@ -425,6 +428,12 @@
             DRPCharacter *character = firstTurn[position];
             [data appendData:[character.character dataUsingEncoding:NSUTF8StringEncoding]];
         }
+    }
+    
+    for (NSInteger i = 0; i < 2; i++) {
+        DRPPosition *multiplierPosition = _multiplierHistory[0][i];
+        DRPColor multiplierColor = [self characterAtPosition:multiplierPosition forTurn:0].color;
+        [data appendBytes:&multiplierColor length:1];
     }
     
     // Turns

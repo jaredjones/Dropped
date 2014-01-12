@@ -7,6 +7,7 @@
 //
 
 #import "DRPGameCenterInterface.h"
+#import "DRPLocalPlayerListener.h"
 #import <GameKit/GameKit.h>
 
 // Store the localPlayerID after authenticating
@@ -49,6 +50,8 @@ static UIViewController *authenticationViewController;
             authenticationViewController = nil;
         }
     };
+    
+    [localPlayer registerListener:[[DRPLocalPlayerListener alloc] init]];
 }
 
 + (UIViewController *)authenticationViewController

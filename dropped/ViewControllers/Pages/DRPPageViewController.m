@@ -33,29 +33,44 @@
     _mainViewController = (DRPMainViewController *)parent;
 }
 
-- (void)viewWillLayoutSubviews
+- (void)viewDidLoad
 {
-    if (!_scrollView) {
-        [self loadScrollView];
-        _scrollView.delaysContentTouches = NO;
-        _scrollView.delegate = self;
-        
-        // This is vital for performant orientation changes
-        // Note that extra care must be taken to ensure views
-        // are not visible outside of the scrollView, otherwise
-        // they will be potentially visible during the orientation
-        // change
-        self.scrollView.clipsToBounds = NO;
-    }
+    [super viewDidLoad];
+    
+    [self loadScrollView];
+    _scrollView.delaysContentTouches = NO;
+    _scrollView.delegate = self;
+    
+    // This is vital for performant orientation changes
+    // Note that extra care must be taken to ensure views
+    // are not visible outside of the scrollView, otherwise
+    // they will be potentially visible during the orientation
+    // change
+    self.scrollView.clipsToBounds = NO;
 }
 
-#pragma mark DRPPage
+- (void)viewWillLayoutSubviews
+{
+    [self layoutScrollView];
+}
+
+#pragma mark Views
 
 - (void)loadScrollView
 {
     _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
     _scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + 0.5);
     [self.view addSubview:_scrollView];
+}
+
+- (void)layoutScrollView
+{
+    self.scrollView.frame = self.view.bounds;
+    self.scrollView.contentSize = ({
+        CGSize size = self.scrollView.frame.size;
+        size.height += 0.5;
+        size;
+    });
 }
 
 - (void)resetCues
@@ -95,6 +110,8 @@
     _topCueVisible = NO;
     _bottomCueVisible = NO;
 }
+
+#pragma mark DRPPage
 
 - (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo
 {
@@ -175,13 +192,6 @@
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
     [self hideCues];
-    
-    self.scrollView.frame = self.view.bounds;
-    self.scrollView.contentSize = ({
-        CGSize size = self.scrollView.frame.size;
-        size.height += 0.5;
-        size;
-    });
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation

@@ -118,7 +118,6 @@
                      animations:^{
                          cue.center = ({
                              CGPoint center = [self postCenterForPosition:position];
-//                             center.x = cue.center.x;
                              center;
                          });
                          cue.alpha = 1;

@@ -28,19 +28,21 @@
     return self;
 }
 
+- (void)viewDidLoad
+{
+    _label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+    _label.text = @"DROPPED";
+    _label.textAlignment = NSTextAlignmentCenter;
+    _label.font = [FRBSwatchist fontForKey:@"page.cueFont"];
+    [self.view addSubview:_label];
+}
+
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
     
     // tmp
-    if (!_label) {
-        _label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-        _label.text = @"DROPPED";
-        _label.textAlignment = NSTextAlignmentCenter;
-        _label.font = [FRBSwatchist fontForKey:@"page.cueFont"];
-        _label.center = rectCenter(self.view.bounds);
-        [self.view addSubview:_label];
-    }
+    _label.center = rectCenter(self.view.bounds);
 }
 
 - (void)loadScrollView

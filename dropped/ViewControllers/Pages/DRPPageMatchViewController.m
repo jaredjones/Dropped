@@ -48,22 +48,30 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+#pragma mark Views
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    [self loadBoardViewController];
+    [self loadCurrentWordView];
+    [self.scrollView bringSubviewToFront:_boardViewController.view];
+    [self loadHeaderViewController];
+}
+
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
     
-    if (!(_boardViewController || _currentWordView || _headerViewController)) {
-        [self loadBoardViewController];
-        [self loadCurrentWordView];
-        [self.scrollView bringSubviewToFront:_boardViewController.view];
-        [self loadHeaderViewController];
-    }
+    [self layoutBoardViewController];
+    [self layoutCurrentWordView];
 }
 
 - (void)loadScrollView
 {
     self.scrollView = [[DRPGreedyScrollView alloc] initWithFrame:self.view.bounds];
-    self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height + 0.5);
+    self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, self.view.bounds.size.height + 0.5);
     self.scrollView.canCancelContentTouches = YES;
     [self.view addSubview:self.scrollView];
 }
@@ -85,6 +93,12 @@
     [_boardViewController willMoveToParentViewController:self];
     [self addChildViewController:_boardViewController];
     
+    [self layoutBoardViewController];
+    [self.scrollView addSubview:_boardViewController.view];
+}
+
+- (void)layoutBoardViewController
+{
     _boardViewController.view.center = ({
         CGPoint center = self.scrollView.center;
         if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
@@ -102,18 +116,16 @@
         }
         center;
     });
-    [self.scrollView addSubview:_boardViewController.view];
 }
 
 - (void)loadCurrentWordView
 {
     _currentWordView = [[DRPCurrentWordView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"])];
     _currentWordView.delegate = self;
-    [self repositionCurrentWordViewForInterfaceOrientation:self.interfaceOrientation];
     [self.scrollView addSubview:_currentWordView];
 }
 
-- (void)repositionCurrentWordViewForInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+- (void)layoutCurrentWordView
 {
     _currentWordView.bounds = CGRectMake(0, 0, self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"]);
     _currentWordView.center = ({
@@ -127,7 +139,7 @@
                 center.y += 53;
             }
         } else {
-            if (UIInterfaceOrientationIsPortrait(interfaceOrientation)) {
+            if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
                 center.y += 150;
             } else {
                 center.y += 102;
@@ -136,25 +148,6 @@
         center;
     });
     [_currentWordView recenter];
-}
-
-#pragma mark Rotation
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-    
-    _boardViewController.view.center = ({
-        CGPoint center = self.view.center;
-        if (UIInterfaceOrientationIsPortrait(toInterfaceOrientation)) {
-            center.y += [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPad"];
-        } else {
-            center.y += [FRBSwatchist floatForKey:@"board.boardVerticalOffsetPadLandscape"];
-        }
-        center;
-    });
-    
-    [self repositionCurrentWordViewForInterfaceOrientation:toInterfaceOrientation];
 }
 
 #pragma mark DRPPageViewController
@@ -244,7 +237,7 @@
     [self resetCues];
 }
 
-- (void)gameCenterReceivedRemoveTurn:(NSNotification *)notification
+- (void)gameCenterReceivedRemoteTurn:(NSNotification *)notification
 {
     
 }

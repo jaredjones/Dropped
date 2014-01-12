@@ -38,18 +38,23 @@
 
 #pragma mark View Loading
 
-- (void)loadScrollView
+- (void)viewDidLoad
 {
-    // Intentionally left blank
+    [super viewDidLoad];
+    
+    [self loadSignInButton];
 }
 
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
     
-    if (!_signInButton) {
-        [self loadSignInButton];
-    }
+    [self layoutSignInButton];
+}
+
+- (void)loadScrollView
+{
+    // Intentionally left blank
 }
 
 - (void)loadSignInButton
@@ -65,6 +70,11 @@
     [_signInButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [_signInButton addTarget:self action:@selector(signInButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_signInButton];
+}
+
+- (void)layoutSignInButton
+{
+    _signInButton.center = rectCenter(self.view.bounds);
 }
 
 #pragma mark Touch Events
@@ -93,7 +103,7 @@
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    _signInButton.center = rectCenter(self.view.bounds);
+    [self layoutSignInButton];
 }
 
 @end

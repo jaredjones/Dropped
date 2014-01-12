@@ -39,6 +39,8 @@
     return self;
 }
 
+#pragma mark Views
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -51,7 +53,7 @@
 - (void)viewWillLayoutSubviews
 {
     // Only load views when everything is unitialized
-    // This pattern is used heavily throughout the app
+    // This code is a little gross, but it's pretty darn functional
     if (!_cueKeeper) {
         _cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
         [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
@@ -79,8 +81,9 @@
     DRPPageViewController *prevPage = _currentPage;
     [prevPage willMoveFromCurrent];
     
-    [self loadNewPagesAroundCurrentPageID:pageID userInfo:userInfo];
+    [self loadNewPagesAroundCurrentPageID:pageID];
     [self configurePageViewsForAnimationWithPreviousPage:prevPage animated:animated];
+    [_currentPage willMoveToCurrentWithUserInfo:userInfo];
     
     // Transition to new Page
     // Only run animation if necessary
@@ -122,14 +125,13 @@
 }
 
 // Loads the new surround DRPPages and stores them in memory
-- (void)loadNewPagesAroundCurrentPageID:(DRPPageID)pageID userInfo:(NSDictionary *)userInfo
+- (void)loadNewPagesAroundCurrentPageID:(DRPPageID)pageID
 {
     _currentPage = [_dataSource pageForPageID:pageID];
     if (_currentPage.parentViewController != self) {
         [_currentPage willMoveToParentViewController:self];
         [self addChildViewController:_currentPage];
     }
-    [_currentPage willMoveToCurrentWithUserInfo:userInfo];
     
     _upPage = [_dataSource pageForPageID:[_dataSource pageIDInDirection:DRPPageDirectionUp from:pageID]];
     if (_upPage && _upPage.parentViewController != self) {

@@ -56,7 +56,6 @@
 {
     _signInButton = [UIButton buttonWithType:UIButtonTypeCustom];
     _signInButton.frame = CGRectMake(0, 0, 200, 200);
-    _signInButton.center = self.view.center;
     _signInButton.center = rectCenter(self.view.bounds);
     
     NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"Sign In"
@@ -88,6 +87,13 @@
     if (self.mainViewController.currentPageID == self.pageID) {
         [self.mainViewController setCurrentPageID:DRPPageList animated:YES userInfo:nil];
     }
+}
+
+#pragma mark Rotation
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    _signInButton.center = rectCenter(self.view.bounds);
 }
 
 @end

@@ -9,6 +9,7 @@
 #import "DRPPageSplashViewController.h"
 #import "DRPMainViewController.h"
 #import "FRBSwatchist.h"
+#import "DRPUtility.h"
 #import <GameKit/GameKit.h>
 
 @interface DRPPageSplashViewController ()
@@ -37,7 +38,7 @@
         _label.text = @"DROPPED";
         _label.textAlignment = NSTextAlignmentCenter;
         _label.font = [FRBSwatchist fontForKey:@"page.cueFont"];
-        _label.center = self.view.center;
+        _label.center = rectCenter(self.view.bounds);
         [self.view addSubview:_label];
     }
 }

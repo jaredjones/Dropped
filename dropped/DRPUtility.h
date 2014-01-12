@@ -12,3 +12,4 @@
 UIColor *colorForColor(DRPColor color);
 BOOL runningPhone5();
 CGFloat labelOffset(UIFont *font, CGFloat height);
+CGPoint rectCenter(CGRect rect);

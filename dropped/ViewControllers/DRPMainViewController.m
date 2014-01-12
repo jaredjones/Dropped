@@ -54,7 +54,7 @@
     // This pattern is used heavily throughout the app
     if (!_cueKeeper) {
         _cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
-        [self setCurrentPageID:DRPPageList animated:NO userInfo:nil];
+        [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
     }
 }
 

@@ -13,6 +13,8 @@
 
 @interface DRPPageSplashViewController ()
 
+@property UILabel *label;
+
 @end
 
 @implementation DRPPageSplashViewController
@@ -25,14 +27,24 @@
     return self;
 }
 
-- (void)viewDidLoad
+- (void)viewWillLayoutSubviews
 {
-    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-    label.text = @"Splash";
-    label.textAlignment = NSTextAlignmentCenter;
-    label.font = [FRBSwatchist fontForKey:@"page.cueFont"];
-    label.center = self.view.center;
-    [self.view addSubview:label];
+    [super viewWillLayoutSubviews];
+    
+    // tmp
+    if (!_label) {
+        _label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
+        _label.text = @"DROPPED";
+        _label.textAlignment = NSTextAlignmentCenter;
+        _label.font = [FRBSwatchist fontForKey:@"page.cueFont"];
+        _label.center = self.view.center;
+        [self.view addSubview:_label];
+    }
+}
+
+- (void)loadScrollView
+{
+    // Intentionally left blank
 }
 
 #pragma mark DRPPageViewController

@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "DRPPageViewController.h"
 
-#define DEBUG_NO_MATCHMAKER true
-
 @interface DRPPageDataSource : NSObject
 
 - (DRPPageViewController *)pageForPageID:(DRPPageID)pageID;

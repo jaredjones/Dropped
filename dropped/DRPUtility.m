@@ -34,3 +34,8 @@ CGFloat labelOffset(UIFont *font, CGFloat height)
 {
     return -font.ascender + (font.capHeight / 2) + (height / 2) - 1;
 }
+
+CGPoint rectCenter(CGRect rect)
+{
+    return CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
+}

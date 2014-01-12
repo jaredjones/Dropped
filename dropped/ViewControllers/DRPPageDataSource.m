@@ -38,12 +38,6 @@
                        @(DRPPageMatch)      : @[[NSNull null], @(DRPPageList)],
                        @(DRPPageEtCetera)   : @[@(DRPPageList), [NSNull null]]};
         
-        if (DEBUG_NO_MATCHMAKER) {
-            _neighbors = @{@(DRPPageList)       : @[@(DRPPageMatch), @(DRPPageEtCetera)],
-                           @(DRPPageMatch)      : @[[NSNull null], @(DRPPageList)],
-                           @(DRPPageEtCetera)   : @[@(DRPPageList), [NSNull null]]};
-        }
-        
         // Directions stores directions from a DRPPage to another DRPPage
         // Look, Jared! A graph problem!
         _directions = @{@(DRPPageSplash)     : @{@(DRPPageLogIn)    : @(DRPPageDirectionUp),

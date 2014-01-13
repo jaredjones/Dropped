@@ -8,12 +8,15 @@
 
 #import "DRPPageListViewController.h"
 #import "DRPMainViewController.h"
+#import "DRPPageListDataSource.h"
+#import "DRPPageCollectionViewLayout.h"
 #import "FRBSwatchist.h"
 
 @interface DRPPageListViewController ()
 
-@property BOOL topCueVisible, bottomCueVisible, topCueVisibleOnDragStart, bottomCueVisibleOnDragStart;
-@property UIScrollView *scrollView;
+@property UICollectionView *scrollView;
+@property DRPPageListDataSource *dataSource;
+@property DRPPageCollectionViewLayout *layout;
 
 @end
 
@@ -29,6 +32,32 @@
     return self;
 }
 
+#pragma mark View Loading
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+}
+
+- (void)loadScrollView
+{
+    _layout = [[DRPPageCollectionViewLayout alloc] init];
+    _layout.itemSize = CGSizeMake(300, 50);
+    _layout.minimumLineSpacing = 15;
+    _layout.sectionInset = UIEdgeInsetsMake(35, 0, 35, 0);
+    
+    _dataSource = [[DRPPageListDataSource alloc] init];
+    
+    self.scrollView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:_layout];
+    self.scrollView.dataSource = _dataSource;
+    self.scrollView.delegate = self;
+    
+    [self.scrollView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+    self.scrollView.backgroundColor = [UIColor clearColor];
+    
+    [self.view addSubview:self.scrollView];
+}
+
 #pragma mark DRPPageViewController
 
 - (void)didMoveToCurrent
@@ -40,5 +69,7 @@
 {
     [super didMoveFromCurrent];
 }
+
+#pragma mark UICollectionViewDelegate
 
 @end

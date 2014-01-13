@@ -7,6 +7,8 @@
 //
 
 #import "DRPPageListDataSource.h"
+#import "DRPMatch.h"
+#import "DRPMatchCollectionViewCell.h"
 #import <GameKit/GameKit.h>
 
 @interface DRPPageListDataSource ()
@@ -21,6 +23,18 @@
 
 - (void)reloadMatchesWithCompletion:(void (^)())completion
 {
+    [GKTurnBasedMatch loadMatchesWithCompletionHandler:^(NSArray *matches, NSError *error) {
+        
+        // Temporary, naive implementation
+        _matches = [[NSMutableArray alloc] init];
+        for (GKTurnBasedMatch *gkMatch in matches) {
+            [_matches addObject:[[DRPMatch alloc] initWithGKMatch:gkMatch]];
+        }
+        
+        if (completion) {
+            completion();
+        }
+    }];
 }
 
 - (DRPMatch *)matchForIndexPath:(NSIndexPath *)indexPath
@@ -32,8 +46,9 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
+    DRPMatchCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.backgroundColor = [UIColor lightGrayColor];
+    [cell configureWithDRPMatch:[self matchForIndexPath:indexPath]];
     return cell;
 }
 

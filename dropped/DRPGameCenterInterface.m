@@ -69,7 +69,8 @@ static UIViewController *authenticationViewController;
             }
             
             [match endMatchInTurnWithMatchData:[[NSData alloc] init] completionHandler:^(NSError *error) {
-                [match removeWithCompletionHandler:nil];
+                [match removeWithCompletionHandler:^(NSError *error) {
+                }];
             }];
         }
         

@@ -10,6 +10,7 @@
 #import "DRPMainViewController.h"
 #import "DRPPageListDataSource.h"
 #import "DRPPageCollectionViewLayout.h"
+#import "DRPMatchCollectionViewCell.h"
 #import "FRBSwatchist.h"
 
 @interface DRPPageListViewController ()
@@ -52,13 +53,22 @@
     self.scrollView.dataSource = _dataSource;
     self.scrollView.delegate = self;
     
-    [self.scrollView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
+    [self.scrollView registerClass:[DRPMatchCollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
     self.scrollView.backgroundColor = [UIColor clearColor];
     
     [self.view addSubview:self.scrollView];
 }
 
 #pragma mark DRPPageViewController
+
+- (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo
+{
+    [super willMoveToCurrentWithUserInfo:userInfo];
+    
+    [_dataSource reloadMatchesWithCompletion:^{
+        [self.scrollView reloadData];
+    }];
+}
 
 - (void)didMoveToCurrent
 {
@@ -71,5 +81,13 @@
 }
 
 #pragma mark UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    DRPMatch *match = [_dataSource matchForIndexPath:indexPath];
+    if (!match) return;
+    
+    [self.mainViewController setCurrentPageID:DRPPageMatch animated:YES userInfo:@{@"match" : match}];
+}
 
 @end

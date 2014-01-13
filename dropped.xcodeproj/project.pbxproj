@@ -47,6 +47,7 @@
 		A9ACB3C5188312C900B0B9D9 /* DRPLocalPlayerListener.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB3C4188312C900B0B9D9 /* DRPLocalPlayerListener.m */; };
 		A9ACB3C81883688500B0B9D9 /* DRPPageListDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB3C71883688500B0B9D9 /* DRPPageListDataSource.m */; };
 		A9ACB3CB1883740600B0B9D9 /* DRPPageCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB3CA1883740600B0B9D9 /* DRPPageCollectionViewLayout.m */; };
+		A9ACB3CF18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB3CE18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.m */; };
 		A9B1206F1857F8CE0079BF72 /* DRPCueIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1206E1857F8CE0079BF72 /* DRPCueIndicatorView.m */; };
 		A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C07B184CFCC100866029 /* DRPDropTransition.m */; };
 		A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C081184CFCDE00866029 /* DRPTransition.m */; };
@@ -173,6 +174,8 @@
 		A9ACB3C71883688500B0B9D9 /* DRPPageListDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageListDataSource.m; path = ViewControllers/Pages/DRPPageListDataSource.m; sourceTree = "<group>"; };
 		A9ACB3C91883740600B0B9D9 /* DRPPageCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRPPageCollectionViewLayout.h; sourceTree = "<group>"; };
 		A9ACB3CA1883740600B0B9D9 /* DRPPageCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRPPageCollectionViewLayout.m; sourceTree = "<group>"; };
+		A9ACB3CD18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMatchCollectionViewCell.h; path = Views/DRPMatchCollectionViewCell.h; sourceTree = "<group>"; };
+		A9ACB3CE18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMatchCollectionViewCell.m; path = Views/DRPMatchCollectionViewCell.m; sourceTree = "<group>"; };
 		A9B1206D1857F8CE0079BF72 /* DRPCueIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCueIndicatorView.h; path = Views/DRPCueIndicatorView.h; sourceTree = "<group>"; };
 		A9B1206E1857F8CE0079BF72 /* DRPCueIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCueIndicatorView.m; path = Views/DRPCueIndicatorView.m; sourceTree = "<group>"; };
 		A9B1C07A184CFCC100866029 /* DRPDropTransition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDropTransition.h; path = ViewControllers/Transitions/DRPDropTransition.h; sourceTree = "<group>"; };
@@ -326,6 +329,7 @@
 		A9204055183704C1006940B8 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A9ACB3CC18838A5A00B0B9D9 /* List */,
 				A99EAF1718765FE800DAD44F /* Match */,
 				A9B1206C1857F8B80079BF72 /* Cues */,
 				A9E27CBD1857AE210043F6A9 /* DRPTileView.h */,
@@ -501,6 +505,15 @@
 				A9ACB3C4188312C900B0B9D9 /* DRPLocalPlayerListener.m */,
 			);
 			name = "Game Center";
+			sourceTree = "<group>";
+		};
+		A9ACB3CC18838A5A00B0B9D9 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				A9ACB3CD18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.h */,
+				A9ACB3CE18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.m */,
+			);
+			name = List;
 			sourceTree = "<group>";
 		};
 		A9B1206C1857F8B80079BF72 /* Cues */ = {
@@ -719,6 +732,7 @@
 				A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */,
 				A93D77CC185673EF006691AE /* DRPPageSplashViewController.m in Sources */,
 				A93D77C618566A8F006691AE /* DRPPageMatchmakerViewController.m in Sources */,
+				A9ACB3CF18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.m in Sources */,
 				A9801A3A18774A9A0024B2A1 /* DRPMatchHeaderViewController.m in Sources */,
 				A9813327186DFBA100FC3277 /* DRPGreedyScrollView.m in Sources */,
 				A9C0FACC1864DB0A00377B0E /* DRPPageMatchViewController.m in Sources */,

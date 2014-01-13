@@ -8,6 +8,7 @@
 
 #import "DRPGameCenterInterface.h"
 #import "DRPLocalPlayerListener.h"
+#import "FRBSwatchist.h"
 #import <GameKit/GameKit.h>
 
 // Store the localPlayerID after authenticating
@@ -35,7 +36,9 @@ static UIViewController *authenticationViewController;
         } else if (localPlayer.authenticated) {
             // DEBUG: Kill all Game Center matches when authenticating.
             // Trust me, super handy during testing.
-            [self killAllGameCenterMatches];
+            if ([FRBSwatchist boolForKey:@"debug.removeGCMatchesOnStartup"]) {
+                [self killAllGameCenterMatches];
+            }
             
             if (localPlayerID && ![localPlayer.playerID isEqualToString:localPlayerID]) {
                 // Different user logged in

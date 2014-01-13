@@ -9,6 +9,7 @@
 #import "DRPMatch.h"
 #import "DRPPlayer.h"
 #import "DRPBoard.h"
+#import "FRBSwatchist.h"
 
 @interface DRPMatch ()
 
@@ -121,18 +122,30 @@
     // Send move off to Game Center
     NSArray *paricipants = @[self.currentPlayer.participant];
     NSData *data = _board.matchData;
-    [_gkMatch endTurnWithNextParticipants:paricipants turnTimeout:GKTurnTimeoutNone matchData:data completionHandler:^(NSError *error) {
-        if (error) {
-            NSLog(@"endTurn error: %@", error.localizedDescription);
-            return;
-        }
+    
+    if (![FRBSwatchist boolForKey:@"debug.singlePlayerMode"]) {
+        [_gkMatch endTurnWithNextParticipants:paricipants turnTimeout:GKTurnTimeoutNone matchData:data completionHandler:^(NSError *error) {
+            if (error) {
+                NSLog(@"endTurn error: %@", error.localizedDescription);
+                return;
+            }
+            
+            [self postTurnSubmissionNotificationsWithPlayedWord:playedWord];
+        }];
         
-        [[NSNotificationCenter defaultCenter] postNotificationName:DRPGameCenterReceivedTurnNotificationName
-                                                            object:nil
-                                                          userInfo:@{@"playedWord" : playedWord}];
-        
-        [self reloadPlayerScores];
-    }];
+    } else {
+        [self postTurnSubmissionNotificationsWithPlayedWord:playedWord];
+        [self saveMatchData];
+    }
+}
+
+- (void)postTurnSubmissionNotificationsWithPlayedWord:(DRPPlayedWord *)playedWord
+{
+    [[NSNotificationCenter defaultCenter] postNotificationName:DRPGameCenterReceivedTurnNotificationName
+                                                        object:nil
+                                                      userInfo:@{@"playedWord" : playedWord}];
+    
+    [self reloadPlayerScores];
 }
 
 - (void)saveMatchData

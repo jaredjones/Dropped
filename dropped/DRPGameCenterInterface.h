@@ -10,9 +10,13 @@
 
 #define DRPGameCenterLocalPlayerAuthenticatedNotificationName @"DRPGameCenterLocalPlayerAuthenticatedNotification"
 
+@class GKTurnBasedMatch;
+
 @interface DRPGameCenterInterface : NSObject
 
 + (void)authenticateLocalPlayer;
 + (UIViewController *)authenticationViewController;
+
++ (BOOL)gkMatchIsValid:(GKTurnBasedMatch *)gkMatch;
 
 @end

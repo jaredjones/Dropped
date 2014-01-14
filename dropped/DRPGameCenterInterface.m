@@ -81,4 +81,9 @@ static UIViewController *authenticationViewController;
     }];
 }
 
++ (BOOL)gkMatchIsValid:(GKTurnBasedMatch *)gkMatch
+{
+    return gkMatch.participants.count > 0;
+}
+
 @end

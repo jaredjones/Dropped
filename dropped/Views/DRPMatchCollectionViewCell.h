@@ -15,6 +15,6 @@
 // tmp
 @property (readonly) UILabel *label;
 
-- (void)configureWithDRPMatch:(DRPMatch *)match;
+- (void)configureWithMatch:(DRPMatch *)match;
 
 @end

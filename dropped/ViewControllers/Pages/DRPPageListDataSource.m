@@ -9,15 +9,28 @@
 #import "DRPPageListDataSource.h"
 #import "DRPMatch.h"
 #import "DRPMatchCollectionViewCell.h"
+#import "DRPGameCenterInterface.h"
 #import <GameKit/GameKit.h>
 
 @interface DRPPageListDataSource ()
 
 @property NSMutableArray *matches;
+@property NSMutableSet *loadedMatchIDs;
 
 @end
 
 @implementation DRPPageListDataSource
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        _matches = [[NSMutableArray alloc] init];
+        _loadedMatchIDs = [[NSMutableSet alloc] init];
+    }
+    
+    return self;
+}
 
 #pragma mark Data
 
@@ -25,11 +38,25 @@
 {
     [GKTurnBasedMatch loadMatchesWithCompletionHandler:^(NSArray *matches, NSError *error) {
         
-        // Temporary, naive implementation
-        _matches = [[NSMutableArray alloc] init];
         for (GKTurnBasedMatch *gkMatch in matches) {
+            
+            // Ran into invalid matches occassonally during testing
+            // that couldn't be removed from GC. Don't show them here,
+            // they're annoying
+            if (![DRPGameCenterInterface gkMatchIsValid:gkMatch]) {
+                continue;
+            }
+            
+            // Don't reload matches already loaded
+            if ([_loadedMatchIDs containsObject:gkMatch.matchID]) {
+                continue;
+            }
+            
             [_matches addObject:[[DRPMatch alloc] initWithGKMatch:gkMatch]];
+            [_loadedMatchIDs addObject:gkMatch.matchID];
         }
+        
+        // TODO: sort matches
         
         if (completion) {
             completion();
@@ -48,7 +75,7 @@
 {
     DRPMatchCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
     cell.backgroundColor = [UIColor lightGrayColor];
-    [cell configureWithDRPMatch:[self matchForIndexPath:indexPath]];
+    [cell configureWithMatch:[self matchForIndexPath:indexPath]];
     return cell;
 }
 

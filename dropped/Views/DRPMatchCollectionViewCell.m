@@ -24,7 +24,7 @@
     return self;
 }
 
-- (void)configureWithDRPMatch:(DRPMatch *)match
+- (void)configureWithMatch:(DRPMatch *)match
 {
     _label.text = match.matchID;
 }

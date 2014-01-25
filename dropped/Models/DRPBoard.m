@@ -346,8 +346,9 @@
     playedWord.additionalMultipliers = [self loadPositionsFromData:turnData numberPositions:numberAdditional];
     [turnData setData:[turnData subdataWithRange:NSMakeRange(2 * numberAdditional, turnData.length - 2 * numberAdditional)]];
     
-    playedWord.appendedCharacters = [self loadCharactersFromData:turnData numberCharacters:numberPositions];
-    [turnData setData:[turnData subdataWithRange:NSMakeRange(numberPositions, turnData.length - numberPositions)]];
+    NSInteger appendedCharactersLength = numberPositions + numberMultipliers + numberAdditional;
+    playedWord.appendedCharacters = [self loadCharactersFromData:turnData numberCharacters:appendedCharactersLength];
+    [turnData setData:[turnData subdataWithRange:NSMakeRange(appendedCharactersLength, turnData.length - appendedCharactersLength)]];
     
     for (DRPPosition *position in [playedWord.multipliers arrayByAddingObjectsFromArray:playedWord.additionalMultipliers]) {
         DRPCharacter *character = [self characterAtPosition:position];
@@ -438,6 +439,7 @@
     [data appendBytes:&numberTurns length:1];
     
     for (DRPPlayedWord *playedWord in _playedWords) {
+        // Add the position counts to the data
         NSInteger numberPositions = playedWord.positions.count;
         NSInteger numberActivated = playedWord.multipliers.count;
         NSInteger numberAdditional = playedWord.additionalMultipliers.count;
@@ -445,16 +447,26 @@
         [data appendBytes:&numberActivated length:1];
         [data appendBytes:&numberAdditional length:1];
         
-        for (DRPPosition *position in playedWord.positions) {
+        // positions contains ALL of the positions in the move (characters and multipliers)
+        // add them all to the data
+        NSMutableArray *positions = [[NSMutableArray alloc] init];
+        [positions addObjectsFromArray:playedWord.positions];
+        [positions addObjectsFromArray:playedWord.multipliers];
+        [positions addObjectsFromArray:playedWord.additionalMultipliers];
+        
+        for (DRPPosition *position in positions) {
             NSInteger i = position.i, j = position.j;
             [data appendBytes:&i length:1];
             [data appendBytes:&j length:1];
         }
         
+        // Add the appended characters and calculate new multiplier colors
         NSMutableData *multiplierColorData = [[NSMutableData alloc] init];
         for (DRPCharacter *character in playedWord.appendedCharacters) {
             [data appendData:[character.character dataUsingEncoding:NSUTF8StringEncoding]];
-            if (character.multiplier != -1) {
+            
+            // found a multiplier
+            if (character.multiplier) {
                 DRPColor color = character.color;
                 [multiplierColorData appendBytes:&color length:1];
             }

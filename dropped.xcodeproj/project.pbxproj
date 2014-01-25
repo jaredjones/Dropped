@@ -618,7 +618,7 @@
 				ORGANIZATIONNAME = "Brad Zeis";
 				TargetAttributes = {
 					A91D8F44183702EE00BEC6E8 = {
-						DevelopmentTeam = DSR7B666L4;
+						DevelopmentTeam = VK6PLLGMJR;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
 								enabled = 1;

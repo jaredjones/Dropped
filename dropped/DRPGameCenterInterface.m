@@ -16,11 +16,16 @@
 // account logs in while Dropped is in background
 static NSString *localPlayerID;
 static UIViewController *authenticationViewController;
+static DRPLocalPlayerListener *localPlayerListener;
 
 @implementation DRPGameCenterInterface
 
 + (void)authenticateLocalPlayer
 {
+    if (!localPlayerListener) {
+        localPlayerListener = [[DRPLocalPlayerListener alloc] init];
+    }
+    
     __weak GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
     localPlayer.authenticateHandler = ^(UIViewController *viewController, NSError *error) {
         if (viewController != nil) {
@@ -49,7 +54,7 @@ static UIViewController *authenticationViewController;
                                                                 object:nil];
             
             [localPlayer unregisterAllListeners];
-            [localPlayer registerListener:[[DRPLocalPlayerListener alloc] init]];
+            [localPlayer registerListener:localPlayerListener];
             
         } else {
             NSLog(@"%@", error);

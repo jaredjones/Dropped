@@ -21,13 +21,13 @@
 
 + (instancetype)characterWithCharacter:(NSString *)character
 {
-    if ([character isEqualToString:@"three"] || [character isEqualToString:@"3"]) {
+    if ([character isEqualToString:@"three"] || [character isEqualToString:@"3"])
         return [DRPCharacter characterWithMulitplier:3];
-    } else if ([character isEqualToString:@"four"] || [character isEqualToString:@"4"]) {
+    if ([character isEqualToString:@"four"] || [character isEqualToString:@"4"])
         return [DRPCharacter characterWithMulitplier:4];
-    } else if ([character isEqualToString:@"five"] || [character isEqualToString:@"5"]) {
+    if ([character isEqualToString:@"five"] || [character isEqualToString:@"5"])
         return [DRPCharacter characterWithMulitplier:5];
-    }
+    
     
     DRPCharacter *c = [[DRPCharacter alloc] init];
     c.character = character;
@@ -39,20 +39,13 @@
 + (instancetype)characterWithMulitplier:(NSInteger)multiplier
 {
     DRPCharacter *c = [[DRPCharacter alloc] init];
-    switch (multiplier) {
-        case 3:
-            c.character = @"3";
-            break;
-        case 4:
-            c.character = @"4";
-            break;
-        case 5:
-            c.character = @"5";
-            break;
-        default:
-            c = nil;
-            break;
+    
+    if (multiplier > 2 && multiplier < 6){
+        c.character = [NSString stringWithFormat:@"%li", (long)multiplier];
+    }else{
+        c = nil;
     }
+    
     c.multiplier = multiplier;
     c.color = DRPColorNil;
     return c;

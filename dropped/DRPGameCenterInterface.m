@@ -48,13 +48,14 @@ static UIViewController *authenticationViewController;
             [[NSNotificationCenter defaultCenter] postNotificationName:DRPGameCenterLocalPlayerAuthenticatedNotificationName
                                                                 object:nil];
             
+            [localPlayer unregisterAllListeners];
+            [localPlayer registerListener:[[DRPLocalPlayerListener alloc] init]];
+            
         } else {
             NSLog(@"%@", error);
             authenticationViewController = nil;
         }
     };
-    
-    [localPlayer registerListener:[[DRPLocalPlayerListener alloc] init]];
 }
 
 + (UIViewController *)authenticationViewController

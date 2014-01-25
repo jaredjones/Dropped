@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #define DRPGameCenterLocalPlayerAuthenticatedNotificationName @"DRPGameCenterLocalPlayerAuthenticatedNotification"
+#define DRPGameCenterReceivedTurnEventNotificationName @"DRPGameCenterReceivedTurnEventNotificationName"
 
 @class GKTurnBasedMatch;
 

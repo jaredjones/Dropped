@@ -268,9 +268,6 @@
     _playedWords = [[NSMutableArray alloc] init];
     _histogram = [[DRPCharacterHistogram alloc] init];
     
-    
-    // TODO: shit, not loading the data
-    
     [self loadInitialState:[data subdataWithRange:NSMakeRange(1, data.length - 1)]];
     [self loadTurns:[data subdataWithRange:NSMakeRange(39, data.length - 39)]];
 }

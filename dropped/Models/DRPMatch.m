@@ -109,7 +109,7 @@
         
         // Post NSNotification if new turns available
         if (_board.currentTurn > turns) {
-            
+            NSLog(@"new turns!");
         }
     }];
 }

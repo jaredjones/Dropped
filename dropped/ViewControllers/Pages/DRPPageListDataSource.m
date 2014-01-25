@@ -27,9 +27,19 @@
     if (self) {
         _matches = [[NSMutableArray alloc] init];
         _loadedMatchIDs = [[NSMutableSet alloc] init];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(receivedRemoteGameCenterTurn:)
+                                                     name:DRPGameCenterReceivedTurnNotificationName
+                                                   object:nil];
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark Data
@@ -67,6 +77,30 @@
 - (DRPMatch *)matchForIndexPath:(NSIndexPath *)indexPath
 {
     return _matches[indexPath.row];
+}
+
+- (DRPMatch *)matchForMatchID:(NSString *)matchID
+{
+    if (![_loadedMatchIDs containsObject:matchID]) return nil;
+    
+    for (DRPMatch *match in _matches) {
+        if ([match.matchID isEqualToString:matchID]) {
+            return match;
+        }
+    }
+    
+    return nil;
+}
+
+#pragma mark Game Center
+
+- (void)receivedRemoteGameCenterTurn:(NSNotification *)notification
+{
+    GKTurnBasedMatch *gkMatch = notification.userInfo[@"gkMatch"];
+    DRPMatch *match = [self matchForMatchID:gkMatch.matchID];
+    if (!match) return;
+    
+    [match reloadMatchData];
 }
 
 #pragma mark UICollectionViewDataSource

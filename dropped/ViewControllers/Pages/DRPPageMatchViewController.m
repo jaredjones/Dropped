@@ -36,7 +36,7 @@
     if (self) {
         self.bottomCue = @"Back";
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(gameCenterReceivedTurn:)
+                                                 selector:@selector(gameCenterReceivedLocalTurn:)
                                                      name:DRPGameCenterReceivedTurnNotificationName
                                                    object:nil];
     }
@@ -229,17 +229,21 @@
     [self resetCues];
 }
 
-- (void)gameCenterReceivedTurn:(NSNotification *)notification
+- (void)gameCenterReceivedLocalTurn:(NSNotification *)notification
 {
-    [_boardViewController dropPlayedWord:notification.userInfo[@"playedWord"]];
+    [self dropPlayedWord:notification.userInfo[@"playedWord"]];
+}
+
+- (void)receivedRemoteGameCenterTurn:(NSNotification *)notification
+{
+}
+
+- (void)dropPlayedWord:(DRPPlayedWord *)playedWord
+{
+    [_boardViewController dropPlayedWord:playedWord];
     [_currentWordView setTurnsLeft:26 - _match.currentTurn];
     [_currentWordView cycleOutTiles];
     [self resetCues];
-}
-
-- (void)gameCenterReceivedRemoteTurn:(NSNotification *)notification
-{
-    
 }
 
 @end

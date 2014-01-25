@@ -1,8 +1,8 @@
 PODS:
-  - FMDB (2.1):
+  - FMDB (2.2):
     - FMDB/standard
-  - FMDB/common (2.1)
-  - FMDB/standard (2.1):
+  - FMDB/common (2.2)
+  - FMDB/standard (2.2):
     - FMDB/common
   - FRBSwatchist (1.0.0)
 
@@ -15,7 +15,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/bradzeis/FRBSwatchist
 
 SPEC CHECKSUMS:
-  FMDB: 3fd5aaf632ca4ed39e3f101e0398504e6d5b0918
+  FMDB: 97472cfacf0d9e445e915704fb43b4b142799c36
   FRBSwatchist: bc312d54f3343366a4d03629864b316711e1cad1
 
-COCOAPODS: 0.28.0
+COCOAPODS: 0.29.0

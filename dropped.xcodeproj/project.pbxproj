@@ -45,7 +45,6 @@
 		A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5BE1850ED5F0024E7D4 /* DRPPageListViewController.m */; };
 		A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */; };
 		A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9AC495F18539E44006E1D84 /* animation.plist */; };
-		A9ACB3C5188312C900B0B9D9 /* DRPLocalPlayerListener.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB3C4188312C900B0B9D9 /* DRPLocalPlayerListener.m */; };
 		A9ACB3C81883688500B0B9D9 /* DRPPageListDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB3C71883688500B0B9D9 /* DRPPageListDataSource.m */; };
 		A9ACB3CB1883740600B0B9D9 /* DRPPageCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB3CA1883740600B0B9D9 /* DRPPageCollectionViewLayout.m */; };
 		A9ACB3CF18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB3CE18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.m */; };
@@ -171,8 +170,6 @@
 		A9A9D5BF1850ED5F0024E7D4 /* DRPPageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageViewController.h; path = ViewControllers/Pages/DRPPageViewController.h; sourceTree = "<group>"; };
 		A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageViewController.m; path = ViewControllers/Pages/DRPPageViewController.m; sourceTree = "<group>"; };
 		A9AC495F18539E44006E1D84 /* animation.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = animation.plist; path = Swatches/animation.plist; sourceTree = "<group>"; };
-		A9ACB3C3188312C900B0B9D9 /* DRPLocalPlayerListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRPLocalPlayerListener.h; sourceTree = "<group>"; };
-		A9ACB3C4188312C900B0B9D9 /* DRPLocalPlayerListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRPLocalPlayerListener.m; sourceTree = "<group>"; };
 		A9ACB3C61883688500B0B9D9 /* DRPPageListDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageListDataSource.h; path = ViewControllers/Pages/DRPPageListDataSource.h; sourceTree = "<group>"; };
 		A9ACB3C71883688500B0B9D9 /* DRPPageListDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageListDataSource.m; path = ViewControllers/Pages/DRPPageListDataSource.m; sourceTree = "<group>"; };
 		A9ACB3C91883740600B0B9D9 /* DRPPageCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRPPageCollectionViewLayout.h; sourceTree = "<group>"; };
@@ -505,8 +502,6 @@
 			children = (
 				A93D77D01856A1F7006691AE /* DRPGameCenterInterface.h */,
 				A93D77D11856A1F7006691AE /* DRPGameCenterInterface.m */,
-				A9ACB3C3188312C900B0B9D9 /* DRPLocalPlayerListener.h */,
-				A9ACB3C4188312C900B0B9D9 /* DRPLocalPlayerListener.m */,
 			);
 			name = "Game Center";
 			sourceTree = "<group>";
@@ -729,7 +724,6 @@
 				C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */,
 				A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */,
 				A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */,
-				A9ACB3C5188312C900B0B9D9 /* DRPLocalPlayerListener.m in Sources */,
 				A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */,
 				A93D77CF18567D4B006691AE /* DRPPageLogInViewController.m in Sources */,
 				A9C0FAD9186507EC00377B0E /* NSArray+Mutable.m in Sources */,

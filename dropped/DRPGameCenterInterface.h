@@ -7,13 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <GameKit/GameKit.h>
 
 #define DRPGameCenterLocalPlayerAuthenticatedNotificationName @"DRPGameCenterLocalPlayerAuthenticatedNotification"
 #define DRPGameCenterReceivedTurnEventNotificationName @"DRPGameCenterReceivedTurnEventNotificationName"
 
 @class GKTurnBasedMatch;
 
-@interface DRPGameCenterInterface : NSObject
+@interface DRPGameCenterInterface : NSObject <GKLocalPlayerListener>
 
 + (void)authenticateLocalPlayer;
 + (UIViewController *)authenticationViewController;

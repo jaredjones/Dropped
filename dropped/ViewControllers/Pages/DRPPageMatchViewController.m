@@ -202,16 +202,26 @@
 
 - (void)resetCues
 {
+    NSString *newBottomCue = nil;
+    
     if (_boardViewController.currentWord.length == 0) {
-        [self.mainViewController setCue:@"Back" inPosition:DRPPageDirectionDown];
+        newBottomCue = @"Back";
         
     } else {
         if ([self currentWordIsValid]) {
-            [self.mainViewController setCue:@"Tap to Submit" inPosition:DRPPageDirectionDown];
+            newBottomCue = @"Tap to Submit";
+            
         } else {
-            [self.mainViewController setCue:@"Swipe to Clear" inPosition:DRPPageDirectionDown];
+            newBottomCue = @"Swipe to Clear";
         }
     }
+    
+    if (![newBottomCue isEqualToString:self.bottomCue]) {
+        self.bottomCueVisible = NO;
+    }
+    self.bottomCue = newBottomCue;
+    
+    [super resetCues];
 }
 
 #pragma mark DRPCurrentWordViewDelegate

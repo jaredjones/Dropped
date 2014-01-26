@@ -45,7 +45,7 @@
 {
     [super viewDidLoad];
     
-    [DRPTransition setReferenceView:self.view];
+    [DRPTransition setReferenceViewForUIDynamics:self.view];
     self.view.backgroundColor = [UIColor whiteColor];
 }
 

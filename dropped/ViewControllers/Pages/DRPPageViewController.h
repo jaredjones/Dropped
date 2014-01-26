@@ -21,7 +21,6 @@ typedef NS_ENUM(NSInteger, DRPPageID) {
 typedef NS_ENUM(NSInteger, DRPPageDirection) {
     DRPPageDirectionUp,
     DRPPageDirectionDown,
-    DRPPageDirectionSame,
     DRPPageDirectionNil
 };
 
@@ -35,6 +34,8 @@ typedef NS_ENUM(NSInteger, DRPPageDirection) {
 @property (readonly) DRPMainViewController *mainViewController;
 @property NSString *topCue, *bottomCue;
 @property UIScrollView *scrollView;
+
+@property BOOL topCueVisible, bottomCueVisible;
 
 - (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo;
 - (void)didMoveToCurrent;

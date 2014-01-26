@@ -17,7 +17,7 @@
 
 @property (readonly) BOOL active;
 
-+ (void)setReferenceView:(UIView *)reference;
++ (void)setReferenceViewForUIDynamics:(UIView *)reference;
 + (UIDynamicAnimator *)sharedDynamicAnimator;
 
 + (DRPTransition *)transitionWithStart:(UIViewController *)start destination:(UIViewController *)destination direction:(DRPPageDirection)direction completion:(void (^)())completion;

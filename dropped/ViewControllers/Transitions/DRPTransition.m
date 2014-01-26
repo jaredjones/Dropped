@@ -59,7 +59,7 @@
 #pragma mark Dynamic Animator
 
 static UIDynamicAnimator *sharedAnimator;
-+ (void)setReferenceView:(UIView *)reference
++ (void)setReferenceViewForUIDynamics:(UIView *)reference
 {
     if (!sharedAnimator)
         sharedAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:reference];

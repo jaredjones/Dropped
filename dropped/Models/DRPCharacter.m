@@ -21,11 +21,11 @@
 
 + (instancetype)characterWithCharacter:(NSString *)character
 {
-    if ([character isEqualToString:@"three"] || [character isEqualToString:@"3"])
+    if ([character isEqualToString:@"3"])
         return [DRPCharacter characterWithMulitplier:3];
-    if ([character isEqualToString:@"four"] || [character isEqualToString:@"4"])
+    if ([character isEqualToString:@"4"])
         return [DRPCharacter characterWithMulitplier:4];
-    if ([character isEqualToString:@"five"] || [character isEqualToString:@"5"])
+    if ([character isEqualToString:@"5"])
         return [DRPCharacter characterWithMulitplier:5];
     
     
@@ -40,9 +40,9 @@
 {
     DRPCharacter *c = [[DRPCharacter alloc] init];
     
-    if (multiplier > 2 && multiplier < 6){
+    if (multiplier > 2 && multiplier < 6) {
         c.character = [NSString stringWithFormat:@"%li", (long)multiplier];
-    }else{
+    } else {
         c = nil;
     }
     

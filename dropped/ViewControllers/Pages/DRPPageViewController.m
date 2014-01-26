@@ -12,7 +12,7 @@
 
 @interface DRPPageViewController ()
 
-@property BOOL topCueVisible, bottomCueVisible, topCueVisibleOnDragStart, bottomCueVisibleOnDragStart;
+@property BOOL topCueVisibleOnDragStart, bottomCueVisibleOnDragStart;
 
 @end
 
@@ -148,22 +148,23 @@
     CGFloat offset = scrollView.contentOffset.y;
     CGFloat threshold = [FRBSwatchist floatForKey:@"page.transitionThreshold"];
     
-    if (offset <= -threshold) {
+    if (offset <= -threshold)
         return DRPPageDirectionUp;
         
-    } else if (offset + scrollView.frame.size.height >= threshold + scrollView.contentSize.height) {
+    if (offset + scrollView.frame.size.height >= threshold + scrollView.contentSize.height)
         return DRPPageDirectionDown;
-    }
+    
     return DRPPageDirectionNil;
 }
 
 - (BOOL)scrollView:(UIScrollView *)scrollView shouldTransitionInDirection:(DRPPageDirection)direction
 {
-    if (direction == DRPPageDirectionUp) {
+    if (direction == DRPPageDirectionUp)
         return [scrollView.panGestureRecognizer velocityInView:self.view].y >= 0;
-    } else if (direction == DRPPageDirectionDown) {
+    
+    if (direction == DRPPageDirectionDown)
         return [scrollView.panGestureRecognizer velocityInView:self.view].y <= 0;
-    }
+        
     return NO;
 }
 

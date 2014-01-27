@@ -65,7 +65,7 @@
 
 #pragma mark Loading
 
-- (void)loadBoard:(DRPBoard *)board
+- (void)loadBoard:(DRPBoard *)board atTurn:(NSInteger)turn
 {
     [self clearCurrentBoard];
     
@@ -77,7 +77,7 @@
             DRPPosition *position = [DRPPosition positionWithI:i j:j];
             
             DRPTileView *tile = [DRPTileView dequeueResusableTile];
-            tile.character = [_board characterAtPosition:position];
+            tile.character = [_board characterAtPosition:position forTurn:turn];
             tile.position = position;
             tile.center = [self centerForPosition:position];
             tile.transform = CGAffineTransformIdentity;
@@ -208,7 +208,7 @@
 
 #pragma mark Move Submission
 
-- (void)dropPlayedWord:(DRPPlayedWord *)playedWord
+- (void)dropPlayedWord:(DRPPlayedWord *)playedWord fromTurn:(NSInteger)turn withCompletion:(void(^)())completion
 {
     // First, drop positions
     NSArray *droppedTiles = [self dropPositions:[[playedWord.positions arrayByAddingObjectsFromArray:playedWord.multipliers] arrayByAddingObjectsFromArray:playedWord.additionalMultipliers]];
@@ -223,16 +223,39 @@
             
             DRPTileView *tile = _tiles[start];
             if (!tile) continue;
-            tile.character = [_board characterAtPosition:end];
+            tile.character = [_board characterAtPosition:end forTurn:turn+1];
             tile.position = end;
             tile.character.multiplierActive = NO;
             _tiles[end] = tile;
             
             if (![start isEqual:end]) {
-                [self transitionTile:tile toPosition:end];
+                [self transitionTile:tile toPosition:end withCompletion:nil];
             }
         }
     }
+    
+    
+    // Jared: this is some quite tricksy block code. I think it's neat.
+    //
+    // The goal is to run the passed in completion handler when _all_ of
+    // the new tiles are in place. It's hard to calculate when that is.
+    //
+    // The solution is to create a second block that keeps track of how
+    // many times its been called and call it every time a tile finishes
+    // animating into place. When they have all called the secondary
+    // completion block, it's safe to call the completion block passed
+    // in to this method.
+    
+    __block NSInteger numberOfTilesWithCompletedAnimations = 0;
+    void (^tileTransitionCompletion)() = ^{
+        numberOfTilesWithCompletedAnimations++;
+        if (numberOfTilesWithCompletedAnimations == playedWord.tileCount) {
+            // Now safe to run the completion handler
+            if (completion) {
+                completion();
+            }
+        }
+    };
     
     // Create DRPTileViews at the top
     for (NSInteger i = 0; i < 6; i++) {
@@ -250,7 +273,7 @@
             [self.view addSubview:tile];
             _tiles[end] = tile;
             
-            [self transitionTile:tile toPosition:end];
+            [self transitionTile:tile toPosition:end withCompletion:tileTransitionCompletion];
         }
     }
     
@@ -308,7 +331,7 @@
     [_pushes removeObjectForKey:item];
 }
 
-- (void)transitionTile:(DRPTileView *)tile toPosition:(DRPPosition *)position
+- (void)transitionTile:(DRPTileView *)tile toPosition:(DRPPosition *)position withCompletion:(void(^)())completion
 {
     tile.selected = YES;
     tile.userInteractionEnabled = NO;
@@ -328,6 +351,12 @@
         tile.selected = NO;
         tile.userInteractionEnabled = YES;
         [tile resetAppearence];
+        
+        // completion is passed in from dropPlayedWord:withCompletion: and
+        // updates a counter of the number of tiles that have finished
+        if (completion) {
+            completion();
+        }
     }];
 }
 

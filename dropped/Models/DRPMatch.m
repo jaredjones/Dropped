@@ -141,7 +141,7 @@
 
 - (void)postTurnSubmissionNotificationsWithPlayedWord:(DRPPlayedWord *)playedWord
 {
-    [[NSNotificationCenter defaultCenter] postNotificationName:DRPGameCenterReceivedTurnNotificationName
+    [[NSNotificationCenter defaultCenter] postNotificationName:DRPGameCenterReceivedLocalTurnNotificationName
                                                         object:nil
                                                       userInfo:@{@"playedWord" : playedWord}];
     

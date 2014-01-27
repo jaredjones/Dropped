@@ -23,6 +23,11 @@
     return self;
 }
 
+- (NSInteger)tileCount
+{
+    return _positions.count + _multipliers.count + _additionalMultipliers.count;
+}
+
 // Diff
 //  {
 //      start_position : end_position,

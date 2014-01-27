@@ -8,13 +8,19 @@
 
 #import "DRPPageMatchViewController.h"
 #import "DRPMainViewController.h"
+
 #import "DRPBoardViewController.h"
 #import "DRPCurrentWordView.h"
+#import "DRPMatchHeaderViewController.h"
+
 #import "DRPMatch.h"
+#import "DRPBoard.h"
 #import "DRPPlayedWord.h"
+
+#import "DRPGameCenterInterface.h"
 #import "DRPDictionary.h"
 #import "DRPGreedyScrollView.h"
-#import "DRPMatchHeaderViewController.h"
+
 #import "FRBSwatchist.h"
 #import "DRPUtility.h"
 
@@ -27,6 +33,7 @@
 @property BOOL isCurrentWordValid;
 
 @property DRPMatch *match;
+@property NSInteger renderedTurn;
 
 @end
 
@@ -39,8 +46,13 @@
         self.bottomCue = @"Back";
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(gameCenterReceivedLocalTurn:)
-                                                     name:DRPGameCenterReceivedTurnNotificationName
+                                                     name:DRPGameCenterReceivedLocalTurnNotificationName
                                                    object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(receivedRemoteGameCenterTurn:)
+                                                     name:DRPGameCenterReceivedRemoteTurnNotificationName
+                                                object:nil];
     }
     return self;
 }
@@ -50,7 +62,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-#pragma mark Views
+#pragma mark View Loading/Layout
 
 - (void)viewDidLoad
 {
@@ -172,14 +184,31 @@
     DRPMatch *prevMatch = _match;
     _match = userInfo[@"match"];
     
+    // tmp
+    prevMatch = nil;
+    
     if (_match != prevMatch) {
-        [_boardViewController loadBoard:_match.board];
-        [_headerViewController observePlayers:_match.players];
+        
+        _renderedTurn = MAX(_match.currentTurn - 1, 0);
+        _renderedTurn = 0;
+        
+        [_boardViewController loadBoard:_match.board atTurn:_renderedTurn];
         [_currentWordView setTurnsLeft:26 - _match.currentTurn];
+        
+        [_headerViewController observePlayers:_match.players];
         
     } else {
         // TODO: fast-forward to current turn
+        [_currentWordView setTurnsLeft:26 - _match.currentTurn];
+        
     }
+}
+
+- (void)didMoveToCurrent
+{
+    [super didMoveToCurrent];
+    
+    [self advanceRenderedTurnToTurn:_match.currentTurn];
 }
 
 - (void)resetCues
@@ -204,6 +233,33 @@
     self.bottomCue = newBottomCue;
     
     [super resetCues];
+}
+
+#pragma mark Turn Transitions
+
+- (void)advanceRenderedTurnToTurn:(NSInteger)turn
+{
+    // TODO: this should do snazzy things with currentWordView (later)
+    // TODO: tiles shouldn't be enabled while turn transitions are running
+    
+    // This is essentially recursion that pauses between each
+    // iteration (because each iteration is asynchronous)
+    if (self.mainViewController.currentPageID == self.pageID && _renderedTurn < turn) {
+        [self advanceRenderedTurnWithCompletion:^{
+            [self advanceRenderedTurnToTurn:turn];
+        }];
+    }
+}
+
+// Steps the _renderedTurn one turn forward
+- (void)advanceRenderedTurnWithCompletion:(void (^)())completion
+{
+    if (_renderedTurn < _match.currentTurn) {
+        [_boardViewController dropPlayedWord:[_match.board wordPlayedForTurn:_renderedTurn] fromTurn:_renderedTurn withCompletion:^{
+            _renderedTurn++;
+            completion();
+        }];
+    }
 }
 
 #pragma mark DRPBoardViewControllerDelegate
@@ -262,7 +318,9 @@
 
 - (void)dropPlayedWord:(DRPPlayedWord *)playedWord
 {
-    [_boardViewController dropPlayedWord:playedWord];
+    [self advanceRenderedTurnToTurn:_match.currentTurn];
+    
+    // TODO: this is creaky, incorporate into advanceRenderedTurnToTurn:
     [_currentWordView setTurnsLeft:26 - _match.currentTurn];
     [_currentWordView cycleOutTiles];
     [self resetCues];

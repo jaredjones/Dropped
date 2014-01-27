@@ -27,8 +27,8 @@
 @property (readonly) NSString *currentWord;
 @property (readonly) NSArray *currentPositions;
 
-- (void)loadBoard:(DRPBoard *)board;
-- (void)dropPlayedWord:(DRPPlayedWord *)playedWord;
+- (void)loadBoard:(DRPBoard *)board atTurn:(NSInteger)turn;
+- (void)dropPlayedWord:(DRPPlayedWord *)playedWord fromTurn:(NSInteger)turn withCompletion:(void(^)())completion;
 
 - (void)deselectCurrentWord;
 

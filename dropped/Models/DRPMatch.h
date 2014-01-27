@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <GameKit/GameKit.h>
 
-#define DRPGameCenterReceivedTurnNotificationName @"DRPGameCenterReceivedTurnNotification"
+#define DRPGameCenterReceivedLocalTurnNotificationName @"DRPGameCenterReceivedLocalTurnNotification"
 
 @class DRPPlayer, DRPBoard, DRPPlayedWord;
 

@@ -30,7 +30,7 @@
         
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(receivedRemoteGameCenterTurn:)
-                                                     name:DRPGameCenterReceivedTurnNotificationName
+                                                     name:DRPGameCenterReceivedLocalTurnNotificationName
                                                    object:nil];
     }
     

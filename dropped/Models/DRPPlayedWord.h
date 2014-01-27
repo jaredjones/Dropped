@@ -17,6 +17,7 @@
 @property NSArray *appendedCharacters;
 @property NSArray *multipliers, *additionalMultipliers;
 
+- (NSInteger)tileCount;
 - (NSDictionary *)diff;
 
 @end

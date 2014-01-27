@@ -10,7 +10,7 @@
 #import <GameKit/GameKit.h>
 
 #define DRPGameCenterLocalPlayerAuthenticatedNotificationName @"DRPGameCenterLocalPlayerAuthenticatedNotification"
-#define DRPGameCenterReceivedTurnEventNotificationName @"DRPGameCenterReceivedTurnEventNotificationName"
+#define DRPGameCenterReceivedRemoteTurnNotificationName @"DRPGameCenterReceivedRemoteTurnNotificationName"
 
 @class GKTurnBasedMatch;
 

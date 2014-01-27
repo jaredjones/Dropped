@@ -90,7 +90,7 @@ static DRPGameCenterInterface *sharedGameCenterInterface;
         return;
     }
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:DRPGameCenterReceivedTurnEventNotificationName
+    [[NSNotificationCenter defaultCenter] postNotificationName:DRPGameCenterReceivedRemoteTurnNotificationName
                                                         object:nil
                                                       userInfo:@{@"gkMatch" : gkMatch}];
 }

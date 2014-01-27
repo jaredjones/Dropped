@@ -321,6 +321,7 @@
     [_match reloadMatchDataWithCompletion:^(BOOL newTurns) {
         if (newTurns) {
             // ugh, this call needs to be better
+            // TODO: make sure the match is not being replayed when this happens
             [self dropPlayedWord:nil];
         }
     }];

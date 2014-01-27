@@ -24,6 +24,8 @@
 @property DRPBoardViewController *boardViewController;
 @property DRPCurrentWordView *currentWordView;
 
+@property BOOL isCurrentWordValid;
+
 @property DRPMatch *match;
 
 @end
@@ -156,48 +158,28 @@
 {
     [super willMoveToCurrentWithUserInfo:userInfo];
     
-    // Clear out old match
+    // Clear out played words and selected tiles
     [_currentWordView cycleOutTiles];
+    _isCurrentWordValid = NO;
+    // TODO: unselect any tiles previously selected
     
     
     // Extract DRPMatch, load it up
+    if (!userInfo[@"match"]) {
+        // TODO: How the hell did you get here? Return to List page
+    }
+    
+    DRPMatch *prevMatch = _match;
     _match = userInfo[@"match"];
-    if (_match) {
+    
+    if (_match != prevMatch) {
         [_boardViewController loadBoard:_match.board];
         [_headerViewController observePlayers:_match.players];
         [_currentWordView setTurnsLeft:26 - _match.currentTurn];
-    
+        
     } else {
-        // TODO: How the hell did you get here? Display an error message where the board usually is
+        // TODO: fast-forward to current turn
     }
-}
-
-#pragma mark DRPBoardViewControllerDelegate
-
-- (void)characterAddedToCurrentWord:(DRPCharacter *)character
-{
-    [self resetCues];
-}
-
-- (void)characterRemovedFromCurrentWord:(DRPCharacter *)character
-{
-    [self resetCues];
-    [_currentWordView characterRemovedFromCurrentWord:character];
-}
-
-- (void)characterWasHighlighted:(DRPCharacter *)character
-{
-    [_currentWordView characterWasHighlighted:character];
-}
-
-- (void)characterWasDehighlighted:(DRPCharacter *)character
-{
-    [_currentWordView characterWasDehighlighted:character];
-}
-
-- (BOOL)currentWordIsValid
-{
-    return _boardViewController.currentPositions.count >=3 && [DRPDictionary isValidWord:_boardViewController.currentWord];
 }
 
 - (void)resetCues
@@ -208,7 +190,7 @@
         newBottomCue = @"Back";
         
     } else {
-        if ([self currentWordIsValid]) {
+        if (_isCurrentWordValid) {
             newBottomCue = @"Tap to Submit";
             
         } else {
@@ -224,11 +206,41 @@
     [super resetCues];
 }
 
+#pragma mark DRPBoardViewControllerDelegate
+
+- (void)characterAddedToCurrentWord:(DRPCharacter *)character
+{
+    _isCurrentWordValid = [self validateCurrentWord];
+    [self resetCues];
+}
+
+- (void)characterRemovedFromCurrentWord:(DRPCharacter *)character
+{
+    _isCurrentWordValid = [self validateCurrentWord];
+    [self resetCues];
+    [_currentWordView characterRemovedFromCurrentWord:character];
+}
+
+- (void)characterWasHighlighted:(DRPCharacter *)character
+{
+    [_currentWordView characterWasHighlighted:character];
+}
+
+- (void)characterWasDehighlighted:(DRPCharacter *)character
+{
+    [_currentWordView characterWasDehighlighted:character];
+}
+
+- (BOOL)validateCurrentWord
+{
+    return _boardViewController.currentPositions.count >=3 && [DRPDictionary isValidWord:_boardViewController.currentWord];
+}
+
 #pragma mark DRPCurrentWordViewDelegate
 
 - (void)currentWordViewTapped
 {
-    if ([self currentWordIsValid]) {
+    if (_isCurrentWordValid) {
         [_match submitTurnForPositions:_boardViewController.currentPositions];
     }
 }

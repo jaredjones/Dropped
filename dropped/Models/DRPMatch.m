@@ -36,7 +36,7 @@
             [GKTurnBasedMatch loadMatchWithID:_matchID withCompletionHandler:^(GKTurnBasedMatch *match, NSError *error) {
                 _gkMatch = match;
                 [self loadGKPlayers];
-                [self reloadMatchData];
+                [self reloadMatchDataWithCompletion:nil];
             }];
         }
     }
@@ -100,16 +100,16 @@
     }];
 }
 
-- (void)reloadMatchData
+- (void)reloadMatchDataWithCompletion:(void(^)(BOOL newTurns))completion
 {
     [_gkMatch loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error) {
         NSInteger turns = _board.currentTurn;
         [_board appendNewData:matchData];
         [self reloadPlayerScores];
         
-        // Post NSNotification if new turns available
-        if (_board.currentTurn > turns) {
+        if (completion) {
             NSLog(@"new turns!");
+            completion(_board.currentTurn > turns);
         }
     }];
 }

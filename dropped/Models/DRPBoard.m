@@ -384,12 +384,12 @@
 - (void)appendNewData:(NSData *)newData
 {
     NSInteger numberNewDataTurns = 0;
-    [newData getBytes:&numberNewDataTurns range:NSMakeRange(1 + 36, 1)];
+    [newData getBytes:&numberNewDataTurns range:NSMakeRange(1 + 36 + 2, 1)];
     
     if (numberNewDataTurns <= _playedWords.count) return;
     
     NSInteger numberNewTurns = numberNewDataTurns - _playedWords.count;
-    NSMutableData *mnewData = [NSMutableData dataWithData:[newData subdataWithRange:NSMakeRange(38, newData.length - 38)]];
+    NSMutableData *mnewData = [NSMutableData dataWithData:[newData subdataWithRange:NSMakeRange(40, newData.length - 40)]];
     
     for (NSInteger i = 0; i < numberNewDataTurns; i++) {
         if (i < numberNewDataTurns - numberNewTurns) {
@@ -402,6 +402,7 @@
             
             NSInteger turnLength = 3 + 3 * m + 4 * (j + k);
             [mnewData setData:[mnewData subdataWithRange:NSMakeRange(turnLength, mnewData.length - turnLength)]];
+            continue;
         }
         
         [self loadTurn:mnewData];

@@ -100,7 +100,9 @@
     DRPMatch *match = [self matchForMatchID:gkMatch.matchID];
     if (!match) return;
     
-    [match reloadMatchData];
+    [match reloadMatchDataWithCompletion:^(BOOL newTurns) {
+        // TODO: update the cell, yo
+    }];
 }
 
 #pragma mark UICollectionViewDataSource

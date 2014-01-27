@@ -190,6 +190,7 @@
     if (_match != prevMatch) {
         
         _renderedTurn = MAX(_match.currentTurn - 1, 0);
+        // tmp
         _renderedTurn = 0;
         
         [_boardViewController loadBoard:_match.board atTurn:_renderedTurn];
@@ -314,6 +315,15 @@
 
 - (void)receivedRemoteGameCenterTurn:(NSNotification *)notification
 {
+    GKTurnBasedMatch *gkMatch = notification.userInfo[@"gkMatch"];
+    if (![_match.gkMatch.matchID isEqualToString:gkMatch.matchID]) return;
+    
+    [_match reloadMatchDataWithCompletion:^(BOOL newTurns) {
+        if (newTurns) {
+            // ugh, this call needs to be better
+            [self dropPlayedWord:nil];
+        }
+    }];
 }
 
 - (void)dropPlayedWord:(DRPPlayedWord *)playedWord

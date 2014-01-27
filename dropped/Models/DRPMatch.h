@@ -31,7 +31,7 @@
 - (DRPPlayer *)localPlayer;
 - (DRPPlayer *)currentPlayer;
 
-- (void)reloadMatchData;
+- (void)reloadMatchDataWithCompletion:(void(^)(BOOL newTurns))completion;
 - (void)submitTurnForPositions:(NSArray *)positions;
 
 @end

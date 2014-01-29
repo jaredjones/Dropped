@@ -287,6 +287,8 @@
 
 - (NSArray *)dropPositions:(NSArray *)positions
 {
+    // TODO: make sure dropped tiles have appropriate appearce (mainly useful for playback)
+    
     NSMutableArray *droppedTiles = [[NSMutableArray alloc] init];
     
     for (DRPPosition *position in positions) {

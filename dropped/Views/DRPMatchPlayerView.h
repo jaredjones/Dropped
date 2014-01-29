@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "DRPPosition.h"
+#import "DRPCharacter.h"
 
 @class DRPPlayer;
 
@@ -15,5 +16,7 @@
 
 - (instancetype)initWithAlignment:(DRPDirection)alignment;
 - (void)observePlayer:(DRPPlayer *)player;
+
+- (void)setIsCurrentPlayer:(BOOL)isCurrentPlayer withColor:(DRPColor)color;
 
 @end

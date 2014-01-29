@@ -11,6 +11,7 @@
 #import "DRPCharacter.h"
 #import "DRPPlayedWord.h"
 #import "DRPCharacterHistogram.h"
+#import "DRPUtility.h"
 
 @interface DRPBoard ()
 
@@ -106,6 +107,28 @@
 - (DRPPlayedWord *)wordPlayedForTurn:(NSInteger)turn
 {
     return _playedWords[turn];
+}
+
+// Returns [leftColor, rightColor] (DRPColor cast as NSNumber) for turn
+- (NSArray *)multiplierColorsForTurn:(NSInteger)turn
+{
+    NSArray *multiplierPositions = _multiplierHistory[turn];
+    // TODO: make a charactersForPositions:forTurn: method
+    NSArray *multipliers = @[[self characterAtPosition:multiplierPositions[0] forTurn:turn],
+                             [self characterAtPosition:multiplierPositions[1] forTurn:turn]];
+    
+    NSNumber *color1 = @(((DRPCharacter *)multipliers[0]).color);
+    NSNumber *color2 = @(((DRPCharacter *)multipliers[1]).color);
+    
+    NSMutableArray *colors = [[NSMutableArray alloc] initWithObjects:color1, nil];
+    
+    if ( ((DRPPosition *)multiplierPositions[0]).i < ((DRPPosition *)multiplierPositions[1]).i) {
+        [colors addObject:color2];
+    } else {
+        [colors insertObject:color2 atIndex:0];
+    }
+    
+    return colors;
 }
 
 - (NSDictionary *)scores

@@ -16,6 +16,7 @@
 
 @property CAShapeLayer *strokeLayer, *glyphLayer;
 @property UIColor *color;
+@property BOOL hasWhiteBackground;
 
 @end
 
@@ -89,6 +90,7 @@ static NSMutableDictionary *glyphAdvancesCache;
     tile.enabled = YES;
     tile.selected = NO;
     tile.highlighted = NO;
+    tile.permaHighlighted = NO;
     [queuedTiles removeLastObject];
     return tile;
 }
@@ -108,21 +110,21 @@ static NSMutableDictionary *glyphAdvancesCache;
     _character = character;
     [self loadGlyphLayer];
     
-    // Load other stuff
-    // if (character.adjacentMultiplier) { ... }
-    if (character.adjacentMultiplier) {
-        _color = colorForColor(character.adjacentMultiplier.color);
-    } else {
-        _color = colorForColor(character.color);
-    }
-    
-    if (character.multiplier) {
-        self.backgroundColor = _color;
-        _glyphLayer.fillColor = [FRBSwatchist colorForKey:@"colors.white"].CGColor;
-    }
-    
     [self resetTargets];
     [self resetAppearence];
+}
+
+- (void)recalculateColor
+{
+    DRPColor colorCode;
+    if (_character.adjacentMultiplier) {
+        colorCode = _character.adjacentMultiplier.color;
+    } else {
+        colorCode = _character.color;
+    }
+    
+    _hasWhiteBackground = colorCode == DRPColorNil;
+    _color = colorForColor(colorCode);
 }
 
 - (CGFloat)strokeOpacity
@@ -130,6 +132,7 @@ static NSMutableDictionary *glyphAdvancesCache;
     return _strokeLayer.opacity;
 }
 
+// These methods are for setting properties of the layers without the implicit animations
 - (void)setStrokeOpacity:(CGFloat)opacity
 {
     CAKeyframeAnimation *anim = [CAKeyframeAnimation animationWithKeyPath:@"opacity"];
@@ -137,6 +140,15 @@ static NSMutableDictionary *glyphAdvancesCache;
     self.strokeLayer.opacity = opacity;
     anim.duration = 0;
     [_strokeLayer addAnimation:anim forKey:@"opacity"];
+}
+
+- (void)setGlyphColor:(UIColor *)color
+{
+    CAKeyframeAnimation *anim = [CAKeyframeAnimation animationWithKeyPath:@"fillColor"];
+    anim.values = @[(id)color.CGColor];
+    _glyphLayer.fillColor = color.CGColor;
+    anim.duration = 0;
+    [_glyphLayer addAnimation:anim forKey:@"fillColor"];
 }
 
 #pragma mark Touch Events
@@ -162,6 +174,10 @@ static NSMutableDictionary *glyphAdvancesCache;
     
     [_delegate tileWasDehighlighted:self];
     
+    if (self.permaHighlighted) {
+        self.selected = YES;
+    }
+    
     [self resetAppearence];
 }
 
@@ -184,20 +200,28 @@ static NSMutableDictionary *glyphAdvancesCache;
 
 - (void)resetAppearence
 {
+    [self recalculateColor];
+    
     // Stroke Opacity
-    if (self.highlighted || (self.selected && !_character.multiplier)) {
+    if (self.highlighted || self.permaHighlighted || (self.selected && !_character.multiplier)) {
         self.strokeOpacity = 1;
     } else {
         self.strokeOpacity = 0;
     }
     
     // Color
-    if (self.highlighted ||
+    // glyphColor is always white when the tile is colored
+    if (self.highlighted || self.permaHighlighted ||
         (self.selected && (_character.adjacentMultiplier.multiplierActive || (!self.enabled && _character.adjacentMultiplier))) ||
         _character.multiplier) {
         self.backgroundColor = _color;
+        if (!_hasWhiteBackground) {
+            self.glyphColor = [FRBSwatchist colorForKey:@"colors.white"];
+        }
+        
     } else {
         self.backgroundColor = [FRBSwatchist colorForKey:@"colors.white"];
+        self.glyphColor = [FRBSwatchist colorForKey:@"colors.black"];
     }
     
     // Transform

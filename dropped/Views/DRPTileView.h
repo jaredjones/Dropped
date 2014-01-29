@@ -16,7 +16,11 @@
 @property (nonatomic) DRPCharacter *character;
 @property (nonatomic) CGFloat strokeOpacity;
 @property DRPPosition *position;
+
+@property (nonatomic) BOOL permaHighlighted;
 @property (nonatomic) BOOL scaleCharacter;
+
+// TODO: need a perma-highlight option
 
 @property id<DRPTileDelegate> delegate;
 

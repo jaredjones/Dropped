@@ -21,6 +21,7 @@ static long const PrivateKVOContext;
 @property UILabel *score, *alias;
 
 @property DRPDirection alignment;
+@property DRPColor tileColor;
 
 @property DRPPlayer *player;
 
@@ -90,7 +91,6 @@ static long const PrivateKVOContext;
                 center;
             });
             
-            tile.enabled = NO;
             tile.selected = YES;
             [self addSubview:tile];
             tile;
@@ -167,12 +167,27 @@ static long const PrivateKVOContext;
                        
 - (DRPCharacter *)characterForAlias:(NSString *)alias
 {
-    return [DRPCharacter characterWithCharacter:[[alias substringToIndex:1] uppercaseString]];
+    return ({
+        DRPCharacter *character = [DRPCharacter characterWithCharacter:[[alias substringToIndex:1] uppercaseString]];
+        character.color = _tileColor;
+        character;
+    });
 }
 
 - (void)updatePlayerScore:(NSValue *)score
 {
     _score.text = [NSString stringWithFormat:@"%@", score];
+    // TODO: recenter more sensibly
+}
+
+- (void)setIsCurrentPlayer:(BOOL)isCurrentPlayer withColor:(DRPColor)color
+{
+    // Make sure to save the tile color so if _tile.character is changed the color stays the same
+    _tileColor = color;
+    
+    _tile.character.color = _tileColor;
+    _tile.permaHighlighted = isCurrentPlayer;
+    [_tile resetAppearence];
 }
 
 @end

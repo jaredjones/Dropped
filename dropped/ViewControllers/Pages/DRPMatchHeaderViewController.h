@@ -11,5 +11,6 @@
 @interface DRPMatchHeaderViewController : UIViewController
 
 - (void)observePlayers:(NSArray *)players;
+- (void)setCurrentPlayerTurn:(NSInteger)turn multiplierColors:(NSArray *)colors;
 
 @end

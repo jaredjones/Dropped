@@ -23,6 +23,7 @@
 - (DRPCharacter *)characterAtPosition:(DRPPosition *)position;
 - (NSString *)wordForPositions:(NSArray *)positions forTurn:(NSInteger)turn;
 - (NSString *)wordForPositions:(NSArray *)positions;
+- (NSArray *)multiplierColorsForTurn:(NSInteger)turn;
 
 - (DRPPlayedWord *)wordPlayedForTurn:(NSInteger)turn;
 - (NSDictionary *)scores;

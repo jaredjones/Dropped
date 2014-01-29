@@ -150,4 +150,12 @@
     }
 }
 
+- (void)setCurrentPlayerTurn:(NSInteger)turn multiplierColors:(NSArray *)colors
+{
+    for (NSInteger i = 0; i < 2; i++) {
+        DRPMatchPlayerView *view = _playerViews[i];
+        [view setIsCurrentPlayer:i == turn withColor:[colors[i] integerValue]];
+    }
+}
+
 @end

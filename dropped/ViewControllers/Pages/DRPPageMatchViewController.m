@@ -14,6 +14,7 @@
 #import "DRPMatchHeaderViewController.h"
 
 #import "DRPMatch.h"
+#import "DRPPlayer.h"
 #import "DRPBoard.h"
 #import "DRPPlayedWord.h"
 
@@ -184,25 +185,16 @@
     DRPMatch *prevMatch = _match;
     _match = userInfo[@"match"];
     
-    // tmp
-    prevMatch = nil;
-    
     if (_match != prevMatch) {
-        
-        _renderedTurn = MAX(_match.currentTurn - 1, 0);
-        // tmp
-        _renderedTurn = 0;
-        
-        [_boardViewController loadBoard:_match.board atTurn:_renderedTurn];
-        [_currentWordView setTurnsLeft:26 - _match.currentTurn];
-        
         [_headerViewController observePlayers:_match.players];
-        
-    } else {
-        // TODO: fast-forward to current turn
-        [_currentWordView setTurnsLeft:26 - _match.currentTurn];
-        
     }
+    
+    // Fast forward to current turn
+    _renderedTurn = MAX(_match.currentTurn - 1, 0);
+    
+    [_boardViewController loadBoard:_match.board atTurn:_renderedTurn];
+    [_headerViewController setCurrentPlayerTurn:_match.currentPlayer.turn multiplierColors:[_match.board multiplierColorsForTurn:_match.currentTurn]];
+    [_currentWordView setTurnsLeft:26 - _match.currentTurn];
 }
 
 - (void)didMoveToCurrent
@@ -332,6 +324,7 @@
     [self advanceRenderedTurnToTurn:_match.currentTurn];
     
     // TODO: this is creaky, incorporate into advanceRenderedTurnToTurn:
+    [_headerViewController setCurrentPlayerTurn:_match.currentPlayer.turn multiplierColors:[_match.board multiplierColorsForTurn:_match.currentTurn]];
     [_currentWordView setTurnsLeft:26 - _match.currentTurn];
     [_currentWordView cycleOutTiles];
     [self resetCues];

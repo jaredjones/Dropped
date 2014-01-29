@@ -198,6 +198,8 @@
     [_boardViewController loadBoard:_match.board atTurn:_renderedTurn];
     [_headerViewController setCurrentPlayerTurn:_match.currentPlayer.turn multiplierColors:[_match.board multiplierColorsForTurn:_match.currentTurn]];
     [_currentWordView setTurnsLeft:26 - _match.currentTurn];
+    
+    // TODO: reload player aliases
 }
 
 - (void)didMoveToCurrent

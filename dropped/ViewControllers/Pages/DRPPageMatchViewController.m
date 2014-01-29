@@ -191,6 +191,9 @@
     
     // Fast forward to current turn
     _renderedTurn = MAX(_match.currentTurn - 1, 0);
+    if ([FRBSwatchist boolForKey:@"debug.playBackEntireMatch"]) {
+        _renderedTurn = 0;
+    }
     
     [_boardViewController loadBoard:_match.board atTurn:_renderedTurn];
     [_headerViewController setCurrentPlayerTurn:_match.currentPlayer.turn multiplierColors:[_match.board multiplierColorsForTurn:_match.currentTurn]];

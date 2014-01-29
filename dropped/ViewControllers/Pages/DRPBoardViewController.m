@@ -210,10 +210,24 @@
 
 - (void)dropPlayedWord:(DRPPlayedWord *)playedWord fromTurn:(NSInteger)turn withCompletion:(void(^)())completion
 {
-    // First, drop positions
+    // Explicitly set activeMultipliers to active (since this is intentially not done when loaded)
+    NSMutableArray *multiplierCharacters = [[NSMutableArray alloc] init];
+    for (DRPPosition *position in playedWord.multipliers) {
+        DRPTileView *tile = _tiles[position];
+        tile.character.multiplierActive = YES;
+        [multiplierCharacters addObject:tile.character];
+    }
+    
+    // Drop selected positions
     NSArray *droppedTiles = [self dropPositions:[[playedWord.positions arrayByAddingObjectsFromArray:playedWord.multipliers] arrayByAddingObjectsFromArray:playedWord.additionalMultipliers]];
     
+    // However, we have to set multiplierActive back to NO so it doesn't interfere with subsequent playbacks
+    for (DRPCharacter *multiplier in multiplierCharacters) {
+        multiplier.multiplierActive = NO;
+    }
+    
     // Move everything else down
+    NSMutableArray *transitioningTiles = [[NSMutableArray alloc] init];
     NSMutableDictionary *diff = [[NSMutableDictionary alloc] initWithDictionary:playedWord.diff];
     
     for (NSInteger i = 0; i < 6; i++) {
@@ -230,6 +244,7 @@
             
             if (![start isEqual:end]) {
                 [self transitionTile:tile toPosition:end withCompletion:nil];
+                [transitioningTiles addObject:tile];
             }
         }
     }
@@ -250,6 +265,14 @@
     void (^tileTransitionCompletion)() = ^{
         numberOfTilesWithCompletedAnimations++;
         if (numberOfTilesWithCompletedAnimations == playedWord.tileCount) {
+            
+            // Reset the appearence of all transitioning tiles
+            for (DRPTileView *tile in transitioningTiles) {
+                tile.selected = NO;
+                tile.userInteractionEnabled = YES;
+                [tile resetAppearence];
+            }
+            
             // Now safe to run the completion handler
             if (completion) {
                 completion();
@@ -274,6 +297,7 @@
             _tiles[end] = tile;
             
             [self transitionTile:tile toPosition:end withCompletion:tileTransitionCompletion];
+            [transitioningTiles addObject:tile];
         }
     }
     
@@ -287,7 +311,7 @@
 
 - (NSArray *)dropPositions:(NSArray *)positions
 {
-    // TODO: make sure dropped tiles have appropriate appearce (mainly useful for playback)
+    // TODO: make sure dropped tiles have appropriate appearence (mainly useful for playback)
     
     NSMutableArray *droppedTiles = [[NSMutableArray alloc] init];
     
@@ -350,10 +374,6 @@
     [UIView animateWithDuration:duration delay:delay options:0 animations:^{
         tile.center = dest;
     } completion:^(BOOL finished) {
-        tile.selected = NO;
-        tile.userInteractionEnabled = YES;
-        [tile resetAppearence];
-        
         // completion is passed in from dropPlayedWord:withCompletion: and
         // updates a counter of the number of tiles that have finished
         if (completion) {

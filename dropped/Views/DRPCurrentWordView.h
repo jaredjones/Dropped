@@ -7,18 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DRPPageMatchViewController.h"
+
+@class DRPCharacter;
 
 @interface DRPCurrentWordView : UIView
 
-@property id<DRPCurrentWordViewDelegate> delegate;
-
 - (void)characterWasHighlighted:(DRPCharacter *)character;
 - (void)characterWasDehighlighted:(DRPCharacter *)character;
-- (void)characterRemovedFromCurrentWord:(DRPCharacter *)character;
-
-- (void)setTurnsLeft:(NSInteger)turnsLeft;
-- (void)cycleOutTiles;
-- (void)recenter;
+- (void)characterWasRemoved:(DRPCharacter *)character;
 
 @end

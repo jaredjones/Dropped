@@ -156,9 +156,19 @@
 
 #pragma mark Match Data
 
+- (NSInteger)numberOfTurns
+{
+    return 26;
+}
+
 - (NSInteger)currentTurn
 {
     return _board.currentTurn;
+}
+
+- (NSInteger)turnsLeft
+{
+    return self.numberOfTurns - self.currentTurn;
 }
 
 #pragma mark Player
@@ -175,6 +185,11 @@
 - (DRPPlayer *)currentPlayer
 {
     return _players[_board.currentTurn % 2];
+}
+
+- (BOOL)isLocalPlayerTurn
+{
+    return self.currentPlayer == self.localPlayer;
 }
 
 - (DRPPlayer *)playerForPlayerID:(NSString *)playerID

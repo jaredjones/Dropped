@@ -10,8 +10,8 @@
 #import "DRPMainViewController.h"
 
 #import "DRPBoardViewController.h"
-#import "DRPCurrentWordView.h"
 #import "DRPMatchHeaderViewController.h"
+#import "DRPMatchCurrentWordViewController.h"
 
 #import "DRPMatch.h"
 #import "DRPPlayer.h"
@@ -29,7 +29,7 @@
 
 @property DRPMatchHeaderViewController *headerViewController;
 @property DRPBoardViewController *boardViewController;
-@property DRPCurrentWordView *currentWordView;
+@property DRPMatchCurrentWordViewController *currentWordViewController;
 
 @property BOOL isCurrentWordValid;
 
@@ -70,7 +70,7 @@
     [super viewDidLoad];
     
     [self loadBoardViewController];
-    [self loadCurrentWordView];
+    [self loadCurrentWordViewController];
     [self.scrollView bringSubviewToFront:_boardViewController.view];
     [self loadHeaderViewController];
 }
@@ -80,7 +80,7 @@
     [super viewWillLayoutSubviews];
     
     [self layoutBoardViewController];
-    [self layoutCurrentWordView];
+    [self layoutCurrentWordViewController];
 }
 
 - (void)loadScrollView
@@ -133,36 +133,43 @@
     });
 }
 
-- (void)loadCurrentWordView
+- (void)loadCurrentWordViewController
 {
-    _currentWordView = [[DRPCurrentWordView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"])];
-    _currentWordView.delegate = self;
-    [self.scrollView addSubview:_currentWordView];
+    _currentWordViewController = [[DRPMatchCurrentWordViewController alloc] initWithNibName:nil bundle:nil];
+    
+    [_currentWordViewController willMoveToParentViewController:self];
+    [self addChildViewController:_currentWordViewController];
+    
+    [self layoutCurrentWordViewController];
+    [self.scrollView addSubview:_currentWordViewController.view];
 }
 
-- (void)layoutCurrentWordView
+- (void)layoutCurrentWordViewController
 {
-    _currentWordView.bounds = CGRectMake(0, 0, self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"]);
-    _currentWordView.center = ({
-        CGFloat height = _currentWordView.frame.size.height;
-        CGPoint center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMaxY(_boardViewController.view.frame) - height / 2);
-        
-        if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
-            if (runningPhone5()) {
-                center.y += 68;
+    // TODO: might be important: [_currentWordView recenter];
+    
+    [_currentWordViewController layoutWithFrame:({
+        CGSize size = CGSizeMake(self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"]);
+        CGPoint center = ({
+            CGPoint center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMaxY(_boardViewController.view.frame) - size.height / 2);
+            
+            if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
+                if (runningPhone5()) {
+                    center.y += 68;
+                } else {
+                    center.y += 53;
+                }
             } else {
-                center.y += 53;
+                if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
+                    center.y += 150;
+                } else {
+                    center.y += 102;
+                }
             }
-        } else {
-            if (UIInterfaceOrientationIsPortrait(self.interfaceOrientation)) {
-                center.y += 150;
-            } else {
-                center.y += 102;
-            }
-        }
-        center;
-    });
-    [_currentWordView recenter];
+            center;
+        });
+        CGRectMake(center.x - size.width / 2, center.y - size.height / 2, size.width, size.height);
+    })];
 }
 
 #pragma mark DRPPageViewController
@@ -172,7 +179,6 @@
     [super willMoveToCurrentWithUserInfo:userInfo];
     
     // Clear out played words and selected tiles
-    [_currentWordView cycleOutTiles];
     _isCurrentWordValid = NO;
     // TODO: unselect any tiles previously selected
     
@@ -197,7 +203,7 @@
     
     [_boardViewController loadBoard:_match.board atTurn:_renderedTurn];
     [_headerViewController setCurrentPlayerTurn:_match.currentPlayer.turn multiplierColors:[_match.board multiplierColorsForTurn:_match.currentTurn]];
-    [_currentWordView setTurnsLeft:26 - _match.currentTurn];
+    [_currentWordViewController setTurnsLeft:_match.turnsLeft isLocalTurn:_match.isLocalPlayerTurn fromDirection:DRPDirectionLeft];
     
     // TODO: reload player aliases
 }
@@ -262,27 +268,27 @@
 
 #pragma mark DRPBoardViewControllerDelegate
 
-- (void)characterAddedToCurrentWord:(DRPCharacter *)character
+- (void)characterWasAddedToCurrentWord:(DRPCharacter *)character
 {
     _isCurrentWordValid = [self validateCurrentWord];
     [self resetCues];
 }
 
-- (void)characterRemovedFromCurrentWord:(DRPCharacter *)character
+- (void)characterWasRemovedFromCurrentWord:(DRPCharacter *)character
 {
     _isCurrentWordValid = [self validateCurrentWord];
     [self resetCues];
-    [_currentWordView characterRemovedFromCurrentWord:character];
+    [_currentWordViewController characterWasRemoved:character fromDirection:DRPDirectionLeft];
 }
 
 - (void)characterWasHighlighted:(DRPCharacter *)character
 {
-    [_currentWordView characterWasHighlighted:character];
+    [_currentWordViewController characterWasHighlighted:character fromDirection:DRPDirectionLeft];
 }
 
 - (void)characterWasDehighlighted:(DRPCharacter *)character
 {
-    [_currentWordView characterWasDehighlighted:character];
+    [_currentWordViewController characterWasDehighlighted:character];
 }
 
 - (BOOL)validateCurrentWord
@@ -290,16 +296,16 @@
     return _boardViewController.currentPositions.count >=3 && [DRPDictionary isValidWord:_boardViewController.currentWord];
 }
 
-#pragma mark DRPCurrentWordViewDelegate
+#pragma mark DRPCurrentWordViewControllerDelegate
 
-- (void)currentWordViewTapped
+- (void)currentWordWasTapped
 {
     if (_isCurrentWordValid) {
         [_match submitTurnForPositions:_boardViewController.currentPositions];
     }
 }
 
-- (void)currentWordViewSwiped
+- (void)currentWordWasSwiped
 {
     [_boardViewController deselectCurrentWord];
     [self resetCues];
@@ -330,8 +336,7 @@
     
     // TODO: this is creaky, incorporate into advanceRenderedTurnToTurn:
     [_headerViewController setCurrentPlayerTurn:_match.currentPlayer.turn multiplierColors:[_match.board multiplierColorsForTurn:_match.currentTurn]];
-    [_currentWordView setTurnsLeft:26 - _match.currentTurn];
-    [_currentWordView cycleOutTiles];
+    [_currentWordViewController setTurnsLeft:_match.turnsLeft isLocalTurn:_match.isLocalPlayerTurn fromDirection:DRPDirectionLeft];
     [self resetCues];
 }
 

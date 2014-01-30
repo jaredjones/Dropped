@@ -148,7 +148,7 @@
 {
     // add character to current word, update delegate
     _currentPlayedWord.positions = [_currentPlayedWord.positions arrayByAddingObject:tile.position];
-    [_delegate characterAddedToCurrentWord:tile.character];
+    [_delegate characterWasAddedToCurrentWord:tile.character];
 }
 
 - (void)tileWasDeselected:(DRPTileView *)tile
@@ -170,7 +170,7 @@
     
     // remove character from current word, update delegate
     _currentPlayedWord.positions = [_currentPlayedWord.positions arrayByRemovingObject:tile.position];
-    [_delegate characterRemovedFromCurrentWord:tile.character];
+    [_delegate characterWasRemovedFromCurrentWord:tile.character];
 }
 
 #pragma mark Current Word

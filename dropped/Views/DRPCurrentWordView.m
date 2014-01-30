@@ -23,19 +23,6 @@
 @property UITapGestureRecognizer *tapGestureRecognizer;
 @property UIPanGestureRecognizer *panGestureRecognizer;
 
-@property UIView *tileContainer;
-@property UILabel *turnsLeftLabel;
-@property (nonatomic) UIView *currentContainer;
-
-// When swiping away the current word, the tiles need
-// to be cleared at the end of the animation.
-// However, a new word can be started before the animation
-// completes. In that case, the tiles need to be cleared
-// then.
-// This flag stores whether the tiles are "dirty" so
-// they can be cleared in the appropriate places.
-@property BOOL tileContainerNeedsClearing;
-
 @end
 
 @implementation DRPCurrentWordView
@@ -44,62 +31,28 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        [self loadTurnsLeftLabel];
-        [self loadTileContainer];
+        _tiles = [[NSMutableArray alloc] init];
         [self loadGestureRecognizers];
         
-        _currentContainer = _turnsLeftLabel;
         
-        // TODO: this view looks like crap when tapping on tiles rapidly
-        // TODO: scroll performance tanks once there are >= 3 tiles
+        self.backgroundColor = [UIColor orangeColor];
     }
     return self;
 }
 
-- (void)loadTileContainer
-{
-    _tileContainer = [[UIView alloc] initWithFrame:self.leftFrame];
-    [self addSubview:_tileContainer];
-    
-    _tiles = [[NSMutableArray alloc] init];
-}
-
-- (void)loadTurnsLeftLabel
-{
-    _turnsLeftLabel = [[UILabel alloc] initWithFrame:self.bounds];
-    _turnsLeftLabel.userInteractionEnabled = YES;
-    
-    _turnsLeftLabel.font = [FRBSwatchist fontForKey:@"board.tileFont"];
-    _turnsLeftLabel.textColor = [FRBSwatchist colorForKey:@"colors.black"];
-    
-    _turnsLeftLabel.textAlignment = NSTextAlignmentCenter;
-    
-    [self addSubview:_turnsLeftLabel];
-}
-
 - (void)loadGestureRecognizers
 {
-    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    [self addGestureRecognizer:_tapGestureRecognizer];
-    
-    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
-    [self addGestureRecognizer:_panGestureRecognizer];
-}
-
-
-- (void)setTurnsLeft:(NSInteger)turnsLeft
-{
-    _turnsLeftLabel.text = [NSString stringWithFormat:@"%ld turns left", (long)turnsLeft];
+//    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+//    [self addGestureRecognizer:_tapGestureRecognizer];
+//    
+//    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+//    [self addGestureRecognizer:_panGestureRecognizer];
 }
 
 #pragma mark DRPBoardViewControllerDelegate
 
 - (void)characterWasHighlighted:(DRPCharacter *)character
 {
-    if (_tileContainerNeedsClearing) {
-        [self removeAllCharactersFromCurrentWord];
-    }
-    
     DRPTileView *tile = [self tileForCharacter:character];
     
     if (!tile) {
@@ -114,10 +67,9 @@
         tile.transform = CGAffineTransformIdentity;
         tile.center = [self centerForNewTile:tile];
         [_tiles addObject:tile];
-        [_tileContainer addSubview:tile];
+        [self addSubview:tile];
         
     } else {
-        [_tileContainer bringSubviewToFront:tile];
         tile.selected = YES;
         tile.highlighted = YES;
         [tile resetAppearence];
@@ -135,8 +87,6 @@
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
         [self repositionTiles];
     });
-    
-    [self setCurrentContainer:_tileContainer];
 }
 
 - (void)characterWasDehighlighted:(DRPCharacter *)character
@@ -149,7 +99,7 @@
     [self repositionTiles];
 }
 
-- (void)characterRemovedFromCurrentWord:(DRPCharacter *)character
+- (void)characterWasRemoved:(DRPCharacter *)character
 {
     DRPTileView *removedTile = [self tileForCharacter:character];
     
@@ -157,11 +107,6 @@
         [removedTile removeFromSuperview];
         [_tiles removeObject:removedTile];
         [self repositionTiles];
-        
-        // Last tile removed, move back to _turnsLeftLabel
-        if (_tiles.count == 0) {
-            [self cycleOutTiles];
-        }
     }
 }
 
@@ -172,7 +117,6 @@
     }
     [_tiles removeAllObjects];
     _wordWidth = 0;
-    _tileContainerNeedsClearing = NO;
 }
 
 - (DRPTileView *)tileForCharacter:(DRPCharacter *)character
@@ -189,56 +133,18 @@
     return nil;
 }
 
-#pragma mark Containers
-
-- (CGRect)leftFrame
-{
-    return CGRectOffset(self.bounds, -self.bounds.size.width, 0);
-}
-
-- (CGRect)rightFrame
-{
-    return CGRectOffset(self.bounds, self.bounds.size.width, 0);
-}
-
-- (void)setCurrentContainer:(UIView *)currentContainer
-{
-    [self setCurrentContainer:currentContainer withVelocity:1 / 50.0];
-}
-
-- (void)setCurrentContainer:(UIView *)currentContainer withVelocity:(CGFloat)velocity
-{
-    if (_currentContainer == currentContainer) return;
-    
-    UIView *old = _currentContainer;
-    _currentContainer = currentContainer;
-    if (!_currentContainer.hasAnimationsRunning) {
-        _currentContainer.frame = self.leftFrame;
-    }
-    
-    [self swipeAwayContainer:old withVelocity:velocity];
-    [self snapBackContainer:_currentContainer withVelocity:1];
-}
-
-- (void)cycleOutTiles
-{
-    if (_currentContainer == _tileContainer) {
-        [self setCurrentContainer:_turnsLeftLabel];
-    }
-}
-
 #pragma mark Repositioning Tiles
 
-// Called during orientation changes to make sure the current
-// container is properly centered
-- (void)recenter
-{
-    if (_currentContainer == _tileContainer) {
-        [self repositionTiles];
-    } else {
-        _turnsLeftLabel.center = rectCenter(self.bounds);
-    }
-}
+//// Called during orientation changes to make sure the current
+//// container is properly centered
+//- (void)recenter
+//{
+//    if (_currentContainer == _tileContainer) {
+//        [self repositionTiles];
+//    } else {
+//        _turnsLeftLabel.center = rectCenter(self.bounds);
+//    }
+//}
 
 // Animates repositioning of tiles in _tileContainer (from adding/removing/selecting a character)
 - (void)repositionTiles
@@ -312,91 +218,38 @@
                        self.bounds.size.height / 2);
 }
 
-#pragma mark Animations
-
-// Following two methods deal with the swipeclears
-- (void)swipeAwayContainer:(UIView *)container withVelocity:(CGFloat)velocity
-{
-    CGRect destFrame = velocity < 0 ? self.leftFrame : self.rightFrame;
-    
-    [UIView animateWithDuration:0.4
-                          delay:0
-         usingSpringWithDamping:0.8
-          initialSpringVelocity:velocity * .05
-                        options:0
-                     animations:^{
-                         container.frame = destFrame;
-                     }
-                     completion:^(BOOL finished) {
-                         if (!finished) return;
-
-                         if (_tileContainerNeedsClearing) {
-                            [self removeAllCharactersFromCurrentWord];
-                         }
-
-                         if (_currentContainer != container) {
-                             container.hidden = YES;
-                         }
-                     }];
-    
-    if (container == _tileContainer) {
-        _tileContainerNeedsClearing = YES;
-    }
-}
-
-- (void)snapBackContainer:(UIView *)container withVelocity:(CGFloat)velocity
-{
-    if (container.hasAnimationsRunning) {
-        [container setPositionToPresentationPosition];
-        [container.layer removeAllAnimations];
-    }
-    container.hidden = NO;
-    
-    [UIView animateWithDuration:0.4
-                          delay:0
-         usingSpringWithDamping:0.8
-          initialSpringVelocity:velocity * 0.001
-                        options:0
-                     animations:^{
-                         container.frame = self.bounds;
-                     }
-                     completion:^(BOOL finished) {
-                         if (!finished) return;
-                     }];
-}
-
 #pragma mark Touch Events
 
-- (void)handleTapGesture:(UITapGestureRecognizer *)gesture
-{
-    [_delegate currentWordViewTapped];
-}
-
-- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
-{
-    if (gesture.state == UIGestureRecognizerStateBegan) {
-        
-    } else if (gesture.state == UIGestureRecognizerStateChanged) {
-        CGPoint translation = [gesture translationInView:self];
-        _currentContainer.center = CGPointMake(self.bounds.size.width / 2 + translation.x, _currentContainer.center.y);
-        
-    } else if (gesture.state == UIGestureRecognizerStateEnded) {
-        
-        CGPoint velocity = [gesture velocityInView:self];
-        
-        if (_currentContainer == _turnsLeftLabel) {
-            // No swiping the _turnsLeftLabel
-            [self snapBackContainer:_turnsLeftLabel withVelocity:velocity.x];
-            
-        } else {
-            if (fabs(velocity.x) > 200) {
-                [self setCurrentContainer:_turnsLeftLabel withVelocity:velocity.x];
-                [_delegate currentWordViewSwiped];
-            } else {
-                [self snapBackContainer:_tileContainer withVelocity:velocity.x];
-            }
-        }
-    }
-}
+//- (void)handleTapGesture:(UITapGestureRecognizer *)gesture
+//{
+//    [_delegate currentWordViewTapped];
+//}
+//
+//- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
+//{
+//    if (gesture.state == UIGestureRecognizerStateBegan) {
+//        
+//    } else if (gesture.state == UIGestureRecognizerStateChanged) {
+//        CGPoint translation = [gesture translationInView:self];
+//        _currentContainer.center = CGPointMake(self.bounds.size.width / 2 + translation.x, _currentContainer.center.y);
+//        
+//    } else if (gesture.state == UIGestureRecognizerStateEnded) {
+//        
+//        CGPoint velocity = [gesture velocityInView:self];
+//        
+//        if (_currentContainer == _turnsLeftLabel) {
+//            // No swiping the _turnsLeftLabel
+//            [self snapBackContainer:_turnsLeftLabel withVelocity:velocity.x];
+//            
+//        } else {
+//            if (fabs(velocity.x) > 200) {
+//                [self setCurrentContainer:_turnsLeftLabel withVelocity:velocity.x];
+//                [_delegate currentWordViewSwiped];
+//            } else {
+//                [self snapBackContainer:_tileContainer withVelocity:velocity.x];
+//            }
+//        }
+//    }
+//}
 
 @end

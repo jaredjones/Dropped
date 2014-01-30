@@ -7,9 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DRPBoardViewController.h"
 
-@class DRPCharacter, DRPPosition;
+@class DRPTileView, DRPCharacter, DRPPosition;
+
+@protocol DRPTileViewDelegate
+
+- (void)tileWasHighlighted:(DRPTileView *)tile;
+- (void)tileWasDehighlighted:(DRPTileView *)tile;
+- (void)tileWasSelected:(DRPTileView *)tile;
+- (void)tileWasDeselected:(DRPTileView *)tile;
+
+@end
 
 @interface DRPTileView : UIControl <NSCopying>
 
@@ -22,7 +30,7 @@
 
 // TODO: need a perma-highlight option
 
-@property id<DRPTileDelegate> delegate;
+@property id<DRPTileViewDelegate> delegate;
 
 - (instancetype)initWithCharacter:(DRPCharacter *)character;
 

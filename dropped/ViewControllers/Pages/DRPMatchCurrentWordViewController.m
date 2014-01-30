@@ -11,7 +11,11 @@
 
 @interface DRPMatchCurrentWordViewController ()
 
+@property (nonatomic) DRPContainerType currentContainerType;
 @property UIView *currentContainer;
+@property NSMutableDictionary *containerCache;
+
+@property NSString *turnsLeftString;
 
 // TODO: make sure turnsLabel is vertically aligned
 
@@ -34,9 +38,9 @@
     // tmp
     self.view.backgroundColor = [UIColor yellowColor];
     
-    
-    _currentContainer = [[DRPCurrentWordView alloc] initWithFrame:self.currentFrame];
-    [self.view addSubview:_currentContainer];
+    _containerCache = [[NSMutableDictionary alloc] init];
+    _containerCache[@(DRPContainerTypeCurrentWord)] = [[NSMutableArray alloc] init];
+    _containerCache[@(DRPContainerTypeTurnsLeft)] = [[NSMutableArray alloc] init];
 }
 
 #pragma mark Layout
@@ -48,6 +52,7 @@
     self.currentContainer.frame = self.currentFrame;
 }
 
+// Container frames
 - (CGRect)currentFrame
 {
     return self.view.bounds;
@@ -63,10 +68,86 @@
     return CGRectOffset(self.currentFrame, self.view.bounds.size.width, 0);
 }
 
+// Convenience methods for calculating start/end frames for containers
+- (CGRect)frameFromDirection:(DRPDirection)direction
+{
+    
+    if (direction == DRPDirectionLeft) {
+        return self.leftFrame;
+    }
+    return self.rightFrame;
+}
+
+- (CGRect)frameToDirection:(DRPDirection)direction
+{
+    if (direction == DRPDirectionLeft) {
+        return self.rightFrame;
+    }
+    return self.leftFrame;
+}
+
+#pragma mark Containers
+
+- (DRPContainerType)containerTypeOfContainer:(UIView *)container
+{
+    if ([container isKindOfClass:[DRPCurrentWordView class]]) {
+        return DRPContainerTypeCurrentWord;
+    }
+    return DRPContainerTypeTurnsLeft;
+}
+
+- (UIView *)dequeueContainerWithType:(DRPContainerType)containerType
+{
+    UIView *container;
+    
+    if (((NSArray *)_containerCache[@(containerType)]).count) {
+        // Check caches first
+        container = ((NSMutableArray *)_containerCache[@(containerType)]).lastObject;
+        [((NSMutableArray *)_containerCache[@(containerType)]) removeLastObject];
+        
+    } else if (containerType == DRPContainerTypeTurnsLeft) {
+        container = [[UILabel alloc] initWithFrame:self.currentFrame];
+        
+        // TODO: UILabel properties
+        
+        ((UILabel *)container).text = _turnsLeftString;
+        container.backgroundColor = [UIColor greenColor];
+        
+    } else if (containerType == DRPContainerTypeCurrentWord) {
+        container = [[DRPCurrentWordView alloc] initWithFrame:self.currentFrame];
+        container.backgroundColor = [UIColor orangeColor];
+    }
+    
+    if (container) {
+        if (container.superview != self.view) {
+            [self.view addSubview:container];
+        }
+        [self.view bringSubviewToFront:container];
+    }
+    
+    return container;
+}
+
+// Implicitly runs animations between containers
+- (void)setCurrentContainerType:(DRPContainerType)containerType fromDirection:(DRPDirection)direction
+{
+    if (containerType == _currentContainerType) return;
+    
+    _currentContainerType = containerType;
+    
+    _currentContainer = [self dequeueContainerWithType:containerType];
+    [self.view bringSubviewToFront:_currentContainer];
+    
+    // TODO: run animation
+}
+
 #pragma mark Setting Content
 
 - (void)characterWasHighlighted:(DRPCharacter *)character fromDirection:(DRPDirection)direction
 {
+    if (_currentContainerType != DRPContainerTypeCurrentWord) {
+        [self setCurrentContainerType:DRPContainerTypeCurrentWord fromDirection:direction];
+    }
     [(DRPCurrentWordView *)_currentContainer characterWasHighlighted:character];
 }
 
@@ -82,12 +163,14 @@
 
 - (void)setCharacters:(NSArray *)characters fromDirection:(DRPDirection)direction
 {
-    
+    [self setCurrentContainerType:DRPContainerTypeCurrentWord fromDirection:direction];
+    // TODO: set the characters of the container
 }
 
 - (void)setTurnsLeft:(NSInteger)turnsLeft isLocalTurn:(BOOL)isLocalTurn fromDirection:(DRPDirection)direction
 {
-    
+    _turnsLeftString = [NSString stringWithFormat:@"%ld turns left", (long)turnsLeft];
+    [self setCurrentContainerType:DRPContainerTypeTurnsLeft fromDirection:direction];
 }
 
 #pragma mark Animations

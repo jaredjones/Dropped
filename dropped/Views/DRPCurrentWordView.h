@@ -16,4 +16,6 @@
 - (void)characterWasDehighlighted:(DRPCharacter *)character;
 - (void)characterWasRemoved:(DRPCharacter *)character;
 
+- (NSInteger)characterCount;
+
 @end

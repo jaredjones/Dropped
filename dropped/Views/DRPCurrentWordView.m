@@ -133,6 +133,11 @@
     return nil;
 }
 
+- (NSInteger)characterCount
+{
+    return _tiles.count;
+}
+
 #pragma mark Repositioning Tiles
 
 //// Called during orientation changes to make sure the current

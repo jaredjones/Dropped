@@ -11,6 +11,12 @@
 
 @class DRPCharacter;
 
+typedef NS_ENUM(NSInteger, DRPContainerType) {
+    DRPContainerTypeNil,
+    DRPContainerTypeTurnsLeft,
+    DRPContainerTypeCurrentWord
+};
+
 @protocol DRPCurrentWordViewControllerDelegate
 
 - (void)currentWordWasTapped;

@@ -279,6 +279,12 @@
     _isCurrentWordValid = [self validateCurrentWord];
     [self resetCues];
     [_currentWordViewController characterWasRemoved:character fromDirection:DRPDirectionLeft];
+    
+    // Explicitly transition to turnsLeft label
+    // Do this here so _boardViewController wins when there's a disparity in the current word
+    if (_boardViewController.currentPositions.count == 0) {
+        [_currentWordViewController setTurnsLeft:_match.turnsLeft isLocalTurn:_match.isLocalPlayerTurn fromDirection:DRPDirectionLeft];
+    }
 }
 
 - (void)characterWasHighlighted:(DRPCharacter *)character

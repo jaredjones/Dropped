@@ -8,6 +8,8 @@
 
 #import "DRPMatchCurrentWordViewController.h"
 #import "DRPCurrentWordView.h"
+#import "FRBSwatchist.h"
+#import "DRPUtility.h"
 
 @interface DRPMatchCurrentWordViewController ()
 
@@ -35,9 +37,6 @@
 {
     [super viewDidLoad];
     
-    // tmp
-    self.view.backgroundColor = [UIColor yellowColor];
-    
     _containerCache = [[NSMutableDictionary alloc] init];
     _containerCache[@(DRPContainerTypeCurrentWord)] = [[NSMutableArray alloc] init];
     _containerCache[@(DRPContainerTypeTurnsLeft)] = [[NSMutableArray alloc] init];
@@ -49,7 +48,16 @@
 {
     self.view.frame = frame;
     
-    self.currentContainer.frame = self.currentFrame;
+    // There are two different methods for relayouting out the
+    // currentContainer depending on the containerType.
+    // No clue why, but these methods "just work"
+    if (_currentContainerType == DRPContainerTypeCurrentWord) {
+        self.currentContainer.frame = self.currentFrame;
+        [(DRPCurrentWordView *)_currentContainer repositionTiles];
+        
+    } else if (_currentContainerType == DRPContainerTypeTurnsLeft) {
+        _currentContainer.center = rectCenter(self.view.bounds);
+    }
 }
 
 // Container frames
@@ -108,14 +116,14 @@
     } else if (containerType == DRPContainerTypeTurnsLeft) {
         container = [[UILabel alloc] initWithFrame:self.currentFrame];
         
-        // TODO: UILabel properties
+        ((UILabel *)container).font = [FRBSwatchist fontForKey:@"board.tileFont"];
+        ((UILabel *)container).textColor = [FRBSwatchist colorForKey:@"colors.black"];
+        ((UILabel *)container).textAlignment = NSTextAlignmentCenter;
         
         ((UILabel *)container).text = _turnsLeftString;
-        container.backgroundColor = [UIColor greenColor];
         
     } else if (containerType == DRPContainerTypeCurrentWord) {
         container = [[DRPCurrentWordView alloc] initWithFrame:self.currentFrame];
-        container.backgroundColor = [UIColor orangeColor];
     }
     
     if (container) {
@@ -128,17 +136,26 @@
     return container;
 }
 
+- (void)enqueueContainer:(UIView *)container withType:(DRPContainerType)containerType
+{
+    [(NSMutableArray *)_containerCache[@(containerType)] addObject:container];
+}
+
 // Implicitly runs animations between containers
 - (void)setCurrentContainerType:(DRPContainerType)containerType fromDirection:(DRPDirection)direction
 {
     if (containerType == _currentContainerType) return;
     
+    DRPContainerType prevContainerType = _currentContainerType;
     _currentContainerType = containerType;
     
+    UIView *prevContainer = _currentContainer;
     _currentContainer = [self dequeueContainerWithType:containerType];
     [self.view bringSubviewToFront:_currentContainer];
     
-    // TODO: run animation
+    // TODO: fix that velocity
+    [self animateOutContainer:prevContainer ofType:prevContainerType inDirection:direction withVelocity:0];
+    [self animateInContainer:_currentContainer ofType:_currentContainerType inDirection:direction withVelocity:0];
 }
 
 #pragma mark Setting Content
@@ -175,55 +192,37 @@
 
 #pragma mark Animations
 
-//// Following two methods deal with the swipeclears
-//- (void)swipeAwayContainer:(UIView *)container withVelocity:(CGFloat)velocity
-//{
-//    CGRect destFrame = velocity < 0 ? self.leftFrame : self.rightFrame;
-//    
-//    [UIView animateWithDuration:0.4
-//                          delay:0
-//         usingSpringWithDamping:0.8
-//          initialSpringVelocity:velocity * .05
-//                        options:0
-//                     animations:^{
-//                         container.frame = destFrame;
-//                     }
-//                     completion:^(BOOL finished) {
-//                         if (!finished) return;
-//                         
-//                         if (_tileContainerNeedsClearing) {
-//                             [self removeAllCharactersFromCurrentWord];
-//                         }
-//                         
-//                         if (_currentContainer != container) {
-//                             container.hidden = YES;
-//                         }
-//                     }];
-//    
-//    if (container == _tileContainer) {
-//        _tileContainerNeedsClearing = YES;
-//    }
-//}
-//
-//- (void)snapBackContainer:(UIView *)container withVelocity:(CGFloat)velocity
-//{
-//    if (container.hasAnimationsRunning) {
-//        [container setPositionToPresentationPosition];
-//        [container.layer removeAllAnimations];
-//    }
-//    container.hidden = NO;
-//    
-//    [UIView animateWithDuration:0.4
-//                          delay:0
-//         usingSpringWithDamping:0.8
-//          initialSpringVelocity:velocity * 0.001
-//                        options:0
-//                     animations:^{
-//                         container.frame = self.bounds;
-//                     }
-//                     completion:^(BOOL finished) {
-//                         if (!finished) return;
-//                     }];
-//}
+- (void)animateOutContainer:(UIView *)container ofType:(DRPContainerType)containerType inDirection:(DRPDirection)direction withVelocity:(CGFloat)velocity
+{
+    CGRect destFrame = [self frameToDirection:direction];
+    
+    [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:velocity * .05 options:0 animations:^{
+        container.frame = destFrame;
+    } completion:^(BOOL finished) {
+        container.hidden = YES;
+        
+        [self enqueueContainer:container withType:containerType];
+    }];
+}
+
+- (void)animateInContainer:(UIView *)container ofType:(DRPContainerType)containerType inDirection:(DRPDirection)direction withVelocity:(CGFloat)velocity
+{
+    container.frame = [self frameFromDirection:direction];
+    CGRect destFrame = self.currentFrame;
+    
+    container.hidden = NO;
+    
+    [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:velocity * 0.001 options:0 animations:^{
+        container.frame = destFrame;
+    } completion:^(BOOL finished) {
+        if (_currentContainer != container) {
+            // TODO: animate out, yo
+            
+        } else {
+            // Just make sure the container ended up where intended (for rotations during animation)
+            container.frame = self.currentFrame;
+        }
+    }];
+}
 
 @end

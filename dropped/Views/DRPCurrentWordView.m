@@ -33,9 +33,6 @@
     if (self) {
         _tiles = [[NSMutableArray alloc] init];
         [self loadGestureRecognizers];
-        
-        
-        self.backgroundColor = [UIColor orangeColor];
     }
     return self;
 }

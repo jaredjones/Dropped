@@ -18,4 +18,6 @@
 
 - (NSInteger)characterCount;
 
+- (void)repositionTiles;
+
 @end

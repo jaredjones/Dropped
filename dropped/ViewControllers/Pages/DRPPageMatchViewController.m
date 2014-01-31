@@ -146,8 +146,6 @@
 
 - (void)layoutCurrentWordViewController
 {
-    // TODO: might be important: [_currentWordView recenter];
-    
     [_currentWordViewController layoutWithFrame:({
         CGSize size = CGSizeMake(self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"]);
         CGPoint center = ({

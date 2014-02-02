@@ -7,9 +7,12 @@
 //
 
 #import "DRPDictionary.h"
+#import <FRBSwatchist/FRBSwatchist.h>
 #import <FMDatabase.h>
 #import <FMResultSet.h>
 #import <FMDatabaseAdditions.h>
+
+static const NSInteger _HTTPSuccessCode = 200;
 
 @interface DRPDictionary()
 
@@ -42,7 +45,7 @@
         _databasePath = [[NSBundle mainBundle] pathForResource:filePath ofType:ext inDirectory:dirPath];
         _database = [[FMDatabase alloc]initWithPath:_databasePath];
         
-        if (![_database openWithFlags:SQLITE_OPEN_READONLY]) {
+        if (![_database openWithFlags:SQLITE_OPEN_READWRITE]) {
             // FMDatabase doesn't throw exceptions when it can't
             // open the database, it just returns a BOOL
             return nil;
@@ -54,6 +57,38 @@
 - (void)dealloc
 {
     [_database close];
+}
+
++ (void)syncDictionary
+{
+    NSInteger versionNumber = [[[DRPDictionary sharedDictionary] database] intForQuery:@"SELECT version FROM settings"];
+    NSString *URLString = [NSString stringWithFormat:@"%@grabdicsql.php?i=%ld",
+                                            [FRBSwatchist stringForKey:@"debug.dictionaryDownloadURL"],
+                                            (long)versionNumber];
+    
+    NSMutableURLRequest *urlRequest = [[NSMutableURLRequest alloc]init];
+    [urlRequest setHTTPMethod:@"GET"];
+    [urlRequest setURL:[NSURL URLWithString:URLString]];
+    
+    [NSURLConnection sendAsynchronousRequest:urlRequest
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                               
+                               NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
+                               if ([httpResponse statusCode] != _HTTPSuccessCode ||
+                                                            [data length] == 0 ||
+                                                            connectionError != nil){
+                                   
+                                   NSLog(@"Dictionary Downloaded Failed with HTTP Status-Code:%ld\nURLPath:%@",
+                                         [httpResponse statusCode],
+                                         URLString);
+                               }else{
+                                   NSString *queryData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                                   //Keep this till we can verify that it's working
+                                   NSLog(@":%@", queryData);
+                                   [[DRPDictionary sharedDictionary].database executeQuery:queryData];
+                               }
+                           }];
 }
 
 + (BOOL)isValidWord:(NSString *)word

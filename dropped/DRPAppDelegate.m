@@ -11,6 +11,8 @@
 #import "DRPGameCenterInterface.h"
 #import "FRBSwatchist.h"
 
+#import "DRPDictionary.h"
+
 @interface DRPAppDelegate ()
 
 @property DRPMainViewController *mainViewController;
@@ -25,6 +27,8 @@
     
     [DRPGameCenterInterface authenticateLocalPlayer];
     [self loadSwatches];
+ 
+    [DRPDictionary syncDictionary];
     
     _mainViewController = [[DRPMainViewController alloc] initWithNibName:nil bundle:nil];
     

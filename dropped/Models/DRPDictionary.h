@@ -12,6 +12,8 @@
 
 + (DRPDictionary *)sharedDictionary;
 
++ (void)syncDictionary;
+
 + (BOOL)isValidWord:(NSString *)word;
 + (NSInteger)indexPositionForWord:(NSString *)word;
 

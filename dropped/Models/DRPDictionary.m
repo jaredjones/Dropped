@@ -76,12 +76,12 @@ static const NSInteger _HTTPSuccessCode = 200;
                                
                                NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse *)response;
                                if ([httpResponse statusCode] != _HTTPSuccessCode ||
-                                                            [data length] == 0 ||
                                                             connectionError != nil){
-                                   
                                    NSLog(@"Dictionary Downloaded Failed with HTTP Status-Code:%ld\nURLPath:%@",
                                          [httpResponse statusCode],
                                          URLString);
+                               }else if([data length] == 0){
+                                   //Either your version is too old for updating or your version is current
                                }else{
                                    NSString *queryData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                    //Keep this till we can verify that it's working

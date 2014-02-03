@@ -14,6 +14,7 @@
 
 + (void)syncDictionary;
 
++ (NSInteger)getDictionaryVersion;
 + (BOOL)isValidWord:(NSString *)word;
 + (NSInteger)indexPositionForWord:(NSString *)word;
 

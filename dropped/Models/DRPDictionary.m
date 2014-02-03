@@ -86,9 +86,50 @@ static const NSInteger _HTTPSuccessCode = 200;
                                    NSString *queryData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
                                    //Keep this till we can verify that it's working
                                    NSLog(@":%@", queryData);
-                                   [[DRPDictionary sharedDictionary].database executeQuery:queryData];
+                                   [DRPDictionary BURNINFUCKINGHELLFMDB:queryData];
+                                   //[[DRPDictionary sharedDictionary].database executeQuery:queryData];
                                }
                            }];
+}
+
+//https://github.com/ccgus/fmdb/issues/59
+//http://stackoverflow.com/questions/1711631/how-do-i-improve-the-performance-of-sqlite
+//THIS IS NEEDED BECAUSE FMDB IS A PIECE OF SHIT AND DOESNT ALLOW MULTIPLE QUERIES IN ON NSSTRING
+//THIS IS NOT A GOOD PERMANENT SOLUTION BECAUSE WE CAN'T UTALIZE EVERY SQL COMMAND. FUCK THIS DEPENDENCY
++ (void)BURNINFUCKINGHELLFMDB:(NSString*)sql
+{
+    NSArray * commands = [sql componentsSeparatedByString:@";"];
+    for(NSString * cmd in commands){
+        NSString * trimmedCmd = [cmd stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if ([trimmedCmd length] == 0){
+            // The last line of the schema will trigger this case.
+            continue;
+        }
+        
+        if ([trimmedCmd hasPrefix:@"SELECT"]){
+            FMResultSet *rs = [[DRPDictionary sharedDictionary].database executeQuery:cmd];
+            [rs next];
+        }
+        else if ([trimmedCmd hasPrefix:@"INSERT"]){
+            FMResultSet *rs = [[DRPDictionary sharedDictionary].database executeQuery:cmd];
+            [rs next];
+        }
+        else if ([trimmedCmd hasPrefix:@"UPDATE"]){
+            FMResultSet *rs = [[DRPDictionary sharedDictionary].database executeQuery:cmd];
+            [rs next];
+        }
+        if ([trimmedCmd hasPrefix:@"DELETE"]){
+            FMResultSet *rs = [[DRPDictionary sharedDictionary].database executeQuery:cmd];
+            [rs next];
+        }
+        if ([trimmedCmd hasPrefix:@"DROP"]){
+            FMResultSet *rs = [[DRPDictionary sharedDictionary].database executeQuery:cmd];
+            [rs next];
+        }
+        else{
+            [[DRPDictionary sharedDictionary].database executeQuery:cmd];
+        }
+    }
 }
 
 + (BOOL)isValidWord:(NSString *)word

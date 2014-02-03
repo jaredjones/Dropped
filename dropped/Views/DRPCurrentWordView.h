@@ -10,11 +10,22 @@
 
 @class DRPCharacter;
 
+@protocol DRPCurrentWordViewDelegate
+
+- (void)currentWordWasTapped;
+- (void)currentWordWasSwiped;
+
+@end
+
 @interface DRPCurrentWordView : UIView
+
+@property id<DRPCurrentWordViewDelegate> delegate;
 
 - (void)characterWasHighlighted:(DRPCharacter *)character;
 - (void)characterWasDehighlighted:(DRPCharacter *)character;
 - (void)characterWasRemoved:(DRPCharacter *)character;
+
+- (void)removeAllCharacters;
 
 - (NSInteger)characterCount;
 

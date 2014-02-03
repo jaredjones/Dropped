@@ -124,6 +124,7 @@
         
     } else if (containerType == DRPContainerTypeCurrentWord) {
         container = [[DRPCurrentWordView alloc] initWithFrame:self.currentFrame];
+        ((DRPCurrentWordView *)container).delegate = self;
     }
     
     if (container) {
@@ -139,6 +140,11 @@
 - (void)enqueueContainer:(UIView *)container withType:(DRPContainerType)containerType
 {
     [(NSMutableArray *)_containerCache[@(containerType)] addObject:container];
+    
+    // Clear tiles out of old DRPCurrentWordViews
+    if (containerType == DRPContainerTypeCurrentWord) {
+        [(DRPCurrentWordView *)container removeAllCharacters];
+    }
 }
 
 // Implicitly runs animations between containers
@@ -223,6 +229,19 @@
             container.frame = self.currentFrame;
         }
     }];
+}
+
+#pragma mark DRPCurrentWordView
+
+- (void)currentWordWasTapped
+{
+    [_delegate currentWordWasTapped];
+}
+
+- (void)currentWordWasSwiped
+{
+    [_delegate currentWordWasSwiped];
+    self.currentContainerType = DRPContainerTypeTurnsLeft;
 }
 
 @end

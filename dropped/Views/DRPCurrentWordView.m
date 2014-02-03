@@ -47,9 +47,9 @@
 
 - (void)loadGestureRecognizers
 {
-//    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-//    [self addGestureRecognizer:_tapGestureRecognizer];
-//    
+    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    [self addGestureRecognizer:_tapGestureRecognizer];
+    
 //    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
 //    [self addGestureRecognizer:_panGestureRecognizer];
 }
@@ -129,12 +129,14 @@
     }
 }
 
-- (void)removeAllCharactersFromCurrentWord
+- (void)removeAllCharacters
 {
     for (DRPTileView *tile in _tiles) {
         [tile removeFromSuperview];
     }
     [_tiles removeAllObjects];
+    [_animatingTiles removeAllObjects];
+    [_unselectedTiles removeAllObjects];
     _wordWidth = 0;
 }
 
@@ -253,11 +255,11 @@
 
 #pragma mark Touch Events
 
-//- (void)handleTapGesture:(UITapGestureRecognizer *)gesture
-//{
-//    [_delegate currentWordViewTapped];
-//}
-//
+- (void)handleTapGesture:(UITapGestureRecognizer *)gesture
+{
+    [_delegate currentWordWasTapped];
+}
+
 //- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
 //{
 //    if (gesture.state == UIGestureRecognizerStateBegan) {

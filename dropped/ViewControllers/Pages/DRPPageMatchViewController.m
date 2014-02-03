@@ -136,6 +136,7 @@
 - (void)loadCurrentWordViewController
 {
     _currentWordViewController = [[DRPMatchCurrentWordViewController alloc] initWithNibName:nil bundle:nil];
+    _currentWordViewController.delegate = self;
     
     [_currentWordViewController willMoveToParentViewController:self];
     [self addChildViewController:_currentWordViewController];

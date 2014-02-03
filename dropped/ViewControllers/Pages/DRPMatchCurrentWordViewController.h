@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "DRPPosition.h"
+#import "DRPCurrentWordView.h"
 
 @class DRPCharacter;
 
@@ -24,7 +25,9 @@ typedef NS_ENUM(NSInteger, DRPContainerType) {
 
 @end
 
-@interface DRPMatchCurrentWordViewController : UIViewController
+@interface DRPMatchCurrentWordViewController : UIViewController <DRPCurrentWordViewDelegate>
+
+@property id<DRPCurrentWordViewControllerDelegate> delegate;
 
 - (void)layoutWithFrame:(CGRect)frame;
 

@@ -150,6 +150,11 @@
 // Implicitly runs animations between containers
 - (void)setCurrentContainerType:(DRPContainerType)containerType fromDirection:(DRPDirection)direction
 {
+    [self setCurrentContainerType:containerType fromDirection:direction withVelocity:0];
+}
+
+- (void)setCurrentContainerType:(DRPContainerType)containerType fromDirection:(DRPDirection)direction withVelocity:(CGFloat)velocity
+{
     if (containerType == _currentContainerType) return;
     
     DRPContainerType prevContainerType = _currentContainerType;
@@ -160,8 +165,8 @@
     [self.view bringSubviewToFront:_currentContainer];
     
     // TODO: fix that velocity
-    [self animateOutContainer:prevContainer ofType:prevContainerType inDirection:direction withVelocity:0];
-    [self animateInContainer:_currentContainer ofType:_currentContainerType inDirection:direction withVelocity:0];
+    [self animateOutContainer:prevContainer ofType:prevContainerType inDirection:direction withVelocity:velocity];
+    [self animateInContainer:_currentContainer ofType:_currentContainerType inDirection:direction withVelocity:velocity];
 }
 
 #pragma mark Setting Content
@@ -214,17 +219,18 @@
 - (void)animateInContainer:(UIView *)container ofType:(DRPContainerType)containerType inDirection:(DRPDirection)direction withVelocity:(CGFloat)velocity
 {
     container.frame = [self frameFromDirection:direction];
+    [self animateInContainer:container ofType:containerType withVelocity:velocity];
+}
+
+- (void)animateInContainer:(UIView *)container ofType:(DRPContainerType)containerType withVelocity:(CGFloat)velocity
+{
     CGRect destFrame = self.currentFrame;
-    
     container.hidden = NO;
     
     [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:velocity * 0.001 options:0 animations:^{
         container.frame = destFrame;
     } completion:^(BOOL finished) {
-        if (_currentContainer != container) {
-            // TODO: animate out, yo
-            
-        } else {
+        if (_currentContainer == container) {
             // Just make sure the container ended up where intended (for rotations during animation)
             container.frame = self.currentFrame;
         }
@@ -238,10 +244,25 @@
     [_delegate currentWordWasTapped];
 }
 
-- (void)currentWordWasSwiped
+- (void)currentWordWasSwipedWithVelocity:(CGFloat)velocity
 {
     [_delegate currentWordWasSwiped];
-    self.currentContainerType = DRPContainerTypeTurnsLeft;
+    
+    DRPDirection direction;
+    if (velocity < 0) {
+        direction = DRPDirectionRight;
+    } else if (velocity > 0) {
+        direction = DRPDirectionLeft;
+    } else {
+        // TODO: get proper player direction
+        direction = DRPDirectionLeft;
+    }
+    [self setCurrentContainerType:DRPContainerTypeTurnsLeft fromDirection:direction withVelocity:fabs(velocity)];
+}
+
+- (void)currentWordSwipeFailedWithVelocity:(CGFloat)velocity
+{
+    [self animateInContainer:_currentContainer ofType:_currentContainerType withVelocity:fabs(velocity)];
 }
 
 @end

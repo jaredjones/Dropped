@@ -13,7 +13,8 @@
 @protocol DRPCurrentWordViewDelegate
 
 - (void)currentWordWasTapped;
-- (void)currentWordWasSwiped;
+- (void)currentWordWasSwipedWithVelocity:(CGFloat)velocity;
+- (void)currentWordSwipeFailedWithVelocity:(CGFloat)velocity;
 
 @end
 

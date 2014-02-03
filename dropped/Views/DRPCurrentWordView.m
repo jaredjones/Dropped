@@ -50,8 +50,8 @@
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [self addGestureRecognizer:_tapGestureRecognizer];
     
-//    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
-//    [self addGestureRecognizer:_panGestureRecognizer];
+    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    [self addGestureRecognizer:_panGestureRecognizer];
 }
 
 #pragma mark DRPBoardViewControllerDelegate
@@ -260,31 +260,29 @@
     [_delegate currentWordWasTapped];
 }
 
-//- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
-//{
-//    if (gesture.state == UIGestureRecognizerStateBegan) {
-//        
-//    } else if (gesture.state == UIGestureRecognizerStateChanged) {
-//        CGPoint translation = [gesture translationInView:self];
-//        _currentContainer.center = CGPointMake(self.bounds.size.width / 2 + translation.x, _currentContainer.center.y);
-//        
-//    } else if (gesture.state == UIGestureRecognizerStateEnded) {
-//        
-//        CGPoint velocity = [gesture velocityInView:self];
-//        
-//        if (_currentContainer == _turnsLeftLabel) {
-//            // No swiping the _turnsLeftLabel
-//            [self snapBackContainer:_turnsLeftLabel withVelocity:velocity.x];
-//            
-//        } else {
-//            if (fabs(velocity.x) > 200) {
-//                [self setCurrentContainer:_turnsLeftLabel withVelocity:velocity.x];
-//                [_delegate currentWordViewSwiped];
-//            } else {
-//                [self snapBackContainer:_tileContainer withVelocity:velocity.x];
-//            }
-//        }
-//    }
-//}
+- (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
+{
+    if (gesture.state == UIGestureRecognizerStateBegan) {
+        
+    } else if (gesture.state == UIGestureRecognizerStateChanged) {
+        CGPoint translation = [gesture translationInView:self];
+        self.frame = ({
+            CGRect frame = self.frame;
+            frame.origin.x = translation.x;
+            frame;
+        });
+        
+    } else if (gesture.state == UIGestureRecognizerStateEnded) {
+        
+        CGPoint velocity = [gesture velocityInView:self];
+        
+        // TODO: crickey, this is twitchy
+        if (fabs(velocity.x) > 200) {
+            [_delegate currentWordWasSwipedWithVelocity:velocity.x];
+        } else {
+            [_delegate currentWordSwipeFailedWithVelocity:velocity.x];
+        }
+    }
+}
 
 @end

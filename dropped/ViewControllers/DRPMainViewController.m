@@ -46,7 +46,7 @@
     [super viewDidLoad];
     
     [DRPTransition setReferenceViewForUIDynamics:self.view];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [FRBSwatchist colorForKey:@"colors.white"];
 }
 
 

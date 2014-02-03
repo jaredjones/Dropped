@@ -67,7 +67,7 @@
                                                                 attributes:@{NSFontAttributeName : [FRBSwatchist fontForKey:@"page.cueFont"]}];
     
     [_signInButton setAttributedTitle:title forState:UIControlStateNormal];
-    [_signInButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_signInButton setTitleColor:[FRBSwatchist colorForKey:@"colors.black"] forState:UIControlStateNormal];
     [_signInButton addTarget:self action:@selector(signInButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:_signInButton];
 }

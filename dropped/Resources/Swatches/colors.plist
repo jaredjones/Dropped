@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>white</key>
-	<string>#ffffff</string>
+	<string>#fffefd</string>
 	<key>black</key>
-	<string>#000000</string>
+	<string>#3f3f3f</string>
 	<key>blue</key>
 	<string>#4c9bf5</string>
 	<key>green</key>

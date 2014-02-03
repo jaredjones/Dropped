@@ -18,6 +18,12 @@
 
 @property NSMutableArray *tiles;
 
+// Keeps track of the tiles currently animating
+@property NSMutableSet *animatingTiles;
+
+// Keeps track of the tiles currently running animations that should unselect when finished
+@property NSMutableSet *unselectedTiles;
+
 @property CGFloat wordWidth, tileScale;
 
 @property UITapGestureRecognizer *tapGestureRecognizer;
@@ -32,6 +38,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         _tiles = [[NSMutableArray alloc] init];
+        _animatingTiles = [[NSMutableSet alloc] init];
+        _unselectedTiles = [[NSMutableSet alloc] init];
         [self loadGestureRecognizers];
     }
     return self;
@@ -72,6 +80,10 @@
         [tile resetAppearence];
     }
     
+    [self bringSubviewToFront:tile];
+    [_animatingTiles addObject:tile];
+    
+    
     // There's a (very) visibly noticeable jump in the animation
     // when  the repositioning happens at the same time as adding
     // a dequeued tile. Delaying by a tiny amount fixes the problem.
@@ -89,11 +101,21 @@
 - (void)characterWasDehighlighted:(DRPCharacter *)character
 {
     DRPTileView *tile = [self tileForCharacter:character];
+    
+    if ([_animatingTiles containsObject:tile]) {
+        [_unselectedTiles addObject:tile];
+    } else {
+        [self deselectTile:tile];
+        [self repositionTiles];
+    }
+}
+
+- (void)deselectTile:(DRPTileView *)tile
+{
     tile.selected = NO;
     tile.highlighted = NO;
     [tile resetAppearence];
     tile.backgroundColor = [UIColor clearColor];
-    [self repositionTiles];
 }
 
 - (void)characterWasRemoved:(DRPCharacter *)character
@@ -137,17 +159,6 @@
 
 #pragma mark Repositioning Tiles
 
-//// Called during orientation changes to make sure the current
-//// container is properly centered
-//- (void)recenter
-//{
-//    if (_currentContainer == _tileContainer) {
-//        [self repositionTiles];
-//    } else {
-//        _turnsLeftLabel.center = rectCenter(self.bounds);
-//    }
-//}
-
 // Animates repositioning of tiles in _tileContainer (from adding/removing/selecting a character)
 - (void)repositionTiles
 {
@@ -159,15 +170,35 @@
                      animations:^{
                          for (NSInteger i = 0; i < _tiles.count; i++) {
                              DRPTileView *tile = _tiles[i];
+                             
                              tile.center = centers[i];
                              if (tile.selected) {
                                  tile.transform = CGAffineTransformIdentity;
                              } else {
                                  tile.transform = CGAffineTransformMakeScale(_tileScale, _tileScale);
                              }
+                             
+                             
                          }
                      }
-                     completion:nil];
+                     completion:^(BOOL finished) {
+                         NSInteger numberUnselected = 0;
+                         for (NSInteger i = 0; i < _tiles.count; i++) {
+                             DRPTileView *tile = _tiles[i];
+                             
+                             [_animatingTiles removeObject:tile];
+                             
+                             if ([_unselectedTiles containsObject:tile]) {
+                                 [self deselectTile:tile];
+                                 numberUnselected++;
+                                 [_unselectedTiles removeObject:tile];
+                             }
+                         }
+                         
+                         if (numberUnselected) {
+                             [self repositionTiles];
+                         }
+                     }];
     
     free(centers);
 }

@@ -102,6 +102,8 @@
 {
     DRPTileView *tile = [self tileForCharacter:character];
     
+    NSLog(@"%ld", (long)_animatingTiles.count);
+    
     if ([_animatingTiles containsObject:tile]) {
         [_unselectedTiles addObject:tile];
     } else {
@@ -164,43 +166,50 @@
 // Animates repositioning of tiles in _tileContainer (from adding/removing/selecting a character)
 - (void)repositionTiles
 {
+    // This method _might_ be called a few too many times
+    // It's called somewhat recursively, so it ends up being
+    // called 2-3 times per character added to the word.
+    // Don't freak out, it should be fine since the tiles
+    // actually _need_ to reposition themselves that often.
+    
     CGPoint *centers = [self tileCenters];
     
-    [UIView animateWithDuration:[FRBSwatchist floatForKey:@"animation.currentWordManipulationDuration"]
-                          delay:0
-                        options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
-                     animations:^{
-                         for (NSInteger i = 0; i < _tiles.count; i++) {
-                             DRPTileView *tile = _tiles[i];
-                             
+    NSInteger numberAnimatingTiles = _animatingTiles.count;
+    __block NSInteger numberTilesFinished = 0;
+    
+    for (NSInteger i = 0; i < _tiles.count; i++) {
+        DRPTileView *tile = _tiles[i];
+        
+        [UIView animateWithDuration:[FRBSwatchist floatForKey:@"animation.currentWordManipulationDuration"]
+                              delay:0
+                            options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
+                         animations:^{
                              tile.center = centers[i];
                              if (tile.selected) {
                                  tile.transform = CGAffineTransformIdentity;
                              } else {
                                  tile.transform = CGAffineTransformMakeScale(_tileScale, _tileScale);
                              }
-                             
-                             
                          }
-                     }
-                     completion:^(BOOL finished) {
-                         NSInteger numberUnselected = 0;
-                         for (NSInteger i = 0; i < _tiles.count; i++) {
-                             DRPTileView *tile = _tiles[i];
+                         completion:^(BOOL finished) {
                              
-                             [_animatingTiles removeObject:tile];
-                             
-                             if ([_unselectedTiles containsObject:tile]) {
-                                 [self deselectTile:tile];
-                                 numberUnselected++;
-                                 [_unselectedTiles removeObject:tile];
+                             if (finished) {
+                                 [_animatingTiles removeObject:tile];
+                                 
+                                 if ([_unselectedTiles containsObject:tile]) {
+                                     [self deselectTile:tile];
+                                     [_unselectedTiles removeObject:tile];
+                                 }
+                                 
+                                 // This trick is the same one used to run the completion handler
+                                 // when tiles finish dropping from the board
+                                 numberTilesFinished++;
+                                 if (numberAnimatingTiles >= 1 && numberTilesFinished == numberAnimatingTiles) {
+                                     [self repositionTiles];
+                                 }
                              }
-                         }
-                         
-                         if (numberUnselected) {
-                             [self repositionTiles];
-                         }
-                     }];
+                         }];
+    }
     
     free(centers);
 }

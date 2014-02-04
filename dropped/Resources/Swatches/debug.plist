@@ -5,7 +5,7 @@
 	<key>singlePlayerMode</key>
 	<false/>
 	<key>removeGCMatchesOnStartup</key>
-	<false/>
+	<true/>
 	<key>playBackEntireMatch</key>
 	<false/>
 </dict>

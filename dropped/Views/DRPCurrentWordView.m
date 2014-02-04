@@ -18,7 +18,7 @@
 
 @property NSMutableArray *tiles;
 
-// Keeps track of the tiles currently animating
+// Keeps track of the tiles currently animating (because they were recently added)
 @property NSMutableSet *animatingTiles;
 
 // Keeps track of the tiles currently running animations that should unselect when finished
@@ -68,8 +68,6 @@
         tile.selected = YES;
         tile.highlighted = YES;
         tile.character = character;
-        tile.position = nil;
-        tile.transform = CGAffineTransformIdentity;
         tile.center = [self centerForNewTile:tile];
         [_tiles addObject:tile];
         [self addSubview:tile];
@@ -94,7 +92,7 @@
     // previous location.
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(.001 * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        [self repositionTiles];
+        [self repositionTilesAnimated:YES];
     });
 }
 
@@ -102,13 +100,11 @@
 {
     DRPTileView *tile = [self tileForCharacter:character];
     
-    NSLog(@"%ld", (long)_animatingTiles.count);
-    
     if ([_animatingTiles containsObject:tile]) {
         [_unselectedTiles addObject:tile];
     } else {
         [self deselectTile:tile];
-        [self repositionTiles];
+        [self repositionTilesAnimated:YES];
     }
 }
 
@@ -127,7 +123,8 @@
     if (removedTile) {
         [removedTile removeFromSuperview];
         [_tiles removeObject:removedTile];
-        [self repositionTiles];
+        [self repositionTilesAnimated:YES];
+        [DRPTileView queueReusableTile:removedTile];
     }
 }
 
@@ -135,6 +132,7 @@
 {
     for (DRPTileView *tile in _tiles) {
         [tile removeFromSuperview];
+        [DRPTileView queueReusableTile:tile];
     }
     [_tiles removeAllObjects];
     [_animatingTiles removeAllObjects];
@@ -161,10 +159,44 @@
     return _tiles.count;
 }
 
+#pragma mark Resetting Characters
+
+- (void)setCharacters:(NSArray *)characters
+{
+    [self removeAllCharacters];
+    
+    for (DRPCharacter *character in characters) {
+        DRPTileView *tile = [DRPTileView dequeueResusableTile];
+        tile.scaleCharacter = NO;
+        tile.enabled = NO;
+        tile.character = character;
+        [self deselectTile:tile];
+        [_tiles addObject:tile];
+        [self addSubview:tile];
+    }
+    
+    [self repositionTilesAnimated:NO];
+}
+
+- (BOOL)currentCharactersEqualCharacters:(NSArray *)characters
+{
+    if (_tiles.count != characters.count) {
+        return NO;
+    }
+    
+    for (NSInteger i = 0; i < _tiles.count; i++) {
+        if (((DRPTileView *)_tiles[i]).character != characters[i]) {
+            return NO;
+        }
+    }
+    
+    return YES;
+}
+
 #pragma mark Repositioning Tiles
 
 // Animates repositioning of tiles in _tileContainer (from adding/removing/selecting a character)
-- (void)repositionTiles
+- (void)repositionTilesAnimated:(BOOL)animated
 {
     // This method _might_ be called a few too many times
     // It's called somewhat recursively, so it ends up being
@@ -174,6 +206,26 @@
     
     CGPoint *centers = [self tileCenters];
     
+    if (animated) {
+        // The animation is handled in a separate method because it's
+        // a bit hairy. Gotta keep these methods small, yo
+        [self animateTilesToCenters:centers];
+        
+    } else {
+        for (NSInteger i = 0; i < _tiles.count; i++) {
+            [self positionTile:_tiles[i] toCenter:centers[i]];
+        }
+    }
+    
+    free(centers);
+}
+
+- (void)animateTilesToCenters:(CGPoint *)centers
+{
+    // When a new tile is added before the last tile finishes its
+    // animation, the old animations stop. We only want to run
+    // the final [self repositionTilesAnimated:YES] when _all_ the
+    // new tiles finish their initial animation
     NSInteger numberAnimatingTiles = _animatingTiles.count;
     __block NSInteger numberTilesFinished = 0;
     
@@ -184,12 +236,7 @@
                               delay:0
                             options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseOut
                          animations:^{
-                             tile.center = centers[i];
-                             if (tile.selected) {
-                                 tile.transform = CGAffineTransformIdentity;
-                             } else {
-                                 tile.transform = CGAffineTransformMakeScale(_tileScale, _tileScale);
-                             }
+                             [self positionTile:tile toCenter:centers[i]];
                          }
                          completion:^(BOOL finished) {
                              
@@ -205,13 +252,22 @@
                                  // when tiles finish dropping from the board
                                  numberTilesFinished++;
                                  if (numberAnimatingTiles >= 1 && numberTilesFinished == numberAnimatingTiles) {
-                                     [self repositionTiles];
+                                     [self repositionTilesAnimated:YES];
                                  }
                              }
                          }];
     }
+}
+
+- (void)positionTile:(DRPTileView *)tile toCenter:(CGPoint)center
+{
+    tile.center = center;
     
-    free(centers);
+    if (tile.selected) {
+        tile.transform = CGAffineTransformIdentity;
+    } else {
+        tile.transform = CGAffineTransformMakeScale(_tileScale, _tileScale);
+    }
 }
 
 // Returns an array of CGPoints that represent the center

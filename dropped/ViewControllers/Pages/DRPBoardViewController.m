@@ -274,6 +274,7 @@
             }
             
             // Now safe to run the completion handler
+            // TODO: make sure a minimum amount of time has passed first
             if (completion) {
                 completion();
             }
@@ -311,8 +312,6 @@
 
 - (NSArray *)dropPositions:(NSArray *)positions
 {
-    // TODO: make sure dropped tiles have appropriate appearence (mainly useful for playback)
-    
     NSMutableArray *droppedTiles = [[NSMutableArray alloc] init];
     
     for (DRPPosition *position in positions) {

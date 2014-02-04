@@ -26,6 +26,7 @@
 - (NSArray *)multiplierColorsForTurn:(NSInteger)turn;
 
 - (DRPPlayedWord *)wordPlayedForTurn:(NSInteger)turn;
+- (NSArray *)charactersForPositions:(NSArray *)positions forTurn:(NSInteger)turn;
 - (NSDictionary *)scores;
 
 - (void)appendNewData:(NSData *)newData;

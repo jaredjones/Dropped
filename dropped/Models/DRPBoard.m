@@ -131,6 +131,17 @@
     return colors;
 }
 
+- (NSArray *)charactersForPositions:(NSArray *)positions forTurn:(NSInteger)turn
+{
+    NSMutableArray *characters = [[NSMutableArray alloc] init];
+    
+    for (DRPPosition *position in positions) {
+        [characters addObject:[self characterAtPosition:position forTurn:turn]];
+    }
+    
+    return characters;
+}
+
 - (NSDictionary *)scores
 {
     NSMutableDictionary *scores = [NSMutableDictionary dictionaryWithDictionary:@{@0 : @0, @1 : @0}];

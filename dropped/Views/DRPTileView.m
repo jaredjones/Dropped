@@ -91,6 +91,8 @@ static NSMutableDictionary *glyphAdvancesCache;
     tile.selected = NO;
     tile.highlighted = NO;
     tile.permaHighlighted = NO;
+    tile.position = nil;
+    tile.transform = CGAffineTransformIdentity;
     [queuedTiles removeLastObject];
     return tile;
 }

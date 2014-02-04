@@ -32,6 +32,7 @@
 
 - (DRPPlayer *)localPlayer;
 - (DRPPlayer *)currentPlayer;
+- (DRPPlayer *)playerForTurn:(NSInteger)turn;
 - (BOOL)isLocalPlayerTurn;
 
 - (void)reloadMatchDataWithCompletion:(void(^)(BOOL newTurns))completion;

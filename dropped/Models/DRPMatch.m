@@ -187,6 +187,11 @@
     return _players[_board.currentTurn % 2];
 }
 
+- (DRPPlayer *)playerForTurn:(NSInteger)turn
+{
+    return _players[turn % 2];
+}
+
 - (BOOL)isLocalPlayerTurn
 {
     return self.currentPlayer == self.localPlayer;

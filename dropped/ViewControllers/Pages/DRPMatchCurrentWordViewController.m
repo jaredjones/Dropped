@@ -53,7 +53,7 @@
     // No clue why, but these methods "just work"
     if (_currentContainerType == DRPContainerTypeCurrentWord) {
         self.currentContainer.frame = self.currentFrame;
-        [(DRPCurrentWordView *)_currentContainer repositionTiles];
+        [(DRPCurrentWordView *)_currentContainer repositionTilesAnimated:YES];
         
     } else if (_currentContainerType == DRPContainerTypeTurnsLeft) {
         _currentContainer.center = rectCenter(self.view.bounds);
@@ -120,14 +120,17 @@
         ((UILabel *)container).textColor = [FRBSwatchist colorForKey:@"colors.black"];
         ((UILabel *)container).textAlignment = NSTextAlignmentCenter;
         
-        ((UILabel *)container).text = _turnsLeftString;
-        
     } else if (containerType == DRPContainerTypeCurrentWord) {
         container = [[DRPCurrentWordView alloc] initWithFrame:self.currentFrame];
         ((DRPCurrentWordView *)container).delegate = self;
     }
     
     if (container) {
+        // Make sure to update the string, even if a cached version is pulled
+        if (containerType == DRPContainerTypeTurnsLeft) {
+            ((UILabel *)container).text = _turnsLeftString;
+        }
+        
         if (container.superview != self.view) {
             [self.view addSubview:container];
         }
@@ -191,8 +194,17 @@
 
 - (void)setCharacters:(NSArray *)characters fromDirection:(DRPDirection)direction
 {
+    // If the characters are already set, do nothing
+    if (_currentContainerType == DRPContainerTypeCurrentWord &&
+        [(DRPCurrentWordView *)_currentContainer currentCharactersEqualCharacters:characters]) {
+        return;
+    }
+    
+    // Force a reset of the currentContainer
+    _currentContainerType = DRPContainerTypeNil;
+    
     [self setCurrentContainerType:DRPContainerTypeCurrentWord fromDirection:direction];
-    // TODO: set the characters of the container
+    [(DRPCurrentWordView *)_currentContainer setCharacters:characters];
 }
 
 - (void)setTurnsLeft:(NSInteger)turnsLeft isLocalTurn:(BOOL)isLocalTurn fromDirection:(DRPDirection)direction

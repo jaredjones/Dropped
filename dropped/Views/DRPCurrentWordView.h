@@ -26,10 +26,12 @@
 - (void)characterWasDehighlighted:(DRPCharacter *)character;
 - (void)characterWasRemoved:(DRPCharacter *)character;
 
+- (void)setCharacters:(NSArray *)characters;
+- (BOOL)currentCharactersEqualCharacters:(NSArray *)characters;
 - (void)removeAllCharacters;
 
 - (NSInteger)characterCount;
 
-- (void)repositionTiles;
+- (void)repositionTilesAnimated:(BOOL)animated;
 
 @end

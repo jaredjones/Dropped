@@ -201,8 +201,21 @@
     }
     
     [_boardViewController loadBoard:_match.board atTurn:_renderedTurn];
-    [_headerViewController setCurrentPlayerTurn:_match.currentPlayer.turn multiplierColors:[_match.board multiplierColorsForTurn:_match.currentTurn]];
-    [_currentWordViewController setTurnsLeft:_match.turnsLeft isLocalTurn:_match.isLocalPlayerTurn fromDirection:DRPDirectionLeft];
+    [self setHeaderViewControllerTurn:_renderedTurn];
+    
+    // Set initial currentWordView
+    if (_match.currentTurn > 0) {
+        // If there have been turns, set the currentWordView to _renderedTurn's word
+        NSArray *characters = [_match.board charactersForPositions:[_match.board wordPlayedForTurn:_renderedTurn].positions
+                                                           forTurn:_renderedTurn];
+        [_currentWordViewController setCharacters:characters
+                                    fromDirection:[self currentWordDirectionForPlayer:[_match playerForTurn:_renderedTurn]]];
+    } else {
+        // If it's the first turn, set the currentWordView to the turnsLeft label
+        [_currentWordViewController setTurnsLeft:_match.turnsLeft
+                                     isLocalTurn:_match.isLocalPlayerTurn
+                                   fromDirection:[self currentWordDirectionForPlayer:_match.currentPlayer]];
+    }
     
     // TODO: reload player aliases
 }
@@ -240,29 +253,59 @@
 
 #pragma mark Turn Transitions
 
+- (DRPDirection)currentWordDirectionForPlayer:(DRPPlayer *)player
+{
+    if (player.turn == 0) {
+        return DRPDirectionLeft;
+    }
+    return DRPDirectionRight;
+}
+
 - (void)advanceRenderedTurnToTurn:(NSInteger)turn
 {
-    // TODO: this should do snazzy things with currentWordView (later)
     // TODO: tiles shouldn't be enabled while turn transitions are running
     
     // This is essentially recursion that pauses between each
     // iteration (because each iteration is asynchronous)
-    if (self.mainViewController.currentPageID == self.pageID && _renderedTurn < turn) {
-        [self advanceRenderedTurnWithCompletion:^{
+    if (self.mainViewController.currentPageID == self.pageID && _renderedTurn <= turn) {
+        [self stepRenderedTurnWithCompletion:^{
             [self advanceRenderedTurnToTurn:turn];
         }];
     }
 }
 
 // Steps the _renderedTurn one turn forward
-- (void)advanceRenderedTurnWithCompletion:(void (^)())completion
+- (void)stepRenderedTurnWithCompletion:(void (^)())completion
 {
+    DRPDirection direction = [self currentWordDirectionForPlayer:[_match playerForTurn:_renderedTurn]];
+    
     if (_renderedTurn < _match.currentTurn) {
+        // Slide in currentWordView containing _renderedTurn's word
+        NSArray *characters = [_match.board charactersForPositions:[_match.board wordPlayedForTurn:_renderedTurn].positions
+                                                           forTurn:_renderedTurn];
+        [_currentWordViewController setCharacters:characters fromDirection:direction];
+        
+        // Drop the played word
         [_boardViewController dropPlayedWord:[_match.board wordPlayedForTurn:_renderedTurn] fromTurn:_renderedTurn withCompletion:^{
             _renderedTurn++;
             completion();
         }];
+        
+    } else if (_renderedTurn == _match.currentTurn) {
+        // Caught up to turn, show the turnsLeft container
+        [_currentWordViewController setTurnsLeft:_match.turnsLeft isLocalTurn:_match.isLocalPlayerTurn fromDirection:direction];
+        
+        [self resetCues];
     }
+    
+    [self setHeaderViewControllerTurn:_renderedTurn];
+    // TODO: update scores
+}
+
+- (void)setHeaderViewControllerTurn:(NSInteger)turn
+{
+    [_headerViewController setCurrentPlayerTurn:[_match playerForTurn:turn].turn
+                               multiplierColors:[_match.board multiplierColorsForTurn:turn]];
 }
 
 #pragma mark DRPBoardViewControllerDelegate
@@ -318,7 +361,7 @@
 
 - (void)gameCenterReceivedLocalTurn:(NSNotification *)notification
 {
-    [self dropPlayedWord:notification.userInfo[@"playedWord"]];
+    [self advanceRenderedTurnToTurn:_match.currentTurn];
 }
 
 - (void)receivedRemoteGameCenterTurn:(NSNotification *)notification
@@ -328,21 +371,10 @@
     
     [_match reloadMatchDataWithCompletion:^(BOOL newTurns) {
         if (newTurns) {
-            // ugh, this call needs to be better
             // TODO: make sure the match is not being replayed when this happens
-            [self dropPlayedWord:nil];
+            [self advanceRenderedTurnToTurn:_match.currentTurn];
         }
     }];
-}
-
-- (void)dropPlayedWord:(DRPPlayedWord *)playedWord
-{
-    [self advanceRenderedTurnToTurn:_match.currentTurn];
-    
-    // TODO: this is creaky, incorporate into advanceRenderedTurnToTurn:
-    [_headerViewController setCurrentPlayerTurn:_match.currentPlayer.turn multiplierColors:[_match.board multiplierColorsForTurn:_match.currentTurn]];
-    [_currentWordViewController setTurnsLeft:_match.turnsLeft isLocalTurn:_match.isLocalPlayerTurn fromDirection:DRPDirectionLeft];
-    [self resetCues];
 }
 
 @end

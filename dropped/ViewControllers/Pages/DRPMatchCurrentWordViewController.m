@@ -158,7 +158,12 @@
 
 - (void)setCurrentContainerType:(DRPContainerType)containerType fromDirection:(DRPDirection)direction withVelocity:(CGFloat)velocity
 {
-    if (containerType == _currentContainerType) return;
+    if (containerType == _currentContainerType) {
+        if (_currentContainerType == DRPContainerTypeTurnsLeft) {
+            ((UILabel *)_currentContainer).text = _turnsLeftString;
+        }
+        return;
+    };
     
     DRPContainerType prevContainerType = _currentContainerType;
     _currentContainerType = containerType;

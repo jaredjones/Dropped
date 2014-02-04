@@ -5,10 +5,10 @@
 	<key>dictionaryDownloadURL</key>
 	<string>http://chaos.uvora.com/dropped/</string>
 	<key>singlePlayerMode</key>
-	<true/>
+	<false/>
 	<key>removeGCMatchesOnStartup</key>
 	<false/>
 	<key>playBackEntireMatch</key>
-	<true/>
+	<false/>
 </dict>
 </plist>

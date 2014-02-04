@@ -113,6 +113,8 @@
 
 - (void)tileWasHighlighted:(DRPTileView *)tile
 {
+    BOOL newCharacter = ![_currentPlayedWord.positions containsObject:tile.position];
+    
     // Highlight tiles around adjacentMultiplier if it is activated
     DRPCharacter *adjacentMultiplier = tile.character.adjacentMultiplier;
     if (adjacentMultiplier) {
@@ -127,13 +129,28 @@
             [adjacent addObject:tile];
         }
         
+        // Check if the multiplier has been activated
         if (adjacent.count >= adjacentMultiplier.multiplier) {
             adjacentMultiplier.multiplierActive = YES;
             
             for (DRPTileView *tile in adjacent) {
                 [tile resetAppearence];
             }
+            
+            // Add the active multiplier to the currentWord if it hasn't been done so already
+            if (newCharacter) {
+                DRPPosition *multiplierPosition = [_board positionOfCharacter:adjacentMultiplier];
+                if (![_currentPlayedWord.multipliers containsObject:multiplierPosition]) {
+                    _currentPlayedWord.multipliers = [_currentPlayedWord.multipliers arrayByAddingObject:multiplierPosition];
+                }
+            }
         }
+    }
+    
+    // newCharacters should be added to the currentWord
+    if (newCharacter) {
+        _currentPlayedWord.positions = [_currentPlayedWord.positions arrayByAddingObject:tile.position];
+        [_delegate characterWasAddedToCurrentWord:tile.character];
     }
     
     [_delegate characterWasHighlighted:tile.character];
@@ -146,25 +163,6 @@
 
 - (void)tileWasSelected:(DRPTileView *)tile
 {
-    // TODO: this should really happen when the tile is _highlighted_, not selected
-    
-    // Add character to current word, update delegate
-    _currentPlayedWord.positions = [_currentPlayedWord.positions arrayByAddingObject:tile.position];
-    
-    // Add newly activated multipliers, if any
-    DRPCharacter *adjacentMultiplier = tile.character.adjacentMultiplier;
-    if (adjacentMultiplier) {
-        NSArray *adjacent = _adjacentMultipliers[adjacentMultiplier];
-        if (adjacent.count >= adjacentMultiplier.multiplier) {
-            // TODO: need adjacent multiplier position
-            DRPPosition *multiplierPosition = [_board positionOfCharacter:adjacentMultiplier];
-            if (![_currentPlayedWord.multipliers containsObject:multiplierPosition]) {
-                _currentPlayedWord.multipliers = [_currentPlayedWord.multipliers arrayByAddingObject:multiplierPosition];
-            }
-        }
-    }
-    
-    [_delegate characterWasAddedToCurrentWord:tile.character];
 }
 
 - (void)tileWasDeselected:(DRPTileView *)tile
@@ -194,19 +192,10 @@
 
 #pragma mark Current Word
 
-- (NSString *)currentWord
-{
-    return [_board wordForPositions:_currentPlayedWord.positions];
-}
-
-//- (NSArray *)currentPositions
-//{
-//    return _currentPlayedWord.positions;
-//}
-
 - (void)resetCurrentWord
 {
     _currentPlayedWord.positions = @[];
+    _currentPlayedWord.multipliers = @[];
     for (DRPCharacter *multiplier in _adjacentMultipliers) {
         multiplier.multiplierActive = NO;
     }

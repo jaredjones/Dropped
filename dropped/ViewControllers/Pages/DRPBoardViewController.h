@@ -16,7 +16,6 @@
 
 @property id<DRPBoardViewControllerDelegate> delegate;
 
-@property (readonly) NSString *currentWord;
 @property (readonly) DRPPlayedWord *currentPlayedWord;
 
 - (void)loadBoard:(DRPBoard *)board atTurn:(NSInteger)turn;

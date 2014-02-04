@@ -231,7 +231,7 @@
 {
     NSString *newBottomCue = nil;
     
-    if (_boardViewController.currentWord.length == 0) {
+    if (_boardViewController.currentPlayedWord.positions.count == 0) {
         newBottomCue = @"Back";
         
     } else {
@@ -356,7 +356,8 @@
 
 - (BOOL)validateCurrentWord
 {
-    return _boardViewController.currentPlayedWord.positions.count >=3 && [DRPDictionary isValidWord:_boardViewController.currentWord];
+    NSString *word = [_match.board wordForPositions:_boardViewController.currentPlayedWord.positions];
+    return _boardViewController.currentPlayedWord.positions.count >=3 && [DRPDictionary isValidWord:word];
 }
 
 #pragma mark DRPCurrentWordViewControllerDelegate

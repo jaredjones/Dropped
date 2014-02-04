@@ -179,7 +179,6 @@
     
     // Clear out played words and selected tiles
     _isCurrentWordValid = NO;
-    // TODO: unselect any tiles previously selected
     
     
     // Extract DRPMatch, load it up
@@ -263,14 +262,18 @@
 
 - (void)advanceRenderedTurnToTurn:(NSInteger)turn
 {
-    // TODO: tiles shouldn't be enabled while turn transitions are running
     // TODO: disable currentWordView gestureRecognizers during replay
+    _boardViewController.boardEnabled = NO;
     
     // This is essentially recursion that pauses between each
     // iteration (because each iteration is asynchronous)
     if (self.mainViewController.currentPageID == self.pageID && _renderedTurn <= turn) {
         [self stepRenderedTurnWithCompletion:^{
             [self advanceRenderedTurnToTurn:turn];
+            
+            if (_renderedTurn == turn) {
+                _boardViewController.boardEnabled = YES;
+            }
         }];
     }
 }

@@ -17,6 +17,7 @@
 @property id<DRPBoardViewControllerDelegate> delegate;
 
 @property (readonly) DRPPlayedWord *currentPlayedWord;
+@property (nonatomic) BOOL boardEnabled;
 
 - (void)loadBoard:(DRPBoard *)board atTurn:(NSInteger)turn;
 - (void)dropPlayedWord:(DRPPlayedWord *)playedWord fromTurn:(NSInteger)turn withCompletion:(void(^)())completion;

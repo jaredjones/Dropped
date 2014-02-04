@@ -21,7 +21,6 @@
 @interface DRPBoardViewController ()
 
 @property DRPBoard *board;
-//@property DRPPlayedWord *currentPlayedWord;
 
 @property NSMutableDictionary *tiles, *adjacentMultipliers;
 
@@ -190,6 +189,22 @@
     [_delegate characterWasRemovedFromCurrentWord:tile.character];
 }
 
+#pragma mark Disable/Enable board
+
+- (void)setBoardEnabled:(BOOL)boardEnabled
+{
+    _boardEnabled = boardEnabled;
+    [self setCurrentTilesEnabled:_boardEnabled];
+}
+
+- (void)setCurrentTilesEnabled:(BOOL)enabled
+{
+    for (DRPPosition *position in _tiles) {
+        DRPTileView *tile = _tiles[position];
+        tile.enabled = enabled;
+    }
+}
+
 #pragma mark Current Word
 
 - (void)resetCurrentWord
@@ -302,6 +317,7 @@
             tile.position = end;
             tile.center = [self centerForPosition:start];
             tile.delegate = self;
+            tile.enabled = NO;
             [self.view addSubview:tile];
             _tiles[end] = tile;
             
@@ -329,6 +345,7 @@
         
         tile.scaleCharacter = NO;
         tile.selected = YES;
+        tile.enabled = NO;
         [tile resetAppearence];
         
         UIPushBehavior *push = [[UIPushBehavior alloc] initWithItems:@[tile] mode:UIPushBehaviorModeInstantaneous];

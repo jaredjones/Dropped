@@ -213,7 +213,7 @@ static NSMutableDictionary *glyphAdvancesCache;
     // Color
     // glyphColor is always white when the tile is colored
     if (self.highlighted || self.permaHighlighted ||
-        (self.selected && (_character.adjacentMultiplier.multiplierActive || (!self.enabled && _character.adjacentMultiplier))) ||
+        (self.selected && (_character.adjacentMultiplier.multiplierActive || (!self.enabled && _character.adjacentMultiplier.multiplierActive))) ||
         _character.multiplier) {
         self.backgroundColor = _color;
         if (!_hasWhiteBackground) {

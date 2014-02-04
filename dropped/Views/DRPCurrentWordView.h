@@ -34,4 +34,6 @@
 
 - (void)repositionTilesAnimated:(BOOL)animated;
 
+- (void)setGesturesEnabled:(BOOL)enabled;
+
 @end

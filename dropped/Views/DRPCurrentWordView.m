@@ -320,6 +320,12 @@
 
 #pragma mark Touch Events
 
+- (void)setGesturesEnabled:(BOOL)enabled
+{
+    _tapGestureRecognizer.enabled = enabled;
+    _panGestureRecognizer.enabled = enabled;
+}
+
 - (void)handleTapGesture:(UITapGestureRecognizer *)gesture
 {
     [_delegate currentWordWasTapped];

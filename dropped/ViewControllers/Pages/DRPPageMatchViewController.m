@@ -262,8 +262,14 @@
 
 - (void)advanceRenderedTurnToTurn:(NSInteger)turn
 {
-    // TODO: disable currentWordView gestureRecognizers during replay
-    _boardViewController.boardEnabled = NO;
+    // Make sure user can't mess with anything on the board
+    // while the turns are advancing
+    if (_boardViewController.boardEnabled) {
+        _boardViewController.boardEnabled = NO;
+    }
+    if (_currentWordViewController.gesturesEnabled) {
+        _currentWordViewController.gesturesEnabled = NO;
+    }
     
     // This is essentially recursion that pauses between each
     // iteration (because each iteration is asynchronous)
@@ -271,8 +277,10 @@
         [self stepRenderedTurnWithCompletion:^{
             [self advanceRenderedTurnToTurn:turn];
             
+            // Turns are done advancing, reenable the board and the currentWordView 
             if (_renderedTurn == turn) {
                 _boardViewController.boardEnabled = YES;
+                _currentWordViewController.gesturesEnabled = YES;
             }
         }];
     }

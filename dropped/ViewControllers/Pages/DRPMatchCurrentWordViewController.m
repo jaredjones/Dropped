@@ -29,6 +29,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
+        _gesturesEnabled = YES;
     }
     return self;
 }
@@ -126,9 +127,11 @@
     }
     
     if (container) {
-        // Make sure to update the string, even if a cached version is pulled
+        // Some properties need to be refreshed if pulled from cache
         if (containerType == DRPContainerTypeTurnsLeft) {
             ((UILabel *)container).text = _turnsLeftString;
+        } else if (containerType == DRPContainerTypeCurrentWord) {
+            ((DRPCurrentWordView *)container).gesturesEnabled = _gesturesEnabled;
         }
         
         if (container.superview != self.view) {
@@ -255,6 +258,15 @@
 }
 
 #pragma mark DRPCurrentWordView
+
+- (void)setGesturesEnabled:(BOOL)gesturesEnabled
+{
+    _gesturesEnabled = gesturesEnabled;
+    
+    if (_currentContainerType == DRPContainerTypeCurrentWord) {
+        ((DRPCurrentWordView *)_currentContainer).gesturesEnabled = gesturesEnabled;
+    }
+}
 
 - (void)currentWordWasTapped
 {

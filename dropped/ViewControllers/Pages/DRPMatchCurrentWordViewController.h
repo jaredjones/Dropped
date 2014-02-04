@@ -29,6 +29,8 @@ typedef NS_ENUM(NSInteger, DRPContainerType) {
 
 @property id<DRPCurrentWordViewControllerDelegate> delegate;
 
+@property (nonatomic) BOOL gesturesEnabled;
+
 - (void)layoutWithFrame:(CGRect)frame;
 
 - (void)characterWasHighlighted:(DRPCharacter *)character fromDirection:(DRPDirection)direction;

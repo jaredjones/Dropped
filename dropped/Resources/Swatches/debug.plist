@@ -9,6 +9,6 @@
 	<key>removeGCMatchesOnStartup</key>
 	<false/>
 	<key>playBackEntireMatch</key>
-	<false/>
+	<true/>
 </dict>
 </plist>

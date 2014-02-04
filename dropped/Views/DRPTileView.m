@@ -166,13 +166,12 @@ static NSMutableDictionary *glyphAdvancesCache;
     }
     self.highlighted = NO;
     
+    [_delegate tileWasDehighlighted:self];
     if (self.selected) {
         [_delegate tileWasSelected:self];
     } else {
         [_delegate tileWasDeselected:self];
     }
-    
-    [_delegate tileWasDehighlighted:self];
     
     if (self.permaHighlighted) {
         self.selected = YES;

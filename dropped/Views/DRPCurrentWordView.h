@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DRPPageMatchViewController.h"
+
+@class DRPCharacter;
+
+@protocol DRPCurrentWordViewDelegate
+
+- (void)currentWordWasTapped;
+- (void)currentWordWasSwipedWithVelocity:(CGFloat)velocity;
+- (void)currentWordSwipeFailedWithVelocity:(CGFloat)velocity;
+
+@end
 
 @interface DRPCurrentWordView : UIView
 
@@ -15,10 +24,12 @@
 
 - (void)characterWasHighlighted:(DRPCharacter *)character;
 - (void)characterWasDehighlighted:(DRPCharacter *)character;
-- (void)characterRemovedFromCurrentWord:(DRPCharacter *)character;
+- (void)characterWasRemoved:(DRPCharacter *)character;
 
-- (void)setTurnsLeft:(NSInteger)turnsLeft;
-- (void)cycleOutTiles;
-- (void)recenter;
+- (void)removeAllCharacters;
+
+- (NSInteger)characterCount;
+
+- (void)repositionTiles;
 
 @end

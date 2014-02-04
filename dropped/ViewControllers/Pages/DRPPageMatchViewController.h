@@ -7,26 +7,18 @@
 //
 
 #import "DRPPageViewController.h"
-
-@class DRPCharacter;
+#import "DRPMatchCurrentWordViewController.h"
 
 @protocol DRPBoardViewControllerDelegate
 
-- (void)characterAddedToCurrentWord:(DRPCharacter *)character;
-- (void)characterRemovedFromCurrentWord:(DRPCharacter *)character;
+- (void)characterWasAddedToCurrentWord:(DRPCharacter *)character;
+- (void)characterWasRemovedFromCurrentWord:(DRPCharacter *)character;
 
 - (void)characterWasHighlighted:(DRPCharacter *)character;
 - (void)characterWasDehighlighted:(DRPCharacter *)character;
 
 @end
 
-@protocol DRPCurrentWordViewDelegate
-
-- (void)currentWordViewTapped;
-- (void)currentWordViewSwiped;
-
-@end
-
-@interface DRPPageMatchViewController : DRPPageViewController <DRPBoardViewControllerDelegate, DRPCurrentWordViewDelegate>
+@interface DRPPageMatchViewController : DRPPageViewController <DRPBoardViewControllerDelegate, DRPCurrentWordViewControllerDelegate>
 
 @end

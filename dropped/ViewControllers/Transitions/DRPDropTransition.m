@@ -21,6 +21,7 @@
 
 - (void)execute
 {
+    // TODO: this is making multiple gravity behaviors. Cut that shit out
     _gravity = [[UIGravityBehavior alloc] initWithItems:@[self.start.view, self.destination.view]];
     _gravity.magnitude = [FRBSwatchist floatForKey:@"animation.gravity"];
     [[DRPTransition sharedDynamicAnimator] addBehavior:_gravity];

@@ -26,10 +26,13 @@
 // Created fresh
 - (instancetype)initWithGKMatch:(GKTurnBasedMatch *)gkMatch;
 
+- (NSInteger)numberOfTurns;
 - (NSInteger)currentTurn;
+- (NSInteger)turnsLeft;
 
 - (DRPPlayer *)localPlayer;
 - (DRPPlayer *)currentPlayer;
+- (BOOL)isLocalPlayerTurn;
 
 - (void)reloadMatchDataWithCompletion:(void(^)(BOOL newTurns))completion;
 - (void)submitTurnForPositions:(NSArray *)positions;

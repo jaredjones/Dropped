@@ -8,19 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "DRPPageMatchViewController.h"
+#import "DRPTileView.h"
 
-@class DRPTileView, DRPBoard, DRPPlayedWord;
+@class DRPTileView, DRPBoard, DRPPlayedWord, DRPCharacter;
 
-@protocol DRPTileDelegate
-
-- (void)tileWasHighlighted:(DRPTileView *)tile;
-- (void)tileWasDehighlighted:(DRPTileView *)tile;
-- (void)tileWasSelected:(DRPTileView *)tile;
-- (void)tileWasDeselected:(DRPTileView *)tile;
-
-@end
-
-@interface DRPBoardViewController : UIViewController <DRPTileDelegate, UICollisionBehaviorDelegate>
+@interface DRPBoardViewController : UIViewController <DRPTileViewDelegate, UICollisionBehaviorDelegate>
 
 @property id<DRPBoardViewControllerDelegate> delegate;
 

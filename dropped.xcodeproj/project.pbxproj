@@ -59,6 +59,7 @@
 		A9C0FAD61864F6FC00377B0E /* DRPUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FAD51864F6FC00377B0E /* DRPUtility.m */; };
 		A9C0FAD9186507EC00377B0E /* NSArray+Mutable.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FAD8186507EC00377B0E /* NSArray+Mutable.m */; };
 		A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */; };
+		A9C947F0189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C947EF189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.m */; };
 		A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */; };
 		A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E27CBE1857AE210043F6A9 /* DRPTileView.m */; };
 		A9E27CC11857AFBC0043F6A9 /* Rokkitt.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9E27CC01857AFBC0043F6A9 /* Rokkitt.otf */; };
@@ -197,6 +198,8 @@
 		A9C0FAD8186507EC00377B0E /* NSArray+Mutable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSArray+Mutable.m"; sourceTree = "<group>"; };
 		A9C7BBB018395DFD003F585F /* DRPCharacterHistogram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCharacterHistogram.h; path = Models/DRPCharacterHistogram.h; sourceTree = "<group>"; };
 		A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCharacterHistogram.m; path = Models/DRPCharacterHistogram.m; sourceTree = "<group>"; };
+		A9C947EE189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMatchCurrentWordViewController.h; path = ViewControllers/Pages/DRPMatchCurrentWordViewController.h; sourceTree = "<group>"; };
+		A9C947EF189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMatchCurrentWordViewController.m; path = ViewControllers/Pages/DRPMatchCurrentWordViewController.m; sourceTree = "<group>"; };
 		A9D127B51837E0B40048AF25 /* DRPPlayedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayedWord.h; path = Models/DRPPlayedWord.h; sourceTree = "<group>"; };
 		A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPlayedWord.m; path = Models/DRPPlayedWord.m; sourceTree = "<group>"; };
 		A9E27CBD1857AE210043F6A9 /* DRPTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPTileView.h; path = Views/DRPTileView.h; sourceTree = "<group>"; };
@@ -385,6 +388,8 @@
 				A9C0FACE1864DE7700377B0E /* DRPBoardViewController.m */,
 				A9801A3818774A990024B2A1 /* DRPMatchHeaderViewController.h */,
 				A9801A3918774A990024B2A1 /* DRPMatchHeaderViewController.m */,
+				A9C947EE189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.h */,
+				A9C947EF189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.m */,
 			);
 			name = Match;
 			sourceTree = "<group>";
@@ -731,6 +736,7 @@
 				A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */,
 				A93D77CF18567D4B006691AE /* DRPPageLogInViewController.m in Sources */,
 				A9C0FAD9186507EC00377B0E /* NSArray+Mutable.m in Sources */,
+				A9C947F0189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.m in Sources */,
 				A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */,
 				A93D77CC185673EF006691AE /* DRPPageSplashViewController.m in Sources */,
 				A93D77C618566A8F006691AE /* DRPPageMatchmakerViewController.m in Sources */,

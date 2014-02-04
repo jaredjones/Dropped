@@ -90,6 +90,16 @@
     return [_history lastObject][position];
 }
 
+- (DRPPosition *)positionOfCharacter:(DRPCharacter *)character
+{
+    for (DRPPosition *position in [_history lastObject]) {
+        if ([_history lastObject][position] == character) {
+            return position;
+        }
+    }
+    return nil;
+}
+
 - (NSString *)wordForPositions:(NSArray *)positions forTurn:(NSInteger)turn
 {
     NSMutableString *word = [NSMutableString stringWithString:@""];
@@ -144,8 +154,14 @@
 
 - (NSDictionary *)scores
 {
+    return [self scoresForTurn:_playedWords.count];
+}
+
+// Returns the score at the _beginning_ of turn turn
+- (NSDictionary *)scoresForTurn:(NSInteger)turn
+{
     NSMutableDictionary *scores = [NSMutableDictionary dictionaryWithDictionary:@{@0 : @0, @1 : @0}];
-    for (NSInteger i = 0; i < _playedWords.count; i++) {
+    for (NSInteger i = 0; i < turn; i++) {
         DRPPlayedWord *playedWord = _playedWords[i];
         scores[@(i % 2)] = @([scores[@(i % 2)] integerValue] + [self scoreForPlayedWord:playedWord forTurn:i]);
     }

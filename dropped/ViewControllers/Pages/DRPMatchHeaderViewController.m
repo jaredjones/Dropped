@@ -158,4 +158,11 @@
     }
 }
 
+- (void)setScores:(NSDictionary *)scores
+{
+    for (NSInteger i = 0; i < 2; i++) {
+        [(DRPMatchPlayerView *)_playerViews[i] resetScore:[scores[@(i)] intValue]];
+    }
+}
+
 @end

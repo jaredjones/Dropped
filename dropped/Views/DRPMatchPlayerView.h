@@ -18,5 +18,6 @@
 - (void)observePlayer:(DRPPlayer *)player;
 
 - (void)setIsCurrentPlayer:(BOOL)isCurrentPlayer withColor:(DRPColor)color;
+- (void)resetScore:(NSInteger)score;
 
 @end

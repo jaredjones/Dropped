@@ -21,7 +21,7 @@
 @interface DRPBoardViewController ()
 
 @property DRPBoard *board;
-@property DRPPlayedWord *currentPlayedWord;
+//@property DRPPlayedWord *currentPlayedWord;
 
 @property NSMutableDictionary *tiles, *adjacentMultipliers;
 
@@ -146,8 +146,24 @@
 
 - (void)tileWasSelected:(DRPTileView *)tile
 {
-    // add character to current word, update delegate
+    // TODO: this should really happen when the tile is _highlighted_, not selected
+    
+    // Add character to current word, update delegate
     _currentPlayedWord.positions = [_currentPlayedWord.positions arrayByAddingObject:tile.position];
+    
+    // Add newly activated multipliers, if any
+    DRPCharacter *adjacentMultiplier = tile.character.adjacentMultiplier;
+    if (adjacentMultiplier) {
+        NSArray *adjacent = _adjacentMultipliers[adjacentMultiplier];
+        if (adjacent.count >= adjacentMultiplier.multiplier) {
+            // TODO: need adjacent multiplier position
+            DRPPosition *multiplierPosition = [_board positionOfCharacter:adjacentMultiplier];
+            if (![_currentPlayedWord.multipliers containsObject:multiplierPosition]) {
+                _currentPlayedWord.multipliers = [_currentPlayedWord.multipliers arrayByAddingObject:multiplierPosition];
+            }
+        }
+    }
+    
     [_delegate characterWasAddedToCurrentWord:tile.character];
 }
 
@@ -161,6 +177,9 @@
         [adjacent removeObject:tile];
         if (adjacent.count < adjacentMultiplier.multiplier) {
             adjacentMultiplier.multiplierActive = NO;
+            
+            DRPPosition *multiplierPosition = [_board positionOfCharacter:adjacentMultiplier];
+            _currentPlayedWord.multipliers = [_currentPlayedWord.multipliers arrayByRemovingObject:multiplierPosition];
             
             for (DRPTileView *tile in adjacent) {
                 [tile resetAppearence];
@@ -180,10 +199,10 @@
     return [_board wordForPositions:_currentPlayedWord.positions];
 }
 
-- (NSArray *)currentPositions
-{
-    return _currentPlayedWord.positions;
-}
+//- (NSArray *)currentPositions
+//{
+//    return _currentPlayedWord.positions;
+//}
 
 - (void)resetCurrentWord
 {

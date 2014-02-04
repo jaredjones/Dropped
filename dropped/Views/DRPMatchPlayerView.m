@@ -46,7 +46,6 @@ static long const PrivateKVOContext;
 - (void)dealloc
 {
     [_player removeObserver:self forKeyPath:@"alias"];
-    [_player removeObserver:self forKeyPath:@"score"];
 }
 
 #pragma mark View Loading
@@ -136,12 +135,10 @@ static long const PrivateKVOContext;
 - (void)observePlayer:(DRPPlayer *)player
 {
     [_player removeObserver:self forKeyPath:@"alias"];
-    [_player removeObserver:self forKeyPath:@"score"];
     
     _player = player;
     
     [player addObserver:self forKeyPath:@"alias" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
-    [player addObserver:self forKeyPath:@"score" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
@@ -149,9 +146,6 @@ static long const PrivateKVOContext;
     if (object == _player) {
         if ([keyPath isEqualToString:@"alias"]) {
             [self updatePlayerAlias:change[NSKeyValueChangeNewKey]];
-            
-        } else if ([keyPath isEqualToString:@"score"]) {
-            [self updatePlayerScore:change[NSKeyValueChangeNewKey]];
         }
         
     } else {
@@ -176,11 +170,7 @@ static long const PrivateKVOContext;
     });
 }
 
-- (void)updatePlayerScore:(NSValue *)score
-{
-    _score.text = [NSString stringWithFormat:@"%@", score];
-    // TODO: recenter more sensibly
-}
+#pragma mark Manual Property Setting
 
 - (void)setIsCurrentPlayer:(BOOL)isCurrentPlayer withColor:(DRPColor)color
 {
@@ -191,5 +181,12 @@ static long const PrivateKVOContext;
     _tile.permaHighlighted = isCurrentPlayer;
     [_tile resetAppearence];
 }
+
+- (void)resetScore:(NSInteger)score
+{
+    _score.text = [NSString stringWithFormat:@"%ld", (long)score];
+    // TODO: recenter more sensibly
+}
+
 
 @end

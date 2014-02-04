@@ -21,13 +21,18 @@
 
 - (DRPCharacter *)characterAtPosition:(DRPPosition *)position forTurn:(NSInteger)turn;
 - (DRPCharacter *)characterAtPosition:(DRPPosition *)position;
+- (DRPPosition *)positionOfCharacter:(DRPCharacter *)character;
+
 - (NSString *)wordForPositions:(NSArray *)positions forTurn:(NSInteger)turn;
 - (NSString *)wordForPositions:(NSArray *)positions;
 - (NSArray *)multiplierColorsForTurn:(NSInteger)turn;
 
 - (DRPPlayedWord *)wordPlayedForTurn:(NSInteger)turn;
 - (NSArray *)charactersForPositions:(NSArray *)positions forTurn:(NSInteger)turn;
+
 - (NSDictionary *)scores;
+- (NSDictionary *)scoresForTurn:(NSInteger)turn;
+- (NSInteger)scoreForPlayedWord:(DRPPlayedWord *)playedWord forTurn:(NSInteger)turn;
 
 - (void)appendNewData:(NSData *)newData;
 

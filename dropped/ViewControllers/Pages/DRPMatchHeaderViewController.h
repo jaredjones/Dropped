@@ -12,5 +12,6 @@
 
 - (void)observePlayers:(NSArray *)players;
 - (void)setCurrentPlayerTurn:(NSInteger)turn multiplierColors:(NSArray *)colors;
+- (void)setScores:(NSDictionary *)scores;
 
 @end

@@ -264,6 +264,7 @@
 - (void)advanceRenderedTurnToTurn:(NSInteger)turn
 {
     // TODO: tiles shouldn't be enabled while turn transitions are running
+    // TODO: disable currentWordView gestureRecognizers during replay
     
     // This is essentially recursion that pauses between each
     // iteration (because each iteration is asynchronous)
@@ -299,13 +300,25 @@
     }
     
     [self setHeaderViewControllerTurn:_renderedTurn];
-    // TODO: update scores
 }
 
 - (void)setHeaderViewControllerTurn:(NSInteger)turn
 {
     [_headerViewController setCurrentPlayerTurn:[_match playerForTurn:turn].turn
                                multiplierColors:[_match.board multiplierColorsForTurn:turn]];
+    
+    [_headerViewController setScores:[_match.board scoresForTurn:MIN(turn + 1, _match.currentTurn)]];
+}
+
+- (void)setHeaderViewControllerScoresWithCurrentWord:(DRPPlayedWord *)currentWord
+{
+    NSMutableDictionary *scores = [_match.board.scores mutableCopy];
+    
+    NSInteger currentTurn = _match.currentPlayer.turn;
+    NSInteger newScore = [scores[@(currentTurn)] intValue] + [_match.board scoreForPlayedWord:currentWord forTurn:_match.currentTurn];
+    scores[@(currentTurn)] = @(newScore);
+    
+    [_headerViewController setScores:scores];
 }
 
 #pragma mark DRPBoardViewControllerDelegate
@@ -313,18 +326,20 @@
 - (void)characterWasAddedToCurrentWord:(DRPCharacter *)character
 {
     _isCurrentWordValid = [self validateCurrentWord];
+    [self setHeaderViewControllerScoresWithCurrentWord:_boardViewController.currentPlayedWord];
     [self resetCues];
 }
 
 - (void)characterWasRemovedFromCurrentWord:(DRPCharacter *)character
 {
     _isCurrentWordValid = [self validateCurrentWord];
+    [self setHeaderViewControllerScoresWithCurrentWord:_boardViewController.currentPlayedWord];
     [self resetCues];
     [_currentWordViewController characterWasRemoved:character fromDirection:DRPDirectionLeft];
     
     // Explicitly transition to turnsLeft label
     // Do this here so _boardViewController wins when there's a disparity in the current word
-    if (_boardViewController.currentPositions.count == 0) {
+    if (_boardViewController.currentPlayedWord.positions.count == 0) {
         [_currentWordViewController setTurnsLeft:_match.turnsLeft isLocalTurn:_match.isLocalPlayerTurn fromDirection:DRPDirectionLeft];
     }
 }
@@ -341,7 +356,7 @@
 
 - (BOOL)validateCurrentWord
 {
-    return _boardViewController.currentPositions.count >=3 && [DRPDictionary isValidWord:_boardViewController.currentWord];
+    return _boardViewController.currentPlayedWord.positions.count >=3 && [DRPDictionary isValidWord:_boardViewController.currentWord];
 }
 
 #pragma mark DRPCurrentWordViewControllerDelegate
@@ -349,13 +364,14 @@
 - (void)currentWordWasTapped
 {
     if (_isCurrentWordValid) {
-        [_match submitTurnForPositions:_boardViewController.currentPositions];
+        [_match submitTurnForPositions:_boardViewController.currentPlayedWord.positions];
     }
 }
 
 - (void)currentWordWasSwiped
 {
     [_boardViewController deselectCurrentWord];
+    [self setHeaderViewControllerTurn:_match.currentTurn];
     [self resetCues];
 }
 

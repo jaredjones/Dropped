@@ -19,6 +19,8 @@
     self = [super init];
     if (self) {
         _positions = @[];
+        _multipliers = @[];
+        _additionalMultipliers = @[];
     }
     return self;
 }

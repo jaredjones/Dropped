@@ -123,7 +123,6 @@
 - (NSArray *)multiplierColorsForTurn:(NSInteger)turn
 {
     NSArray *multiplierPositions = _multiplierHistory[turn];
-    // TODO: make a charactersForPositions:forTurn: method
     NSArray *multipliers = @[[self characterAtPosition:multiplierPositions[0] forTurn:turn],
                              [self characterAtPosition:multiplierPositions[1] forTurn:turn]];
     
@@ -274,21 +273,23 @@
     return additionMultipliers;
 }
 
+// Returns the (possible) multiplier position in column, or nil otherwise
 - (DRPPosition *)additionMultiplierForPositions:(NSArray *)positions inColumn:(NSInteger)column
 {
-    DRPPosition *multiplier;
+    DRPPosition *multiplierPosition;
     for (NSInteger j = 5; j >= 0; j--) {
         DRPPosition *position = [DRPPosition positionWithI:column j:j];
         if ([positions containsObject:position]) {
             continue;
         }
         
-        if ([self characterAtPosition:position].multiplier) {
-            multiplier = position;
+        DRPCharacter *character = [self characterAtPosition:position];
+        if (character.multiplier > 3) {
+            multiplierPosition = position;
         }
         break;
     }
-    return multiplier;
+    return multiplierPosition;
 }
 
 #pragma mark MatchData Loading

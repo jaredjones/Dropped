@@ -184,8 +184,34 @@ static long const PrivateKVOContext;
 
 - (void)resetScore:(NSInteger)score
 {
-    _score.text = [NSString stringWithFormat:@"%ld", (long)score];
-    // TODO: recenter more sensibly
+    NSString *scoreString = [NSString stringWithFormat:@"%ld", (long)score];
+    _score.text = scoreString;
+    
+    CGSize size = [scoreString sizeWithAttributes:@{NSFontAttributeName : _score.font}];
+    
+    _score.center = ({
+        CGPoint center = _score.center;
+
+        if (_alignment == DRPDirectionLeft) {
+            if (size.width <= [FRBSwatchist floatForKey:@"board.tileLength"]) {
+                center.x = [FRBSwatchist floatForKey:@"board.tileLength"] / 2 - size.width / 2;
+                
+            } else {
+                center.x = [FRBSwatchist floatForKey:@"board.boardPadding"];
+            }
+            
+        } else {
+            if (size.width <= [FRBSwatchist floatForKey:@"board.tileLength"]) {
+                center.x = -[FRBSwatchist floatForKey:@"board.tileLength"] / 2 + size.width / 2;
+                
+            } else {
+                center.x = 0;
+            }
+        }
+        
+        center.x += (self.bounds.size.width) / 2;
+        center;
+    });
 }
 
 

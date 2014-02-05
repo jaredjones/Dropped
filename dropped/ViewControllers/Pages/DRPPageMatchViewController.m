@@ -9,10 +9,6 @@
 #import "DRPPageMatchViewController.h"
 #import "DRPMainViewController.h"
 
-#import "DRPBoardViewController.h"
-#import "DRPMatchHeaderViewController.h"
-#import "DRPMatchCurrentWordViewController.h"
-
 #import "DRPMatch.h"
 #import "DRPPlayer.h"
 #import "DRPBoard.h"
@@ -403,6 +399,13 @@
             [self advanceRenderedTurnToTurn:_match.currentTurn];
         }
     }];
+}
+
+#pragma mark DRPHeaderViewControllerDelegate
+
+- (void)headerViewTappedPlayerTileForTurn:(NSInteger)turn
+{
+    // TODO: replay that last turn, yo
 }
 
 @end

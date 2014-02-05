@@ -7,8 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DRPMatchPlayerView.h"
 
-@interface DRPMatchHeaderViewController : UIViewController
+@protocol DRPHeaderViewControllerDelegate <NSObject>
+
+- (void)headerViewTappedPlayerTileForTurn:(NSInteger)turn;
+
+@end
+
+@interface DRPMatchHeaderViewController : UIViewController <DRPMatchPlayerViewDelegate>
+
+@property id<DRPHeaderViewControllerDelegate> delegate;
 
 - (void)observePlayers:(NSArray *)players;
 - (void)setCurrentPlayerTurn:(NSInteger)turn multiplierColors:(NSArray *)colors;

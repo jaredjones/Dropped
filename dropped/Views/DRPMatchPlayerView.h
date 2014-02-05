@@ -9,10 +9,19 @@
 #import <UIKit/UIKit.h>
 #import "DRPPosition.h"
 #import "DRPCharacter.h"
+#import "DRPTileView.h"
 
-@class DRPPlayer;
+@class DRPPlayer, DRPTileView, DRPMatchPlayerView;
 
-@interface DRPMatchPlayerView : UIView
+@protocol DRPMatchPlayerViewDelegate
+
+- (void)tile:(DRPTileView *)tile wasTappedFromMatchPlayerView:(DRPMatchPlayerView *)matchPlayerView;
+
+@end
+
+@interface DRPMatchPlayerView : UIView <DRPTileViewDelegate>
+
+@property id<DRPMatchPlayerViewDelegate> delegate;
 
 - (instancetype)initWithAlignment:(DRPDirection)alignment;
 - (void)observePlayer:(DRPPlayer *)player;

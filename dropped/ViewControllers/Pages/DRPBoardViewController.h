@@ -7,10 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DRPPageMatchViewController.h"
+//#import "DRPPageMatchViewController.h"
 #import "DRPTileView.h"
 
 @class DRPTileView, DRPBoard, DRPPlayedWord, DRPCharacter;
+
+@protocol DRPBoardViewControllerDelegate
+
+- (void)characterWasAddedToCurrentWord:(DRPCharacter *)character;
+- (void)characterWasRemovedFromCurrentWord:(DRPCharacter *)character;
+
+- (void)characterWasHighlighted:(DRPCharacter *)character;
+- (void)characterWasDehighlighted:(DRPCharacter *)character;
+
+@end
 
 @interface DRPBoardViewController : UIViewController <DRPTileViewDelegate, UICollisionBehaviorDelegate>
 

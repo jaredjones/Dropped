@@ -45,22 +45,24 @@
 - (void)loadPlayerViews
 {
     _playerViews = @[({
-        UIView *view = [[DRPMatchPlayerView alloc] initWithAlignment:DRPDirectionLeft];
+        DRPMatchPlayerView *view = [[DRPMatchPlayerView alloc] initWithAlignment:DRPDirectionLeft];
         [self.view addSubview:view];
         view;
     }), ({
-        UIView *view = [[DRPMatchPlayerView alloc] initWithAlignment:DRPDirectionRight];
+        DRPMatchPlayerView *view = [[DRPMatchPlayerView alloc] initWithAlignment:DRPDirectionRight];
         [self.view addSubview:view];
         view;
     })];
     
     for (NSInteger i = 0; i < 2; i++) {
-        UIView *view = _playerViews[i];
+        DRPMatchPlayerView *view = _playerViews[i];
         view.frame = ({
             CGRect frame = view.frame;
             frame.origin = [self originForPlayerView:i forInterfaceOrientation:self.interfaceOrientation];
             frame;
         });
+        
+        view.delegate = self;
     }
 }
 
@@ -162,6 +164,16 @@
 {
     for (NSInteger i = 0; i < 2; i++) {
         [(DRPMatchPlayerView *)_playerViews[i] resetScore:[scores[@(i)] intValue]];
+    }
+}
+
+#pragma mark DRPMatchPlayerViewDelegate
+
+- (void)tile:(DRPTileView *)tile wasTappedFromMatchPlayerView:(DRPMatchPlayerView *)matchPlayerView
+{
+    NSInteger index = [_playerViews indexOfObject:matchPlayerView];
+    if (index != NSNotFound) {
+        [self.delegate headerViewTappedPlayerTileForTurn:index];
     }
 }
 

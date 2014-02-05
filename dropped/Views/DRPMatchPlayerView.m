@@ -92,6 +92,7 @@ static long const PrivateKVOContext;
             
             tile.selected = YES;
             tile.permaSelected = YES;
+            tile.delegate = self;
             [self addSubview:tile];
             tile;
         });
@@ -215,5 +216,26 @@ static long const PrivateKVOContext;
     });
 }
 
+#pragma mark DRPTileViewDelegate
+
+- (void)tileWasHighlighted:(DRPTileView *)tile
+{
+    // Intentionally left blank
+}
+
+- (void)tileWasSelected:(DRPTileView *)tile
+{
+    [_delegate tile:tile wasTappedFromMatchPlayerView:self];
+}
+
+- (void)tileWasDehighlighted:(DRPTileView *)tile
+{
+    // Intentionally left blank
+}
+
+- (void)tileWasDeselected:(DRPTileView *)tile
+{
+    // Intentionally left blank
+}
 
 @end

@@ -10,6 +10,8 @@
 
 #pragma mark - DRPPosition
 
+// TODO: cache that shit
+
 @implementation DRPPosition
 
 + (instancetype)positionWithI:(NSInteger)i j:(NSInteger)j

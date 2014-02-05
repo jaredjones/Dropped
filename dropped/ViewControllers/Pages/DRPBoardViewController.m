@@ -138,7 +138,7 @@
             
             // Add the active multiplier to the currentWord if it hasn't been done so already
             if (newCharacter) {
-                DRPPosition *multiplierPosition = [_board positionOfCharacter:adjacentMultiplier];
+                DRPPosition *multiplierPosition = [_board positionOfMultiplierCharacter:adjacentMultiplier];
                 if (![_currentPlayedWord.multipliers containsObject:multiplierPosition]) {
                     _currentPlayedWord.multipliers = [_currentPlayedWord.multipliers arrayByAddingObject:multiplierPosition];
                 }
@@ -175,7 +175,7 @@
         if (adjacent.count < adjacentMultiplier.multiplier) {
             adjacentMultiplier.multiplierActive = NO;
             
-            DRPPosition *multiplierPosition = [_board positionOfCharacter:adjacentMultiplier];
+            DRPPosition *multiplierPosition = [_board positionOfMultiplierCharacter:adjacentMultiplier];
             _currentPlayedWord.multipliers = [_currentPlayedWord.multipliers arrayByRemovingObject:multiplierPosition];
             
             for (DRPTileView *tile in adjacent) {

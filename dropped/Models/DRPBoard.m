@@ -90,10 +90,10 @@
     return [_history lastObject][position];
 }
 
-- (DRPPosition *)positionOfCharacter:(DRPCharacter *)character
+- (DRPPosition *)positionOfMultiplierCharacter:(DRPCharacter *)multiplierCharacter
 {
-    for (DRPPosition *position in [_history lastObject]) {
-        if ([_history lastObject][position] == character) {
+    for (DRPPosition *position in [_multiplierHistory lastObject]) {
+        if ([_history lastObject][position] == multiplierCharacter) {
             return position;
         }
     }

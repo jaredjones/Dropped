@@ -21,7 +21,7 @@
 
 - (DRPCharacter *)characterAtPosition:(DRPPosition *)position forTurn:(NSInteger)turn;
 - (DRPCharacter *)characterAtPosition:(DRPPosition *)position;
-- (DRPPosition *)positionOfCharacter:(DRPCharacter *)character;
+- (DRPPosition *)positionOfMultiplierCharacter:(DRPCharacter *)multiplierCharacter;
 
 - (NSString *)wordForPositions:(NSArray *)positions forTurn:(NSInteger)turn;
 - (NSString *)wordForPositions:(NSArray *)positions;

@@ -25,10 +25,10 @@
 @property (nonatomic) CGFloat strokeOpacity;
 @property DRPPosition *position;
 
-@property (nonatomic) BOOL permaHighlighted;
+// These are "weird" properties that allow for custom behavior
+// for non-board tiles (playerView, currentWordView, etc)
+@property (nonatomic) BOOL permaHighlighted, permaSelected;
 @property (nonatomic) BOOL scaleCharacter;
-
-// TODO: need a perma-highlight option
 
 @property id<DRPTileViewDelegate> delegate;
 

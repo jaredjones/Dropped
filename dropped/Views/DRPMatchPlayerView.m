@@ -91,6 +91,7 @@ static long const PrivateKVOContext;
             });
             
             tile.selected = YES;
+            tile.permaSelected = YES;
             [self addSubview:tile];
             tile;
         });

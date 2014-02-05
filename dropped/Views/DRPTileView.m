@@ -91,6 +91,7 @@ static NSMutableDictionary *glyphAdvancesCache;
     tile.selected = NO;
     tile.highlighted = NO;
     tile.permaHighlighted = NO;
+    tile.permaSelected = NO;
     tile.position = nil;
     tile.transform = CGAffineTransformIdentity;
     [queuedTiles removeLastObject];
@@ -165,6 +166,9 @@ static NSMutableDictionary *glyphAdvancesCache;
 {
     if (self.highlighted) {
         self.selected = !self.selected;
+    }
+    if (self.permaSelected) {
+        self.selected = YES;
     }
     self.highlighted = NO;
     

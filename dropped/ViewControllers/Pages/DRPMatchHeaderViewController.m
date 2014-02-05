@@ -22,8 +22,6 @@
 
 - (id)init
 {
-    // TODO: Make sure to disable header tiles so they can't be tapped
-    
     self = [super initWithNibName:nil bundle:nil];
     if (self) {
     }

@@ -90,6 +90,7 @@
 - (void)loadHeaderViewController
 {
     _headerViewController = [[DRPMatchHeaderViewController alloc] init];
+    _headerViewController.delegate = self;
     
     [_headerViewController willMoveToParentViewController:self];
     [self addChildViewController:_headerViewController];
@@ -190,13 +191,12 @@
     }
     
     // Fast forward to current turn
-    _renderedTurn = MAX(_match.currentTurn - 1, 0);
+    NSInteger startTurn = MAX(_match.currentTurn - 1, 0);
     if ([FRBSwatchist boolForKey:@"debug.playBackEntireMatch"]) {
-        _renderedTurn = 0;
+        startTurn = 0;
     }
     
-    [_boardViewController loadBoard:_match.board atTurn:_renderedTurn];
-    [self setHeaderViewControllerTurn:_renderedTurn];
+    [self loadTurn:startTurn];
     
     // Set initial currentWordView
     if (_match.currentTurn > 0) {
@@ -213,6 +213,13 @@
     }
     
     // TODO: reload player aliases
+}
+
+- (void)loadTurn:(NSInteger)turn
+{
+    _renderedTurn = turn;
+    [_boardViewController loadBoard:_match.board atTurn:_renderedTurn];
+    [self setHeaderViewControllerTurn:_renderedTurn];
 }
 
 - (void)didMoveToCurrent
@@ -405,7 +412,25 @@
 
 - (void)headerViewTappedPlayerTileForTurn:(NSInteger)turn
 {
-    // TODO: replay that last turn, yo
+    // Make sure the board is not currently playing back
+    if (_renderedTurn != _match.currentTurn) {
+        return;
+    }
+    
+    // Play back those turns, yo
+    NSInteger startTurn = _match.currentTurn;
+    
+    if (turn == _match.currentPlayer.turn) {
+        startTurn = startTurn - 2;
+    } else {
+        startTurn = startTurn - 1;
+    }
+    
+    // load turn and replay
+    if (_match.currentTurn > startTurn && startTurn >= 0) {
+        [self loadTurn:startTurn];
+        [self advanceRenderedTurnToTurn:_match.currentTurn];
+    }
 }
 
 @end

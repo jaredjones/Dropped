@@ -137,9 +137,11 @@
     return frame;
 }
 
+// TODO: these magic numbers are totally bullshit
 - (CGRect)opponentLabelFrame
 {
-    return CGRectMake([FRBSwatchist floatForKey:@"list.textOffsetX"], 0,
+    return CGRectMake([FRBSwatchist floatForKey:@"list.textOffsetX"],
+                      0 + 1,
                       self.contentView.bounds.size.width - [FRBSwatchist floatForKey:@"list.textOffsetX"],
                       [FRBSwatchist floatForKey:@"board.tileLength"] / 2);
 }
@@ -147,7 +149,7 @@
 - (CGRect)statusLabelFrame
 {
     return CGRectMake([FRBSwatchist floatForKey:@"list.textOffsetX"],
-                      [FRBSwatchist floatForKey:@"board.tileLength"] / 2,
+                      [FRBSwatchist floatForKey:@"board.tileLength"] / 2 + 3,
                       self.contentView.bounds.size.width - [FRBSwatchist floatForKey:@"list.textOffsetX"],
                       [FRBSwatchist floatForKey:@"board.tileLength"] / 2);
 }

@@ -25,6 +25,9 @@
 @property NSMutableArray *tiles;
 @property UILabel *opponentLabel, *statusLabel;
 
+// Stored from the set DRPMatch to keep references for KVO
+@property NSArray *players;
+
 @end
 
 @implementation DRPMatchCollectionViewCell
@@ -49,11 +52,20 @@
     return self;
 }
 
+- (void)dealloc
+{
+    [self removeObservers];
+}
+
 - (void)configureWithMatch:(DRPMatch *)match
 {
-    // TODO: deterine match state
+    // TODO: determine match state
     
     // Reset tiles
+    [self removeObservers];
+    _players = match.players;
+    [self addObserversForPlayers:_players];
+    
     NSArray *colors = [match.board multiplierColorsForTurn:match.currentTurn];
     for (NSInteger i = 0; i < match.players.count; i++) {
         DRPTileView *tile = _tiles[i];
@@ -66,6 +78,8 @@
             // To trick the tile into highlighting, you must enable it first
             tile.enabled = YES;
             tile.highlighted = YES;
+        } else {
+            tile.highlighted = NO;
         }
         
         [tile resetAppearence];
@@ -75,17 +89,56 @@
     }
     
     // TODO: them labels
+    // TODO: add player observer
 }
 
 #pragma mark Layout
 
 + (CGRect)tileFrameForTurn:(NSInteger)turn state:(DRPMatchCellState)cellState
 {
+    // TODO: When game over should slide right tile over, with winner on top
     CGRect frame = CGRectZero;
     frame.origin.x = turn * ([FRBSwatchist floatForKey:@"board.tileLength"] + [FRBSwatchist floatForKey:@"board.tileMargin"]);
     frame.size.width = [FRBSwatchist floatForKey:@"board.tileLength"];
     frame.size.height = [FRBSwatchist floatForKey:@"board.tileLength"];
     return frame;
+}
+
+#pragma mark KVO
+
+- (void)addObserversForPlayers:(NSArray *)players
+{
+    for (DRPPlayer *player in _players) {
+        [player addObserver:self forKeyPath:@"alias" options:NSKeyValueObservingOptionNew context:nil];
+    }
+}
+
+- (void)removeObservers
+{
+    for (DRPPlayer *player in _players) {
+        [player removeObserver:self forKeyPath:@"alias"];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    if ([object isKindOfClass:[DRPPlayer class]] && [keyPath isEqualToString:@"alias"]) {
+        
+        for (NSInteger i = 0; i < _players.count; i++) {
+            DRPPlayer *player = _players[i];
+            if (player != object) continue;
+            
+            DRPTileView *tile = _tiles[i];
+            
+            DRPCharacter *oldCharacter = tile.character;
+            DRPCharacter *newCharacter = [DRPCharacter characterWithCharacter:[player firstPrintableAliasCharacter]];
+            newCharacter.color = oldCharacter.color;
+            tile.character = newCharacter;
+        }
+        
+    } else {
+        [super observeValueForKeyPath:keyPath ofObject:object change:change context:context];
+    }
 }
 
 @end

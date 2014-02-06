@@ -182,6 +182,11 @@
     return _players[1];
 }
 
+- (DRPPlayer *)remotePlayer
+{
+    return [self playerForTurn:([self localPlayer].turn + 1) % 2];
+}
+
 - (DRPPlayer *)currentPlayer
 {
     return _players[_board.currentTurn % 2];

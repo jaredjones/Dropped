@@ -20,7 +20,6 @@
 
 - (instancetype)initWithParticipant:(GKTurnBasedParticipant *)participant turn:(NSInteger)turn;
 
-- (BOOL)hasParticipant;
 - (NSString *)firstPrintableAliasCharacter;
 
 @end

@@ -13,5 +13,7 @@
 	<integer>35</integer>
 	<key>sectionInset</key>
 	<integer>75</integer>
+	<key>textOffsetX</key>
+	<integer>116</integer>
 </dict>
 </plist>

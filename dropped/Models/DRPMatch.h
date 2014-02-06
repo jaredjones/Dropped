@@ -31,6 +31,7 @@
 - (NSInteger)turnsLeft;
 
 - (DRPPlayer *)localPlayer;
+- (DRPPlayer *)remotePlayer;
 - (DRPPlayer *)currentPlayer;
 - (DRPPlayer *)playerForTurn:(NSInteger)turn;
 - (BOOL)isLocalPlayerTurn;

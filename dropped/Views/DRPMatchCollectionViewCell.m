@@ -27,6 +27,7 @@
 
 // Stored from the set DRPMatch to keep references for KVO
 @property NSArray *players;
+@property DRPPlayer *remotePlayer;
 
 @end
 
@@ -48,6 +49,17 @@
             [_tiles addObject:tile];
             [self.contentView addSubview:tile];
         }
+        
+        // Load Labels
+        _opponentLabel = [[UILabel alloc] initWithFrame:[self opponentLabelFrame]];
+        _opponentLabel.font = [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"];
+        _opponentLabel.textColor = [FRBSwatchist colorForKey:@"colors.black"];
+        [self.contentView addSubview:_opponentLabel];
+        
+        _statusLabel = [[UILabel alloc] initWithFrame:[self statusLabelFrame]];
+        _statusLabel.font = [FRBSwatchist fontForKey:@"page.cueFont"];
+        _statusLabel.textColor = [FRBSwatchist colorForKey:@"colors.black"];
+        [self.contentView addSubview:_statusLabel];
     }
     return self;
 }
@@ -70,6 +82,7 @@
     // Reset tiles
     [self removeObservers];
     _players = match.players;
+    _remotePlayer = match.remotePlayer;
     [self addObserversForPlayers:_players];
     
     NSArray *colors = [match.board multiplierColorsForTurn:match.currentTurn];
@@ -94,7 +107,14 @@
         tile.hidden = NO;
     }
     
-    // TODO: them labels
+    // Set Labels
+    _opponentLabel.text = match.remotePlayer.alias;
+    
+    if ([match isLocalPlayerTurn]) {
+        _statusLabel.text = @"Your Turn!";
+    } else {
+        _statusLabel.text = @"Waiting for Turn";
+    }
 }
 
 + (DRPMatchCellState)cellStateForMatch:(DRPMatch *)match
@@ -115,6 +135,21 @@
     frame.size.width = [FRBSwatchist floatForKey:@"board.tileLength"];
     frame.size.height = [FRBSwatchist floatForKey:@"board.tileLength"];
     return frame;
+}
+
+- (CGRect)opponentLabelFrame
+{
+    return CGRectMake([FRBSwatchist floatForKey:@"list.textOffsetX"], 0,
+                      self.contentView.bounds.size.width - [FRBSwatchist floatForKey:@"list.textOffsetX"],
+                      [FRBSwatchist floatForKey:@"board.tileLength"] / 2);
+}
+
+- (CGRect)statusLabelFrame
+{
+    return CGRectMake([FRBSwatchist floatForKey:@"list.textOffsetX"],
+                      [FRBSwatchist floatForKey:@"board.tileLength"] / 2,
+                      self.contentView.bounds.size.width - [FRBSwatchist floatForKey:@"list.textOffsetX"],
+                      [FRBSwatchist floatForKey:@"board.tileLength"] / 2);
 }
 
 #pragma mark KVO
@@ -147,6 +182,10 @@
             DRPCharacter *newCharacter = [DRPCharacter characterWithCharacter:[player firstPrintableAliasCharacter]];
             newCharacter.color = oldCharacter.color;
             tile.character = newCharacter;
+            
+            if (player == _remotePlayer) {
+                _opponentLabel.text = player.alias;
+            }
         }
         
     } else {

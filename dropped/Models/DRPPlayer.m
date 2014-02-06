@@ -7,6 +7,7 @@
 //
 
 #import "DRPPlayer.h"
+#import "DRPUtility.h"
 
 #pragma mark - DRPPlayer
 
@@ -20,6 +21,16 @@
         _turn = turn;
     }
     return self;
+}
+
+- (BOOL)hasParticipant
+{
+    return _participant.playerID != nil;
+}
+
+- (NSString *)firstPrintableAliasCharacter
+{
+    return [self hasParticipant] ? firstPrintableCharacter(_alias) : @"hash";
 }
 
 @end

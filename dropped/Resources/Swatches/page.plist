@@ -3,7 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>transitionThreshold</key>
-	<integer>35</integer>
+	<integer>45</integer>
+	<key>transitionThresholdpad</key>
+	<integer>135</integer>
 	<key>cueFont</key>
 	<dict>
 		<key>name</key>
@@ -41,7 +43,7 @@
 	<key>cueOffsetBottomPad</key>
 	<integer>22</integer>
 	<key>cueVisibleThreshold</key>
-	<integer>65</integer>
+	<integer>45</integer>
 	<key>cueAnimationDuration</key>
 	<real>0.65</real>
 	<key>cueAnimationDamping</key>
@@ -50,7 +52,5 @@
 	<real>0.12</real>
 	<key>cueIndicatorAnimationDelay</key>
 	<real>0.023</real>
-	<key>matchCurrentWordLetterSpacing</key>
-	<integer>3</integer>
 </dict>
 </plist>

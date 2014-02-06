@@ -205,5 +205,12 @@
 		<key>y</key>
 		<real>-0.5</real>
 	</dict>
+	<key>hash</key>
+	<dict>
+		<key>x</key>
+		<real>0.6</real>
+		<key>y</key>
+		<real>-0.2</real>
+	</dict>
 </dict>
 </plist>

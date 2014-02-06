@@ -10,10 +10,15 @@
 
 @class DRPMatch;
 
-@interface DRPMatchCollectionViewCell : UICollectionViewCell
+typedef NS_ENUM(NSInteger, DRPMatchCellState) {
+    DRPMatchCellStatePlayer1Active,
+    DRPMatchCellStatePlayer2Active,
+    DRPMatchCellStatePlayer1Won,
+    DRPMatchCellStatePlayer2Won,
+    DRPMatchCellStatePlayer2Declined
+};
 
-// tmp
-@property (readonly) UILabel *label;
+@interface DRPMatchCollectionViewCell : UICollectionViewCell
 
 - (void)configureWithMatch:(DRPMatch *)match;
 

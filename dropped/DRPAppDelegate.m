@@ -71,7 +71,7 @@
 
 - (void)loadSwatches
 {
-    NSArray *swatches = @[@"animation", @"board", @"colors", @"debug", @"page", @"tileOffset", @"tileScalingOffset"];
+    NSArray *swatches = @[@"animation", @"board", @"colors", @"debug", @"list", @"page", @"tileOffset", @"tileScalingOffset"];
     for (NSString *swatch in swatches) {
         [self loadSwatchNamed:swatch];
     }

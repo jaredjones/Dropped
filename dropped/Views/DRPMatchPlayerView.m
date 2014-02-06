@@ -159,14 +159,14 @@ static long const PrivateKVOContext;
 {
     if ((id)alias != [NSNull null]) {
         _alias.text = _player.alias;
-        _tile.character = [self characterForAlias:_player.alias];
+        _tile.character = [self playerTileCharacter];
     }
 }
                        
-- (DRPCharacter *)characterForAlias:(NSString *)alias
+- (DRPCharacter *)playerTileCharacter
 {
     return ({
-        DRPCharacter *character = [DRPCharacter characterWithCharacter:[[alias substringToIndex:1] uppercaseString]];
+        DRPCharacter *character = [DRPCharacter characterWithCharacter:[_player firstPrintableAliasCharacter]];
         character.color = _tileColor;
         character;
     });

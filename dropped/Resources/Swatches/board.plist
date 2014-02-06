@@ -44,5 +44,7 @@
 	<integer>0</integer>
 	<key>boardVerticalOffsetPadLandscape</key>
 	<integer>-52</integer>
+	<key>matchCurrentWordLetterSpacing</key>
+	<integer>3</integer>
 </dict>
 </plist>

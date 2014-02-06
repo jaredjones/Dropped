@@ -69,9 +69,11 @@ static NSMutableDictionary *glyphAdvancesCache;
 
 - (void)loadGlyphLayer
 {
-    if (!_character) return;
-    
     [_glyphLayer removeFromSuperlayer];
+    
+    // Hide glyphLayer if character is nil
+    if (!_character || !_character.character) return;
+    
     _glyphLayer = [[CAShapeLayer alloc] init];
     _glyphLayer.path = [DRPTileView pathForCharacter:_character.character].CGPath;
     _glyphLayer.fillColor = [FRBSwatchist colorForKey:@"colors.black"].CGColor;
@@ -122,8 +124,10 @@ static NSMutableDictionary *glyphAdvancesCache;
     DRPColor colorCode;
     if (_character.adjacentMultiplier) {
         colorCode = _character.adjacentMultiplier.color;
-    } else {
+    } else if (_character) {
         colorCode = _character.color;
+    } else {
+        colorCode = DRPColorNil;
     }
     
     _hasWhiteBackground = colorCode == DRPColorNil;
@@ -275,6 +279,12 @@ static NSMutableDictionary *glyphAdvancesCache;
     // Get the glyph index for a named character in the font
     CFStringRef glyphName = (__bridge CFStringRef)character;
     CGGlyph aGlyph = CTFontGetGlyphWithName(font, glyphName);
+    
+    // TODO: this is a horrible, terrible hack. Should be punishable by death
+    // Can't figure out the glyphName for hash programmatically, but I did manage to guess it correctly
+    if ([character isEqualToString:@"hash"]) {
+        aGlyph = 9;
+    }
     
     // Compute glyph advancement
     CGSize advancement = CGSizeZero;

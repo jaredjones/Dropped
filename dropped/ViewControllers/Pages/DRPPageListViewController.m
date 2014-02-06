@@ -43,9 +43,11 @@
 - (void)loadScrollView
 {
     _layout = [[DRPPageCollectionViewLayout alloc] init];
-    _layout.itemSize = CGSizeMake(300, 50);
-    _layout.minimumLineSpacing = 15;
-    _layout.sectionInset = UIEdgeInsetsMake(35, 0, 35, 0);
+    NSLog(@"%@", [NSValue valueWithCGSize:[FRBSwatchist sizeForKey:@"list.itemSize"]]);
+    _layout.itemSize = [FRBSwatchist sizeForKey:@"list.itemSize"];
+    _layout.minimumLineSpacing = [FRBSwatchist floatForKey:@"list.lineSpacing"];
+    _layout.minimumInteritemSpacing = MAX(self.view.bounds.size.width, self.view.bounds.size.height);
+    _layout.sectionInset = UIEdgeInsetsMake([FRBSwatchist floatForKey:@"list.sectionInset"], 0, [FRBSwatchist floatForKey:@"list.sectionInset"], 0);
     
     _dataSource = [[DRPPageListDataSource alloc] init];
     

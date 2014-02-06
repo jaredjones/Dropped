@@ -39,3 +39,8 @@ CGPoint rectCenter(CGRect rect)
 {
     return CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
 }
+
+NSString *firstPrintableCharacter(NSString *alias)
+{
+    return [[alias substringToIndex:1] uppercaseString];
+}

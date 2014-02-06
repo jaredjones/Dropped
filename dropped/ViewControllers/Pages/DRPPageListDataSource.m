@@ -100,6 +100,7 @@
     DRPMatch *match = [self matchForMatchID:gkMatch.matchID];
     if (!match) return;
     
+    // TODO: is this getting called twice? Definitely check
     [match reloadMatchDataWithCompletion:^(BOOL newTurns) {
         // TODO: update the cell, yo
     }];
@@ -110,7 +111,6 @@
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
     DRPMatchCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor lightGrayColor];
     [cell configureWithMatch:[self matchForIndexPath:indexPath]];
     return cell;
 }

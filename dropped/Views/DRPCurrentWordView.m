@@ -278,7 +278,7 @@
     CGPoint *centers = malloc(sizeof(CGPoint) * _tiles.count);
     
     _wordWidth = 0;
-    CGFloat letterSpacing = [FRBSwatchist floatForKey:@"page.matchCurrentWordLetterSpacing"];
+    CGFloat letterSpacing = [FRBSwatchist floatForKey:@"board.matchCurrentWordLetterSpacing"];
     
     // Initial Spacing
     for (NSInteger i = 0; i < _tiles.count; i++) {
@@ -312,7 +312,7 @@
 {
     // Ignore advancement when the first letter is being added
     CGFloat tileWidth = _wordWidth > 0 ? tile.frame.size.width : 0;
-    CGFloat letterSpacing = [FRBSwatchist floatForKey:@"page.matchCurrentWordLetterSpacing"];
+    CGFloat letterSpacing = [FRBSwatchist floatForKey:@"board.matchCurrentWordLetterSpacing"];
     letterSpacing = _wordWidth > 0 ? letterSpacing : -letterSpacing;
     return CGPointMake((self.frame.size.width + _wordWidth + tileWidth + letterSpacing) / 2,
                        self.bounds.size.height / 2);

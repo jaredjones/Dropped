@@ -40,6 +40,7 @@
 		A9801A3A18774A9A0024B2A1 /* DRPMatchHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9801A3918774A990024B2A1 /* DRPMatchHeaderViewController.m */; };
 		A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9813323186BC00300FC3277 /* DRPCurrentWordView.m */; };
 		A9813327186DFBA100FC3277 /* DRPGreedyScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9813326186DFBA100FC3277 /* DRPGreedyScrollView.m */; };
+		A997F00918A446FA0007E7E5 /* under_construction.png in Resources */ = {isa = PBXBuildFile; fileRef = A997F00818A446FA0007E7E5 /* under_construction.png */; };
 		A99B627318989BB500906CD5 /* debugMatches.plist in Resources */ = {isa = PBXBuildFile; fileRef = A99B627218989BB500906CD5 /* debugMatches.plist */; };
 		A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A99D97D218490C8300208FA0 /* DRPPlayer.m */; };
 		A99EAF1D1876603E00DAD44F /* DRPMatchPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EAF1C1876603E00DAD44F /* DRPMatchPlayerView.m */; };
@@ -167,6 +168,7 @@
 		A9813323186BC00300FC3277 /* DRPCurrentWordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCurrentWordView.m; path = Views/DRPCurrentWordView.m; sourceTree = "<group>"; };
 		A9813325186DFBA100FC3277 /* DRPGreedyScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPGreedyScrollView.h; path = Views/DRPGreedyScrollView.h; sourceTree = "<group>"; };
 		A9813326186DFBA100FC3277 /* DRPGreedyScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPGreedyScrollView.m; path = Views/DRPGreedyScrollView.m; sourceTree = "<group>"; };
+		A997F00818A446FA0007E7E5 /* under_construction.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = under_construction.png; sourceTree = "<group>"; };
 		A99B627218989BB500906CD5 /* debugMatches.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = debugMatches.plist; path = Swatches/debugMatches.plist; sourceTree = "<group>"; };
 		A99D97D118490C8300208FA0 /* DRPPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayer.h; path = Models/DRPPlayer.h; sourceTree = "<group>"; };
 		A99D97D218490C8300208FA0 /* DRPPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPlayer.m; path = Models/DRPPlayer.m; sourceTree = "<group>"; };
@@ -570,6 +572,7 @@
 		C08CBC121837168800CE678F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A997F00818A446FA0007E7E5 /* under_construction.png */,
 				A9AC495D18539E0D006E1D84 /* Database */,
 				A9A485CE1856279C0080A4B5 /* Fonts */,
 				A9AC495E18539E15006E1D84 /* Swatches */,
@@ -666,6 +669,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A91D8F53183702EE00BEC6E8 /* InfoPlist.strings in Resources */,
+				A997F00918A446FA0007E7E5 /* under_construction.png in Resources */,
 				A9A485D1185627B00080A4B5 /* Centrale Sans Light.otf in Resources */,
 				A9A485D2185627B00080A4B5 /* Centrale Sans Medium.otf in Resources */,
 				C08CBC171837168800CE678F /* importdatabase.sh in Resources */,

@@ -59,7 +59,13 @@
 
 - (void)configureWithMatch:(DRPMatch *)match
 {
-    // TODO: determine match state
+    // Determine match state
+    _cellState = [DRPMatchCollectionViewCell cellStateForMatch:match];
+    NSArray *highlights = @[({
+        @(_cellState == DRPMatchCellStatePlayer1Active && match.localPlayer.turn == 0);
+    }), ({
+        @(_cellState == DRPMatchCellStatePlayer2Active && match.localPlayer.turn == 1);
+    })];
     
     // Reset tiles
     [self removeObservers];
@@ -74,7 +80,7 @@
         tile.character = [DRPCharacter characterWithCharacter:[player firstPrintableAliasCharacter]];
         tile.character.color = [colors[i] intValue];
         
-        if (match.localPlayer == match.currentPlayer && match.currentPlayer.turn == i) {
+        if ([highlights[i] boolValue]) {
             // To trick the tile into highlighting, you must enable it first
             tile.enabled = YES;
             tile.highlighted = YES;
@@ -89,7 +95,14 @@
     }
     
     // TODO: them labels
-    // TODO: add player observer
+}
+
++ (DRPMatchCellState)cellStateForMatch:(DRPMatch *)match
+{
+    if (match.currentPlayer.turn == 0) {
+        return DRPMatchCellStatePlayer1Active;
+    }
+    return DRPMatchCellStatePlayer2Active;
 }
 
 #pragma mark Layout

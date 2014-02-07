@@ -15,6 +15,7 @@ typedef NS_ENUM(NSInteger, DRPMatchCellState) {
     DRPMatchCellStatePlayer2Active,
     DRPMatchCellStatePlayer1Won,
     DRPMatchCellStatePlayer2Won,
+    DRPMatchCellStateTie,
     DRPMatchCellStatePlayer2Declined
 };
 

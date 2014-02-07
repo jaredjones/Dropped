@@ -43,7 +43,6 @@
 - (void)loadScrollView
 {
     _layout = [[DRPPageCollectionViewLayout alloc] init];
-    NSLog(@"%@", [NSValue valueWithCGSize:[FRBSwatchist sizeForKey:@"list.itemSize"]]);
     _layout.itemSize = [FRBSwatchist sizeForKey:@"list.itemSize"];
     _layout.minimumLineSpacing = [FRBSwatchist floatForKey:@"list.lineSpacing"];
     _layout.minimumInteritemSpacing = MAX(self.view.bounds.size.width, self.view.bounds.size.height);

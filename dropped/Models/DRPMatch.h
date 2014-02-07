@@ -29,6 +29,7 @@
 - (NSInteger)numberOfTurns;
 - (NSInteger)currentTurn;
 - (NSInteger)turnsLeft;
+- (BOOL)finished;
 
 - (DRPPlayer *)localPlayer;
 - (DRPPlayer *)remotePlayer;
@@ -36,6 +37,7 @@
 - (DRPPlayer *)playerForTurn:(NSInteger)turn;
 - (BOOL)isLocalPlayerTurn;
 
+- (void)reloadPlayerAliases;
 - (void)reloadMatchDataWithCompletion:(void(^)(BOOL newTurns))completion;
 - (void)submitTurnForPositions:(NSArray *)positions;
 

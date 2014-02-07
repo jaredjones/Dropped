@@ -212,7 +212,8 @@
                                    fromDirection:[self currentWordDirectionForPlayer:_match.currentPlayer]];
     }
     
-    // TODO: reload player aliases
+    [_match reloadPlayerAliases];
+    _currentWordViewController.gesturesEnabled = YES;
 }
 
 - (void)loadTurn:(NSInteger)turn
@@ -307,9 +308,9 @@
         }];
         
     } else if (_renderedTurn == _match.currentTurn) {
+        
         // Caught up to turn, show the turnsLeft container
         [_currentWordViewController setTurnsLeft:_match.turnsLeft isLocalTurn:_match.isLocalPlayerTurn fromDirection:direction];
-        
         [self resetCues];
     }
     

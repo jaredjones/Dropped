@@ -171,6 +171,11 @@
     return self.numberOfTurns - self.currentTurn;
 }
 
+- (BOOL)finished
+{
+    return self.turnsLeft == 0;
+}
+
 #pragma mark Player
 
 - (DRPPlayer *)localPlayer

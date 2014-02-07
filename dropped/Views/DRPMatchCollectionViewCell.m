@@ -103,7 +103,10 @@
         
         [tile resetAppearence];
         tile.enabled = NO;
+        
+        // TODO: animate the cell over
         tile.frame = [DRPMatchCollectionViewCell tileFrameForTurn:i state:_cellState];
+        
         tile.hidden = NO;
     }
     
@@ -119,6 +122,13 @@
 
 + (DRPMatchCellState)cellStateForMatch:(DRPMatch *)match
 {
+    if (match.finished) {
+        if ([match playerForTurn:1].score > [match playerForTurn:0].score) {
+            return DRPMatchCellStatePlayer2Won;
+        }
+        return DRPMatchCellStatePlayer1Won;
+    }
+    
     if (match.currentPlayer.turn == 0) {
         return DRPMatchCellStatePlayer1Active;
     }
@@ -129,11 +139,19 @@
 
 + (CGRect)tileFrameForTurn:(NSInteger)turn state:(DRPMatchCellState)cellState
 {
-    // TODO: When game over should slide right tile over, with winner on top
     CGRect frame = CGRectZero;
     frame.origin.x = turn * ([FRBSwatchist floatForKey:@"board.tileLength"] + [FRBSwatchist floatForKey:@"board.tileMargin"]);
     frame.size.width = [FRBSwatchist floatForKey:@"board.tileLength"];
     frame.size.height = [FRBSwatchist floatForKey:@"board.tileLength"];
+    
+    // Slide right tile over
+    if (turn == 1 && (cellState == DRPMatchCellStatePlayer1Won ||
+                      cellState == DRPMatchCellStatePlayer2Won ||
+                      cellState == DRPMatchCellStateTie)) {
+        // Golden ratio, yo
+        frame.origin.x -= [FRBSwatchist floatForKey:@"board.tileLength"] / 1.6;
+    }
+    
     return frame;
 }
 

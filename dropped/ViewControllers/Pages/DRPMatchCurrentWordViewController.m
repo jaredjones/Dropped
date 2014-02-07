@@ -277,13 +277,10 @@
 {
     [_delegate currentWordWasSwiped];
     
-    DRPDirection direction;
+    DRPDirection direction = DRPDirectionLeft;
     if (velocity < 0) {
         direction = DRPDirectionRight;
     } else if (velocity > 0) {
-        direction = DRPDirectionLeft;
-    } else {
-        // TODO: get proper player direction
         direction = DRPDirectionLeft;
     }
     [self setCurrentContainerType:DRPContainerTypeTurnsLeft fromDirection:direction withVelocity:fabs(velocity)];

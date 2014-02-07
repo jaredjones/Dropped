@@ -21,12 +21,11 @@
 
 - (void)execute
 {
-    // TODO: this is making multiple gravity behaviors. Cut that shit out
     _gravity = [[UIGravityBehavior alloc] initWithItems:@[self.start.view, self.destination.view]];
     _gravity.magnitude = [FRBSwatchist floatForKey:@"animation.gravity"];
     [[DRPTransition sharedDynamicAnimator] addBehavior:_gravity];
     
-    // TODO: sometimes adds the gravity behavior twice. Make sure to cut that shit out
+    // TODO: sometimes adds the gravity behavior twice. Cut that shit out
 
     _collision = [[UICollisionBehavior alloc] initWithItems:@[self.destination.view]];
     [_collision addBoundaryWithIdentifier:@"bottom"

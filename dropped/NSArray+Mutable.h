@@ -11,5 +11,6 @@
 @interface NSArray (Mutable)
 
 - (NSArray *)arrayByRemovingObject:(id)object;
+- (NSArray *)arrayByRemovingObjectsFromArray:(NSArray *)array;
 
 @end

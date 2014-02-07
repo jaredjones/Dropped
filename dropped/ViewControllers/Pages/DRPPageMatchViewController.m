@@ -213,7 +213,6 @@
     }
     
     [_match reloadPlayerAliases];
-    _currentWordViewController.gesturesEnabled = YES;
 }
 
 - (void)loadTurn:(NSInteger)turn
@@ -280,13 +279,13 @@
     if (self.mainViewController.currentPageID == self.pageID && _renderedTurn <= turn) {
         [self stepRenderedTurnWithCompletion:^{
             [self advanceRenderedTurnToTurn:turn];
-            
-            // Turns are done advancing, reenable the board and the currentWordView 
-            if (_renderedTurn == turn) {
-                _boardViewController.boardEnabled = YES;
-                _currentWordViewController.gesturesEnabled = YES;
-            }
         }];
+        
+        // Turns are done advancing, reenable the board and the currentWordView
+        if (_renderedTurn == turn) {
+            _boardViewController.boardEnabled = YES;
+            _currentWordViewController.gesturesEnabled = YES;
+        }
     }
 }
 

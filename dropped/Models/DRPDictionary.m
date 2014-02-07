@@ -61,6 +61,7 @@ static const NSInteger _HTTPSuccessCode = 200;
 
 + (void)syncDictionary
 {
+    return;
     NSInteger versionNumber = [[[DRPDictionary sharedDictionary] database] intForQuery:@"SELECT version FROM settings"];
     NSString *URLString = [NSString stringWithFormat:@"%@grabdicsql.php?i=%ld",
                                             [FRBSwatchist stringForKey:@"debug.dictionaryDownloadURL"],
@@ -78,7 +79,7 @@ static const NSInteger _HTTPSuccessCode = 200;
                                if ([httpResponse statusCode] != _HTTPSuccessCode ||
                                                             connectionError != nil) {
                                    NSLog(@"Dictionary Downloaded Failed with HTTP Status-Code:%ld\nURLPath:%@",
-                                         [httpResponse statusCode],
+                                         (long)[httpResponse statusCode],
                                          URLString);
                                } else if([data length] == 0) {
                                    //Either your version is too old for updating or your version is current

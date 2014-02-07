@@ -12,6 +12,7 @@
 #import "DRPPlayedWord.h"
 #import "DRPCharacterHistogram.h"
 #import "DRPUtility.h"
+#import "NSArray+Mutable.h"
 
 @interface DRPBoard ()
 
@@ -195,7 +196,7 @@
     DRPPlayedWord *playedWord = [DRPPlayedWord new];
     playedWord.positions = positions;
     playedWord.multipliers = [self multipliersActivatedForPositions:positions];
-    playedWord.additionalMultipliers = [self additionalMultipliersForPositions:positions];
+    playedWord.additionalMultipliers = [[self additionalMultipliersForPositions:positions] arrayByRemovingObjectsFromArray:playedWord.multipliers];
     
     NSMutableArray *droppedMultipliers = [NSMutableArray arrayWithArray:playedWord.multipliers];
     [droppedMultipliers addObjectsFromArray:playedWord.additionalMultipliers];

@@ -111,6 +111,8 @@
             NSLog(@"new turns!");
             completion(_board.currentTurn > turns);
         }
+        
+        // TODO: might as well reload aliases
     }];
 }
 

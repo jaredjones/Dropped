@@ -20,4 +20,9 @@
     return [firstHalf arrayByAddingObjectsFromArray:secondHalf];
 };
 
+- (NSArray *)arrayByRemovingObjectsFromArray:(NSArray *)array
+{
+    return [self filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF IN %@", array]];
+}
+
 @end

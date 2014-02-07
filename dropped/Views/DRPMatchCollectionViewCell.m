@@ -45,6 +45,7 @@
             tile.selected = YES;
             tile.permaSelected = YES;
             tile.scaleCharacter = NO;
+            tile.enabled = NO;
             
             [_tiles addObject:tile];
             [self.contentView addSubview:tile];
@@ -93,16 +94,16 @@
         tile.character = [DRPCharacter characterWithCharacter:[player firstPrintableAliasCharacter]];
         tile.character.color = [colors[i] intValue];
         
+        // Highlight tile
         if ([highlights[i] boolValue]) {
-            // To trick the tile into highlighting, you must enable it first
-            tile.enabled = YES;
             tile.highlighted = YES;
+            tile.permaHighlighted = YES;
         } else {
             tile.highlighted = NO;
+            tile.permaHighlighted = NO;
         }
         
         [tile resetAppearence];
-        tile.enabled = NO;
         
         // TODO: animate the cell over
         tile.frame = [DRPMatchCollectionViewCell tileFrameForTurn:i state:_cellState];

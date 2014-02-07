@@ -9,11 +9,22 @@
 		<key>height</key>
 		<integer>50</integer>
 	</dict>
+	<key>itemSizePad</key>
+	<dict>
+		<key>width</key>
+		<integer>525</integer>
+		<key>height</key>
+		<real>87.5</real>
+	</dict>
 	<key>lineSpacing</key>
-	<integer>35</integer>
+	<integer>25</integer>
+	<key>lineSpacingPad</key>
+	<real>43.75</real>
 	<key>sectionInset</key>
 	<integer>75</integer>
 	<key>textOffsetX</key>
 	<integer>116</integer>
+	<key>textOffsetXPad</key>
+	<integer>200</integer>
 </dict>
 </plist>

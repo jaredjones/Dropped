@@ -260,6 +260,13 @@
 			name = "Et Cetera";
 			sourceTree = "<group>";
 		};
+		A91A923218A56436006FD752 /* Miscellaneous */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Miscellaneous;
+			sourceTree = "<group>";
+		};
 		A91D8F3C183702EE00BEC6E8 = {
 			isa = PBXGroup;
 			children = (
@@ -334,6 +341,7 @@
 			children = (
 				A980FD14184BB56A00A7800F /* MainViewController */,
 				A9B1C070184CF90000866029 /* Transitions */,
+				A91A923218A56436006FD752 /* Miscellaneous */,
 				A980FD15184BB8F700A7800F /* Pages */,
 			);
 			name = ViewControllers;

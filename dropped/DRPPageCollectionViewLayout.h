@@ -10,4 +10,6 @@
 
 @interface DRPPageCollectionViewLayout : UICollectionViewFlowLayout
 
+- (void)recalculateSectionInsetsWithCollectionView:(UICollectionView *)collectionView cellCount:(NSInteger)cellCount;
+
 @end

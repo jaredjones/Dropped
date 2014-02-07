@@ -40,6 +40,20 @@
     [super viewDidLoad];
 }
 
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    [self resetSectionInsetsAnimated:YES];
+}
+
+- (void)resetSectionInsetsAnimated:(BOOL)animated;
+{
+    // TODO: I _hate_ that fade. Need a longer term solution
+    [_layout recalculateSectionInsetsWithCollectionView:self.scrollView
+                                              cellCount:[_dataSource collectionView:self.scrollView numberOfItemsInSection:0]];
+    [self.scrollView setCollectionViewLayout:_layout animated:animated];
+}
+
 - (void)loadScrollView
 {
     _layout = [[DRPPageCollectionViewLayout alloc] init];
@@ -66,8 +80,10 @@
 {
     [super willMoveToCurrentWithUserInfo:userInfo];
     
+    // TODO: tmp. There should be a more centralized way to do this
     [_dataSource reloadMatchesWithCompletion:^{
         [self.scrollView reloadData];
+        [self resetSectionInsetsAnimated:NO];
     }];
 }
 

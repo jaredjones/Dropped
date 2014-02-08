@@ -43,6 +43,7 @@
     return self;
 }
 
+// TODO: closing app before taking a turn randomizes the board each time
 - (instancetype)initWithGKMatch:(GKTurnBasedMatch *)gkMatch
 {
     self = [super init];

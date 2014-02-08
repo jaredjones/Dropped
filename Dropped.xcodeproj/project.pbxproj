@@ -122,18 +122,18 @@
 		A91C045618557B6A002B6899 /* page.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = page.plist; path = Swatches/page.plist; sourceTree = "<group>"; };
 		A91C045D185582DC002B6899 /* DRPCueKeeper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCueKeeper.h; path = ViewControllers/DRPCueKeeper.h; sourceTree = "<group>"; };
 		A91C045E185582DC002B6899 /* DRPCueKeeper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCueKeeper.m; path = ViewControllers/DRPCueKeeper.m; sourceTree = "<group>"; };
-		A91D8F45183702EE00BEC6E8 /* dropped.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = dropped.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A91D8F45183702EE00BEC6E8 /* Dropped.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dropped.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A91D8F48183702EE00BEC6E8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		A91D8F4A183702EE00BEC6E8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		A91D8F4C183702EE00BEC6E8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		A91D8F50183702EE00BEC6E8 /* dropped-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "dropped-Info.plist"; sourceTree = "<group>"; };
+		A91D8F50183702EE00BEC6E8 /* Dropped-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Dropped-Info.plist"; sourceTree = "<group>"; };
 		A91D8F52183702EE00BEC6E8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A91D8F54183702EE00BEC6E8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		A91D8F56183702EE00BEC6E8 /* dropped-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "dropped-Prefix.pch"; sourceTree = "<group>"; };
+		A91D8F56183702EE00BEC6E8 /* Dropped-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dropped-Prefix.pch"; sourceTree = "<group>"; };
 		A91D8F57183702EE00BEC6E8 /* DRPAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRPAppDelegate.h; sourceTree = "<group>"; };
 		A91D8F58183702EE00BEC6E8 /* DRPAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRPAppDelegate.m; sourceTree = "<group>"; };
 		A91D8F5A183702EE00BEC6E8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		A91D8F60183702EE00BEC6E8 /* droppedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = droppedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A91D8F60183702EE00BEC6E8 /* DroppedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DroppedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A91D8F61183702EE00BEC6E8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A920405118370467006940B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A920405A18370BA0006940B8 /* DRPPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPosition.h; path = Models/DRPPosition.h; sourceTree = "<group>"; };
@@ -270,7 +270,7 @@
 		A91D8F3C183702EE00BEC6E8 = {
 			isa = PBXGroup;
 			children = (
-				A91D8F4E183702EE00BEC6E8 /* dropped */,
+				A91D8F4E183702EE00BEC6E8 /* Dropped */,
 				A91D8F47183702EE00BEC6E8 /* Frameworks */,
 				A91D8F46183702EE00BEC6E8 /* Products */,
 				B0935A92C9664719B578E480 /* Pods.xcconfig */,
@@ -280,8 +280,8 @@
 		A91D8F46183702EE00BEC6E8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A91D8F45183702EE00BEC6E8 /* dropped.app */,
-				A91D8F60183702EE00BEC6E8 /* droppedTests.xctest */,
+				A91D8F45183702EE00BEC6E8 /* Dropped.app */,
+				A91D8F60183702EE00BEC6E8 /* DroppedTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -300,7 +300,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		A91D8F4E183702EE00BEC6E8 /* dropped */ = {
+		A91D8F4E183702EE00BEC6E8 /* Dropped */ = {
 			isa = PBXGroup;
 			children = (
 				A9204053183704AA006940B8 /* AppDelegate */,
@@ -313,16 +313,17 @@
 				C08CBC121837168800CE678F /* Resources */,
 				A91D8F4F183702EE00BEC6E8 /* Supporting Files */,
 			);
+			name = Dropped;
 			path = dropped;
 			sourceTree = "<group>";
 		};
 		A91D8F4F183702EE00BEC6E8 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				A91D8F50183702EE00BEC6E8 /* dropped-Info.plist */,
+				A91D8F50183702EE00BEC6E8 /* Dropped-Info.plist */,
 				A91D8F51183702EE00BEC6E8 /* InfoPlist.strings */,
 				A91D8F54183702EE00BEC6E8 /* main.m */,
-				A91D8F56183702EE00BEC6E8 /* dropped-Prefix.pch */,
+				A91D8F56183702EE00BEC6E8 /* Dropped-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -591,9 +592,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A91D8F44183702EE00BEC6E8 /* dropped */ = {
+		A91D8F44183702EE00BEC6E8 /* Dropped */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A91D8F71183702EE00BEC6E8 /* Build configuration list for PBXNativeTarget "dropped" */;
+			buildConfigurationList = A91D8F71183702EE00BEC6E8 /* Build configuration list for PBXNativeTarget "Dropped" */;
 			buildPhases = (
 				0DC963B145134C1C87226075 /* Check Pods Manifest.lock */,
 				A91D8F41183702EE00BEC6E8 /* Sources */,
@@ -607,14 +608,14 @@
 			);
 			dependencies = (
 			);
-			name = dropped;
+			name = Dropped;
 			productName = dropped;
-			productReference = A91D8F45183702EE00BEC6E8 /* dropped.app */;
+			productReference = A91D8F45183702EE00BEC6E8 /* Dropped.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A91D8F5F183702EE00BEC6E8 /* droppedTests */ = {
+		A91D8F5F183702EE00BEC6E8 /* DroppedTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A91D8F74183702EE00BEC6E8 /* Build configuration list for PBXNativeTarget "droppedTests" */;
+			buildConfigurationList = A91D8F74183702EE00BEC6E8 /* Build configuration list for PBXNativeTarget "DroppedTests" */;
 			buildPhases = (
 				A91D8F5C183702EE00BEC6E8 /* Sources */,
 				A91D8F5D183702EE00BEC6E8 /* Frameworks */,
@@ -625,9 +626,9 @@
 			dependencies = (
 				A91D8F66183702EE00BEC6E8 /* PBXTargetDependency */,
 			);
-			name = droppedTests;
+			name = DroppedTests;
 			productName = droppedTests;
-			productReference = A91D8F60183702EE00BEC6E8 /* droppedTests.xctest */;
+			productReference = A91D8F60183702EE00BEC6E8 /* DroppedTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -653,7 +654,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A91D8F40183702EE00BEC6E8 /* Build configuration list for PBXProject "dropped" */;
+			buildConfigurationList = A91D8F40183702EE00BEC6E8 /* Build configuration list for PBXProject "Dropped" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -665,8 +666,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A91D8F44183702EE00BEC6E8 /* dropped */,
-				A91D8F5F183702EE00BEC6E8 /* droppedTests */,
+				A91D8F44183702EE00BEC6E8 /* Dropped */,
+				A91D8F5F183702EE00BEC6E8 /* DroppedTests */,
 			);
 		};
 /* End PBXProject section */
@@ -788,7 +789,7 @@
 /* Begin PBXTargetDependency section */
 		A91D8F66183702EE00BEC6E8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A91D8F44183702EE00BEC6E8 /* dropped */;
+			target = A91D8F44183702EE00BEC6E8 /* Dropped */;
 			targetProxy = A91D8F65183702EE00BEC6E8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -888,9 +889,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "dropped/dropped-Prefix.pch";
-				INFOPLIST_FILE = "dropped/dropped-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Dropped/Dropped-Prefix.pch";
+				INFOPLIST_FILE = "Dropped/Dropped-Info.plist";
+				PRODUCT_NAME = Dropped;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -905,9 +906,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "dropped/dropped-Prefix.pch";
-				INFOPLIST_FILE = "dropped/dropped-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Dropped/Dropped-Prefix.pch";
+				INFOPLIST_FILE = "Dropped/Dropped-Info.plist";
+				PRODUCT_NAME = Dropped;
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
@@ -930,7 +931,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "droppedTests/droppedTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = DroppedTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -949,7 +950,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "dropped/dropped-Prefix.pch";
 				INFOPLIST_FILE = "droppedTests/droppedTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = DroppedTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -958,7 +959,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A91D8F40183702EE00BEC6E8 /* Build configuration list for PBXProject "dropped" */ = {
+		A91D8F40183702EE00BEC6E8 /* Build configuration list for PBXProject "Dropped" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A91D8F6F183702EE00BEC6E8 /* Debug */,
@@ -967,7 +968,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A91D8F71183702EE00BEC6E8 /* Build configuration list for PBXNativeTarget "dropped" */ = {
+		A91D8F71183702EE00BEC6E8 /* Build configuration list for PBXNativeTarget "Dropped" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A91D8F72183702EE00BEC6E8 /* Debug */,
@@ -976,7 +977,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A91D8F74183702EE00BEC6E8 /* Build configuration list for PBXNativeTarget "droppedTests" */ = {
+		A91D8F74183702EE00BEC6E8 /* Build configuration list for PBXNativeTarget "DroppedTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A91D8F75183702EE00BEC6E8 /* Debug */,

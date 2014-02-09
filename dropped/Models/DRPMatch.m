@@ -109,8 +109,8 @@
         [self reloadPlayerScores];
         
         if (completion) {
-            NSLog(@"new turns!");
-            completion(_board.currentTurn > turns);
+            BOOL newTurns = _board.currentTurn > turns;
+            completion(newTurns);
         }
         
         // TODO: might as well reload aliases
@@ -161,7 +161,7 @@
 
 - (NSInteger)numberOfTurns
 {
-    return 26;
+    return 10;
 }
 
 - (NSInteger)currentTurn

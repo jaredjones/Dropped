@@ -217,7 +217,11 @@
 
 - (void)setTurnsLeft:(NSInteger)turnsLeft isLocalTurn:(BOOL)isLocalTurn fromDirection:(DRPDirection)direction
 {
-    _turnsLeftString = [NSString stringWithFormat:@"%ld turns left", (long)turnsLeft];
+    if (isLocalTurn) {
+        _turnsLeftString = [NSString stringWithFormat:@"%ld Turns Left", (long)turnsLeft];
+    } else {
+        _turnsLeftString = @"Waiting for Turn";
+    }
     [self setCurrentContainerType:DRPContainerTypeTurnsLeft fromDirection:direction];
 }
 

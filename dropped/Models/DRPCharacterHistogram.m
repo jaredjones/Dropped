@@ -78,6 +78,13 @@
 
 - (DRPColor)randomColor
 {
+    // TODO: Don't generate a color that was just on the board
+    // TODO: rewrite
+    
+    if (_colorsUsed.count >= 6) {
+        [_colorsUsed removeAllObjects];
+    }
+    
     DRPColor color;
     do {
         color = arc4random_uniform(DRPColorRed);

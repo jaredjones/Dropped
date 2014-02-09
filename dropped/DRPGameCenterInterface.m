@@ -83,8 +83,6 @@ static DRPGameCenterInterface *sharedGameCenterInterface;
 
 - (void)player:(GKPlayer *)player receivedTurnEventForMatch:(GKTurnBasedMatch *)gkMatch didBecomeActive:(BOOL)didBecomeActive
 {
-    NSLog(@"aw yiss");
-    
     // TODO: do the matchData reloading HERE so it can be guaranteed to happen just once. Send the notifications after it's done.
     
     // This is where turn notifications are sent. Pretty big deal.

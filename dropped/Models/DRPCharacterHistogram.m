@@ -82,7 +82,7 @@
     // TODO: rewrite
     
     if (_colorsUsed.count >= 6) {
-        [_colorsUsed removeAllObjects];
+        [_colorsUsed removeAllObjects]; 
     }
     
     DRPColor color;

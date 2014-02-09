@@ -1,10 +1,14 @@
 <?php
-        define("VERSION_NUMBER", 1);
+        define("VERSION_NUMBER", 2);
+        define("DISABLE_UPDATES", 1);
 
-        $id = htmlspecialchars($_GET['i']);
-        if (!ctype_digit($id))
+        if (DISABLE_UPDATES)
                 exit();
 
+        $id = htmlspecialchars($_GET['i']);     
+        if (!ctype_digit($id))
+                exit();
+        
         if (VERSION_NUMBER == $id)
         {
                 exit();
@@ -22,6 +26,6 @@
                         $finishedsql .= $data;
                 }
         }
-        $finishedsql .= "UPDATE settings SET version=".VERSION_NUMBER.";";
+        $finishedsql .= "UPDATE settings SET version=".VERSION_NUMBER.";"; 
         echo $finishedsql;
 ?>

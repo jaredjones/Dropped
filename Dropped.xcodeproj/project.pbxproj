@@ -37,6 +37,7 @@
 		A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48F18372DA800B7A9A8 /* DRPBoard.m */; };
 		A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB49318372DA800B7A9A8 /* DRPCharacter.m */; };
 		A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */; };
+		A960B1FE18A749E6002B89FA /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A960B1FD18A749E6002B89FA /* logo.png */; };
 		A9801A3A18774A9A0024B2A1 /* DRPMatchHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9801A3918774A990024B2A1 /* DRPMatchHeaderViewController.m */; };
 		A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9813323186BC00300FC3277 /* DRPCurrentWordView.m */; };
 		A9813327186DFBA100FC3277 /* DRPGreedyScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9813326186DFBA100FC3277 /* DRPGreedyScrollView.m */; };
@@ -162,6 +163,7 @@
 		A95BB49318372DA800B7A9A8 /* DRPCharacter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCharacter.m; path = Models/DRPCharacter.m; sourceTree = "<group>"; };
 		A95C3219184BDD3200ECC3D4 /* DRPPageDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageDataSource.h; path = ViewControllers/DRPPageDataSource.h; sourceTree = "<group>"; };
 		A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageDataSource.m; path = ViewControllers/DRPPageDataSource.m; sourceTree = "<group>"; };
+		A960B1FD18A749E6002B89FA /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		A9801A3818774A990024B2A1 /* DRPMatchHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMatchHeaderViewController.h; path = ViewControllers/Pages/DRPMatchHeaderViewController.h; sourceTree = "<group>"; };
 		A9801A3918774A990024B2A1 /* DRPMatchHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMatchHeaderViewController.m; path = ViewControllers/Pages/DRPMatchHeaderViewController.m; sourceTree = "<group>"; };
 		A9813322186BC00300FC3277 /* DRPCurrentWordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCurrentWordView.h; path = Views/DRPCurrentWordView.h; sourceTree = "<group>"; };
@@ -581,6 +583,7 @@
 		C08CBC121837168800CE678F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A960B1FD18A749E6002B89FA /* logo.png */,
 				A997F00818A446FA0007E7E5 /* under_construction.png */,
 				A9AC495D18539E0D006E1D84 /* Database */,
 				A9A485CE1856279C0080A4B5 /* Fonts */,
@@ -654,7 +657,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A91D8F40183702EE00BEC6E8 /* Build configuration list for PBXProject "dropped" */;
+			buildConfigurationList = A91D8F40183702EE00BEC6E8 /* Build configuration list for PBXProject "Dropped" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -679,6 +682,7 @@
 			files = (
 				A91D8F53183702EE00BEC6E8 /* InfoPlist.strings in Resources */,
 				A997F00918A446FA0007E7E5 /* under_construction.png in Resources */,
+				A960B1FE18A749E6002B89FA /* logo.png in Resources */,
 				A9A485D1185627B00080A4B5 /* Centrale Sans Light.otf in Resources */,
 				A9A485D2185627B00080A4B5 /* Centrale Sans Medium.otf in Resources */,
 				C08CBC171837168800CE678F /* importdatabase.sh in Resources */,
@@ -958,7 +962,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A91D8F40183702EE00BEC6E8 /* Build configuration list for PBXProject "dropped" */ = {
+		A91D8F40183702EE00BEC6E8 /* Build configuration list for PBXProject "Dropped" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A91D8F6F183702EE00BEC6E8 /* Debug */,

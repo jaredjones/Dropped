@@ -14,7 +14,7 @@
 
 @interface DRPPageSplashViewController ()
 
-@property UILabel *label;
+@property UIImageView *logo;
 
 @end
 
@@ -30,11 +30,15 @@
 
 - (void)viewDidLoad
 {
-    _label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 200)];
-    _label.text = @"DROPPED";
-    _label.textAlignment = NSTextAlignmentCenter;
-    _label.font = [FRBSwatchist fontForKey:@"page.cueFont"];
-    [self.view addSubview:_label];
+    UIImage *image = [UIImage imageNamed:@"logo.png"];
+    _logo = [[UIImageView alloc] initWithImage:image];
+    _logo.frame = ({
+        CGRect frame = CGRectZero;
+        frame.size.width = image.size.width / 2;
+        frame.size.height = image.size.height / 2;
+        frame;
+    });
+    [self.view addSubview:_logo];
 }
 
 - (void)viewWillLayoutSubviews
@@ -42,7 +46,7 @@
     [super viewWillLayoutSubviews];
     
     // tmp
-    _label.center = rectCenter(self.view.bounds);
+    _logo.center = rectCenter(self.view.bounds);
 }
 
 - (void)loadScrollView

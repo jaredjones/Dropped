@@ -657,7 +657,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A91D8F40183702EE00BEC6E8 /* Build configuration list for PBXProject "dropped" */;
+			buildConfigurationList = A91D8F40183702EE00BEC6E8 /* Build configuration list for PBXProject "Dropped" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -907,12 +907,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jared Jones (R96M5245A2)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Uvora LLC (VK6PLLGMJR)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dropped/Dropped-Prefix.pch";
 				INFOPLIST_FILE = "Dropped/Dropped-Info.plist";
 				PRODUCT_NAME = Dropped;
-				PROVISIONING_PROFILE = "2F678A44-C067-4274-AE87-5DED0687D080";
+				PROVISIONING_PROFILE = "72CE805A-82D7-4A90-B146-599BC400F24D";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -962,7 +962,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A91D8F40183702EE00BEC6E8 /* Build configuration list for PBXProject "dropped" */ = {
+		A91D8F40183702EE00BEC6E8 /* Build configuration list for PBXProject "Dropped" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A91D8F6F183702EE00BEC6E8 /* Debug */,

@@ -217,10 +217,14 @@
 
 - (void)setTurnsLeft:(NSInteger)turnsLeft isLocalTurn:(BOOL)isLocalTurn fromDirection:(DRPDirection)direction
 {
-    if (isLocalTurn) {
-        _turnsLeftString = [NSString stringWithFormat:@"%ld Turns Left", (long)turnsLeft];
+    if (turnsLeft > 0) {
+        if (isLocalTurn) {
+            _turnsLeftString = [NSString stringWithFormat:@"%ld Turn%@ Left", (long)turnsLeft, turnsLeft != 1 ? @"s" : @""];
+        } else {
+            _turnsLeftString = @"Waiting for Turn";
+        }
     } else {
-        _turnsLeftString = @"Waiting for Turn";
+        _turnsLeftString = @"Game Over";
     }
     [self setCurrentContainerType:DRPContainerTypeTurnsLeft fromDirection:direction];
 }

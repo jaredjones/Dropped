@@ -39,6 +39,7 @@
     if (self) {
         _adjacentMultipliers = [[NSMutableDictionary alloc] init];
         _pushes = [[NSMutableDictionary alloc] init];
+        _boardEnabled = YES;
     }
     return self;
 }

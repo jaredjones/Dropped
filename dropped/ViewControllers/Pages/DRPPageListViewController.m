@@ -11,6 +11,8 @@
 #import "DRPPageListDataSource.h"
 #import "DRPPageCollectionViewLayout.h"
 #import "DRPMatchCollectionViewCell.h"
+#import "DRPGameCenterInterface.h"
+#import "DRPMatch.h"
 #import "FRBSwatchist.h"
 
 @interface DRPPageListViewController ()
@@ -29,8 +31,18 @@
     if (self) {
         self.topCue = @"Pull for New Game";
         self.bottomCue = @"Et Cetera";
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(receivedRemoteGameCenterTurn:)
+                                                     name:DRPGameCenterReceivedRemoteTurnNotificationName
+                                                   object:nil];
     }
     return self;
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark View Loading
@@ -105,6 +117,21 @@
     if (!match) return;
     
     [self.mainViewController setCurrentPageID:DRPPageMatch animated:YES userInfo:@{@"match" : match}];
+}
+
+#pragma mark Game Center Notifications
+
+- (void)receivedRemoteGameCenterTurn:(NSNotification *)notification
+{
+    GKTurnBasedMatch *gkMatch = notification.userInfo[@"gkMatch"];
+    DRPMatch *match = [_dataSource matchForMatchID:gkMatch.matchID];
+    if (!match) return;
+    
+    // TODO: is this getting called twice? Definitely check
+    [match reloadMatchDataWithCompletion:^(BOOL newTurns) {
+        // TODO: ugh, this is a bad way to update the cells
+        [self.scrollView reloadData];
+    }];
 }
 
 @end

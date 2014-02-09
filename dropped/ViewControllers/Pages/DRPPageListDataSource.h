@@ -14,5 +14,6 @@
 
 - (void)reloadMatchesWithCompletion:(void (^)())completion;
 - (DRPMatch *)matchForIndexPath:(NSIndexPath *)indexPath;
+- (DRPMatch *)matchForMatchID:(NSString *)matchID;
 
 @end

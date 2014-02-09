@@ -27,11 +27,6 @@
     if (self) {
         _matches = [[NSMutableArray alloc] init];
         _loadedMatchIDs = [[NSMutableSet alloc] init];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(receivedRemoteGameCenterTurn:)
-                                                     name:DRPGameCenterReceivedLocalTurnNotificationName
-                                                   object:nil];
     }
     
     return self;
@@ -90,20 +85,6 @@
     }
     
     return nil;
-}
-
-#pragma mark Game Center
-
-- (void)receivedRemoteGameCenterTurn:(NSNotification *)notification
-{
-    GKTurnBasedMatch *gkMatch = notification.userInfo[@"gkMatch"];
-    DRPMatch *match = [self matchForMatchID:gkMatch.matchID];
-    if (!match) return;
-    
-    // TODO: is this getting called twice? Definitely check
-    [match reloadMatchDataWithCompletion:^(BOOL newTurns) {
-        // TODO: update the cell, yo
-    }];
 }
 
 #pragma mark UICollectionViewDataSource

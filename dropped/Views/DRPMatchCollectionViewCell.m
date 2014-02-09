@@ -105,6 +105,11 @@
         
         [tile resetAppearence];
         
+        // z-order
+        if (player != match.winner) {
+            [self.contentView sendSubviewToBack:tile];
+        }
+        
         // TODO: animate the cell over
         tile.frame = [DRPMatchCollectionViewCell tileFrameForTurn:i state:_cellState];
         
@@ -114,7 +119,13 @@
     // Set Labels
     _opponentLabel.text = match.remotePlayer.alias;
     
-    if ([match isLocalPlayerTurn]) {
+    if (match.finished) {
+        if (match.tied) {
+            _statusLabel.text = @"Tied";
+        } else {
+            _statusLabel.text = @"Game Over";
+        }
+    } else if ([match isLocalPlayerTurn]) {
         _statusLabel.text = @"Your Turn!";
     } else {
         _statusLabel.text = @"Waiting for Turn";

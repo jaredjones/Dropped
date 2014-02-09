@@ -282,7 +282,7 @@
         }];
         
         // Turns are done advancing, reenable the board and the currentWordView
-        if (_renderedTurn == turn) {
+        if (_renderedTurn == turn && !_match.finished) {
             _boardViewController.boardEnabled = YES;
             _currentWordViewController.gesturesEnabled = YES;
         }
@@ -318,7 +318,8 @@
 
 - (void)setHeaderViewControllerTurn:(NSInteger)turn
 {
-    [_headerViewController setCurrentPlayerTurn:[_match playerForTurn:turn].turn
+    
+    [_headerViewController setCurrentPlayerTurn:turn < _match.numberOfTurns ? [_match playerForTurn:turn].turn : -1
                                multiplierColors:[_match.board multiplierColorsForTurn:turn]];
     
     [_headerViewController setScores:[_match.board scoresForTurn:MIN(turn + 1, _match.currentTurn)]];
@@ -346,21 +347,22 @@
 
 - (void)characterWasRemovedFromCurrentWord:(DRPCharacter *)character
 {
+    DRPDirection direction = [self currentWordDirectionForPlayer:_match.currentPlayer];
     _isCurrentWordValid = [self validateCurrentWord];
     [self setHeaderViewControllerScoresWithCurrentWord:_boardViewController.currentPlayedWord];
     [self resetCues];
-    [_currentWordViewController characterWasRemoved:character fromDirection:DRPDirectionLeft];
+    [_currentWordViewController characterWasRemoved:character fromDirection:direction];
     
     // Explicitly transition to turnsLeft label
     // Do this here so _boardViewController wins when there's a disparity in the current word
     if (_boardViewController.currentPlayedWord.positions.count == 0) {
-        [_currentWordViewController setTurnsLeft:_match.turnsLeft isLocalTurn:_match.isLocalPlayerTurn fromDirection:DRPDirectionLeft];
+        [_currentWordViewController setTurnsLeft:_match.turnsLeft isLocalTurn:_match.isLocalPlayerTurn fromDirection:direction];
     }
 }
 
 - (void)characterWasHighlighted:(DRPCharacter *)character
 {
-    [_currentWordViewController characterWasHighlighted:character fromDirection:DRPDirectionLeft];
+    [_currentWordViewController characterWasHighlighted:character fromDirection:[self currentWordDirectionForPlayer:_match.currentPlayer]];
 }
 
 - (void)characterWasDehighlighted:(DRPCharacter *)character

@@ -123,11 +123,11 @@
     DRPPlayedWord *playedWord = [_board appendMoveForPositions:positions];
     
     // Send move off to Game Center
-    NSArray *paricipants = @[self.currentPlayer.participant];
+    NSArray *participants = @[self.currentPlayer.participant];
     NSData *data = _board.matchData;
     
-    if (![FRBSwatchist boolForKey:@"debug.singlePlayerMode"]) {
-        [_gkMatch endTurnWithNextParticipants:paricipants turnTimeout:GKTurnTimeoutNone matchData:data completionHandler:^(NSError *error) {
+    if (!self.finished) {
+        [_gkMatch endTurnWithNextParticipants:participants turnTimeout:GKTurnTimeoutNone matchData:data completionHandler:^(NSError *error) {
             if (error) {
                 NSLog(@"endTurn error: %@", error.localizedDescription);
                 return;
@@ -137,8 +137,26 @@
         }];
         
     } else {
-        [self postTurnSubmissionNotificationsWithPlayedWord:playedWord];
-        [self saveMatchData];
+        // Game Finished
+        // Set match outcomes
+        for (DRPPlayer *player in self.players) {
+            if (self.tied) {
+                player.participant.matchOutcome = GKTurnBasedMatchOutcomeTied;
+            } else if (self.winner == player) {
+                player.participant.matchOutcome = GKTurnBasedMatchOutcomeWon;
+            } else {
+                player.participant.matchOutcome = GKTurnBasedMatchOutcomeLost;
+            }
+        }
+        
+        [_gkMatch endMatchInTurnWithMatchData:data completionHandler:^(NSError *error) {
+            if (error) {
+                NSLog(@"endTurn error: %@", error.localizedDescription);
+                return;
+            }
+            
+            [self postTurnSubmissionNotificationsWithPlayedWord:playedWord];
+        }];
     }
 }
 
@@ -179,6 +197,11 @@
     return self.turnsLeft == 0;
 }
 
+- (BOOL)tied
+{
+    return ((DRPPlayer *)_players[0]).score == ((DRPPlayer *)_players[1]).score;
+}
+
 #pragma mark Player
 
 - (DRPPlayer *)localPlayer
@@ -198,6 +221,16 @@
 - (DRPPlayer *)currentPlayer
 {
     return _players[_board.currentTurn % 2];
+}
+
+- (DRPPlayer *)winner
+{
+    if (!self.finished) return nil;
+    
+    if (((DRPPlayer *)_players[0]).score > ((DRPPlayer *)_players[1]).score) {
+        return _players[0];
+    }
+    return _players[1];
 }
 
 - (DRPPlayer *)playerForTurn:(NSInteger)turn

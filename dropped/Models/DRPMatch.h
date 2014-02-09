@@ -30,10 +30,12 @@
 - (NSInteger)currentTurn;
 - (NSInteger)turnsLeft;
 - (BOOL)finished;
+- (BOOL)tied;
 
 - (DRPPlayer *)localPlayer;
 - (DRPPlayer *)remotePlayer;
 - (DRPPlayer *)currentPlayer;
+- (DRPPlayer *)winner;
 - (DRPPlayer *)playerForTurn:(NSInteger)turn;
 - (BOOL)isLocalPlayerTurn;
 

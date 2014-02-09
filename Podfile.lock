@@ -5,10 +5,12 @@ PODS:
   - FMDB/standard (2.2):
     - FMDB/common
   - FRBSwatchist (1.0.0)
+  - TestFlightSDK (2.2.1-beta)
 
 DEPENDENCIES:
   - FMDB
   - FRBSwatchist (from `https://github.com/bradzeis/FRBSwatchist`)
+  - TestFlightSDK
 
 EXTERNAL SOURCES:
   FRBSwatchist:
@@ -17,5 +19,6 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FMDB: 97472cfacf0d9e445e915704fb43b4b142799c36
   FRBSwatchist: bc312d54f3343366a4d03629864b316711e1cad1
+  TestFlightSDK: 4249c2f70e621bcfbdebf019073169c8fe36be13
 
 COCOAPODS: 0.29.0

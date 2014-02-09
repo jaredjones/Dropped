@@ -12,6 +12,7 @@
 #import "FRBSwatchist.h"
 
 #import "DRPDictionary.h"
+#import "TestFlight.h"
 
 @interface DRPAppDelegate ()
 
@@ -29,6 +30,8 @@
     [self loadSwatches];
  
     [DRPDictionary syncDictionary];
+ 
+    [TestFlight takeOff:@"e04eea5f-3c76-4cc7-a01d-79f12d9fa6ad"];
     
     _mainViewController = [[DRPMainViewController alloc] initWithNibName:nil bundle:nil];
     

@@ -37,7 +37,7 @@ static long const PrivateKVOContext;
         frame;
     })];
     if (self) {
-        _alignment = alignment;
+        self.alignment = alignment;
         [self loadViews];
     }
     return self;
@@ -45,7 +45,7 @@ static long const PrivateKVOContext;
 
 - (void)dealloc
 {
-    [_player removeObserver:self forKeyPath:@"alias"];
+    [self.player removeObserver:self forKeyPath:@"alias"];
 }
 
 #pragma mark View Loading
@@ -76,16 +76,16 @@ static long const PrivateKVOContext;
 
 - (void)loadViewsWithTile:(BOOL)withTile
 {
-    NSTextAlignment textAlignment = _alignment == DRPDirectionLeft ? NSTextAlignmentLeft : NSTextAlignmentRight;
+    NSTextAlignment textAlignment = self.alignment == DRPDirectionLeft ? NSTextAlignmentLeft : NSTextAlignmentRight;
     CGFloat y = [FRBSwatchist floatForKey:@"board.boardPadding"];
     
     if (withTile) {
-        _tile = ({
+        self.tile = ({
             DRPTileView *tile = [DRPTileView dequeueResusableTile];
             tile.center = ({
                 CGFloat l = [FRBSwatchist floatForKey:@"board.tileLength"];
                 CGFloat padding = [FRBSwatchist floatForKey:@"board.boardPadding"];
-                CGFloat x = _alignment == DRPDirectionLeft ? padding + l / 2 : self.bounds.size.width - padding - l / 2;
+                CGFloat x = self.alignment == DRPDirectionLeft ? padding + l / 2 : self.bounds.size.width - padding - l / 2;
                 CGPoint center = CGPointMake(x, l / 2 + y);
                 center;
             });
@@ -97,10 +97,10 @@ static long const PrivateKVOContext;
             tile;
         });
         
-        y += _tile.frame.size.height + [FRBSwatchist floatForKey:@"board.tileMargin"];
+        y += self.tile.frame.size.height + [FRBSwatchist floatForKey:@"board.tileMargin"];
     }
     
-    _score = ({
+    self.score = ({
         UIFont *font = [FRBSwatchist fontForKey:@"board.tileFont"];
         UILabel *label = [[UILabel alloc] initWithFrame:({
             CGFloat height = [FRBSwatchist floatForKey:@"board.tileLength"];
@@ -114,9 +114,9 @@ static long const PrivateKVOContext;
         label;
     });
     
-    y += _score.frame.size.height + [FRBSwatchist floatForKey:@"board.tileMargin"];
+    y += self.score.frame.size.height + [FRBSwatchist floatForKey:@"board.tileMargin"];
     
-    _alias = ({
+    self.alias = ({
         UIFont *font = [FRBSwatchist fontForKey:@"page.cueFont"];
         UILabel *label = [[UILabel alloc] initWithFrame:({
             CGFloat height = [FRBSwatchist floatForKey:@"board.tileLength"] / 2;
@@ -136,16 +136,15 @@ static long const PrivateKVOContext;
 
 - (void)observePlayer:(DRPPlayer *)player
 {
-    [_player removeObserver:self forKeyPath:@"alias"];
+    [self.player removeObserver:self forKeyPath:@"alias"];
     
-    _player = player;
-    
-    [player addObserver:self forKeyPath:@"alias" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
+    self.player = player;
+    [self.player addObserver:self forKeyPath:@"alias" options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionInitial context:nil];
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    if (object == _player) {
+    if (object == self.player) {
         if ([keyPath isEqualToString:@"alias"]) {
             [self updatePlayerAlias:change[NSKeyValueChangeNewKey]];
         }
@@ -158,16 +157,16 @@ static long const PrivateKVOContext;
 - (void)updatePlayerAlias:(NSString *)alias
 {
     if ((id)alias != [NSNull null]) {
-        _alias.text = _player.alias;
-        _tile.character = [self playerTileCharacter];
+        self.alias.text = self.player.alias;
+        self.tile.character = [self playerTileCharacter];
     }
 }
                        
 - (DRPCharacter *)playerTileCharacter
 {
     return ({
-        DRPCharacter *character = [DRPCharacter characterWithCharacter:[_player firstPrintableAliasCharacter]];
-        character.color = _tileColor;
+        DRPCharacter *character = [DRPCharacter characterWithCharacter:[self.player firstPrintableAliasCharacter]];
+        character.color = self.tileColor;
         character;
     });
 }
@@ -176,25 +175,25 @@ static long const PrivateKVOContext;
 
 - (void)setIsCurrentPlayer:(BOOL)isCurrentPlayer withColor:(DRPColor)color
 {
-    // Make sure to save the tile color so if _tile.character is changed the color stays the same
-    _tileColor = color;
+    // Make sure to save the tile color so if self.tile.character is changed the color stays the same
+    self.tileColor = color;
     
-    _tile.character.color = _tileColor;
-    _tile.permaHighlighted = isCurrentPlayer;
-    [_tile resetAppearence];
+    self.tile.character.color = self.tileColor;
+    self.tile.permaHighlighted = isCurrentPlayer;
+    [self.tile resetAppearence];
 }
 
 - (void)resetScore:(NSInteger)score
 {
     NSString *scoreString = [NSString stringWithFormat:@"%ld", (long)score];
-    _score.text = scoreString;
+    self.score.text = scoreString;
     
-    CGSize size = [scoreString sizeWithAttributes:@{NSFontAttributeName : _score.font}];
+    CGSize size = [scoreString sizeWithAttributes:@{NSFontAttributeName : self.score.font}];
     
-    _score.center = ({
-        CGPoint center = _score.center;
+    self.score.center = ({
+        CGPoint center = self.score.center;
 
-        if (_alignment == DRPDirectionLeft) {
+        if (self.alignment == DRPDirectionLeft) {
             if (size.width <= [FRBSwatchist floatForKey:@"board.tileLength"]) {
                 center.x = [FRBSwatchist floatForKey:@"board.tileLength"] / 2 - size.width / 2;
                 
@@ -225,7 +224,7 @@ static long const PrivateKVOContext;
 
 - (void)tileWasSelected:(DRPTileView *)tile
 {
-    [_delegate tile:tile wasTappedFromMatchPlayerView:self];
+    [self.delegate tile:tile wasTappedFromMatchPlayerView:self];
 }
 
 - (void)tileWasDehighlighted:(DRPTileView *)tile

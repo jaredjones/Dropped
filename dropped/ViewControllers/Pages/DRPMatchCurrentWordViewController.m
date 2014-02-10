@@ -145,6 +145,7 @@
 
 - (void)enqueueContainer:(UIView *)container withType:(DRPContainerType)containerType
 {
+    if (!container) return;
     [(NSMutableArray *)self.containerCache[@(containerType)] addObject:container];
     
     // Clear tiles out of old DRPCurrentWordViews

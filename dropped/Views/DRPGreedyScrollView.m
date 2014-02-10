@@ -10,16 +10,6 @@
 
 @implementation DRPGreedyScrollView
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
-
 // This subclass simples cancels all contentView touches,
 // regardless of whether the contentView is a UIControl.
 - (BOOL)touchesShouldCancelInContentView:(UIView *)view

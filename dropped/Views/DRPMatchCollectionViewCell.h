@@ -10,6 +10,9 @@
 
 @class DRPMatch;
 
+// CellState is just an enum that makes it easy to figure out
+// how to display a given match. DRPMatchCellState is trivial
+// to compute given a DRPMatch
 typedef NS_ENUM(NSInteger, DRPMatchCellState) {
     DRPMatchCellStatePlayer1Active,
     DRPMatchCellStatePlayer2Active,

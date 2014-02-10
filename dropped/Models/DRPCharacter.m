@@ -17,7 +17,7 @@
 
 @end
 
-// TODO: make "canonical" versions of DRPCharacter, much the same way there are canonical DRPPositions. Make new characters for those with adjacentMultipliers.
+// TODO: make "canonical" versions of DRPCharacter, much the same way there are canonical DRPPositions. Make new characters for multipliers and those with adjacentMultipliers.
 
 @implementation DRPCharacter
 

@@ -10,13 +10,20 @@
 
 #pragma mark - DRPPosition
 
-// TODO: cache that shit
-
 @implementation DRPPosition
 
+static NSMutableDictionary *positionCache;
 + (instancetype)positionWithI:(NSInteger)i j:(NSInteger)j
 {
-    return [[DRPPosition alloc] initWithI:i j:j];
+    if (!positionCache) {
+        positionCache = [[NSMutableDictionary alloc] init];
+    }
+    
+    NSNumber *hash = @([DRPPosition hashForI:i j:j]);
+    if (!positionCache[hash]) {
+        positionCache[hash] = [[DRPPosition alloc] initWithI:i j:j];
+    }
+    return positionCache[hash];
 }
 
 - (instancetype)initWithI:(NSInteger)i j:(NSInteger)j
@@ -42,13 +49,18 @@
     return self;
 }
 
-- (NSUInteger)hash
++ (NSUInteger)hashForI:(NSInteger)i j:(NSInteger)j
 {
     NSUInteger prime = 31;
     NSUInteger result = 1;
-    result = prime * result + _i;
-    result = prime * result + _j;
+    result = prime * result + i;
+    result = prime * result + j;
     return result;
+}
+
+- (NSUInteger)hash
+{
+    return [DRPPosition hashForI:self.i j:self.j];
 }
 
 - (BOOL)isEqual:(id)object

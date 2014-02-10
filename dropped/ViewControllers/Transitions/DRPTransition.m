@@ -10,6 +10,8 @@
 #import "DRPDropTransition.h"
 #import "DRPLiftTransition.h"
 
+#import "FRBSwatchist.h"
+
 @interface DRPTransition ()
 
 @property UIViewController *start, *destination;
@@ -61,15 +63,26 @@
 #pragma mark Dynamic Animator
 
 static UIDynamicAnimator *sharedAnimator;
+static UIGravityBehavior *sharedGravity;
 + (void)setReferenceViewForUIDynamics:(UIView *)reference
 {
-    if (!sharedAnimator)
+    if (!sharedAnimator) {
         sharedAnimator = [[UIDynamicAnimator alloc] initWithReferenceView:reference];
+        
+        sharedGravity = [[UIGravityBehavior alloc] init];
+        sharedGravity.magnitude = [FRBSwatchist floatForKey:@"animation.gravity"];
+        [sharedAnimator addBehavior:sharedGravity];
+    }
 }
 
 + (UIDynamicAnimator *)sharedDynamicAnimator
 {
     return sharedAnimator;
+}
+
++ (UIGravityBehavior *)sharedGravityBehavior
+{
+    return sharedGravity;
 }
 
 @end

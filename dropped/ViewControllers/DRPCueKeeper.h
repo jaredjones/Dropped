@@ -9,6 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "DRPPageViewController.h"
 
+// This is a bit of a quasi-UIViewController since it shares its view
+// with DRPMainViewController.
+
+// TODO: this maybe should be a full-fledged UIViewController with its own view. See Brent Simmons' blog post about the responder chain
+
+// DRPCueKeeper is responsible for storing cue state (the directions at
+// the top/bottom of the screen) and animating transitions between cues.
+
 @interface DRPCueKeeper : NSObject
 
 - (instancetype)initWithView:(UIView *)view;

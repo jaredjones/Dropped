@@ -15,6 +15,10 @@
 @property UIView *view;
 @property UILabel *topCue, *bottomCue;
 @property BOOL topEmphasized, bottomEmphasized;
+
+// The DRPCueIndicators are the 6 tiles at the top and bottom
+// of the screen that emphasize that something will happen
+// when the user releases a drag.
 @property DRPCueIndicatorView *topIndicatorView, *bottomIndicatorView;
 
 @end
@@ -27,14 +31,14 @@
 {
     self = [super init];
     if (self) {
-        _view = view;
+        self.view = view;
         
         // Load CueIndicators
-        _topIndicatorView = [[DRPCueIndicatorView alloc] initWithPosition:DRPPageDirectionUp];
-        [_view addSubview:_topIndicatorView];
+        self.topIndicatorView = [[DRPCueIndicatorView alloc] initWithPosition:DRPPageDirectionUp];
+        [self.view addSubview:self.topIndicatorView];
         
-        _bottomIndicatorView = [[DRPCueIndicatorView alloc] initWithPosition:DRPPageDirectionDown];
-        [_view addSubview:_bottomIndicatorView];
+        self.bottomIndicatorView = [[DRPCueIndicatorView alloc] initWithPosition:DRPPageDirectionDown];
+        [self.view addSubview:self.bottomIndicatorView];
         
         [self repositionCueIndicators];
     }
@@ -45,54 +49,63 @@
 {
     if (!(position == DRPPageDirectionUp || position == DRPPageDirectionDown)) return nil;
     
-    return position == DRPPageDirectionUp ? _topCue : _bottomCue;
+    return position == DRPPageDirectionUp ? self.topCue : self.bottomCue;
 }
 
 - (void)setCue:(UILabel *)cue forPosition:(DRPPageDirection)position
 {
-    if (position == DRPPageDirectionUp) _topCue = cue;
-    else _bottomCue = cue;
+    if (position == DRPPageDirectionUp) self.topCue = cue;
+    else self.bottomCue = cue;
 }
 
 - (DRPCueIndicatorView *)indicatorForPosition:(DRPPageDirection)position
 {
     if (!(position == DRPPageDirectionUp || position == DRPPageDirectionDown)) return nil;
     
-    return position == DRPPageDirectionUp ? _topIndicatorView : _bottomIndicatorView;
+    return position == DRPPageDirectionUp ? self.topIndicatorView : self.bottomIndicatorView;
 }
 
+// Repositions the cueIndicators after a device orientation change
 - (void)repositionCueIndicators
 {
-    _topIndicatorView.center = ({
-        CGPoint center = CGPointMake(CGRectGetMidX(_view.bounds), -_topIndicatorView.frame.size.height / 2);
+    self.topIndicatorView.center = ({
+        CGPoint center = CGPointMake(CGRectGetMidX(self.view.bounds), -self.topIndicatorView.frame.size.height / 2);
         center;
     });
     
-    _bottomIndicatorView.center = ({
-        CGPointMake(CGRectGetMidX(_view.bounds), _view.bounds.size.height + _bottomIndicatorView.frame.size.height / 2);
+    self.bottomIndicatorView.center = ({
+        CGPointMake(CGRectGetMidX(self.view.bounds), self.view.bounds.size.height + self.bottomIndicatorView.frame.size.height / 2);
     });
 }
 
 #pragma mark Cycling
 
+// Presents a new cue and animates a new cue out if necessary
 - (void)cycleInCue:(NSString *)cueText inPosition:(DRPPageDirection)position
 {
+    // Return early if the position is invalid or the cue text already matches
     if (!(position == DRPPageDirectionUp || position == DRPPageDirectionDown)) return;
     if ([[self cueForPosition:position].text isEqualToString:cueText]) return;
     
+    // Out with the old...
     [self cycleOutCueInPosition:position];
+    
+    // In with the new
     UILabel *cue;
     if (cueText) {
         CGSize size = [cueText sizeWithAttributes:@{NSFontAttributeName : [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"]}];
         cue = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, size.width, size.height)];
         cue.text = cueText;
         cue.font = [FRBSwatchist fontForKey:@"page.cueFont"];
-        [_view addSubview:cue];
+        [self.view addSubview:cue];
         
         [self setCue:cue forPosition:position];
         [self animateCue:cue inForPosition:position];
+        
     } else {
+        // If text is nil, don't show a cue _and_ animate out indicators
         [self setCue:nil forPosition:position];
+        [self cycleOutIndicatorForPosition:position];
     }
 }
 
@@ -103,6 +116,8 @@
         [self animateCue:cue outForPosition:position];
     }
 }
+
+#pragma mark Cue Animations
 
 - (void)animateCue:(UILabel *)cue inForPosition:(DRPPageDirection)position
 {
@@ -135,7 +150,7 @@
           initialSpringVelocity:0
                         options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
-                         cue.center = [self preCenterForPosition:position fromCenter:cue.center];
+                         cue.center = [self preCenterForPosition:position];
                          cue.alpha = 0;
                      }
                      completion:^(BOOL finished) {
@@ -148,44 +163,40 @@
                      }];
 }
 
+// Start position for cue animations
 - (CGPoint)preCenterForPosition:(DRPPageDirection)position
 {
     if (position == DRPPageDirectionUp) {
-        return CGPointMake(_view.bounds.size.width / 2, -[FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
+        return CGPointMake(self.view.bounds.size.width / 2, -[FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
     }
-    return CGPointMake(_view.bounds.size.width / 2, _view.bounds.size.height + [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
+    return CGPointMake(self.view.bounds.size.width / 2, self.view.bounds.size.height + [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
 }
 
-- (CGPoint)preCenterForPosition:(DRPPageDirection)position fromCenter:(CGPoint)currentCenter
-{
-    // Calculated for animations out.
-    // This is a special case that keeps the old cues heading in the right direction during an orientation change
-    if (position == DRPPageDirectionUp) {
-        return CGPointMake(currentCenter.x, currentCenter.y - 2 * [FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
-    }
-    return CGPointMake(currentCenter.x, currentCenter.y + 2 * [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
-}
-
+// End positions for cue animations
 - (CGPoint)postCenterForPosition:(DRPPageDirection)position
 {
     if (position == DRPPageDirectionUp) {
-        return CGPointMake(_view.bounds.size.width / 2, [FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
+        return CGPointMake(self.view.bounds.size.width / 2, [FRBSwatchist floatForKey:@"page.cueOffsetTop"]);
     }
-    return CGPointMake(_view.bounds.size.width / 2, _view.bounds.size.height - [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
+    return CGPointMake(self.view.bounds.size.width / 2, self.view.bounds.size.height - [FRBSwatchist floatForKey:@"page.cueOffsetBottom"]);
 }
 
 #pragma mark Emphasis
 
+// Emphasizes the cue _and_ animates in the indicator
 - (void)emphasizeCueInPosition:(DRPPageDirection)position
 {
     if (position == DRPPageDirectionUp) {
-        if (_topEmphasized) return;
-        _topEmphasized = YES;
+        if (self.topEmphasized) return;
+        self.topEmphasized = YES;
+        
     } else {
-        if (_bottomEmphasized) return;
-        _bottomEmphasized = YES;
+        if (self.bottomEmphasized) return;
+        self.bottomEmphasized = YES;
     }
+    
     [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"];
+    
     if ([self cueForPosition:position]) {
         [[self indicatorForPosition:position] animateIn];
     }
@@ -194,14 +205,16 @@
 - (void)deemphasizeCueInPosition:(DRPPageDirection)position
 {
     if (position == DRPPageDirectionUp) {
-        if (!_topEmphasized) return;
-        _topEmphasized = NO;
+        if (!self.topEmphasized) return;
+        self.topEmphasized = NO;
+        
     } else {
-        if (!_bottomEmphasized) return;
-        _bottomEmphasized = NO;
+        if (!self.bottomEmphasized) return;
+        self.bottomEmphasized = NO;
     }
+    
     [self cueForPosition:position].font = [FRBSwatchist fontForKey:@"page.cueFont"];
-    [[self indicatorForPosition:position] animateOut];
+    [self cycleOutIndicatorForPosition:position];
 }
 
 - (void)cycleOutIndicatorForPosition:(DRPPageDirection)position
@@ -226,12 +239,13 @@
 
 #pragma mark Superview
 
+// TODO: see, this is why quasi-ViewControllers are super bad
 - (void)bringToFront
 {
-    [_view bringSubviewToFront:_topCue];
-    [_view bringSubviewToFront:_bottomCue];
-    [_view bringSubviewToFront:_topIndicatorView];
-    [_view bringSubviewToFront:_bottomIndicatorView];
+    [self.view bringSubviewToFront:self.topCue];
+    [self.view bringSubviewToFront:self.bottomCue];
+    [self.view bringSubviewToFront:self.topIndicatorView];
+    [self.view bringSubviewToFront:self.bottomIndicatorView];
 }
 
 @end

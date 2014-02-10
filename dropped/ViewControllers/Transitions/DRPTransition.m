@@ -27,11 +27,13 @@
 {
     self = [super init];
     if (self) {
-        _start = start;
-        _destination = destination;
+        self.start = start;
+        self.destination = destination;
         
+        // The transition completion mostly just calls the passed in completion
+        // handler, but it also needs to set the active state of the transition
         __block DRPTransition *wkself = self;
-        _completion = ^void() {
+        self.completion = ^void() {
             completion();
             wkself.active = NO;
         };

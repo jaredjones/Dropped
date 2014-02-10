@@ -124,7 +124,7 @@
 - (void)receivedRemoteGameCenterTurn:(NSNotification *)notification
 {
     // This check is to prevent reloadMatchDataWithCompletion: from being called twice
-    if (!self.mainViewController.currentPageID == self.pageID) return;
+    if (![self.mainViewController isCurrentPage:self]) return;
     
     GKTurnBasedMatch *gkMatch = notification.userInfo[@"gkMatch"];
     DRPMatch *match = [_dataSource matchForMatchID:gkMatch.matchID];

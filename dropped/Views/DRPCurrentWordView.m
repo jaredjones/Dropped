@@ -12,7 +12,6 @@
 #import "DRPBoardViewController.h"
 #import "FRBSwatchist.h"
 #import "DRPUtility.h"
-#import "UIView+Introspective.h"
 
 @interface DRPCurrentWordView ()
 

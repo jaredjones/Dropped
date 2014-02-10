@@ -94,7 +94,7 @@
 
 - (void)localPlayerAuthenticated
 {
-    if (self.mainViewController.currentPageID == self.pageID) {
+    if ([self.mainViewController isCurrentPage:self]) {
         [self.mainViewController setCurrentPageID:DRPPageList animated:YES userInfo:nil];
     }
 }

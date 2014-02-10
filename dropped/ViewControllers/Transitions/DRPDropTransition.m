@@ -25,7 +25,7 @@
     _gravity.magnitude = [FRBSwatchist floatForKey:@"animation.gravity"];
     [[DRPTransition sharedDynamicAnimator] addBehavior:_gravity];
     
-    // TODO: sometimes adds the gravity behavior twice. Cut that shit out
+    // TODO: sometimes adds the gravity behavior twice. Cut that shit out (with static something or other)
 
     _collision = [[UICollisionBehavior alloc] initWithItems:@[self.destination.view]];
     [_collision addBoundaryWithIdentifier:@"bottom"

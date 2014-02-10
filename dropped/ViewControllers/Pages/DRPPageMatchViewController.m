@@ -276,12 +276,13 @@
     
     // This is essentially recursion that pauses between each
     // iteration (because each iteration is asynchronous)
-    if (self.mainViewController.currentPageID == self.pageID && _renderedTurn <= turn) {
+    if ([self.mainViewController isCurrentPage:self] && _renderedTurn <= turn) {
         [self stepRenderedTurnWithCompletion:^{
             [self advanceRenderedTurnToTurn:turn];
         }];
         
         // Turns are done advancing, reenable the board and the currentWordView
+        // TODO: Doesn't keep board disabled when the match is finished
         if (_renderedTurn == turn && !_match.finished) {
             _boardViewController.boardEnabled = YES;
             _currentWordViewController.gesturesEnabled = YES;

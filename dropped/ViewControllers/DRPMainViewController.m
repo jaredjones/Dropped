@@ -9,19 +9,25 @@
 #import "DRPMainViewController.h"
 #import "DRPPageViewController.h"
 #import "DRPPageDataSource.h"
-#import "DRPTransition.h"
-#import "DRPCueKeeper.h"
 
+#import "DRPTransition.h"
+
+#import "DRPCueKeeper.h"
 #import "DRPCueIndicatorView.h"
 
 #import "FRBSwatchist.h"
 
 @interface DRPMainViewController ()
 
+// Data source provides a clean mapping from pageID -> DRPPageViewController
 @property DRPPageDataSource *dataSource;
 @property DRPPageViewController *currentPage, *upPage, *downPage;
+
+// Keeps track of cue state/animations
 @property DRPCueKeeper *cueKeeper;
 
+// If there isn't a strong reference to the running DRPTransition,
+// things go wonky
 @property DRPTransition *currentTransition;
 
 @end
@@ -34,7 +40,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _dataSource = [[DRPPageDataSource alloc] init];
+        self.dataSource = [[DRPPageDataSource alloc] init];
     }
     return self;
 }
@@ -52,97 +58,97 @@
 
 - (void)viewWillLayoutSubviews
 {
-    // Only load views when everything is unitialized
-    // This code is a little gross, but it's pretty darn functional
-    if (!_cueKeeper) {
-        _cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
+    // CueKeeper initialization
+    // This is here because the view's frame is not always properly initialized
+    // when viewDidLoad is called.
+    if (!self.cueKeeper) {
+        self.cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
         [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
     }
 }
 
-#pragma mark Child View Controllers
+#pragma mark DRPPageViewControllers
 
-- (DRPPageID)currentPageID
+- (BOOL)isCurrentPage:(DRPPageViewController *)page
 {
-    return _currentPage.pageID;
+    return page == self.currentPage;
 }
 
 - (void)setCurrentPageID:(DRPPageID)pageID animated:(BOOL)animated userInfo:(NSDictionary *)userInfo
 {
     if (pageID == DRPPageNil) return;
+    if (self.currentPage && self.currentPage.pageID == pageID) return;
     
-    DRPPageDirection animationDirection = [_dataSource directionFromPage:_currentPage.pageID to:pageID];
-    if (!_currentPage) {
+    DRPPageDirection animationDirection = [_dataSource directionFromPage:self.currentPage.pageID to:pageID];
+    if (!self.currentPage) {
         animationDirection = DRPPageDirectionNil;
     }
     
     // Compute and Configure new Pages based on direction
-    // Only load new surrounding Pages when transitioning to a new Page
-    DRPPageViewController *prevPage = _currentPage;
-    [prevPage willMoveFromCurrent];
+    DRPPageViewController *prevPage = self.currentPage;
     
+    // Note: resets self.currentPage
     [self loadNewPagesAroundCurrentPageID:pageID];
     [self configurePageViewsForAnimationWithPreviousPage:prevPage animated:animated];
-    [_currentPage willMoveToCurrentWithUserInfo:userInfo];
+    
+    [prevPage willMoveFromCurrent];
+    [self.currentPage willMoveToCurrentWithUserInfo:userInfo];
     
     // Transition to new Page
-    // Only run animation if necessary
-    if (animated && _currentPage.view.frame.origin.y != 0) {
-        _currentTransition = [DRPTransition transitionWithStart:prevPage
-                                                    destination:_currentPage
-                                                      direction:animationDirection
-                                                     completion:^{
-                                                         [self decommissionOldPagesWithPreviousPage:prevPage];
-                                                         [self repositionPagesAroundCurrentPage];
-                                                         _upPage.view.hidden = YES;
-                                                         _downPage.view.hidden = YES;
-                                                     }];
+    void (^animationCompletion)() = ^{
+        [self decommissionOldPagesWithPreviousPage:prevPage];
+        [self repositionPagesAroundCurrentPage];
+        self.upPage.view.hidden = YES;
+        self.downPage.view.hidden = YES;
+    };
+    
+    // Only run animation if the page is not already in place
+    if (animated && self.currentPage.view.frame.origin.y != 0) {
+        self.currentTransition = [DRPTransition transitionWithStart:prevPage
+                                                        destination:self.currentPage
+                                                          direction:animationDirection
+                                                         completion:animationCompletion];
         
         // The "velocity" of the drag is stored so there are no instaneous
         // velocity jerks in the animation
-        _currentTransition.startingVelocity = [userInfo[@"velocity"] floatValue];
+        self.currentTransition.startingVelocity = [userInfo[@"velocity"] floatValue];
         
-        // Reset cues
+        // Hide cues and cueIndicators during transition
         [self setCue:nil inPosition:DRPPageDirectionUp];
         [self setCue:nil inPosition:DRPPageDirectionDown];
-        [_cueKeeper cycleOutIndicatorForPosition:DRPPageDirectionUp];
-        [_cueKeeper cycleOutIndicatorForPosition:DRPPageDirectionDown];
         
-        _currentPage.view.hidden = NO;
-        [_currentTransition execute];
+        self.currentPage.view.hidden = NO;
+        [self.currentTransition execute];
         
     } else {
-        [self decommissionOldPagesWithPreviousPage:prevPage];
-        _upPage.view.hidden = YES;
-        _downPage.view.hidden = YES;
+        animationCompletion();
     }
 }
 
-// Convenience method
+// Just a convenience method
 - (void)transitionToPageInDirection:(DRPPageDirection)direction userInfo:(NSDictionary *)userInfo
 {
-    [self setCurrentPageID:[_dataSource pageIDInDirection:direction from:_currentPage.pageID] animated:YES userInfo:userInfo];
+    [self setCurrentPageID:[self.dataSource pageIDInDirection:direction from:self.currentPage.pageID]
+                  animated:YES
+                  userInfo:userInfo];
 }
 
-// Loads the new surround DRPPages and stores them in memory
+// Loads the new surrounding DRPPages
+// Adds them to the mainViewController if they haven't been added already
 - (void)loadNewPagesAroundCurrentPageID:(DRPPageID)pageID
 {
-    _currentPage = [_dataSource pageForPageID:pageID];
-    if (_currentPage.parentViewController != self) {
-        [_currentPage willMoveToParentViewController:self];
-        [self addChildViewController:_currentPage];
-    }
+    self.currentPage = [self.dataSource pageForPageID:pageID];
+    self.upPage = [_dataSource pageForPageID:[self.dataSource pageIDInDirection:DRPPageDirectionUp from:pageID]];
+    self.downPage = [self.dataSource pageForPageID:[self.dataSource pageIDInDirection:DRPPageDirectionDown from:pageID]];
     
-    _upPage = [_dataSource pageForPageID:[_dataSource pageIDInDirection:DRPPageDirectionUp from:pageID]];
-    if (_upPage && _upPage.parentViewController != self) {
-        [_upPage willMoveToParentViewController:self];
-        [self addChildViewController:_upPage];
-    }
-    
-    _downPage = [_dataSource pageForPageID:[_dataSource pageIDInDirection:DRPPageDirectionDown from:pageID]];
-    if (_downPage && _downPage.parentViewController != self) {
-        [_downPage willMoveToParentViewController:self];
-        [self addChildViewController:_downPage];
+    // Add pages as childViewControllers
+    for (DRPPageViewController *page in @[self.currentPage ?: [NSNull null],
+                                          self.upPage ?: [NSNull null],
+                                          self.downPage ?: [NSNull null]]) {
+        if (page != (id)[NSNull null] && page.parentViewController != self) {
+            [page willMoveToParentViewController:self];
+            [self addChildViewController:page];
+        }
     }
 }
 
@@ -155,73 +161,83 @@
     [self.view addSubview:_downPage.view];
     
     if (!animated) {
-        _currentPage.view.frame = self.view.bounds;
-        [self repositionPagesAroundCurrentPage];
+        self.currentPage.view.frame = self.view.bounds;
+        
     } else {
         // Mess with the layering within parent view
         // to make sure the correct views are visible
-        [self.view bringSubviewToFront:_currentPage.view];
+        [self.view bringSubviewToFront:self.currentPage.view];
         [self.view bringSubviewToFront:prevPage.view];
-        _upPage.view.hidden = YES;
-        _downPage.view.hidden = YES;
+        
+        self.upPage.view.hidden = YES;
+        self.downPage.view.hidden = YES;
         prevPage.view.hidden = NO;
         
-        DRPPageDirection direction = [_dataSource directionFromPage:prevPage.pageID to:_currentPage.pageID];
-        if (direction == DRPPageDirectionUp) {
+        self.currentPage.view.frame = ({
+            DRPPageDirection direction = [self.dataSource directionFromPage:prevPage.pageID to:self.currentPage.pageID];
+            
             CGRect frame = prevPage.view.frame;
-            frame.origin.y -= _currentPage.view.frame.size.height;
-            _currentPage.view.frame = frame;
-        } else if (direction == DRPPageDirectionDown) {
-            CGRect frame = prevPage.view.frame;
-            frame.origin.y += prevPage.view.frame.size.height;
-            _currentPage.view.frame = frame;
-        }
-        
-        [self repositionPagesAroundCurrentPage];
+            if (direction == DRPPageDirectionUp) {
+                frame.origin.y -= self.currentPage.view.frame.size.height;
+                
+            } else if (direction == DRPPageDirectionDown) {
+                frame.origin.y += prevPage.view.frame.size.height;
+            }
+            
+            frame;
+        });
     }
-    [_cueKeeper bringToFront];
+    
+    [self repositionPagesAroundCurrentPage];
+    [self.cueKeeper bringToFront];
 }
 
 - (void)repositionPagesAroundCurrentPage
 {
-    CGRect frame = _currentPage.view.frame;
+    CGRect frame = self.currentPage.view.frame;
     frame.origin.y -= CGRectGetHeight(frame);
-    _upPage.view.frame = frame;
+    self.upPage.view.frame = frame;
     
-    frame.origin.y = CGRectGetMaxY(_currentPage.view.frame);
-    _downPage.view.frame = frame;
+    frame.origin.y = CGRectGetMaxY(self.currentPage.view.frame);
+    self.downPage.view.frame = frame;
 }
 
 // Called to clean up DRPPages sitting around that aren't active
+// Essentially removes all non-critical views so they can't possible get in the way
 - (void)decommissionOldPagesWithPreviousPage:(DRPPageViewController *)prevPage
 {
+    // TODO: should probably keep an NSSet of priveleged UIViews
+    
     for (UIView *view in self.view.subviews) {
         if ([view isKindOfClass:[UILabel class]]) continue;
         if ([view isKindOfClass:[DRPCueIndicatorView class]]) continue;
-        if (!(view == _currentPage.view || view == _upPage.view || view == _downPage.view)) {
+        if (!(view == self.currentPage.view || view == self.upPage.view || view == self.downPage.view)) {
             [view removeFromSuperview];
         }
     }
     
     [prevPage didMoveFromCurrent];
-    [_currentPage didMoveToCurrent];
+    [self.currentPage didMoveToCurrent];
 }
 
 #pragma mark Cues
 
 - (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position
 {
-    [_cueKeeper cycleInCue:cue inPosition:position];
+    [self.cueKeeper cycleInCue:cue inPosition:position];
 }
 
 - (void)emphasizeCueInPosition:(DRPPageDirection)position
 {
     if (position == DRPPageDirectionUp || position == DRPPageDirectionDown) {
-        [_cueKeeper emphasizeCueInPosition:position];
-        [_cueKeeper deemphasizeCueInPosition:!position];
+        // Note: this only works because the only possible directions are 0 and 1
+        [self.cueKeeper emphasizeCueInPosition:position];
+        [self.cueKeeper deemphasizeCueInPosition:!position];
+        
     } else {
-        [_cueKeeper deemphasizeCueInPosition:DRPPageDirectionUp];
-        [_cueKeeper deemphasizeCueInPosition:DRPPageDirectionDown];
+        // Invalid direction passed in, deemphasize both cues
+        [self.cueKeeper deemphasizeCueInPosition:DRPPageDirectionUp];
+        [self.cueKeeper deemphasizeCueInPosition:DRPPageDirectionDown];
     }
 }
 
@@ -229,7 +245,8 @@
 
 - (BOOL)shouldAutorotate
 {
-    return !_currentTransition.active;
+    // Only allow autorotation while the transition isn't running
+    return !self.currentTransition.active;
 }
 
 - (NSUInteger)supportedInterfaceOrientations
@@ -240,14 +257,16 @@
     return UIInterfaceOrientationMaskAll;
 }
 
+// Hide cues during autorotation
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    [_cueKeeper hideIndicators];
+    // TODO: hide cues instaneously
+    [self.cueKeeper hideIndicators];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    [_cueKeeper showIndicators];
+    [self.cueKeeper showIndicators];
 }
 
 @end

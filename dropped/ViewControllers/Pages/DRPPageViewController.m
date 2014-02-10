@@ -12,12 +12,9 @@
 
 @interface DRPPageViewController ()
 
-@property BOOL topCueVisibleOnDragStart, bottomCueVisibleOnDragStart;
-
 @end
 
 @implementation DRPPageViewController
-@synthesize pageID=_pageID;
 
 - (id)initWithPageID:(DRPPageID)pageID
 {
@@ -30,6 +27,7 @@
 
 - (void)willMoveToParentViewController:(UIViewController *)parent
 {
+    // TODO: I am really not a fan of this
     _mainViewController = (DRPMainViewController *)parent;
 }
 
@@ -38,8 +36,8 @@
     [super viewDidLoad];
     
     [self loadScrollView];
-    _scrollView.delaysContentTouches = NO;
-    _scrollView.delegate = self;
+    self.scrollView.delaysContentTouches = NO;
+    self.scrollView.delegate = self;
     
     // This is vital for performant orientation changes
     // Note that extra care must be taken to ensure views
@@ -58,8 +56,8 @@
 
 - (void)loadScrollView
 {
-    _scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-    [self.view addSubview:_scrollView];
+    self.scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+    [self.view addSubview:self.scrollView];
 }
 
 - (void)layoutScrollView
@@ -74,40 +72,42 @@
 
 - (void)resetCues
 {
-    CGFloat offset = _scrollView.contentOffset.y;
+    CGFloat offset = self.scrollView.contentOffset.y;
     CGFloat threshold = [FRBSwatchist floatForKey:@"page.transitionThreshold"];
     
+    // Check topCue
     if (offset <= threshold) {
-        if (!_topCueVisible) {
-            [_mainViewController setCue:_topCue inPosition:DRPPageDirectionUp];
-            _topCueVisible = YES;
+        if (!self.topCueVisible) {
+            [self.mainViewController setCue:self.topCue inPosition:DRPPageDirectionUp];
+            self.topCueVisible = YES;
         }
     } else {
-        if (_topCueVisible) {
-            [_mainViewController setCue:nil inPosition:DRPPageDirectionUp];
-            _topCueVisible = NO;
+        if (self.topCueVisible) {
+            [self.mainViewController setCue:nil inPosition:DRPPageDirectionUp];
+            self.topCueVisible = NO;
         }
     }
 
-    if (offset + _scrollView.frame.size.height >= _scrollView.contentSize.height - threshold) {
-        if (!_bottomCueVisible) {
-            [_mainViewController setCue:_bottomCue inPosition:DRPPageDirectionDown];
-            _bottomCueVisible = YES;
+    // Check bottomCue
+    if (offset + self.scrollView.frame.size.height >= self.scrollView.contentSize.height - threshold) {
+        if (!self.bottomCueVisible) {
+            [self.mainViewController setCue:self.bottomCue inPosition:DRPPageDirectionDown];
+            self.bottomCueVisible = YES;
         }
     } else {
-        if (_bottomCueVisible) {
-            [_mainViewController setCue:nil inPosition:DRPPageDirectionDown];
-            _bottomCueVisible = NO;
+        if (self.bottomCueVisible) {
+            [self.mainViewController setCue:nil inPosition:DRPPageDirectionDown];
+            self.bottomCueVisible = NO;
         }
     }
 }
 
 - (void)hideCues
 {
-    [_mainViewController setCue:nil inPosition:DRPPageDirectionUp];
-    [_mainViewController setCue:nil inPosition:DRPPageDirectionDown];
-    _topCueVisible = NO;
-    _bottomCueVisible = NO;
+    [self.mainViewController setCue:nil inPosition:DRPPageDirectionUp];
+    [self.mainViewController setCue:nil inPosition:DRPPageDirectionDown];
+    self.topCueVisible = NO;
+    self.bottomCueVisible = NO;
 }
 
 #pragma mark DRPPage
@@ -124,8 +124,8 @@
 
 - (void)willMoveFromCurrent
 {
-    _topCueVisible = NO;
-    _bottomCueVisible = NO;
+    self.topCueVisible = NO;
+    self.bottomCueVisible = NO;
 }
 
 - (void)didMoveFromCurrent
@@ -134,12 +134,6 @@
 }
 
 #pragma mark ScrollViewDelegate
-
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    _topCueVisibleOnDragStart = _topCueVisible;
-    _bottomCueVisibleOnDragStart = _bottomCueVisible;
-}
 
 - (DRPPageDirection)scrollViewShouldEmphasizeCue:(UIScrollView *)scrollView
 {
@@ -170,9 +164,9 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (self.mainViewController.currentPageID != self.pageID) return;
+    if (![self.mainViewController isCurrentPage:self]) return;
     
-    [_mainViewController emphasizeCueInPosition:[self scrollViewShouldEmphasizeCue:scrollView]];
+    [self.mainViewController emphasizeCueInPosition:[self scrollViewShouldEmphasizeCue:scrollView]];
     [self resetCues];
 }
 
@@ -182,8 +176,8 @@
     // and only when the drag was started with the appropriate cue visible
     DRPPageDirection direction = [self scrollViewShouldEmphasizeCue:scrollView];
     if ([self scrollView:scrollView shouldTransitionInDirection:direction]) {
-        [_mainViewController transitionToPageInDirection:direction
-                                                userInfo:@{@"velocity" : @([scrollView.panGestureRecognizer velocityInView:scrollView].y)}];
+        [self.mainViewController transitionToPageInDirection:direction
+                                                    userInfo:@{@"velocity" : @([scrollView.panGestureRecognizer velocityInView:scrollView].y)}];
     }
 }
 

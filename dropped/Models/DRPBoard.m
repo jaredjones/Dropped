@@ -83,18 +83,18 @@
 
 - (DRPCharacter *)characterAtPosition:(DRPPosition *)position forTurn:(NSInteger)turn
 {
-    return _history[turn][position];
+    return self.history[turn][position];
 }
 
 - (DRPCharacter *)characterAtPosition:(DRPPosition *)position
 {
-    return [_history lastObject][position];
+    return [self.history lastObject][position];
 }
 
 - (DRPPosition *)positionOfMultiplierCharacter:(DRPCharacter *)multiplierCharacter
 {
-    for (DRPPosition *position in [_multiplierHistory lastObject]) {
-        if ([_history lastObject][position] == multiplierCharacter) {
+    for (DRPPosition *position in [self.multiplierHistory lastObject]) {
+        if ([self.history lastObject][position] == multiplierCharacter) {
             return position;
         }
     }
@@ -105,25 +105,25 @@
 {
     NSMutableString *word = [NSMutableString stringWithString:@""];
     for (DRPPosition *position in positions) {
-        [word appendString:((DRPCharacter *)_history[turn][position]).character];
+        [word appendString:((DRPCharacter *)self.history[turn][position]).character];
     }
     return word;
 }
 
 - (NSString *)wordForPositions:(NSArray *)positions
 {
-    return [self wordForPositions:positions forTurn:_history.count - 1];
+    return [self wordForPositions:positions forTurn:self.history.count - 1];
 }
 
 - (DRPPlayedWord *)wordPlayedForTurn:(NSInteger)turn
 {
-    return _playedWords[turn];
+    return self.playedWords[turn];
 }
 
 // Returns [leftColor, rightColor] (DRPColor cast as NSNumber) for turn
 - (NSArray *)multiplierColorsForTurn:(NSInteger)turn
 {
-    NSArray *multiplierPositions = _multiplierHistory[turn];
+    NSArray *multiplierPositions = self.multiplierHistory[turn];
     NSArray *multipliers = @[[self characterAtPosition:multiplierPositions[0] forTurn:turn],
                              [self characterAtPosition:multiplierPositions[1] forTurn:turn]];
     
@@ -154,7 +154,7 @@
 
 - (NSDictionary *)scores
 {
-    return [self scoresForTurn:_playedWords.count];
+    return [self scoresForTurn:self.playedWords.count];
 }
 
 // Returns the score at the _beginning_ of turn turn
@@ -162,7 +162,7 @@
 {
     NSMutableDictionary *scores = [NSMutableDictionary dictionaryWithDictionary:@{@0 : @0, @1 : @0}];
     for (NSInteger i = 0; i < turn; i++) {
-        DRPPlayedWord *playedWord = _playedWords[i];
+        DRPPlayedWord *playedWord = self.playedWords[i];
         scores[@(i % 2)] = @([scores[@(i % 2)] integerValue] + [self scoreForPlayedWord:playedWord forTurn:i]);
     }
     return scores;
@@ -181,7 +181,7 @@
 
 - (NSInteger)currentTurn
 {
-    return _playedWords.count;
+    return self.playedWords.count;
 }
 
 #pragma mark Move Submission
@@ -201,18 +201,18 @@
     NSMutableArray *droppedMultipliers = [NSMutableArray arrayWithArray:playedWord.multipliers];
     [droppedMultipliers addObjectsFromArray:playedWord.additionalMultipliers];
     for (DRPPosition *position in droppedMultipliers) {
-        [_histogram unregisterColor:[self characterAtPosition:position].color];
+        [self.histogram unregisterColor:[self characterAtPosition:position].color];
     }
     
-    playedWord.appendedCharacters = [_histogram appendedCharactersForPositions:positions
-                                                            droppedMultipliers:[NSSet setWithArray:droppedMultipliers].allObjects
-                                                                   multipliers:[_multiplierHistory lastObject]];
+    playedWord.appendedCharacters = [self.histogram appendedCharactersForPositions:positions
+                                                                droppedMultipliers:[NSSet setWithArray:droppedMultipliers].allObjects
+                                                                       multipliers:[self.multiplierHistory lastObject]];
     
     // Add Move to History
-    NSMutableDictionary *historyItem = [self deepCopyHistoryItem:[_history lastObject]];
+    NSMutableDictionary *historyItem = [self deepCopyHistoryItem:[self.history lastObject]];
     [self applyDiff:playedWord toHistoryItem:historyItem];
     [self appendHistoryItem:historyItem];
-    [_playedWords addObject:playedWord];
+    [self.playedWords addObject:playedWord];
     
     return playedWord;
 }
@@ -242,7 +242,7 @@
             // Find the DRPPosition of multiplier
             // This is necessary since DRPCharacters don't hold position information
             DRPPosition *multiplierPosition;
-            for (DRPPosition *position in [_multiplierHistory lastObject]) {
+            for (DRPPosition *position in [self.multiplierHistory lastObject]) {
                 if ([self characterAtPosition:position] == multiplier) {
                     multiplierPosition = position;
                 }
@@ -297,12 +297,12 @@
 
 - (void)generateNewBoard
 {
-    _history = [[NSMutableArray alloc] init];
-    _multiplierHistory = [[NSMutableArray alloc] init];
-    _playedWords = [[NSMutableArray alloc] init];
-    _histogram = [[DRPCharacterHistogram alloc] init];
+    self.history = [[NSMutableArray alloc] init];
+    self.multiplierHistory = [[NSMutableArray alloc] init];
+    self.playedWords = [[NSMutableArray alloc] init];
+    self.histogram = [[DRPCharacterHistogram alloc] init];
     
-    NSDictionary *initialState = [_histogram generateNewBoard];
+    NSDictionary *initialState = [self.histogram generateNewBoard];
     [self updateAdjacentMultipliersForHistoryItem:initialState];
     [self appendHistoryItem:initialState];
 }
@@ -315,10 +315,10 @@
     NSInteger dataVersion = 0;
     [data getBytes:&dataVersion length:1];
     
-    _history = [[NSMutableArray alloc] init];
-    _multiplierHistory = [[NSMutableArray alloc] init];
-    _playedWords = [[NSMutableArray alloc] init];
-    _histogram = [[DRPCharacterHistogram alloc] init];
+    self.history = [[NSMutableArray alloc] init];
+    self.multiplierHistory = [[NSMutableArray alloc] init];
+    self.playedWords = [[NSMutableArray alloc] init];
+    self.histogram = [[DRPCharacterHistogram alloc] init];
     
     [self loadInitialState:[data subdataWithRange:NSMakeRange(1, data.length - 1)]];
     [self loadTurns:[data subdataWithRange:NSMakeRange(39, data.length - 39)]];
@@ -344,7 +344,7 @@
                 [initialMultiplierColors getBytes:&color length:1];
                 initialMultiplierColors = [initialMultiplierColors subdataWithRange:NSMakeRange(1, initialMultiplierColors.length - 1)];
                 character.color = color;
-                [_histogram registerColor:color];
+                [self.histogram registerColor:color];
             }
             
             firstTurn[[DRPPosition positionWithI:i j:j]] = character;
@@ -404,7 +404,7 @@
     
     for (DRPPosition *position in [playedWord.multipliers arrayByAddingObjectsFromArray:playedWord.additionalMultipliers]) {
         DRPCharacter *character = [self characterAtPosition:position];
-        [_histogram unregisterColor:character.color];
+        [self.histogram unregisterColor:character.color];
     }
     
     for (DRPCharacter *character in playedWord.appendedCharacters) {
@@ -418,14 +418,14 @@
             }
             
             character.color = color;
-            [_histogram registerColor:color];
+            [self.histogram registerColor:color];
         }
     }
     
-    [_playedWords addObject:playedWord];
+    [self.playedWords addObject:playedWord];
     
     // Apply diff to new history item
-    NSMutableDictionary *historyItem = [self deepCopyHistoryItem:[_history lastObject]];
+    NSMutableDictionary *historyItem = [self deepCopyHistoryItem:[self.history lastObject]];
     [self applyDiff:playedWord toHistoryItem:historyItem];
     [self appendHistoryItem:historyItem];
 }
@@ -438,9 +438,9 @@
     NSInteger numberNewDataTurns = 0;
     [newData getBytes:&numberNewDataTurns range:NSMakeRange(1 + 36 + 2, 1)];
     
-    if (numberNewDataTurns <= _playedWords.count) return;
+    if (numberNewDataTurns <= self.playedWords.count) return;
     
-    NSInteger numberNewTurns = numberNewDataTurns - _playedWords.count;
+    NSInteger numberNewTurns = numberNewDataTurns - self.playedWords.count;
     NSMutableData *mnewData = [NSMutableData dataWithData:[newData subdataWithRange:NSMakeRange(40, newData.length - 40)]];
     
     for (NSInteger i = 0; i < numberNewDataTurns; i++) {
@@ -472,7 +472,7 @@
     [data appendBytes:&version length:1];
     
     // Initial State
-    NSMutableDictionary *firstTurn = _history[0];
+    NSMutableDictionary *firstTurn = self.history[0];
     for (NSInteger j = 0; j < 6; j++) {
         for (NSInteger i = 0; i < 6; i++) {
             DRPPosition *position = [DRPPosition positionWithI:i j:j];
@@ -482,16 +482,16 @@
     }
     
     for (NSInteger i = 0; i < 2; i++) {
-        DRPPosition *multiplierPosition = _multiplierHistory[0][i];
+        DRPPosition *multiplierPosition = self.multiplierHistory[0][i];
         DRPColor multiplierColor = [self characterAtPosition:multiplierPosition forTurn:0].color;
         [data appendBytes:&multiplierColor length:1];
     }
     
     // Turns
-    NSInteger numberTurns = _playedWords.count;
+    NSInteger numberTurns = self.playedWords.count;
     [data appendBytes:&numberTurns length:1];
     
-    for (DRPPlayedWord *playedWord in _playedWords) {
+    for (DRPPlayedWord *playedWord in self.playedWords) {
         // Add the position counts to the data
         NSInteger numberPositions = playedWord.positions.count;
         NSInteger numberActivated = playedWord.multipliers.count;
@@ -535,8 +535,8 @@
 
 - (void)appendHistoryItem:(NSDictionary *)item
 {
-    [_history addObject:item];
-    [_multiplierHistory addObject:[self multipliersInHistoryItem:item]];
+    [self.history addObject:item];
+    [self.multiplierHistory addObject:[self multipliersInHistoryItem:item]];
 }
 
 - (NSMutableDictionary *)deepCopyHistoryItem:(NSDictionary *)item

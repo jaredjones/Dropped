@@ -42,10 +42,10 @@ static const NSInteger _HTTPSuccessCode = 200;
 {
     self = [super init];
     if (self){
-        _databasePath = [[NSBundle mainBundle] pathForResource:filePath ofType:ext inDirectory:dirPath];
-        _database = [[FMDatabase alloc]initWithPath:_databasePath];
+        self.databasePath = [[NSBundle mainBundle] pathForResource:filePath ofType:ext inDirectory:dirPath];
+        self.database = [[FMDatabase alloc]initWithPath:self.databasePath];
         
-        if (![_database openWithFlags:SQLITE_OPEN_READWRITE]) {
+        if (![self.database openWithFlags:SQLITE_OPEN_READWRITE]) {
             // FMDatabase doesn't throw exceptions when it can't
             // open the database, it just returns a BOOL
             return nil;
@@ -56,7 +56,7 @@ static const NSInteger _HTTPSuccessCode = 200;
 
 - (void)dealloc
 {
-    [_database close];
+    [self.database close];
 }
 
 + (void)syncDictionary

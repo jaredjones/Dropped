@@ -18,16 +18,16 @@
 {
     self = [super init];
     if (self) {
-        _positions = @[];
-        _multipliers = @[];
-        _additionalMultipliers = @[];
+        self.positions = @[];
+        self.multipliers = @[];
+        self.additionalMultipliers = @[];
     }
     return self;
 }
 
 - (NSInteger)tileCount
 {
-    return _positions.count + _multipliers.count + _additionalMultipliers.count;
+    return self.positions.count + self.multipliers.count + self.additionalMultipliers.count;
 }
 
 // Diff
@@ -57,9 +57,9 @@
                 DRPPosition *startPosition = [DRPPosition positionWithI:i j:startJ];
                 // Skip over captured positions, but make a note so
                 // the offset can be adjusted for the next position
-                if ([_positions containsObject:startPosition] ||
-                    [_multipliers containsObject:startPosition] ||
-                    [_additionalMultipliers containsObject:startPosition]) {
+                if ([self.positions containsObject:startPosition] ||
+                    [self.multipliers containsObject:startPosition] ||
+                    [self.additionalMultipliers containsObject:startPosition]) {
                     [droppedPositions addObject:startPosition];
                     continue;
                 }
@@ -72,7 +72,7 @@
                 } else {
                     // Spilled over the top (because of dropped positions),
                     // so grab the character from _appendedCharacters
-                    diff[startPosition] = @[_appendedCharacters[appendedCharactersUsed],
+                    diff[startPosition] = @[self.appendedCharacters[appendedCharactersUsed],
                                             endPosition];
                     appendedCharactersUsed++;
                 }

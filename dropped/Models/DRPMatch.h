@@ -26,6 +26,7 @@
 // Created fresh
 - (instancetype)initWithGKMatch:(GKTurnBasedMatch *)gkMatch;
 
+// Shit ton of convenience methods that require menial calculation
 - (NSInteger)numberOfTurns;
 - (NSInteger)currentTurn;
 - (NSInteger)turnsLeft;
@@ -39,6 +40,7 @@
 - (DRPPlayer *)playerForTurn:(NSInteger)turn;
 - (BOOL)isLocalPlayerTurn;
 
+// Game Center interaction
 - (void)reloadPlayerAliases;
 - (void)reloadMatchDataWithCompletion:(void(^)(BOOL newTurns))completion;
 - (void)submitTurnForPositions:(NSArray *)positions;

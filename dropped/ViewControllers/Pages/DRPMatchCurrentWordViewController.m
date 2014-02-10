@@ -29,7 +29,7 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _gesturesEnabled = YES;
+        self.gesturesEnabled = YES;
     }
     return self;
 }
@@ -38,9 +38,9 @@
 {
     [super viewDidLoad];
     
-    _containerCache = [[NSMutableDictionary alloc] init];
-    _containerCache[@(DRPContainerTypeCurrentWord)] = [[NSMutableArray alloc] init];
-    _containerCache[@(DRPContainerTypeTurnsLeft)] = [[NSMutableArray alloc] init];
+    self.containerCache = [[NSMutableDictionary alloc] init];
+    self.containerCache[@(DRPContainerTypeCurrentWord)] = [[NSMutableArray alloc] init];
+    self.containerCache[@(DRPContainerTypeTurnsLeft)] = [[NSMutableArray alloc] init];
 }
 
 #pragma mark Layout
@@ -52,12 +52,12 @@
     // There are two different methods for relayouting out the
     // currentContainer depending on the containerType.
     // No clue why, but these methods "just work"
-    if (_currentContainerType == DRPContainerTypeCurrentWord) {
+    if (self.currentContainerType == DRPContainerTypeCurrentWord) {
         self.currentContainer.frame = self.currentFrame;
-        [(DRPCurrentWordView *)_currentContainer repositionTilesAnimated:YES];
+        [(DRPCurrentWordView *)self.currentContainer repositionTilesAnimated:YES];
         
-    } else if (_currentContainerType == DRPContainerTypeTurnsLeft) {
-        _currentContainer.center = rectCenter(self.view.bounds);
+    } else if (self.currentContainerType == DRPContainerTypeTurnsLeft) {
+        self.currentContainer.center = rectCenter(self.view.bounds);
     }
 }
 
@@ -109,10 +109,10 @@
 {
     UIView *container;
     
-    if (((NSArray *)_containerCache[@(containerType)]).count) {
+    if (((NSArray *)self.containerCache[@(containerType)]).count) {
         // Check caches first
-        container = ((NSMutableArray *)_containerCache[@(containerType)]).lastObject;
-        [((NSMutableArray *)_containerCache[@(containerType)]) removeLastObject];
+        container = ((NSMutableArray *)self.containerCache[@(containerType)]).lastObject;
+        [((NSMutableArray *)self.containerCache[@(containerType)]) removeLastObject];
         
     } else if (containerType == DRPContainerTypeTurnsLeft) {
         container = [[UILabel alloc] initWithFrame:self.currentFrame];
@@ -129,9 +129,9 @@
     if (container) {
         // Some properties need to be refreshed if pulled from cache
         if (containerType == DRPContainerTypeTurnsLeft) {
-            ((UILabel *)container).text = _turnsLeftString;
+            ((UILabel *)container).text = self.turnsLeftString;
         } else if (containerType == DRPContainerTypeCurrentWord) {
-            ((DRPCurrentWordView *)container).gesturesEnabled = _gesturesEnabled;
+            ((DRPCurrentWordView *)container).gesturesEnabled = self.gesturesEnabled;
         }
         
         if (container.superview != self.view) {
@@ -145,7 +145,8 @@
 
 - (void)enqueueContainer:(UIView *)container withType:(DRPContainerType)containerType
 {
-    [(NSMutableArray *)_containerCache[@(containerType)] addObject:container];
+    if (!container) return;
+    [(NSMutableArray *)self.containerCache[@(containerType)] addObject:container];
     
     // Clear tiles out of old DRPCurrentWordViews
     if (containerType == DRPContainerTypeCurrentWord) {
@@ -154,6 +155,11 @@
 }
 
 // Implicitly runs animations between containers
+- (void)setCurrentContainerType:(DRPContainerType)containerType
+{
+    [self setCurrentContainerType:containerType fromDirection:DRPDirectionLeft];
+}
+
 - (void)setCurrentContainerType:(DRPContainerType)containerType fromDirection:(DRPDirection)direction
 {
     [self setCurrentContainerType:containerType fromDirection:direction withVelocity:0];
@@ -161,70 +167,67 @@
 
 - (void)setCurrentContainerType:(DRPContainerType)containerType fromDirection:(DRPDirection)direction withVelocity:(CGFloat)velocity
 {
-    if (containerType == _currentContainerType) {
-        if (_currentContainerType == DRPContainerTypeTurnsLeft) {
-            ((UILabel *)_currentContainer).text = _turnsLeftString;
+    if (containerType == self.currentContainerType) {
+        if (self.currentContainerType == DRPContainerTypeTurnsLeft) {
+            ((UILabel *)self.currentContainer).text = self.turnsLeftString;
+            return;
         }
-        return;
     };
     
-    DRPContainerType prevContainerType = _currentContainerType;
+    DRPContainerType prevContainerType = self.currentContainerType;
     _currentContainerType = containerType;
     
-    UIView *prevContainer = _currentContainer;
-    _currentContainer = [self dequeueContainerWithType:containerType];
-    [self.view bringSubviewToFront:_currentContainer];
+    UIView *prevContainer = self.currentContainer;
+    self.currentContainer = [self dequeueContainerWithType:containerType];
+    [self.view bringSubviewToFront:self.currentContainer];
     
     // TODO: fix that velocity
     [self animateOutContainer:prevContainer ofType:prevContainerType inDirection:direction withVelocity:velocity];
-    [self animateInContainer:_currentContainer ofType:_currentContainerType inDirection:direction withVelocity:velocity];
+    [self animateInContainer:self.currentContainer ofType:self.currentContainerType inDirection:direction withVelocity:velocity];
 }
 
 #pragma mark Setting Content
 
 - (void)characterWasHighlighted:(DRPCharacter *)character fromDirection:(DRPDirection)direction
 {
-    if (_currentContainerType != DRPContainerTypeCurrentWord) {
+    if (self.currentContainerType != DRPContainerTypeCurrentWord) {
         [self setCurrentContainerType:DRPContainerTypeCurrentWord fromDirection:direction];
     }
-    [(DRPCurrentWordView *)_currentContainer characterWasHighlighted:character];
+    [(DRPCurrentWordView *)self.currentContainer characterWasHighlighted:character];
 }
 
 - (void)characterWasDehighlighted:(DRPCharacter *)character
 {
-    [(DRPCurrentWordView *)_currentContainer characterWasDehighlighted:character];
+    [(DRPCurrentWordView *)self.currentContainer characterWasDehighlighted:character];
 }
 
 - (void)characterWasRemoved:(DRPCharacter *)character fromDirection:(DRPDirection)direction
 {
-    [(DRPCurrentWordView *)_currentContainer characterWasRemoved:character];
+    [(DRPCurrentWordView *)self.currentContainer characterWasRemoved:character];
 }
 
 - (void)setCharacters:(NSArray *)characters fromDirection:(DRPDirection)direction
 {
     // If the characters are already set, do nothing
-    if (_currentContainerType == DRPContainerTypeCurrentWord &&
-        [(DRPCurrentWordView *)_currentContainer currentCharactersEqualCharacters:characters]) {
+    if (self.currentContainerType == DRPContainerTypeCurrentWord &&
+        [(DRPCurrentWordView *)self.currentContainer currentCharactersEqualCharacters:characters]) {
         return;
     }
     
-    // Force a reset of the currentContainer
-    _currentContainerType = DRPContainerTypeNil;
-    
     [self setCurrentContainerType:DRPContainerTypeCurrentWord fromDirection:direction];
-    [(DRPCurrentWordView *)_currentContainer setCharacters:characters];
+    [(DRPCurrentWordView *)self.currentContainer setCharacters:characters];
 }
 
 - (void)setTurnsLeft:(NSInteger)turnsLeft isLocalTurn:(BOOL)isLocalTurn fromDirection:(DRPDirection)direction
 {
     if (turnsLeft > 0) {
         if (isLocalTurn) {
-            _turnsLeftString = [NSString stringWithFormat:@"%ld Turn%@ Left", (long)turnsLeft, turnsLeft != 1 ? @"s" : @""];
+            self.turnsLeftString = [NSString stringWithFormat:@"%ld Turn%@ Left", (long)turnsLeft, turnsLeft != 1 ? @"s" : @""];
         } else {
-            _turnsLeftString = @"Waiting for Turn";
+            self.turnsLeftString = @"Waiting for Turn";
         }
     } else {
-        _turnsLeftString = @"Game Over";
+        self.turnsLeftString = @"Game Over";
     }
     [self setCurrentContainerType:DRPContainerTypeTurnsLeft fromDirection:direction];
 }
@@ -258,7 +261,7 @@
     [UIView animateWithDuration:0.4 delay:0 usingSpringWithDamping:0.8 initialSpringVelocity:velocity * 0.001 options:0 animations:^{
         container.frame = destFrame;
     } completion:^(BOOL finished) {
-        if (_currentContainer == container) {
+        if (self.currentContainer == container) {
             // Just make sure the container ended up where intended (for rotations during animation)
             container.frame = self.currentFrame;
         }
@@ -271,19 +274,19 @@
 {
     _gesturesEnabled = gesturesEnabled;
     
-    if (_currentContainerType == DRPContainerTypeCurrentWord) {
-        ((DRPCurrentWordView *)_currentContainer).gesturesEnabled = gesturesEnabled;
+    if (self.currentContainerType == DRPContainerTypeCurrentWord) {
+        ((DRPCurrentWordView *)self.currentContainer).gesturesEnabled = gesturesEnabled;
     }
 }
 
 - (void)currentWordWasTapped
 {
-    [_delegate currentWordWasTapped];
+    [self.delegate currentWordWasTapped];
 }
 
 - (void)currentWordWasSwipedWithVelocity:(CGFloat)velocity
 {
-    [_delegate currentWordWasSwiped];
+    [self.delegate currentWordWasSwiped];
     
     DRPDirection direction = DRPDirectionLeft;
     if (velocity < 0) {
@@ -296,7 +299,7 @@
 
 - (void)currentWordSwipeFailedWithVelocity:(CGFloat)velocity
 {
-    [self animateInContainer:_currentContainer ofType:_currentContainerType withVelocity:fabs(velocity)];
+    [self animateInContainer:self.currentContainer ofType:self.currentContainerType withVelocity:fabs(velocity)];
 }
 
 @end

@@ -13,7 +13,11 @@
 
 @interface DRPMatch ()
 
+@property (readwrite) GKTurnBasedMatch *gkMatch;
 @property BOOL gameCenterMatch;
+
+@property (readwrite) DRPBoard *board;
+@property (readwrite) NSMutableArray *players;
 
 @end
 
@@ -21,6 +25,7 @@
 
 @implementation DRPMatch
 
+// TODO: should probably kill this one, it's not used yet
 - (instancetype)initWithMatchID:(NSString *)matchID
 {
     self = [super init];
@@ -29,12 +34,12 @@
         
         // Load from cache based on matchID (pull nsdata out)
         // -- matchData
-        // _board = new board with cached data
+        // self.board = new board with cached data
         
         // Load Game Center match
-        if (_gameCenterMatch) {
-            [GKTurnBasedMatch loadMatchWithID:_matchID withCompletionHandler:^(GKTurnBasedMatch *match, NSError *error) {
-                _gkMatch = match;
+        if (self.gameCenterMatch) {
+            [GKTurnBasedMatch loadMatchWithID:self.matchID withCompletionHandler:^(GKTurnBasedMatch *match, NSError *error) {
+                self.gkMatch = match;
                 [self loadGKPlayers];
                 [self reloadMatchDataWithCompletion:nil];
             }];
@@ -48,19 +53,19 @@
 {
     self = [super init];
     if (self) {
-        _gkMatch = gkMatch;
-        _matchID = _gkMatch.matchID;
-        _gameCenterMatch = YES;
+        self.gkMatch = gkMatch;
+        _matchID = self.gkMatch.matchID;
+        self.gameCenterMatch = YES;
         
         // Initialize new board from scratch
         [self loadGKPlayers];
-        _board = [[DRPBoard alloc] initWithMatchData:_gkMatch.matchData];
+        self.board = [[DRPBoard alloc] initWithMatchData:self.gkMatch.matchData];
         [self reloadPlayerScores];
         
         // Make sure matchData is saved as soon as the board is generated
         // so it isn't regenerated later if the first player doesn't make
         // a move immediately.
-        if (_board.currentTurn == 0) {
+        if (self.board.currentTurn == 0) {
             [self saveMatchData];
         }
     }
@@ -71,9 +76,9 @@
 
 - (void)loadGKPlayers
 {
-    _players = [[NSMutableArray alloc] init];
+    self.players = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < 2; i++) {
-        [(NSMutableArray *)_players addObject:[[DRPPlayer alloc] initWithParticipant:_gkMatch.participants[i] turn:i]];
+        [(NSMutableArray *)self.players addObject:[[DRPPlayer alloc] initWithParticipant:self.gkMatch.participants[i] turn:i]];
     }
     [self reloadPlayerAliases];
 }
@@ -82,10 +87,10 @@
 {
     NSMutableArray *identifiers = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < 2; i++) {
-        DRPPlayer *player = _players[i];
+        DRPPlayer *player = self.players[i];
         
         if (player.participant.playerID) {
-            [identifiers addObject:((DRPPlayer *)_players[i]).participant.playerID];
+            [identifiers addObject:((DRPPlayer *)self.players[i]).participant.playerID];
             
         } else {
             // Load stock alias "PlayerN"
@@ -103,13 +108,13 @@
 
 - (void)reloadMatchDataWithCompletion:(void(^)(BOOL newTurns))completion
 {
-    [_gkMatch loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error) {
-        NSInteger turns = _board.currentTurn;
-        [_board appendNewData:matchData];
+    [self.gkMatch loadMatchDataWithCompletionHandler:^(NSData *matchData, NSError *error) {
+        NSInteger turns = self.board.currentTurn;
+        [self.board appendNewData:matchData];
         [self reloadPlayerScores];
         
         if (completion) {
-            BOOL newTurns = _board.currentTurn > turns;
+            BOOL newTurns = self.board.currentTurn > turns;
             completion(newTurns);
         }
         
@@ -120,14 +125,14 @@
 - (void)submitTurnForPositions:(NSArray *)positions
 {
     // Add move to history (assumed correct, don't do further error checking)
-    DRPPlayedWord *playedWord = [_board appendMoveForPositions:positions];
+    DRPPlayedWord *playedWord = [self.board appendMoveForPositions:positions];
     
     // Send move off to Game Center
     NSArray *participants = @[self.currentPlayer.participant];
-    NSData *data = _board.matchData;
+    NSData *data = self.board.matchData;
     
     if (!self.finished) {
-        [_gkMatch endTurnWithNextParticipants:participants turnTimeout:GKTurnTimeoutNone matchData:data completionHandler:^(NSError *error) {
+        [self.gkMatch endTurnWithNextParticipants:participants turnTimeout:GKTurnTimeoutNone matchData:data completionHandler:^(NSError *error) {
             if (error) {
                 NSLog(@"endTurn error: %@", error.localizedDescription);
                 return;
@@ -149,7 +154,7 @@
             }
         }
         
-        [_gkMatch endMatchInTurnWithMatchData:data completionHandler:^(NSError *error) {
+        [self.gkMatch endMatchInTurnWithMatchData:data completionHandler:^(NSError *error) {
             if (error) {
                 NSLog(@"endTurn error: %@", error.localizedDescription);
                 return;
@@ -171,7 +176,7 @@
 
 - (void)saveMatchData
 {
-    [_gkMatch saveCurrentTurnWithMatchData:_board.matchData completionHandler:^(NSError *error) {
+    [self.gkMatch saveCurrentTurnWithMatchData:self.board.matchData completionHandler:^(NSError *error) {
     }];
 }
 
@@ -184,7 +189,7 @@
 
 - (NSInteger)currentTurn
 {
-    return _board.currentTurn;
+    return self.board.currentTurn;
 }
 
 - (NSInteger)turnsLeft
@@ -199,7 +204,7 @@
 
 - (BOOL)tied
 {
-    return ((DRPPlayer *)_players[0]).score == ((DRPPlayer *)_players[1]).score;
+    return ((DRPPlayer *)self.players[0]).score == ((DRPPlayer *)self.players[1]).score;
 }
 
 #pragma mark Player
@@ -207,10 +212,10 @@
 - (DRPPlayer *)localPlayer
 {
     GKLocalPlayer *localPlayer = [GKLocalPlayer localPlayer];
-    if ([((DRPPlayer *)_players[0]).participant.playerID isEqualToString:localPlayer.playerID]) {
-        return _players[0];
+    if ([((DRPPlayer *)self.players[0]).participant.playerID isEqualToString:localPlayer.playerID]) {
+        return self.players[0];
     }
-    return _players[1];
+    return self.players[1];
 }
 
 - (DRPPlayer *)remotePlayer
@@ -220,22 +225,22 @@
 
 - (DRPPlayer *)currentPlayer
 {
-    return _players[_board.currentTurn % 2];
+    return self.players[self.board.currentTurn % 2];
 }
 
 - (DRPPlayer *)winner
 {
     if (!self.finished) return nil;
     
-    if (((DRPPlayer *)_players[0]).score > ((DRPPlayer *)_players[1]).score) {
-        return _players[0];
+    if (((DRPPlayer *)self.players[0]).score > ((DRPPlayer *)self.players[1]).score) {
+        return self.players[0];
     }
-    return _players[1];
+    return self.players[1];
 }
 
 - (DRPPlayer *)playerForTurn:(NSInteger)turn
 {
-    return _players[turn % 2];
+    return self.players[turn % 2];
 }
 
 - (BOOL)isLocalPlayerTurn
@@ -246,8 +251,8 @@
 - (DRPPlayer *)playerForPlayerID:(NSString *)playerID
 {
     for (NSInteger i = 0; i < 2; i++) {
-        if ([((DRPPlayer *)_players[i]).participant.playerID isEqualToString:playerID]) {
-            return _players[i];
+        if ([((DRPPlayer *)self.players[i]).participant.playerID isEqualToString:playerID]) {
+            return self.players[i];
         }
     }
     return nil;
@@ -255,9 +260,9 @@
 
 - (void)reloadPlayerScores
 {
-    NSDictionary *scores = _board.scores;
+    NSDictionary *scores = self.board.scores;
     for (NSInteger i = 0; i < 2; i++) {
-        ((DRPPlayer *)_players[i]).score = [scores[@(i)] integerValue];
+        ((DRPPlayer *)self.players[i]).score = [scores[@(i)] integerValue];
     }
 }
 

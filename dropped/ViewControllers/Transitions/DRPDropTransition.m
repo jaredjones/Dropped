@@ -11,7 +11,6 @@
 
 @interface DRPDropTransition ()
 
-@property UIGravityBehavior *gravity;
 @property UICollisionBehavior *collision;
 @property UIDynamicItemBehavior *item;
 
@@ -21,30 +20,36 @@
 
 - (void)execute
 {
-    _gravity = [[UIGravityBehavior alloc] initWithItems:@[self.start.view, self.destination.view]];
-    _gravity.magnitude = [FRBSwatchist floatForKey:@"animation.gravity"];
-    [[DRPTransition sharedDynamicAnimator] addBehavior:_gravity];
+    // Gravity Behavior
+    for (id<UIDynamicItem> item in [DRPTransition sharedGravityBehavior].items) {
+        [[DRPTransition sharedGravityBehavior] removeItem:item];
+    }
     
-    // TODO: sometimes adds the gravity behavior twice. Cut that shit out
+    [[DRPTransition sharedGravityBehavior] addItem:self.start.view];
+    [[DRPTransition sharedGravityBehavior] addItem:self.destination.view];
 
-    _collision = [[UICollisionBehavior alloc] initWithItems:@[self.destination.view]];
-    [_collision addBoundaryWithIdentifier:@"bottom"
-                                fromPoint:CGPointMake(0, self.destination.view.frame.size.height)
-                                  toPoint:CGPointMake(self.destination.view.frame.size.width,
-                                                      self.destination.view.frame.size.height)];
-    _collision.collisionDelegate = self;
-    [[DRPTransition sharedDynamicAnimator] addBehavior:_collision];
+    // Collision Behavior
+    self.collision = [[UICollisionBehavior alloc] initWithItems:@[self.destination.view]];
+    [self.collision addBoundaryWithIdentifier:@"bottom"
+                                    fromPoint:CGPointMake(0, self.destination.view.frame.size.height)
+                                      toPoint:CGPointMake(self.destination.view.frame.size.width,
+                                                          self.destination.view.frame.size.height)];
+    self.collision.collisionDelegate = self;
+    [[DRPTransition sharedDynamicAnimator] addBehavior:self.collision];
     
-    _item = [[UIDynamicItemBehavior alloc] initWithItems:@[self.start.view, self.destination.view]];
+    // Item Behavior
+    self.item = [[UIDynamicItemBehavior alloc] initWithItems:@[self.start.view, self.destination.view]];
     CGPoint velocity = CGPointMake(0, self.startingVelocity);
-    [_item addLinearVelocity:velocity forItem:self.start.view];
-    [_item addLinearVelocity:velocity forItem:self.destination.view];
-    [[DRPTransition sharedDynamicAnimator] addBehavior:_item];
+    [self.item addLinearVelocity:velocity forItem:self.start.view];
+    [self.item addLinearVelocity:velocity forItem:self.destination.view];
+    [[DRPTransition sharedDynamicAnimator] addBehavior:self.item];
 }
 
 - (void)cleanup
 {
-    [[DRPTransition sharedDynamicAnimator] removeBehavior:_gravity];
+    [[DRPTransition sharedGravityBehavior] removeItem:self.start.view];
+    [[DRPTransition sharedGravityBehavior] removeItem:self.destination.view];
+    
     [[DRPTransition sharedDynamicAnimator] removeBehavior:_collision];
     [[DRPTransition sharedDynamicAnimator] removeBehavior:_item];
 }

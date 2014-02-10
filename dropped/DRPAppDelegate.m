@@ -14,29 +14,21 @@
 #import "DRPDictionary.h"
 #import "TestFlight.h"
 
-@interface DRPAppDelegate ()
-
-@property DRPMainViewController *mainViewController;
-
-@end
-
 @implementation DRPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [self loadSwatches];
     srandomdev();
     
-    [DRPGameCenterInterface authenticateLocalPlayer];
-    [self loadSwatches];
- 
-    [DRPDictionary syncDictionary];
- 
+    // Important networky things need to happen ASAP
     [TestFlight takeOff:@"e04eea5f-3c76-4cc7-a01d-79f12d9fa6ad"];
+    [DRPGameCenterInterface authenticateLocalPlayer];
+    [DRPDictionary syncDictionary];
     
-    _mainViewController = [[DRPMainViewController alloc] initWithNibName:nil bundle:nil];
-    
+    // RootViewController
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    self.window.rootViewController = _mainViewController;
+    self.window.rootViewController = [[DRPMainViewController alloc] initWithNibName:nil bundle:nil];
     
     [UIApplication sharedApplication].statusBarHidden = YES;
     [self.window makeKeyAndVisible];

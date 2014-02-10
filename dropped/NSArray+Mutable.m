@@ -10,6 +10,21 @@
 
 @implementation NSArray (Mutable)
 
++ (NSArray *)arrayWithArrays:(NSArray *)arrays, ...
+{
+    va_list args;
+    va_start(args, arrays);
+    
+    NSMutableArray *result = [[NSMutableArray alloc] init];
+    
+    for (NSArray *arg = arrays; arg != nil; arg = va_arg(args, NSArray *)) {
+        [result addObjectsFromArray:arg];
+    }
+    
+    va_end(args);
+    return result;
+}
+
 - (NSArray *)arrayByRemovingObject:(id)object
 {
     NSInteger index = [self indexOfObject:object];

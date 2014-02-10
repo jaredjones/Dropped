@@ -19,6 +19,7 @@
 
 + (void)setReferenceViewForUIDynamics:(UIView *)reference;
 + (UIDynamicAnimator *)sharedDynamicAnimator;
++ (UIGravityBehavior *)sharedGravityBehavior;
 
 + (DRPTransition *)transitionWithStart:(UIViewController *)start destination:(UIViewController *)destination direction:(DRPPageDirection)direction completion:(void (^)())completion;
 

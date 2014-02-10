@@ -30,14 +30,14 @@
 {
     self = [super init];
     if (self) {
-        _letterPercentages = @{@"A" : @8.4966, @"B" : @2.0720, @"C" : @4.5388, @"D" : @3.3844, @"E" : @11.1607, @"F" : @1.8121, @"G" : @2.4705, @"H" : @3.0034, @"I" : @7.5448, @"J" : @0.1965, @"K" : @1.1016, @"L" : @5.4893, @"M" : @3.0129, @"N" : @6.6544, @"O" : @7.1635, @"P" : @3.1671, @"Q" : @0.1962, @"R" : @7.5809, @"S" : @5.7351, @"T" : @6.9509, @"U" : @3.6308, @"V" : @1.0074, @"W" : @1.2899, @"X" : @0.2902, @"Y" : @1.7779, @"Z" : @0.2722};
-        _letters = _letterPercentages.allKeys;
+        self.letterPercentages = @{@"A" : @8.4966, @"B" : @2.0720, @"C" : @4.5388, @"D" : @3.3844, @"E" : @11.1607, @"F" : @1.8121, @"G" : @2.4705, @"H" : @3.0034, @"I" : @7.5448, @"J" : @0.1965, @"K" : @1.1016, @"L" : @5.4893, @"M" : @3.0129, @"N" : @6.6544, @"O" : @7.1635, @"P" : @3.1671, @"Q" : @0.1962, @"R" : @7.5809, @"S" : @5.7351, @"T" : @6.9509, @"U" : @3.6308, @"V" : @1.0074, @"W" : @1.2899, @"X" : @0.2902, @"Y" : @1.7779, @"Z" : @0.2722};
+        self.letters = self.letterPercentages.allKeys;
         
-        _multiplierPercentages = @{@"3" : @60, @"4" : @30, @"5" : @10};
-        _multipliers = _multiplierPercentages.allKeys;
+        self.multiplierPercentages = @{@"3" : @60, @"4" : @30, @"5" : @10};
+        self.multipliers = self.multiplierPercentages.allKeys;
         
-        _colorsUsed = [[NSMutableDictionary alloc] init];
-        _currentColors = [[NSMutableDictionary alloc] init];
+        self.colorsUsed = [[NSMutableDictionary alloc] init];
+        self.currentColors = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -64,12 +64,12 @@
 
 - (DRPCharacter *)randomCharacter
 {
-    return [DRPCharacter characterWithCharacter:[self randomCharacterFromKeys:_letters percentages:_letterPercentages]];
+    return [DRPCharacter characterWithCharacter:[self randomCharacterFromKeys:self.letters percentages:self.letterPercentages]];
 }
 
 - (DRPCharacter *)randomMultiplier
 {
-    DRPCharacter *character = [DRPCharacter characterWithCharacter:[self randomCharacterFromKeys:_multipliers percentages:_multiplierPercentages]];
+    DRPCharacter *character = [DRPCharacter characterWithCharacter:[self randomCharacterFromKeys:self.multipliers percentages:self.multiplierPercentages]];
     character.color = [self randomColor];
     return character;
 }
@@ -81,14 +81,14 @@
     // TODO: Don't generate a color that was just on the board
     // TODO: rewrite
     
-    if (_colorsUsed.count >= 6) {
-        [_colorsUsed removeAllObjects]; 
+    if (self.colorsUsed.count >= 6) {
+        [self.colorsUsed removeAllObjects]; 
     }
     
     DRPColor color;
     do {
         color = arc4random_uniform(DRPColorRed);
-    } while (_colorsUsed[@(color)] || _currentColors[@(color)]);
+    } while (self.colorsUsed[@(color)] || self.currentColors[@(color)]);
     
     [self registerColor:color];
     return color;
@@ -96,23 +96,23 @@
 
 - (void)registerColor:(DRPColor)color
 {
-    if (_colorsUsed.count >= 6) {
-        [_colorsUsed removeAllObjects];
-    } else if (_colorsUsed.count == 5) {
-        for (NSNumber *color in _currentColors) {
-            if (!_colorsUsed[color]) {
-                [_colorsUsed removeAllObjects];
+    if (self.colorsUsed.count >= 6) {
+        [self.colorsUsed removeAllObjects];
+    } else if (self.colorsUsed.count == 5) {
+        for (NSNumber *color in self.currentColors) {
+            if (!self.colorsUsed[color]) {
+                [self.colorsUsed removeAllObjects];
             }
         }
     }
     
-    _colorsUsed[@(color)] = @YES;
-    _currentColors[@(color)] = @YES;
+    self.colorsUsed[@(color)] = @YES;
+    self.currentColors[@(color)] = @YES;
 }
 
 - (void)unregisterColor:(DRPColor)color
 {
-    [_currentColors removeObjectForKey:@(color)];
+    [self.currentColors removeObjectForKey:@(color)];
 }
 
 #pragma mark AppendedCharacters Generation

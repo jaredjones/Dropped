@@ -17,20 +17,20 @@
 {
     self = [super init];
     if (self) {
-        _participant = participant;
-        _turn = turn;
+        self.participant = participant;
+        self.turn = turn;
     }
     return self;
 }
 
 - (BOOL)hasParticipant
 {
-    return _participant.playerID != nil;
+    return self.participant.playerID != nil;
 }
 
 - (NSString *)firstPrintableAliasCharacter
 {
-    return [self hasParticipant] ? firstPrintableCharacter(_alias) : @"hash";
+    return [self hasParticipant] ? firstPrintableCharacter(self.alias) : @"hash";
 }
 
 @end

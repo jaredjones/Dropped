@@ -67,28 +67,28 @@
 - (DRPPosition *)positionInDirection:(DRPDirection)direction
 {
     if (direction == DRPDirectionRight)
-        return [DRPPosition positionWithI:_i + 1 j:_j];
+        return [DRPPosition positionWithI:self.i + 1 j:self.j];
     
     if (direction == DRPDirectionUpRight)
-        return [DRPPosition positionWithI:_i + 1 j:_j - 1];
+        return [DRPPosition positionWithI:self.i + 1 j:self.j - 1];
     
     if (direction == DRPDirectionUp)
-        return [DRPPosition positionWithI:_i j:_j - 1];
+        return [DRPPosition positionWithI:self.i j:self.j - 1];
     
     if (direction == DRPDirectionUpLeft)
-        return [DRPPosition positionWithI:_i - 1 j:_j - 1];
+        return [DRPPosition positionWithI:self.i - 1 j:self.j - 1];
     
     if (direction == DRPDirectionLeft)
-        return [DRPPosition positionWithI:_i - 1 j:_j];
+        return [DRPPosition positionWithI:self.i - 1 j:self.j];
     
     if (direction == DRPDirectionDownLeft)
-        return [DRPPosition positionWithI:_i - 1 j:_j + 1];
+        return [DRPPosition positionWithI:self.i - 1 j:self.j + 1];
 
     if (direction == DRPDirectionDown)
-        return [DRPPosition positionWithI:_i j:_j + 1];
+        return [DRPPosition positionWithI:self.i j:self.j + 1];
 
     if (direction == DRPDirectionDownRight)
-        return [DRPPosition positionWithI:_i + 1 j:_j + 1];
+        return [DRPPosition positionWithI:self.i + 1 j:self.j + 1];
 
     return nil;
 }

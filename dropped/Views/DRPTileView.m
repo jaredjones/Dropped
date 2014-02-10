@@ -42,7 +42,7 @@ static NSMutableDictionary *glyphAdvancesCache;
         // Make sure to call the setter method, it has side effects
         [self setCharacter:character];
         
-        _scaleCharacter = YES;
+        self.scaleCharacter = YES;
     }
     return self;
 }
@@ -54,30 +54,30 @@ static NSMutableDictionary *glyphAdvancesCache;
 
 - (void)loadStrokeLayer
 {
-    _strokeLayer = [[CAShapeLayer alloc] init];
+    self.strokeLayer = [[CAShapeLayer alloc] init];
     UIBezierPath *strokePath = ({
         CGFloat strokeWidth = [FRBSwatchist floatForKey:@"board.tileStrokeWidth"];
         [UIBezierPath bezierPathWithRect:CGRectInset(self.bounds, strokeWidth / 2, strokeWidth / 2)];
     });
-    _strokeLayer.path = strokePath.CGPath;
-    _strokeLayer.lineWidth = [FRBSwatchist floatForKey:@"board.tileStrokeWidth"];
-    _strokeLayer.fillColor = [UIColor clearColor].CGColor;
-    _strokeLayer.strokeColor = [FRBSwatchist colorForKey:@"colors.black"].CGColor;
-    _strokeLayer.opacity = 0;
-    [self.layer addSublayer:_strokeLayer];
+    self.strokeLayer.path = strokePath.CGPath;
+    self.strokeLayer.lineWidth = [FRBSwatchist floatForKey:@"board.tileStrokeWidth"];
+    self.strokeLayer.fillColor = [UIColor clearColor].CGColor;
+    self.strokeLayer.strokeColor = [FRBSwatchist colorForKey:@"colors.black"].CGColor;
+    self.strokeLayer.opacity = 0;
+    [self.layer addSublayer:self.strokeLayer];
 }
 
 - (void)loadGlyphLayer
 {
-    [_glyphLayer removeFromSuperlayer];
+    [self.glyphLayer removeFromSuperlayer];
     
     // Hide glyphLayer if character is nil
-    if (!_character || !_character.character) return;
+    if (!self.character || !self.character.character) return;
     
-    _glyphLayer = [[CAShapeLayer alloc] init];
-    _glyphLayer.path = [DRPTileView pathForCharacter:_character.character].CGPath;
-    _glyphLayer.fillColor = [FRBSwatchist colorForKey:@"colors.black"].CGColor;
-    [self.layer addSublayer:_glyphLayer];
+    self.glyphLayer = [[CAShapeLayer alloc] init];
+    self.glyphLayer.path = [DRPTileView pathForCharacter:self.character.character].CGPath;
+    self.glyphLayer.fillColor = [FRBSwatchist colorForKey:@"colors.black"].CGColor;
+    [self.layer addSublayer:self.glyphLayer];
 }
 
 #pragma mark Reusable DRPTileViews
@@ -122,21 +122,21 @@ static NSMutableDictionary *glyphAdvancesCache;
 - (void)recalculateColor
 {
     DRPColor colorCode;
-    if (_character.adjacentMultiplier) {
-        colorCode = _character.adjacentMultiplier.color;
-    } else if (_character) {
-        colorCode = _character.color;
+    if (self.character.adjacentMultiplier) {
+        colorCode = self.character.adjacentMultiplier.color;
+    } else if (self.character) {
+        colorCode = self.character.color;
     } else {
         colorCode = DRPColorNil;
     }
     
-    _hasWhiteBackground = colorCode == DRPColorNil;
-    _color = colorForColor(colorCode);
+    self.hasWhiteBackground = colorCode == DRPColorNil;
+    self.color = colorForColor(colorCode);
 }
 
 - (CGFloat)strokeOpacity
 {
-    return _strokeLayer.opacity;
+    return self.strokeLayer.opacity;
 }
 
 // These methods are for setting properties of the layers without the implicit animations
@@ -146,23 +146,23 @@ static NSMutableDictionary *glyphAdvancesCache;
     anim.values = @[@(opacity)];
     self.strokeLayer.opacity = opacity;
     anim.duration = 0;
-    [_strokeLayer addAnimation:anim forKey:@"opacity"];
+    [self.strokeLayer addAnimation:anim forKey:@"opacity"];
 }
 
 - (void)setGlyphColor:(UIColor *)color
 {
     CAKeyframeAnimation *anim = [CAKeyframeAnimation animationWithKeyPath:@"fillColor"];
     anim.values = @[(id)color.CGColor];
-    _glyphLayer.fillColor = color.CGColor;
+    self.glyphLayer.fillColor = color.CGColor;
     anim.duration = 0;
-    [_glyphLayer addAnimation:anim forKey:@"fillColor"];
+    [self.glyphLayer addAnimation:anim forKey:@"fillColor"];
 }
 
 #pragma mark Touch Events
 
 - (void)touchDown
 {
-    [_delegate tileWasHighlighted:self];
+    [self.delegate tileWasHighlighted:self];
     [self resetAppearence];
 }
 
@@ -176,11 +176,11 @@ static NSMutableDictionary *glyphAdvancesCache;
     }
     self.highlighted = NO;
     
-    [_delegate tileWasDehighlighted:self];
+    [self.delegate tileWasDehighlighted:self];
     if (self.selected) {
-        [_delegate tileWasSelected:self];
+        [self.delegate tileWasSelected:self];
     } else {
-        [_delegate tileWasDeselected:self];
+        [self.delegate tileWasDeselected:self];
     }
     
     if (self.permaHighlighted) {
@@ -193,16 +193,16 @@ static NSMutableDictionary *glyphAdvancesCache;
 - (void)touchUpOutside
 {
     self.highlighted = NO;
-    [_delegate tileWasDehighlighted:self];
+    [self.delegate tileWasDehighlighted:self];
     [self resetAppearence];
 }
 
 - (void)touchCancel
 {
     self.highlighted = NO;
-    [_delegate tileWasDehighlighted:self];
+    [self.delegate tileWasDehighlighted:self];
     if (!self.selected) {
-        [_delegate tileWasDeselected:self];
+        [self.delegate tileWasDeselected:self];
     }
     [self resetAppearence];
 }
@@ -212,7 +212,7 @@ static NSMutableDictionary *glyphAdvancesCache;
     [self recalculateColor];
     
     // Stroke Opacity
-    if (self.highlighted || self.permaHighlighted || (self.selected && !_character.multiplier)) {
+    if (self.highlighted || self.permaHighlighted || (self.selected && !self.character.multiplier)) {
         self.strokeOpacity = 1;
     } else {
         self.strokeOpacity = 0;
@@ -220,11 +220,13 @@ static NSMutableDictionary *glyphAdvancesCache;
     
     // Color
     // glyphColor is always white when the tile is colored
-    if (self.highlighted || self.permaHighlighted ||
-        (self.selected && (_character.adjacentMultiplier.multiplierActive || (!self.enabled && _character.adjacentMultiplier.multiplierActive))) ||
-        _character.multiplier) {
-        self.backgroundColor = _color;
-        if (!_hasWhiteBackground) {
+    if (self.highlighted ||
+        self.permaHighlighted ||
+        (self.selected && self.character.adjacentMultiplier.multiplierActive) ||
+        self.character.multiplier) {
+        
+        self.backgroundColor = self.color;
+        if (!self.hasWhiteBackground) {
             self.glyphColor = [FRBSwatchist colorForKey:@"colors.white"];
         }
         
@@ -234,10 +236,10 @@ static NSMutableDictionary *glyphAdvancesCache;
     }
     
     // Transform
-    if (self.highlighted && _scaleCharacter) {
-        _glyphLayer.transform = [glyphScaleTransformCache[_character.character] CATransform3DValue];
+    if (self.highlighted && self.scaleCharacter) {
+        self.glyphLayer.transform = [glyphScaleTransformCache[self.character.character] CATransform3DValue];
     } else {
-        _glyphLayer.transform = CATransform3DIdentity;
+        self.glyphLayer.transform = CATransform3DIdentity;
     }
 }
 
@@ -246,7 +248,7 @@ static NSMutableDictionary *glyphAdvancesCache;
 // different character assignments
 - (void)resetTargets
 {
-    if (_character.multiplier) {
+    if (self.character.multiplier) {
         [self removeTarget:self action:@selector(touchDown) forControlEvents:UIControlEventTouchDown];
         [self removeTarget:self action:@selector(touchUpInside) forControlEvents:UIControlEventTouchUpInside];
         [self removeTarget:self action:@selector(touchUpOutside) forControlEvents:UIControlEventTouchUpOutside];

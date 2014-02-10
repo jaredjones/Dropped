@@ -9,6 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "DRPPageViewController.h"
 
+// Works very much like UIPageViewControllerDataSource, i.e. it
+// maps pageID (page number) to initialized DRPPageViewControllers.
+
+// Also provides methods to determine relationships between pages.
+
 @interface DRPPageDataSource : NSObject
 
 - (DRPPageViewController *)pageForPageID:(DRPPageID)pageID;

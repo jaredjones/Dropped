@@ -12,7 +12,6 @@
 #import "DRPBoardViewController.h"
 #import "FRBSwatchist.h"
 #import "DRPUtility.h"
-#import "UIView+Introspective.h"
 
 @interface DRPCurrentWordView ()
 
@@ -37,9 +36,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        _tiles = [[NSMutableArray alloc] init];
-        _animatingTiles = [[NSMutableSet alloc] init];
-        _unselectedTiles = [[NSMutableSet alloc] init];
+        self.tiles = [[NSMutableArray alloc] init];
+        self.animatingTiles = [[NSMutableSet alloc] init];
+        self.unselectedTiles = [[NSMutableSet alloc] init];
         [self loadGestureRecognizers];
     }
     return self;
@@ -47,11 +46,11 @@
 
 - (void)loadGestureRecognizers
 {
-    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    [self addGestureRecognizer:_tapGestureRecognizer];
+    self.tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    [self addGestureRecognizer:self.tapGestureRecognizer];
     
-    _panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
-    [self addGestureRecognizer:_panGestureRecognizer];
+    self.panGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    [self addGestureRecognizer:self.panGestureRecognizer];
 }
 
 #pragma mark DRPBoardViewControllerDelegate
@@ -69,7 +68,7 @@
         tile.highlighted = YES;
         tile.character = character;
         tile.center = [self centerForNewTile:tile];
-        [_tiles addObject:tile];
+        [self.tiles addObject:tile];
         [self addSubview:tile];
         
     } else {
@@ -79,7 +78,7 @@
     }
     
     [self bringSubviewToFront:tile];
-    [_animatingTiles addObject:tile];
+    [self.animatingTiles addObject:tile];
     
     
     // There's a (very) visibly noticeable jump in the animation
@@ -100,8 +99,8 @@
 {
     DRPTileView *tile = [self tileForCharacter:character];
     
-    if ([_animatingTiles containsObject:tile]) {
-        [_unselectedTiles addObject:tile];
+    if ([self.animatingTiles containsObject:tile]) {
+        [self.unselectedTiles addObject:tile];
     } else {
         [self deselectTile:tile];
         [self repositionTilesAnimated:YES];
@@ -122,7 +121,7 @@
     
     if (removedTile) {
         [removedTile removeFromSuperview];
-        [_tiles removeObject:removedTile];
+        [self.tiles removeObject:removedTile];
         [self repositionTilesAnimated:YES];
         [DRPTileView queueReusableTile:removedTile];
     }
@@ -130,19 +129,19 @@
 
 - (void)removeAllCharacters
 {
-    for (DRPTileView *tile in _tiles) {
+    for (DRPTileView *tile in self.tiles) {
         [tile removeFromSuperview];
         [DRPTileView queueReusableTile:tile];
     }
-    [_tiles removeAllObjects];
-    [_animatingTiles removeAllObjects];
-    [_unselectedTiles removeAllObjects];
-    _wordWidth = 0;
+    [self.tiles removeAllObjects];
+    [self.animatingTiles removeAllObjects];
+    [self.unselectedTiles removeAllObjects];
+    self.wordWidth = 0;
 }
 
 - (DRPTileView *)tileForCharacter:(DRPCharacter *)character
 {
-    NSInteger i = [_tiles indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+    NSInteger i = [self.tiles indexOfObjectPassingTest:^BOOL(id obj, NSUInteger idx, BOOL *stop) {
         if (((DRPTileView *)obj).character == character) {
             *stop = YES;
             return YES;
@@ -150,13 +149,13 @@
         return NO;
     }];
     
-    if (i != NSNotFound) return _tiles[i];
+    if (i != NSNotFound) return self.tiles[i];
     return nil;
 }
 
 - (NSInteger)characterCount
 {
-    return _tiles.count;
+    return self.tiles.count;
 }
 
 #pragma mark Resetting Characters
@@ -171,7 +170,7 @@
         tile.enabled = NO;
         tile.character = character;
         [self deselectTile:tile];
-        [_tiles addObject:tile];
+        [self.tiles addObject:tile];
         [self addSubview:tile];
     }
     
@@ -180,12 +179,12 @@
 
 - (BOOL)currentCharactersEqualCharacters:(NSArray *)characters
 {
-    if (_tiles.count != characters.count) {
+    if (self.tiles.count != characters.count) {
         return NO;
     }
     
-    for (NSInteger i = 0; i < _tiles.count; i++) {
-        if (((DRPTileView *)_tiles[i]).character != characters[i]) {
+    for (NSInteger i = 0; i < self.tiles.count; i++) {
+        if (((DRPTileView *)self.tiles[i]).character != characters[i]) {
             return NO;
         }
     }
@@ -212,8 +211,8 @@
         [self animateTilesToCenters:centers];
         
     } else {
-        for (NSInteger i = 0; i < _tiles.count; i++) {
-            [self positionTile:_tiles[i] toCenter:centers[i]];
+        for (NSInteger i = 0; i < self.tiles.count; i++) {
+            [self positionTile:self.tiles[i] toCenter:centers[i]];
         }
     }
     
@@ -226,11 +225,11 @@
     // animation, the old animations stop. We only want to run
     // the final [self repositionTilesAnimated:YES] when _all_ the
     // new tiles finish their initial animation
-    NSInteger numberAnimatingTiles = _animatingTiles.count;
+    NSInteger numberAnimatingTiles = self.animatingTiles.count;
     __block NSInteger numberTilesFinished = 0;
     
-    for (NSInteger i = 0; i < _tiles.count; i++) {
-        DRPTileView *tile = _tiles[i];
+    for (NSInteger i = 0; i < self.tiles.count; i++) {
+        DRPTileView *tile = self.tiles[i];
         
         [UIView animateWithDuration:[FRBSwatchist floatForKey:@"animation.currentWordManipulationDuration"]
                               delay:0
@@ -241,11 +240,11 @@
                          completion:^(BOOL finished) {
                              
                              if (finished) {
-                                 [_animatingTiles removeObject:tile];
+                                 [self.animatingTiles removeObject:tile];
                                  
-                                 if ([_unselectedTiles containsObject:tile]) {
+                                 if ([self.unselectedTiles containsObject:tile]) {
                                      [self deselectTile:tile];
-                                     [_unselectedTiles removeObject:tile];
+                                     [self.unselectedTiles removeObject:tile];
                                  }
                                  
                                  // This trick is the same one used to run the completion handler
@@ -266,7 +265,7 @@
     if (tile.selected) {
         tile.transform = CGAffineTransformIdentity;
     } else {
-        tile.transform = CGAffineTransformMakeScale(_tileScale, _tileScale);
+        tile.transform = CGAffineTransformMakeScale(self.tileScale, self.tileScale);
     }
 }
 
@@ -275,32 +274,32 @@
 // Be sure to free() the returned array
 - (CGPoint *)tileCenters
 {
-    CGPoint *centers = malloc(sizeof(CGPoint) * _tiles.count);
+    CGPoint *centers = malloc(sizeof(CGPoint) * self.tiles.count);
     
-    _wordWidth = 0;
+    self.wordWidth = 0;
     CGFloat letterSpacing = [FRBSwatchist floatForKey:@"board.matchCurrentWordLetterSpacing"];
     
     // Initial Spacing
-    for (NSInteger i = 0; i < _tiles.count; i++) {
-        DRPTileView *tile = _tiles[i];
+    for (NSInteger i = 0; i < self.tiles.count; i++) {
+        DRPTileView *tile = self.tiles[i];
         
         CGFloat advancement = tile.selected ? tile.frame.size.width : [DRPTileView advancementForCharacter:tile.character.character];
-        centers[i] = CGPointMake(_wordWidth + advancement / 2, self.bounds.size.height / 2);
-        _wordWidth += advancement + letterSpacing;
+        centers[i] = CGPointMake(self.wordWidth + advancement / 2, self.bounds.size.height / 2);
+        self.wordWidth += advancement + letterSpacing;
     }
     
     // Recenter entire word
     // Word is sometimes too long to fit. Favor right side of the word
-    _tileScale = 1;
-    if (_wordWidth > self.frame.size.width) {
-        _tileScale = self.frame.size.width / _wordWidth;
+    self.tileScale = 1;
+    if (self.wordWidth > self.frame.size.width) {
+        self.tileScale = self.frame.size.width / self.wordWidth;
     }
     
-    CGFloat offset = self.frame.size.width / 2 - _wordWidth / 2;
+    CGFloat offset = self.frame.size.width / 2 - self.wordWidth / 2;
     
     CGFloat hw = self.bounds.size.width / 2;
-    for (NSInteger i = 0; i < _tiles.count; i++) {
-        centers[i].x = hw + (centers[i].x + offset - hw) * _tileScale;
+    for (NSInteger i = 0; i < self.tiles.count; i++) {
+        centers[i].x = hw + (centers[i].x + offset - hw) * self.tileScale;
     }
     
     return centers;
@@ -311,10 +310,10 @@
 - (CGPoint)centerForNewTile:(DRPTileView *)tile
 {
     // Ignore advancement when the first letter is being added
-    CGFloat tileWidth = _wordWidth > 0 ? tile.frame.size.width : 0;
+    CGFloat tileWidth = self.wordWidth > 0 ? tile.frame.size.width : 0;
     CGFloat letterSpacing = [FRBSwatchist floatForKey:@"board.matchCurrentWordLetterSpacing"];
-    letterSpacing = _wordWidth > 0 ? letterSpacing : -letterSpacing;
-    return CGPointMake((self.frame.size.width + _wordWidth + tileWidth + letterSpacing) / 2,
+    letterSpacing = self.wordWidth > 0 ? letterSpacing : -letterSpacing;
+    return CGPointMake((self.frame.size.width + self.wordWidth + tileWidth + letterSpacing) / 2,
                        self.bounds.size.height / 2);
 }
 
@@ -322,13 +321,13 @@
 
 - (void)setGesturesEnabled:(BOOL)enabled
 {
-    _tapGestureRecognizer.enabled = enabled;
-    _panGestureRecognizer.enabled = enabled;
+    self.tapGestureRecognizer.enabled = enabled;
+    self.panGestureRecognizer.enabled = enabled;
 }
 
 - (void)handleTapGesture:(UITapGestureRecognizer *)gesture
 {
-    [_delegate currentWordWasTapped];
+    [self.delegate currentWordWasTapped];
 }
 
 - (void)handlePanGesture:(UIPanGestureRecognizer *)gesture
@@ -349,9 +348,9 @@
         
         // TODO: crickey, this is twitchy
         if (fabs(velocity.x) > 200) {
-            [_delegate currentWordWasSwipedWithVelocity:velocity.x];
+            [self.delegate currentWordWasSwipedWithVelocity:velocity.x];
         } else {
-            [_delegate currentWordSwipeFailedWithVelocity:velocity.x];
+            [self.delegate currentWordSwipeFailedWithVelocity:velocity.x];
         }
     }
 }

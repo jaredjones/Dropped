@@ -25,7 +25,7 @@
 @property NSMutableArray *tiles;
 @property UILabel *opponentLabel, *statusLabel;
 
-// Stored from the set DRPMatch to keep references for KVO
+// Stored from the set DRPMatch to keep references around for KVO comparisons
 @property NSArray *players;
 @property DRPPlayer *remotePlayer;
 
@@ -38,7 +38,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Load tiles
-        _tiles = [[NSMutableArray alloc] init];
+        self.tiles = [[NSMutableArray alloc] init];
         for (NSInteger i = 0; i < 2; i++) {
             DRPTileView *tile = [DRPTileView dequeueResusableTile];
             tile.hidden = YES;
@@ -47,20 +47,20 @@
             tile.scaleCharacter = NO;
             tile.enabled = NO;
             
-            [_tiles addObject:tile];
+            [self.tiles addObject:tile];
             [self.contentView addSubview:tile];
         }
         
         // Load Labels
-        _opponentLabel = [[UILabel alloc] initWithFrame:[self opponentLabelFrame]];
-        _opponentLabel.font = [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"];
-        _opponentLabel.textColor = [FRBSwatchist colorForKey:@"colors.black"];
-        [self.contentView addSubview:_opponentLabel];
+        self.opponentLabel = [[UILabel alloc] initWithFrame:[self opponentLabelFrame]];
+        self.opponentLabel.font = [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"];
+        self.opponentLabel.textColor = [FRBSwatchist colorForKey:@"colors.black"];
+        [self.contentView addSubview:self.opponentLabel];
         
-        _statusLabel = [[UILabel alloc] initWithFrame:[self statusLabelFrame]];
-        _statusLabel.font = [FRBSwatchist fontForKey:@"page.cueFont"];
-        _statusLabel.textColor = [FRBSwatchist colorForKey:@"colors.black"];
-        [self.contentView addSubview:_statusLabel];
+        self.statusLabel = [[UILabel alloc] initWithFrame:[self statusLabelFrame]];
+        self.statusLabel.font = [FRBSwatchist fontForKey:@"page.cueFont"];
+        self.statusLabel.textColor = [FRBSwatchist colorForKey:@"colors.black"];
+        [self.contentView addSubview:self.statusLabel];
     }
     return self;
 }
@@ -73,22 +73,23 @@
 - (void)configureWithMatch:(DRPMatch *)match
 {
     // Determine match state
-    _cellState = [DRPMatchCollectionViewCell cellStateForMatch:match];
+    // Keep track of which tile to highlight (only highlight local player tiles)
+    self.cellState = [DRPMatchCollectionViewCell cellStateForMatch:match];
     NSArray *highlights = @[({
-        @(_cellState == DRPMatchCellStatePlayer1Active && match.localPlayer.turn == 0);
+        @(self.cellState == DRPMatchCellStatePlayer1Active && match.localPlayer.turn == 0);
     }), ({
-        @(_cellState == DRPMatchCellStatePlayer2Active && match.localPlayer.turn == 1);
+        @(self.cellState == DRPMatchCellStatePlayer2Active && match.localPlayer.turn == 1);
     })];
     
     // Reset tiles
     [self removeObservers];
-    _players = match.players;
-    _remotePlayer = match.remotePlayer;
-    [self addObserversForPlayers:_players];
+    self.players = match.players;
+    self.remotePlayer = match.remotePlayer;
+    [self addObserversForPlayers:self.players];
     
     NSArray *colors = [match.board multiplierColorsForTurn:match.currentTurn];
     for (NSInteger i = 0; i < match.players.count; i++) {
-        DRPTileView *tile = _tiles[i];
+        DRPTileView *tile = self.tiles[i];
         DRPPlayer *player = [match playerForTurn:i];
         
         tile.character = [DRPCharacter characterWithCharacter:[player firstPrintableAliasCharacter]];
@@ -105,30 +106,30 @@
         
         [tile resetAppearence];
         
-        // z-order
+        // Make sure match winner is on top
         if (player != match.winner) {
             [self.contentView sendSubviewToBack:tile];
         }
         
         // TODO: animate the cell over
-        tile.frame = [DRPMatchCollectionViewCell tileFrameForTurn:i state:_cellState];
+        tile.frame = [DRPMatchCollectionViewCell tileFrameForTurn:i state:self.cellState];
         
         tile.hidden = NO;
     }
     
     // Set Labels
-    _opponentLabel.text = match.remotePlayer.alias;
+    self.opponentLabel.text = match.remotePlayer.alias;
     
     if (match.finished) {
         if (match.tied) {
-            _statusLabel.text = @"Tied";
+            self.statusLabel.text = @"Tied";
         } else {
-            _statusLabel.text = @"Game Over";
+            self.statusLabel.text = @"Game Over";
         }
     } else if ([match isLocalPlayerTurn]) {
-        _statusLabel.text = @"Your Turn!";
+        self.statusLabel.text = @"Your Turn!";
     } else {
-        _statusLabel.text = @"Waiting for Turn";
+        self.statusLabel.text = @"Waiting for Turn";
     }
 }
 
@@ -188,14 +189,14 @@
 
 - (void)addObserversForPlayers:(NSArray *)players
 {
-    for (DRPPlayer *player in _players) {
+    for (DRPPlayer *player in self.players) {
         [player addObserver:self forKeyPath:@"alias" options:NSKeyValueObservingOptionNew context:nil];
     }
 }
 
 - (void)removeObservers
 {
-    for (DRPPlayer *player in _players) {
+    for (DRPPlayer *player in self.players) {
         [player removeObserver:self forKeyPath:@"alias"];
     }
 }
@@ -204,19 +205,19 @@
 {
     if ([object isKindOfClass:[DRPPlayer class]] && [keyPath isEqualToString:@"alias"]) {
         
-        for (NSInteger i = 0; i < _players.count; i++) {
-            DRPPlayer *player = _players[i];
+        for (NSInteger i = 0; i < self.players.count; i++) {
+            DRPPlayer *player = self.players[i];
             if (player != object) continue;
             
-            DRPTileView *tile = _tiles[i];
+            DRPTileView *tile = self.tiles[i];
             
             DRPCharacter *oldCharacter = tile.character;
             DRPCharacter *newCharacter = [DRPCharacter characterWithCharacter:[player firstPrintableAliasCharacter]];
             newCharacter.color = oldCharacter.color;
             tile.character = newCharacter;
             
-            if (player == _remotePlayer) {
-                _opponentLabel.text = player.alias;
+            if (player == self.remotePlayer) {
+                self.opponentLabel.text = player.alias;
             }
         }
         

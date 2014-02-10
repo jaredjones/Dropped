@@ -12,7 +12,13 @@
 
 - (void)execute
 {
-    [UIView animateWithDuration:.48 delay:0 usingSpringWithDamping:1 initialSpringVelocity:self.startingVelocity / -100 options:0 animations:^{
+    // TODO: Into a swatch these go. And could probably use some tweaking
+    [UIView animateWithDuration:.48
+                          delay:0
+         usingSpringWithDamping:1
+          initialSpringVelocity:self.startingVelocity / -100
+                        options:0
+                     animations:^{
         CGRect frame = self.start.view.frame;
         frame.origin.y = -frame.size.height;
         self.start.view.frame = frame;

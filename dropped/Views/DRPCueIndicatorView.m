@@ -28,7 +28,7 @@
     if (self) {
         _position = position;
         
-        _tileViews = [[NSMutableArray alloc] init];
+        self.tileViews = [[NSMutableArray alloc] init];
         
         for (NSInteger i = 0; i < 6; i++) {
             DRPTileView *tileView = [[DRPTileView alloc] initWithCharacter:nil];
@@ -36,7 +36,7 @@
             tileView.strokeOpacity = 1;
             tileView.userInteractionEnabled = NO;
             [self addSubview:tileView];
-            [_tileViews addObject:tileView];
+            [self.tileViews addObject:tileView];
         }
         
         self.userInteractionEnabled = NO;
@@ -58,9 +58,9 @@
 - (void)animateIn
 {
     CGFloat offset = 2 * [FRBSwatchist floatForKey:@"board.tileStrokeWidth"];
-    offset = _position == DRPPageDirectionUp ? offset : -offset;
+    offset = self.position == DRPPageDirectionUp ? offset : -offset;
     for (NSInteger i = 0; i < 6; i++) {
-        DRPTileView *tileView = _tileViews[i];
+        DRPTileView *tileView = self.tileViews[i];
         CGPoint center = ({
             CGPoint center = [DRPCueIndicatorView centerForPosition:i];
             center.y += offset;
@@ -78,7 +78,7 @@
 - (void)animateOut
 {
     for (NSInteger i = 0; i < 6; i++) {
-        DRPTileView *tileView = _tileViews[i];
+        DRPTileView *tileView = self.tileViews[i];
         CGPoint center = [DRPCueIndicatorView centerForPosition:i];
         
         [UIView animateWithDuration:[FRBSwatchist floatForKey:@"page.cueIndicatorAnimationDuration"]

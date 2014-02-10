@@ -44,7 +44,7 @@
 
 - (void)loadPlayerViews
 {
-    _playerViews = @[({
+    self.playerViews = @[({
         DRPMatchPlayerView *view = [[DRPMatchPlayerView alloc] initWithAlignment:DRPDirectionLeft];
         [self.view addSubview:view];
         view;
@@ -55,7 +55,7 @@
     })];
     
     for (NSInteger i = 0; i < 2; i++) {
-        DRPMatchPlayerView *view = _playerViews[i];
+        DRPMatchPlayerView *view = self.playerViews[i];
         view.frame = ({
             CGRect frame = view.frame;
             frame.origin = [self originForPlayerView:i forInterfaceOrientation:self.interfaceOrientation];
@@ -100,7 +100,7 @@
 
 - (CGPoint)originForPlayerView:(NSInteger)i forInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    UIView *view = _playerViews[i];
+    UIView *view = self.playerViews[i];
     if (i == 0) {
         if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
             return CGPointMake(0, 0);
@@ -135,8 +135,8 @@
 - (void)resetPlayerViewLocationForInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
 {
     for (NSInteger i = 0; i < 2; i++) {
-        ((UIView *)_playerViews[i]).frame = ({
-            CGRect frame = ((UIView *)_playerViews[i]).frame;
+        ((UIView *)self.playerViews[i]).frame = ({
+            CGRect frame = ((UIView *)self.playerViews[i]).frame;
             frame.origin = [self originForPlayerView:i forInterfaceOrientation:toInterfaceOrientation];
             frame;
         });
@@ -148,14 +148,14 @@
 - (void)observePlayers:(NSArray *)players
 {
     for (NSInteger i = 0; i < 2; i++) {
-        [(DRPMatchPlayerView *)_playerViews[i] observePlayer:players[i]];
+        [(DRPMatchPlayerView *)self.playerViews[i] observePlayer:players[i]];
     }
 }
 
 - (void)setCurrentPlayerTurn:(NSInteger)turn multiplierColors:(NSArray *)colors
 {
     for (NSInteger i = 0; i < 2; i++) {
-        DRPMatchPlayerView *view = _playerViews[i];
+        DRPMatchPlayerView *view = self.playerViews[i];
         [view setIsCurrentPlayer:i == turn withColor:[colors[i] integerValue]];
     }
 }
@@ -163,7 +163,7 @@
 - (void)setScores:(NSDictionary *)scores
 {
     for (NSInteger i = 0; i < 2; i++) {
-        [(DRPMatchPlayerView *)_playerViews[i] resetScore:[scores[@(i)] intValue]];
+        [(DRPMatchPlayerView *)self.playerViews[i] resetScore:[scores[@(i)] intValue]];
     }
 }
 
@@ -171,7 +171,7 @@
 
 - (void)tile:(DRPTileView *)tile wasTappedFromMatchPlayerView:(DRPMatchPlayerView *)matchPlayerView
 {
-    NSInteger index = [_playerViews indexOfObject:matchPlayerView];
+    NSInteger index = [self.playerViews indexOfObject:matchPlayerView];
     if (index != NSNotFound) {
         [self.delegate headerViewTappedPlayerTileForTurn:index];
     }

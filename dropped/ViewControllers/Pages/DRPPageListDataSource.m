@@ -25,8 +25,8 @@
 {
     self = [super init];
     if (self) {
-        _matches = [[NSMutableArray alloc] init];
-        _loadedMatchIDs = [[NSMutableSet alloc] init];
+        self.matches = [[NSMutableArray alloc] init];
+        self.loadedMatchIDs = [[NSMutableSet alloc] init];
     }
     
     return self;
@@ -53,12 +53,12 @@
             }
             
             // Don't reload matches already loaded
-            if ([_loadedMatchIDs containsObject:gkMatch.matchID]) {
+            if ([self.loadedMatchIDs containsObject:gkMatch.matchID]) {
                 continue;
             }
             
-            [_matches addObject:[[DRPMatch alloc] initWithGKMatch:gkMatch]];
-            [_loadedMatchIDs addObject:gkMatch.matchID];
+            [self.matches addObject:[[DRPMatch alloc] initWithGKMatch:gkMatch]];
+            [self.loadedMatchIDs addObject:gkMatch.matchID];
         }
         
         // TODO: sort matches
@@ -71,14 +71,14 @@
 
 - (DRPMatch *)matchForIndexPath:(NSIndexPath *)indexPath
 {
-    return _matches[indexPath.row];
+    return self.matches[indexPath.row];
 }
 
 - (DRPMatch *)matchForMatchID:(NSString *)matchID
 {
-    if (![_loadedMatchIDs containsObject:matchID]) return nil;
+    if (![self.loadedMatchIDs containsObject:matchID]) return nil;
     
-    for (DRPMatch *match in _matches) {
+    for (DRPMatch *match in self.matches) {
         if ([match.matchID isEqualToString:matchID]) {
             return match;
         }
@@ -98,7 +98,7 @@
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return _matches.count;
+    return self.matches.count;
 }
 
 @end

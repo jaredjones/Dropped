@@ -45,7 +45,7 @@
                                                  selector:@selector(gameCenterReceivedLocalTurn:)
                                                      name:DRPGameCenterReceivedLocalTurnNotificationName
                                                    object:nil];
-        
+
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(receivedRemoteGameCenterTurn:)
                                                      name:DRPGameCenterReceivedRemoteTurnNotificationName
@@ -64,17 +64,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     [self loadBoardViewController];
     [self loadCurrentWordViewController];
-    [self.scrollView bringSubviewToFront:_boardViewController.view];
+    [self.scrollView bringSubviewToFront:self.boardViewController.view];
     [self loadHeaderViewController];
 }
 
 - (void)viewWillLayoutSubviews
 {
     [super viewWillLayoutSubviews];
-    
+
     [self layoutBoardViewController];
     [self layoutCurrentWordViewController];
 }
@@ -89,29 +89,29 @@
 
 - (void)loadHeaderViewController
 {
-    _headerViewController = [[DRPMatchHeaderViewController alloc] init];
-    _headerViewController.delegate = self;
-    
-    [_headerViewController willMoveToParentViewController:self];
-    [self addChildViewController:_headerViewController];
-    [self.scrollView addSubview:_headerViewController.view];
+    self.headerViewController = [[DRPMatchHeaderViewController alloc] init];
+    self.headerViewController.delegate = self;
+
+    [self.headerViewController willMoveToParentViewController:self];
+    [self addChildViewController:self.headerViewController];
+    [self.scrollView addSubview:self.headerViewController.view];
 }
 
 - (void)loadBoardViewController
 {
-    _boardViewController = [[DRPBoardViewController alloc] initWithNibName:nil bundle:nil];
-    _boardViewController.delegate = self;
-    
-    [_boardViewController willMoveToParentViewController:self];
-    [self addChildViewController:_boardViewController];
-    
+    self.boardViewController = [[DRPBoardViewController alloc] initWithNibName:nil bundle:nil];
+    self.boardViewController.delegate = self;
+
+    [self.boardViewController willMoveToParentViewController:self];
+    [self addChildViewController:self.boardViewController];
+
     [self layoutBoardViewController];
-    [self.scrollView addSubview:_boardViewController.view];
+    [self.scrollView addSubview:self.boardViewController.view];
 }
 
 - (void)layoutBoardViewController
 {
-    _boardViewController.view.center = ({
+    self.boardViewController.view.center = ({
         CGPoint center = self.scrollView.center;
         if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
             if (runningPhone5()) {
@@ -132,23 +132,24 @@
 
 - (void)loadCurrentWordViewController
 {
-    _currentWordViewController = [[DRPMatchCurrentWordViewController alloc] initWithNibName:nil bundle:nil];
-    _currentWordViewController.delegate = self;
-    
-    [_currentWordViewController willMoveToParentViewController:self];
-    [self addChildViewController:_currentWordViewController];
-    
+    self.currentWordViewController = [[DRPMatchCurrentWordViewController alloc] initWithNibName:nil bundle:nil];
+    self.currentWordViewController.delegate = self;
+
+    [self.currentWordViewController willMoveToParentViewController:self];
+    [self addChildViewController:self.currentWordViewController];
+
     [self layoutCurrentWordViewController];
-    [self.scrollView addSubview:_currentWordViewController.view];
+    [self.scrollView addSubview:self.currentWordViewController.view];
 }
 
 - (void)layoutCurrentWordViewController
 {
-    [_currentWordViewController layoutWithFrame:({
+    [self.currentWordViewController layoutWithFrame:({
         CGSize size = CGSizeMake(self.view.bounds.size.width, [FRBSwatchist floatForKey:@"board.tileLength"]);
         CGPoint center = ({
-            CGPoint center = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMaxY(_boardViewController.view.frame) - size.height / 2);
-            
+            CGPoint center = CGPointMake(CGRectGetMidX(self.view.bounds),
+                                         CGRectGetMaxY(self.boardViewController.view.frame) - size.height / 2);
+
             if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
                 if (runningPhone5()) {
                     center.y += 68;
@@ -173,83 +174,83 @@
 - (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo
 {
     [super willMoveToCurrentWithUserInfo:userInfo];
-    
+
     // Clear out played words and selected tiles
-    _isCurrentWordValid = NO;
-    
-    
+    self.isCurrentWordValid = NO;
+
+
     // Extract DRPMatch, load it up
     if (!userInfo[@"match"]) {
         // TODO: How the hell did you get here? Return to List page
     }
-    
-    DRPMatch *prevMatch = _match;
-    _match = userInfo[@"match"];
-    
-    if (_match != prevMatch) {
-        [_headerViewController observePlayers:_match.players];
+
+    DRPMatch *prevMatch = self.match;
+    self.match = userInfo[@"match"];
+
+    if (self.match != prevMatch) {
+        [self.headerViewController observePlayers:self.match.players];
     }
-    
+
     // Fast forward to current turn
-    NSInteger startTurn = MAX(_match.currentTurn - 1, 0);
+    NSInteger startTurn = MAX(self.match.currentTurn - 1, 0);
     if ([FRBSwatchist boolForKey:@"debug.playBackEntireMatch"]) {
         startTurn = 0;
     }
-    
+
     [self loadTurn:startTurn];
-    
+
     // Set initial currentWordView
-    if (_match.currentTurn > 0) {
+    if (self.match.currentTurn > 0) {
         // If there have been turns, set the currentWordView to _renderedTurn's word
-        NSArray *characters = [_match.board charactersForPositions:[_match.board wordPlayedForTurn:_renderedTurn].positions
-                                                           forTurn:_renderedTurn];
-        [_currentWordViewController setCharacters:characters
-                                    fromDirection:[self currentWordDirectionForPlayer:[_match playerForTurn:_renderedTurn]]];
+        NSArray *characters = [self.match.board charactersForPositions:[self.match.board wordPlayedForTurn:self.renderedTurn].positions
+                                                               forTurn:self.renderedTurn];
+        [self.currentWordViewController setCharacters:characters
+                                    fromDirection:[self currentWordDirectionForPlayer:[self.match playerForTurn:self.renderedTurn]]];
     } else {
         // If it's the first turn, set the currentWordView to the turnsLeft label
-        [_currentWordViewController setTurnsLeft:_match.turnsLeft
-                                     isLocalTurn:_match.isLocalPlayerTurn
-                                   fromDirection:[self currentWordDirectionForPlayer:_match.currentPlayer]];
+        [self.currentWordViewController setTurnsLeft:self.match.turnsLeft
+                                     isLocalTurn:self.match.isLocalPlayerTurn
+                                   fromDirection:[self currentWordDirectionForPlayer:self.match.currentPlayer]];
     }
-    
-    [_match reloadPlayerAliases];
+
+    [self.match reloadPlayerAliases];
 }
 
 - (void)loadTurn:(NSInteger)turn
 {
-    _renderedTurn = turn;
-    [_boardViewController loadBoard:_match.board atTurn:_renderedTurn];
-    [self setHeaderViewControllerTurn:_renderedTurn];
+    self.renderedTurn = turn;
+    [self.boardViewController loadBoard:self.match.board atTurn:self.renderedTurn];
+    [self setHeaderViewControllerTurn:self.renderedTurn];
 }
 
 - (void)didMoveToCurrent
 {
     [super didMoveToCurrent];
-    
-    [self advanceRenderedTurnToTurn:_match.currentTurn];
+
+    [self advanceRenderedTurnToTurn:self.match.currentTurn];
 }
 
 - (void)resetCues
 {
     NSString *newBottomCue = nil;
-    
-    if (_boardViewController.currentPlayedWord.positions.count == 0) {
+
+    if (self.boardViewController.currentPlayedWord.positions.count == 0) {
         newBottomCue = @"Back";
-        
+
     } else {
-        if (_isCurrentWordValid) {
+        if (self.isCurrentWordValid) {
             newBottomCue = @"Tap to Submit";
-            
+
         } else {
             newBottomCue = @"Swipe to Clear";
         }
     }
-    
+
     if (![newBottomCue isEqualToString:self.bottomCue]) {
         self.bottomCueVisible = NO;
     }
     self.bottomCue = newBottomCue;
-    
+
     [super resetCues];
 }
 
@@ -267,25 +268,25 @@
 {
     // Make sure user can't mess with anything on the board
     // while the turns are advancing
-    if (_boardViewController.boardEnabled) {
-        _boardViewController.boardEnabled = NO;
+    if (self.boardViewController.boardEnabled) {
+        self.boardViewController.boardEnabled = NO;
     }
-    if (_currentWordViewController.gesturesEnabled) {
-        _currentWordViewController.gesturesEnabled = NO;
+    if (self.currentWordViewController.gesturesEnabled) {
+        self.currentWordViewController.gesturesEnabled = NO;
     }
-    
+
     // This is essentially recursion that pauses between each
     // iteration (because each iteration is asynchronous)
-    if ([self.mainViewController isCurrentPage:self] && _renderedTurn <= turn) {
+    if ([self.mainViewController isCurrentPage:self] && self.renderedTurn <= turn) {
         [self stepRenderedTurnWithCompletion:^{
             [self advanceRenderedTurnToTurn:turn];
         }];
-        
+
         // Turns are done advancing, reenable the board and the currentWordView
         // TODO: Doesn't keep board disabled when the match is finished
-        if (_renderedTurn == turn && !_match.finished) {
-            _boardViewController.boardEnabled = YES;
-            _currentWordViewController.gesturesEnabled = YES;
+        if (self.renderedTurn == turn && !self.match.finished) {
+            self.boardViewController.boardEnabled = YES;
+            self.currentWordViewController.gesturesEnabled = YES;
         }
     }
 }
@@ -293,120 +294,128 @@
 // Steps the _renderedTurn one turn forward
 - (void)stepRenderedTurnWithCompletion:(void (^)())completion
 {
-    DRPDirection direction = [self currentWordDirectionForPlayer:[_match playerForTurn:_renderedTurn]];
-    
-    if (_renderedTurn < _match.currentTurn) {
+    DRPDirection direction = [self currentWordDirectionForPlayer:[self.match playerForTurn:self.renderedTurn]];
+
+    if (self.renderedTurn < self.match.currentTurn) {
         // Slide in currentWordView containing _renderedTurn's word
-        NSArray *characters = [_match.board charactersForPositions:[_match.board wordPlayedForTurn:_renderedTurn].positions
-                                                           forTurn:_renderedTurn];
-        [_currentWordViewController setCharacters:characters fromDirection:direction];
-        
+        NSArray *characters = [self.match.board charactersForPositions:[self.match.board wordPlayedForTurn:self.renderedTurn].positions
+                                                           forTurn:self.renderedTurn];
+        [self.currentWordViewController setCharacters:characters fromDirection:direction];
+
         // Drop the played word
-        [_boardViewController dropPlayedWord:[_match.board wordPlayedForTurn:_renderedTurn] fromTurn:_renderedTurn withCompletion:^{
-            _renderedTurn++;
+        [self.boardViewController dropPlayedWord:[self.match.board wordPlayedForTurn:self.renderedTurn]
+                                        fromTurn:self.renderedTurn
+                                  withCompletion:^{
+            self.renderedTurn++;
             completion();
         }];
-        
-    } else if (_renderedTurn == _match.currentTurn) {
-        
+
+    } else if (self.renderedTurn == self.match.currentTurn) {
+
         // Caught up to turn, show the turnsLeft container
-        [_currentWordViewController setTurnsLeft:_match.turnsLeft isLocalTurn:_match.isLocalPlayerTurn fromDirection:direction];
+        [self.currentWordViewController setTurnsLeft:self.match.turnsLeft
+                                         isLocalTurn:self.match.isLocalPlayerTurn
+                                       fromDirection:direction];
         [self resetCues];
     }
-    
-    [self setHeaderViewControllerTurn:_renderedTurn];
+
+    [self setHeaderViewControllerTurn:self.renderedTurn];
 }
 
+// Following two methods manipulate the headerViewController at various times during playback
 - (void)setHeaderViewControllerTurn:(NSInteger)turn
 {
-    
-    [_headerViewController setCurrentPlayerTurn:turn < _match.numberOfTurns ? [_match playerForTurn:turn].turn : -1
-                               multiplierColors:[_match.board multiplierColorsForTurn:turn]];
-    
-    [_headerViewController setScores:[_match.board scoresForTurn:MIN(turn + 1, _match.currentTurn)]];
+
+    [self.headerViewController setCurrentPlayerTurn:turn < self.match.numberOfTurns ? [self.match playerForTurn:turn].turn : -1
+                               multiplierColors:[self.match.board multiplierColorsForTurn:turn]];
+
+    [self.headerViewController setScores:[self.match.board scoresForTurn:MIN(turn + 1, self.match.currentTurn)]];
 }
 
+// Modifies the score of the currentPlayer as they're tapping out a word
 - (void)setHeaderViewControllerScoresWithCurrentWord:(DRPPlayedWord *)currentWord
 {
-    NSMutableDictionary *scores = [_match.board.scores mutableCopy];
-    
-    NSInteger currentTurn = _match.currentPlayer.turn;
-    NSInteger newScore = [scores[@(currentTurn)] intValue] + [_match.board scoreForPlayedWord:currentWord forTurn:_match.currentTurn];
+    NSMutableDictionary *scores = [self.match.board.scores mutableCopy];
+
+    NSInteger currentTurn = self.match.currentPlayer.turn;
+    NSInteger newScore = [scores[@(currentTurn)] intValue] + [self.match.board scoreForPlayedWord:currentWord forTurn:self.match.currentTurn];
     scores[@(currentTurn)] = @(newScore);
-    
-    [_headerViewController setScores:scores];
+
+    [self.headerViewController setScores:scores];
 }
 
 #pragma mark DRPBoardViewControllerDelegate
 
 - (void)characterWasAddedToCurrentWord:(DRPCharacter *)character
 {
-    _isCurrentWordValid = [self validateCurrentWord];
-    [self setHeaderViewControllerScoresWithCurrentWord:_boardViewController.currentPlayedWord];
+    self.isCurrentWordValid = [self validateCurrentWord];
+    [self setHeaderViewControllerScoresWithCurrentWord:self.boardViewController.currentPlayedWord];
     [self resetCues];
 }
 
 - (void)characterWasRemovedFromCurrentWord:(DRPCharacter *)character
 {
-    DRPDirection direction = [self currentWordDirectionForPlayer:_match.currentPlayer];
-    _isCurrentWordValid = [self validateCurrentWord];
-    [self setHeaderViewControllerScoresWithCurrentWord:_boardViewController.currentPlayedWord];
+    DRPDirection direction = [self currentWordDirectionForPlayer:self.match.currentPlayer];
+    self.isCurrentWordValid = [self validateCurrentWord];
+    [self setHeaderViewControllerScoresWithCurrentWord:self.boardViewController.currentPlayedWord];
     [self resetCues];
-    [_currentWordViewController characterWasRemoved:character fromDirection:direction];
-    
+    [self.currentWordViewController characterWasRemoved:character fromDirection:direction];
+
     // Explicitly transition to turnsLeft label
     // Do this here so _boardViewController wins when there's a disparity in the current word
-    if (_boardViewController.currentPlayedWord.positions.count == 0) {
-        [_currentWordViewController setTurnsLeft:_match.turnsLeft isLocalTurn:_match.isLocalPlayerTurn fromDirection:direction];
+    if (self.boardViewController.currentPlayedWord.positions.count == 0) {
+        [self.currentWordViewController setTurnsLeft:self.match.turnsLeft isLocalTurn:self.match.isLocalPlayerTurn fromDirection:direction];
     }
 }
 
 - (void)characterWasHighlighted:(DRPCharacter *)character
 {
-    [_currentWordViewController characterWasHighlighted:character fromDirection:[self currentWordDirectionForPlayer:_match.currentPlayer]];
+    [self.currentWordViewController characterWasHighlighted:character fromDirection:[self currentWordDirectionForPlayer:self.match.currentPlayer]];
 }
 
 - (void)characterWasDehighlighted:(DRPCharacter *)character
 {
-    [_currentWordViewController characterWasDehighlighted:character];
+    [self.currentWordViewController characterWasDehighlighted:character];
 }
 
 - (BOOL)validateCurrentWord
 {
-    NSString *word = [_match.board wordForPositions:_boardViewController.currentPlayedWord.positions];
-    return _boardViewController.currentPlayedWord.positions.count >=3 && [DRPDictionary isValidWord:word];
+    NSString *word = [self.match.board wordForPositions:self.boardViewController.currentPlayedWord.positions];
+    return self.boardViewController.currentPlayedWord.positions.count >=3 && [DRPDictionary isValidWord:word];
 }
 
 #pragma mark DRPCurrentWordViewControllerDelegate
 
 - (void)currentWordWasTapped
 {
-    if (_isCurrentWordValid) {
-        [_match submitTurnForPositions:_boardViewController.currentPlayedWord.positions];
+    if (self.isCurrentWordValid) {
+        [self.match submitTurnForPositions:self.boardViewController.currentPlayedWord.positions];
     }
 }
 
 - (void)currentWordWasSwiped
 {
-    [_boardViewController deselectCurrentWord];
-    [self setHeaderViewControllerTurn:_match.currentTurn];
+    [self.boardViewController deselectCurrentWord];
+    [self setHeaderViewControllerTurn:self.match.currentTurn];
     [self resetCues];
 }
 
+#pragma mark Remote Turns
+
 - (void)gameCenterReceivedLocalTurn:(NSNotification *)notification
 {
-    [self advanceRenderedTurnToTurn:_match.currentTurn];
+    [self advanceRenderedTurnToTurn:self.match.currentTurn];
 }
 
 - (void)receivedRemoteGameCenterTurn:(NSNotification *)notification
 {
     GKTurnBasedMatch *gkMatch = notification.userInfo[@"gkMatch"];
-    if (![_match.gkMatch.matchID isEqualToString:gkMatch.matchID]) return;
-    
-    [_match reloadMatchDataWithCompletion:^(BOOL newTurns) {
+    if (![self.match.gkMatch.matchID isEqualToString:gkMatch.matchID]) return;
+
+    [self.match reloadMatchDataWithCompletion:^(BOOL newTurns) {
         if (newTurns) {
             // TODO: make sure the match is not being replayed when this happens
-            [self advanceRenderedTurnToTurn:_match.currentTurn];
+            [self advanceRenderedTurnToTurn:self.match.currentTurn];
         }
     }];
 }
@@ -416,23 +425,23 @@
 - (void)headerViewTappedPlayerTileForTurn:(NSInteger)turn
 {
     // Make sure the board is not currently playing back
-    if (_renderedTurn != _match.currentTurn) {
+    if (self.renderedTurn != self.match.currentTurn) {
         return;
     }
-    
+
     // Play back those turns, yo
-    NSInteger startTurn = _match.currentTurn;
-    
-    if (turn == _match.currentPlayer.turn) {
+    NSInteger startTurn = self.match.currentTurn;
+
+    if (turn == self.match.currentPlayer.turn) {
         startTurn = startTurn - 2;
     } else {
         startTurn = startTurn - 1;
     }
-    
+
     // load turn and replay
-    if (_match.currentTurn > startTurn && startTurn >= 0) {
+    if (self.match.currentTurn > startTurn && startTurn >= 0) {
         [self loadTurn:startTurn];
-        [self advanceRenderedTurnToTurn:_match.currentTurn];
+        [self advanceRenderedTurnToTurn:self.match.currentTurn];
     }
 }
 

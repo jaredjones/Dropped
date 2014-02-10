@@ -10,6 +10,8 @@
 
 @interface NSArray (Mutable)
 
++ (NSArray *)arrayWithArrays:(NSArray *)arrays, ... NS_REQUIRES_NIL_TERMINATION;
+
 - (NSArray *)arrayByRemovingObject:(id)object;
 - (NSArray *)arrayByRemovingObjectsFromArray:(NSArray *)array;
 

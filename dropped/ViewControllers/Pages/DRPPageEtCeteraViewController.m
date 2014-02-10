@@ -31,21 +31,21 @@
     [super viewDidLoad];
     
     UIImage *image = [UIImage imageNamed:@"under_construction.png"];
-    _underConstruction = [[UIImageView alloc] initWithImage:image];
-    _underConstruction.frame = ({
+    self.underConstruction = [[UIImageView alloc] initWithImage:image];
+    self.underConstruction.frame = ({
         CGRect frame = CGRectZero;
         frame.size.width = image.size.width / 2;
         frame.size.height = image.size.height / 2;
         frame;
     });
-    [self.scrollView addSubview:_underConstruction];
+    [self.scrollView addSubview:self.underConstruction];
 }
 
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
     
-    _underConstruction.center = self.scrollView.center;
+    self.underConstruction.center = self.scrollView.center;
 }
 
 @end

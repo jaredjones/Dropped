@@ -31,14 +31,14 @@
 - (void)viewDidLoad
 {
     UIImage *image = [UIImage imageNamed:@"logo.png"];
-    _logo = [[UIImageView alloc] initWithImage:image];
-    _logo.frame = ({
+    self.logo = [[UIImageView alloc] initWithImage:image];
+    self.logo.frame = ({
         CGRect frame = CGRectZero;
         frame.size.width = image.size.width / 2;
         frame.size.height = image.size.height / 2;
         frame;
     });
-    [self.view addSubview:_logo];
+    [self.view addSubview:self.logo];
 }
 
 - (void)viewWillLayoutSubviews
@@ -46,18 +46,23 @@
     [super viewWillLayoutSubviews];
     
     // tmp
-    _logo.center = rectCenter(self.view.bounds);
+    self.logo.center = rectCenter(self.view.bounds);
 }
 
 - (void)loadScrollView
 {
-    // Intentionally left blank
+    // Intentionally left blank so the scrollView won't load
 }
 
 #pragma mark DRPPageViewController
 
 - (void)didMoveToCurrent
 {
+    // TODO: animate that shit
+    // Should probably wait until it is known whether the user has authenticated, though that's
+    // probably not necessary since we're moving away from Game Center (which will mean no login screen)
+    
+    // tmp
     double delayInSeconds = 1.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){

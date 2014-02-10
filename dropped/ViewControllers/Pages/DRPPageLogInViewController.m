@@ -59,22 +59,22 @@
 
 - (void)loadSignInButton
 {
-    _signInButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _signInButton.frame = CGRectMake(0, 0, 320, 200);
-    _signInButton.center = rectCenter(self.view.bounds);
+    self.signInButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    self.signInButton.frame = CGRectMake(0, 0, 320, 200);
+    self.signInButton.center = rectCenter(self.view.bounds);
     
     NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"Sign In with Game Center"
                                                                 attributes:@{NSFontAttributeName : [FRBSwatchist fontForKey:@"page.cueFont"]}];
     
-    [_signInButton setAttributedTitle:title forState:UIControlStateNormal];
-    [_signInButton setTitleColor:[FRBSwatchist colorForKey:@"colors.black"] forState:UIControlStateNormal];
-    [_signInButton addTarget:self action:@selector(signInButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:_signInButton];
+    [self.signInButton setAttributedTitle:title forState:UIControlStateNormal];
+    [self.signInButton setTitleColor:[FRBSwatchist colorForKey:@"colors.black"] forState:UIControlStateNormal];
+    [self.signInButton addTarget:self action:@selector(signInButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.signInButton];
 }
 
 - (void)layoutSignInButton
 {
-    _signInButton.center = rectCenter(self.view.bounds);
+    self.signInButton.center = rectCenter(self.view.bounds);
 }
 
 #pragma mark Touch Events

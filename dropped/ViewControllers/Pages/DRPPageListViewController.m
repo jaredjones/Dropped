@@ -68,16 +68,17 @@
 
 - (void)loadScrollView
 {
-    _layout = [[DRPPageCollectionViewLayout alloc] init];
-    _layout.itemSize = [FRBSwatchist sizeForKey:@"list.itemSize"];
-    _layout.minimumLineSpacing = [FRBSwatchist floatForKey:@"list.lineSpacing"];
-    _layout.minimumInteritemSpacing = MAX(self.view.bounds.size.width, self.view.bounds.size.height);
-    _layout.sectionInset = UIEdgeInsetsMake([FRBSwatchist floatForKey:@"list.sectionInset"], 0, [FRBSwatchist floatForKey:@"list.sectionInset"], 0);
+    self.layout = [[DRPPageCollectionViewLayout alloc] init];
+    self.layout.itemSize = [FRBSwatchist sizeForKey:@"list.itemSize"];
+    self.layout.minimumLineSpacing = [FRBSwatchist floatForKey:@"list.lineSpacing"];
+    self.layout.minimumInteritemSpacing = MAX(self.view.bounds.size.width, self.view.bounds.size.height);
+    self.layout.sectionInset = UIEdgeInsetsMake([FRBSwatchist floatForKey:@"list.sectionInset"], 0,
+                                                [FRBSwatchist floatForKey:@"list.sectionInset"], 0);
     
-    _dataSource = [[DRPPageListDataSource alloc] init];
+    self.dataSource = [[DRPPageListDataSource alloc] init];
     
-    self.scrollView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:_layout];
-    self.scrollView.dataSource = _dataSource;
+    self.scrollView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:self.layout];
+    self.scrollView.dataSource = self.dataSource;
     self.scrollView.delegate = self;
     
     [self.scrollView registerClass:[DRPMatchCollectionViewCell class] forCellWithReuseIdentifier:@"cell"];
@@ -127,7 +128,7 @@
     if (![self.mainViewController isCurrentPage:self]) return;
     
     GKTurnBasedMatch *gkMatch = notification.userInfo[@"gkMatch"];
-    DRPMatch *match = [_dataSource matchForMatchID:gkMatch.matchID];
+    DRPMatch *match = [self.dataSource matchForMatchID:gkMatch.matchID];
     if (!match) return;
     
     // TODO: is this getting called twice? Definitely check

@@ -17,38 +17,13 @@
 
 @end
 
-// TODO: make "canonical" versions of DRPCharacter, much the same way there are canonical DRPPositions. Make new characters for multipliers and those with adjacentMultipliers.
-
 @implementation DRPCharacter
 
 + (instancetype)characterWithCharacter:(NSString *)character
 {
-    if ([character isEqualToString:@"3"])
-        return [DRPCharacter characterWithMulitplier:3];
-    if ([character isEqualToString:@"4"])
-        return [DRPCharacter characterWithMulitplier:4];
-    if ([character isEqualToString:@"5"])
-        return [DRPCharacter characterWithMulitplier:5];
-    
-    
     DRPCharacter *c = [[DRPCharacter alloc] init];
     c.character = character;
-    c.multiplier = 0;
-    c.color = DRPColorNil;
-    return c;
-}
-
-+ (instancetype)characterWithMulitplier:(NSInteger)multiplier
-{
-    DRPCharacter *c = [[DRPCharacter alloc] init];
-    
-    if (multiplier > 2 && multiplier < 6) {
-        c.character = [NSString stringWithFormat:@"%li", (long)multiplier];
-    } else {
-        c = nil;
-    }
-    
-    c.multiplier = multiplier;
+    c.multiplier = [character intValue];
     c.color = DRPColorNil;
     return c;
 }

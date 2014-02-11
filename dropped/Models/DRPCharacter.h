@@ -25,8 +25,9 @@ typedef NS_ENUM(NSInteger, DRPColor) {
 
 @property (readonly) NSString *character;
 
-// -1 if not a multiplier
+// 0 if not a multiplier
 @property (readonly) NSInteger multiplier;
+
 @property BOOL multiplierActive;
 @property DRPColor color;
 
@@ -34,6 +35,5 @@ typedef NS_ENUM(NSInteger, DRPColor) {
 @property DRPCharacter *adjacentMultiplier;
 
 + (instancetype)characterWithCharacter:(NSString *)character;
-+ (instancetype)characterWithMulitplier:(NSInteger)multiplier;
 
 @end

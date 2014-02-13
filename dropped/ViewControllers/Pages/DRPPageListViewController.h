@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DRPPageViewController.h"
+#import "DRPPageCollectionViewController.h"
 
-@interface DRPPageListViewController : DRPPageViewController <UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface DRPPageListViewController : DRPPageCollectionViewController
 
 @end

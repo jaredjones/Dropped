@@ -64,6 +64,7 @@
 		A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */; };
 		A9C947F0189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C947EF189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.m */; };
 		A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */; };
+		A9D1D5C118AD27F200F088D4 /* DRPPageCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D1D5C018AD27F200F088D4 /* DRPPageCollectionViewController.m */; };
 		A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E27CBE1857AE210043F6A9 /* DRPTileView.m */; };
 		A9E27CC11857AFBC0043F6A9 /* Rokkitt.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9E27CC01857AFBC0043F6A9 /* Rokkitt.otf */; };
 		A9E27CC61857B6170043F6A9 /* tileOffset.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9E27CC21857B4290043F6A9 /* tileOffset.plist */; };
@@ -209,6 +210,8 @@
 		A9C947EF189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMatchCurrentWordViewController.m; path = ViewControllers/Pages/DRPMatchCurrentWordViewController.m; sourceTree = "<group>"; };
 		A9D127B51837E0B40048AF25 /* DRPPlayedWord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPlayedWord.h; path = Models/DRPPlayedWord.h; sourceTree = "<group>"; };
 		A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPlayedWord.m; path = Models/DRPPlayedWord.m; sourceTree = "<group>"; };
+		A9D1D5BF18AD27F200F088D4 /* DRPPageCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageCollectionViewController.h; path = ViewControllers/Pages/DRPPageCollectionViewController.h; sourceTree = "<group>"; };
+		A9D1D5C018AD27F200F088D4 /* DRPPageCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageCollectionViewController.m; path = ViewControllers/Pages/DRPPageCollectionViewController.m; sourceTree = "<group>"; };
 		A9E27CBD1857AE210043F6A9 /* DRPTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPTileView.h; path = Views/DRPTileView.h; sourceTree = "<group>"; };
 		A9E27CBE1857AE210043F6A9 /* DRPTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPTileView.m; path = Views/DRPTileView.m; sourceTree = "<group>"; };
 		A9E27CC01857AFBC0043F6A9 /* Rokkitt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Rokkitt.otf; path = Fonts/Rokkitt.otf; sourceTree = "<group>"; };
@@ -429,6 +432,8 @@
 			children = (
 				A9A9D5BF1850ED5F0024E7D4 /* DRPPageViewController.h */,
 				A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */,
+				A9D1D5BF18AD27F200F088D4 /* DRPPageCollectionViewController.h */,
+				A9D1D5C018AD27F200F088D4 /* DRPPageCollectionViewController.m */,
 			);
 			name = PageViewController;
 			sourceTree = "<group>";
@@ -743,6 +748,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A959500718A3F33D006B42DA /* DRPMenuCollectionViewCell.m in Sources */,
+				A9D1D5C118AD27F200F088D4 /* DRPPageCollectionViewController.m in Sources */,
 				A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */,
 				A9C0FAD61864F6FC00377B0E /* DRPUtility.m in Sources */,
 				A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */,

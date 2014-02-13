@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Brad Zeis. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "DRPCollectionViewCell.h"
 #import "DRPCharacter.h"
 
-@interface DRPMenuCollectionViewCell : UICollectionViewCell
+@interface DRPMenuCollectionViewCell : DRPCollectionViewCell
 
 @end

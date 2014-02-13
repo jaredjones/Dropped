@@ -1,4 +1,4 @@
-//
+
 //  DRPCollectionViewDataSource.m
 //  dropped
 //
@@ -7,15 +7,17 @@
 //
 
 #import "DRPCollectionViewDataSource.h"
+#import "DRPCollectionDataItem.h"
+#import "DRPCollectionViewCell.h"
+
 #import "DRPMatch.h"
-#import "DRPMatchCollectionViewCell.h"
 #import "DRPGameCenterInterface.h"
 #import <GameKit/GameKit.h>
 
 @interface DRPCollectionViewDataSource ()
 
-@property NSMutableArray *matches;
-@property NSMutableSet *loadedMatchIDs;
+@property NSMutableArray *dataItems;
+@property NSMutableSet *dataItemIDs;
 
 @end
 
@@ -25,8 +27,6 @@
 {
     self = [super init];
     if (self) {
-        self.matches = [[NSMutableArray alloc] init];
-        self.loadedMatchIDs = [[NSMutableSet alloc] init];
     }
     
     return self;
@@ -39,48 +39,56 @@
 
 #pragma mark Data
 
-- (void)reloadMatchesWithCompletion:(void (^)())completion
+- (void)resetDataItems:(NSArray *)dataItems
 {
-    [GKTurnBasedMatch loadMatchesWithCompletionHandler:^(NSArray *matches, NSError *error) {
-        
-        for (GKTurnBasedMatch *gkMatch in matches) {
-            
-            // Ran into invalid matches occassonally during testing
-            // that couldn't be removed from GC. Don't show them here,
-            // they're annoying
-            if (![DRPGameCenterInterface gkMatchIsValid:gkMatch]) {
-                continue;
-            }
-            
-            // Don't reload matches already loaded
-            if ([self.loadedMatchIDs containsObject:gkMatch.matchID]) {
-                continue;
-            }
-            
-            [self.matches addObject:[[DRPMatch alloc] initWithGKMatch:gkMatch]];
-            [self.loadedMatchIDs addObject:gkMatch.matchID];
-        }
-        
-        // TODO: sort matches
-        
-        if (completion) {
-            completion();
-        }
-    }];
-}
-
-- (DRPMatch *)matchForIndexPath:(NSIndexPath *)indexPath
-{
-    return self.matches[indexPath.row];
-}
-
-- (DRPMatch *)matchForMatchID:(NSString *)matchID
-{
-    if (![self.loadedMatchIDs containsObject:matchID]) return nil;
+    self.dataItemIDs = [[NSMutableSet alloc] init];
+    self.dataItems = [dataItems mutableCopy];
     
-    for (DRPMatch *match in self.matches) {
-        if ([match.matchID isEqualToString:matchID]) {
-            return match;
+    for (DRPCollectionDataItem *dataItem in self.dataItems) {
+        [self.dataItemIDs addObject:dataItem.itemID];
+    }
+    
+}
+
+- (void)loadData:(NSArray *(^)())loadData
+{
+    [self resetDataItems:loadData()];
+}
+
+- (void)reloadDataForCollectionView:(UICollectionView *)collectionView
+{
+    if (!self.reloadData) return;
+    
+    // tmp, clear the cache each time data is reloaded
+    self.dataItemIDs = nil;
+    
+    self.reloadData(^(NSArray *newDataItems) {
+        if (!newDataItems) return;
+        
+        // Sorting
+        if (self.comparator) {
+            newDataItems = [newDataItems sortedArrayUsingComparator:self.comparator];
+        }
+        
+        [self resetDataItems:newDataItems];
+        
+        // Perform batch operation on collectionView
+        [collectionView reloadData];
+    });
+}
+
+- (DRPCollectionDataItem *)dataItemForIndexPath:(NSIndexPath *)indexPath
+{
+    return self.dataItems[indexPath.row];
+}
+
+- (DRPCollectionDataItem *)dataItemForID:(NSString *)dataItemID
+{
+    if (![self.dataItemIDs containsObject:dataItemID]) return nil;
+    
+    for (DRPCollectionDataItem *dataItem in self.dataItems) {
+        if ([dataItem.itemID isEqualToString:dataItemID]) {
+            return dataItem;
         }
     }
     
@@ -91,14 +99,16 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    DRPMatchCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"cell" forIndexPath:indexPath];
-    [cell configureWithMatch:[self matchForIndexPath:indexPath]];
+    DRPCollectionDataItem *dataItem = [self dataItemForIndexPath:indexPath];
+    
+    DRPCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:dataItem.cellIdentifier forIndexPath:indexPath];
+    [cell configureWithUserData:dataItem.userData];
     return cell;
 }
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.matches.count;
+    return self.dataItems.count;
 }
 
 @end

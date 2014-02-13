@@ -12,7 +12,7 @@
 @interface DRPTransition : NSObject
 
 @property (readonly) UIViewController *start, *destination;
-@property (readonly, strong) void (^completion)();
+@property (readonly, copy) void (^completion)();
 @property CGFloat startingVelocity;
 
 @property (readonly) BOOL active;

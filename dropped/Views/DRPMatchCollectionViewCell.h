@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Brad Zeis. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "DRPCollectionViewCell.h"
 
 @class DRPMatch;
 
@@ -22,8 +22,8 @@ typedef NS_ENUM(NSInteger, DRPMatchCellState) {
     DRPMatchCellStatePlayer2Declined
 };
 
-@interface DRPMatchCollectionViewCell : UICollectionViewCell
+@interface DRPMatchCollectionViewCell : DRPCollectionViewCell
 
-- (void)configureWithMatch:(DRPMatch *)match;
+//- (void)configureWithMatch:(DRPMatch *)match;
 
 @end

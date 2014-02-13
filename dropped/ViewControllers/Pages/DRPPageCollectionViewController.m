@@ -7,7 +7,10 @@
 //
 
 #import "DRPPageCollectionViewController.h"
+#import "DRPMainViewController.h"
+
 #import "DRPCollectionViewDataSource.h"
+#import "DRPCollectionDataItem.h"
 #import "DRPCollectionViewLayout.h"
 
 #import "FRBSwatchist.h"
@@ -73,15 +76,6 @@
 - (void)viewDidLayoutSubviews
 {
     [super viewDidLayoutSubviews];
-    [self resetSectionInsetsAnimated:YES];
-}
-
-- (void)resetSectionInsetsAnimated:(BOOL)animated;
-{
-    // TODO: I _hate_ that fade. Need a longer term solution
-    [self.layout recalculateSectionInsetsWithCollectionView:self.scrollView
-                                                  cellCount:[self.dataSource collectionView:self.scrollView numberOfItemsInSection:0]];
-    [self.scrollView setCollectionViewLayout:self.layout animated:animated];
 }
 
 #pragma mark DRPPageViewController
@@ -90,11 +84,7 @@
 {
     [super willMoveToCurrentWithUserInfo:userInfo];
     
-    // TODO: tmp. There should be a more centralized way to do this
-    [self.dataSource reloadMatchesWithCompletion:^{
-        [self.scrollView reloadData];
-        [self resetSectionInsetsAnimated:NO];
-    }];
+    [self.dataSource reloadDataForCollectionView:self.scrollView];
 }
 
 - (void)didMoveToCurrent
@@ -105,6 +95,18 @@
 - (void)didMoveFromCurrent
 {
     [super didMoveFromCurrent];
+}
+
+#pragma mark UICollectionViewDelegate
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (![self.mainViewController isCurrentPage:self]) return;
+    
+    DRPCollectionDataItem *dataItem = [self.dataSource dataItemForIndexPath:indexPath];
+    if (dataItem.selected) {
+        dataItem.selected(dataItem.userData);
+    }
 }
 
 @end

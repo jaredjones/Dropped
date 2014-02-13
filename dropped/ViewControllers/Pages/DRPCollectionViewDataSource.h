@@ -8,20 +8,21 @@
 
 #import <Foundation/Foundation.h>
 
-@class DRPMatch;
-
-// TODO: DRPDataItem
-//      - cellIdentifier
-//          - The cell will know how to configure itself with the userData
-//      - (id)userData
-//      - void (^selected)(DRPPageCollectionViewController *)
-
-// TODO: loadInitialData/reloadData blocks (make them the same for the match list) (pass in the UICollectionView for reordering)
+@class DRPCollectionDataItem;
 
 @interface DRPCollectionViewDataSource : NSObject <UICollectionViewDataSource>
 
-- (void)reloadMatchesWithCompletion:(void (^)())completion;
-- (DRPMatch *)matchForIndexPath:(NSIndexPath *)indexPath;
-- (DRPMatch *)matchForMatchID:(NSString *)matchID;
+// The reloadData block is responsible for building an array of DRPCollectionDataItems
+// When it's done, it simply calls the passed in completion handler with the built array
+@property (copy) void (^reloadData)(void (^completion)(NSArray *dataItems));
+
+// Supplied to use custom sorting for the dataSource
+@property (copy) NSComparator comparator;
+
+- (void)loadData:(NSArray *(^)())loadData;
+- (void)reloadDataForCollectionView:(UICollectionView *)collectionView;
+
+- (DRPCollectionDataItem *)dataItemForIndexPath:(NSIndexPath *)indexPath;
+- (DRPCollectionDataItem *)dataItemForID:(NSString *)dataItemID;
 
 @end

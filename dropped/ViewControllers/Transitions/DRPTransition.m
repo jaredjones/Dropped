@@ -15,7 +15,7 @@
 @interface DRPTransition ()
 
 @property UIViewController *start, *destination;
-@property (strong) void (^completion)();
+@property (copy) void (^completion)();
 
 @property (readwrite) BOOL active;
 

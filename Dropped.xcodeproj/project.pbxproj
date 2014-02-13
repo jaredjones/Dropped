@@ -65,6 +65,8 @@
 		A9C947F0189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C947EF189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.m */; };
 		A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */; };
 		A9D1D5C118AD27F200F088D4 /* DRPPageCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D1D5C018AD27F200F088D4 /* DRPPageCollectionViewController.m */; };
+		A9D1D5C418AD2E1300F088D4 /* DRPCollectionDataItem.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D1D5C318AD2E1300F088D4 /* DRPCollectionDataItem.m */; };
+		A9D1D5C718AD35B700F088D4 /* DRPCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D1D5C618AD35B700F088D4 /* DRPCollectionViewCell.m */; };
 		A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E27CBE1857AE210043F6A9 /* DRPTileView.m */; };
 		A9E27CC11857AFBC0043F6A9 /* Rokkitt.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9E27CC01857AFBC0043F6A9 /* Rokkitt.otf */; };
 		A9E27CC61857B6170043F6A9 /* tileOffset.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9E27CC21857B4290043F6A9 /* tileOffset.plist */; };
@@ -212,6 +214,10 @@
 		A9D127B61837E0B40048AF25 /* DRPPlayedWord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPlayedWord.m; path = Models/DRPPlayedWord.m; sourceTree = "<group>"; };
 		A9D1D5BF18AD27F200F088D4 /* DRPPageCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageCollectionViewController.h; path = ViewControllers/Pages/DRPPageCollectionViewController.h; sourceTree = "<group>"; };
 		A9D1D5C018AD27F200F088D4 /* DRPPageCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageCollectionViewController.m; path = ViewControllers/Pages/DRPPageCollectionViewController.m; sourceTree = "<group>"; };
+		A9D1D5C218AD2E1300F088D4 /* DRPCollectionDataItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCollectionDataItem.h; path = ViewControllers/Pages/DRPCollectionDataItem.h; sourceTree = "<group>"; };
+		A9D1D5C318AD2E1300F088D4 /* DRPCollectionDataItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCollectionDataItem.m; path = ViewControllers/Pages/DRPCollectionDataItem.m; sourceTree = "<group>"; };
+		A9D1D5C518AD35B700F088D4 /* DRPCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCollectionViewCell.h; path = Views/DRPCollectionViewCell.h; sourceTree = "<group>"; };
+		A9D1D5C618AD35B700F088D4 /* DRPCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCollectionViewCell.m; path = Views/DRPCollectionViewCell.m; sourceTree = "<group>"; };
 		A9E27CBD1857AE210043F6A9 /* DRPTileView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPTileView.h; path = Views/DRPTileView.h; sourceTree = "<group>"; };
 		A9E27CBE1857AE210043F6A9 /* DRPTileView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPTileView.m; path = Views/DRPTileView.m; sourceTree = "<group>"; };
 		A9E27CC01857AFBC0043F6A9 /* Rokkitt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Rokkitt.otf; path = Fonts/Rokkitt.otf; sourceTree = "<group>"; };
@@ -421,6 +427,8 @@
 			children = (
 				A9ACB3C61883688500B0B9D9 /* DRPCollectionViewDataSource.h */,
 				A9ACB3C71883688500B0B9D9 /* DRPCollectionViewDataSource.m */,
+				A9D1D5C218AD2E1300F088D4 /* DRPCollectionDataItem.h */,
+				A9D1D5C318AD2E1300F088D4 /* DRPCollectionDataItem.m */,
 				A9ACB3C91883740600B0B9D9 /* DRPCollectionViewLayout.h */,
 				A9ACB3CA1883740600B0B9D9 /* DRPCollectionViewLayout.m */,
 			);
@@ -547,6 +555,8 @@
 		A9ACB3CC18838A5A00B0B9D9 /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				A9D1D5C518AD35B700F088D4 /* DRPCollectionViewCell.h */,
+				A9D1D5C618AD35B700F088D4 /* DRPCollectionViewCell.m */,
 				A959500518A3F33D006B42DA /* DRPMenuCollectionViewCell.h */,
 				A959500618A3F33D006B42DA /* DRPMenuCollectionViewCell.m */,
 				A9ACB3CD18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.h */,
@@ -752,6 +762,7 @@
 				A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */,
 				A9C0FAD61864F6FC00377B0E /* DRPUtility.m in Sources */,
 				A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */,
+				A9D1D5C418AD2E1300F088D4 /* DRPCollectionDataItem.m in Sources */,
 				A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */,
 				A9039FFB1858D579002AEB37 /* DRPPageEtCeteraViewController.m in Sources */,
 				A9ACB3CB1883740600B0B9D9 /* DRPCollectionViewLayout.m in Sources */,
@@ -784,6 +795,7 @@
 				A99EAF1D1876603E00DAD44F /* DRPMatchPlayerView.m in Sources */,
 				A920405C18370BA0006940B8 /* DRPPosition.m in Sources */,
 				A93E9F29184AAC3B0047575A /* DRPMainViewController.m in Sources */,
+				A9D1D5C718AD35B700F088D4 /* DRPCollectionViewCell.m in Sources */,
 				A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */,
 				A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */,
 			);

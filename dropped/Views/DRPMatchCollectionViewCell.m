@@ -70,7 +70,7 @@
     [self removeObservers];
 }
 
-- (void)configureWithMatch:(DRPMatch *)match
+- (void)configureWithUserData:(DRPMatch *)match
 {
     // Determine match state
     // Keep track of which tile to highlight (only highlight local player tiles)

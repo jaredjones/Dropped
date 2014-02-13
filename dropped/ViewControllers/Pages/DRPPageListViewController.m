@@ -8,18 +8,21 @@
 
 #import "DRPPageListViewController.h"
 #import "DRPMainViewController.h"
-#import "DRPPageListDataSource.h"
-#import "DRPPageCollectionViewLayout.h"
+
+#import "DRPCollectionViewDataSource.h"
+#import "DRPCollectionViewLayout.h"
+
 #import "DRPMatchCollectionViewCell.h"
-#import "DRPGameCenterInterface.h"
 #import "DRPMatch.h"
+
+#import "DRPGameCenterInterface.h"
 #import "FRBSwatchist.h"
 
 @interface DRPPageListViewController ()
 
 @property UICollectionView *scrollView;
-@property DRPPageListDataSource *dataSource;
-@property DRPPageCollectionViewLayout *layout;
+@property DRPCollectionViewDataSource *dataSource;
+@property DRPCollectionViewLayout *layout;
 
 @end
 
@@ -68,14 +71,14 @@
 
 - (void)loadScrollView
 {
-    self.layout = [[DRPPageCollectionViewLayout alloc] init];
+    self.layout = [[DRPCollectionViewLayout alloc] init];
     self.layout.itemSize = [FRBSwatchist sizeForKey:@"list.itemSize"];
     self.layout.minimumLineSpacing = [FRBSwatchist floatForKey:@"list.lineSpacing"];
     self.layout.minimumInteritemSpacing = MAX(self.view.bounds.size.width, self.view.bounds.size.height);
     self.layout.sectionInset = UIEdgeInsetsMake([FRBSwatchist floatForKey:@"list.sectionInset"], 0,
                                                 [FRBSwatchist floatForKey:@"list.sectionInset"], 0);
     
-    self.dataSource = [[DRPPageListDataSource alloc] init];
+    self.dataSource = [[DRPCollectionViewDataSource alloc] init];
     
     self.scrollView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:self.layout];
     self.scrollView.dataSource = self.dataSource;

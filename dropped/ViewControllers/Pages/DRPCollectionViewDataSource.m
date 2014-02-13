@@ -1,25 +1,25 @@
 //
-//  DRPPageListDataSource.m
+//  DRPCollectionViewDataSource.m
 //  dropped
 //
 //  Created by Brad Zeis on 1/12/14.
 //  Copyright (c) 2014 Brad Zeis. All rights reserved.
 //
 
-#import "DRPPageListDataSource.h"
+#import "DRPCollectionViewDataSource.h"
 #import "DRPMatch.h"
 #import "DRPMatchCollectionViewCell.h"
 #import "DRPGameCenterInterface.h"
 #import <GameKit/GameKit.h>
 
-@interface DRPPageListDataSource ()
+@interface DRPCollectionViewDataSource ()
 
 @property NSMutableArray *matches;
 @property NSMutableSet *loadedMatchIDs;
 
 @end
 
-@implementation DRPPageListDataSource
+@implementation DRPCollectionViewDataSource
 
 - (id)init
 {

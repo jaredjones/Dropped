@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+// TODO: Add DRPPageCollectionViewController that has a stock setup for UICollectionViews
+
 // DRPPageViewController is each individual "page" in the app.
 // The DRPMainViewController handles transitions between pages.
 

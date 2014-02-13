@@ -1,15 +1,15 @@
 //
-//  DRPPageCollectionViewLayout.m
+//  DRPCollectionViewLayout.m
 //  dropped
 //
 //  Created by Brad Zeis on 1/12/14.
 //  Copyright (c) 2014 Brad Zeis. All rights reserved.
 //
 
-#import "DRPPageCollectionViewLayout.h"
+#import "DRPCollectionViewLayout.h"
 #import "FRBSwatchist.h"
 
-@implementation DRPPageCollectionViewLayout
+@implementation DRPCollectionViewLayout
 
 - (CGSize)collectionViewContentSize
 {

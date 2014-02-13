@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DRPCharacter.h"
 
 @interface DRPMenuCollectionViewCell : UICollectionViewCell
 

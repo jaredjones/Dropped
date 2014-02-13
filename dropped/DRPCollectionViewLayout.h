@@ -1,5 +1,5 @@
 //
-//  DRPPageCollectionViewLayout.h
+//  DRPCollectionViewLayout.h
 //  dropped
 //
 //  Created by Brad Zeis on 1/12/14.
@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DRPPageCollectionViewLayout : UICollectionViewFlowLayout
+// TODO: Fix the nasty fade that happens during orientation changes
+
+@interface DRPCollectionViewLayout : UICollectionViewFlowLayout
 
 - (void)recalculateSectionInsetsWithCollectionView:(UICollectionView *)collectionView cellCount:(NSInteger)cellCount;
 

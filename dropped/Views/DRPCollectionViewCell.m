@@ -20,7 +20,6 @@
 
 - (void)configureWithUserData:(id)userData
 {
-    self.backgroundColor = [UIColor lightGrayColor];
 }
 
 @end

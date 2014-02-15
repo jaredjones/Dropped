@@ -34,7 +34,7 @@
         [self.contentView addSubview:self.tile];
         
         self.label = [[UILabel alloc] initWithFrame:CGRectZero];
-        self.label.font = [FRBSwatchist fontForKey:@"page.cueFont"];
+        self.label.font = [FRBSwatchist fontForKey:@"page.cueEmphasizedFont"];
         self.label.textColor = [FRBSwatchist colorForKey:@"colors.black"];
         self.label.frame = self.labelFrame;
         [self.contentView addSubview:self.label];
@@ -67,7 +67,7 @@
 {
     // TODO: label not centered correctly
     return CGRectMake([FRBSwatchist floatForKey:@"list.textOffsetX"],
-                      0,
+                      labelOffset(self.label.font, [FRBSwatchist floatForKey:@"board.tileLength"] / 2),
                       self.contentView.bounds.size.width - [FRBSwatchist floatForKey:@"list.textOffsetX"],
                       [FRBSwatchist floatForKey:@"board.tileLength"]);
 }

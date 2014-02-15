@@ -9,6 +9,11 @@
 #import "DRPPageEtCeteraViewController.h"
 #import "DRPMainViewController.h"
 
+#import "DRPCollectionViewDataSource.h"
+#import "DRPCollectionDataItem.h"
+
+#import "DRPMenuCollectionViewCell.h"
+
 @interface DRPPageEtCeteraViewController ()
 
 @property UIImageView *underConstruction;

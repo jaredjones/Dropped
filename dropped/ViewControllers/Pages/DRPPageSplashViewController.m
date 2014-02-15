@@ -59,8 +59,7 @@
 - (void)didMoveToCurrent
 {
     // TODO: animate that shit
-    // Should probably wait until it is known whether the user has authenticated, though that's
-    // probably not necessary since we're moving away from Game Center (which will mean no login screen)
+    // TODO: wait until shit happens before dropping tiles
     
     // tmp
     double delayInSeconds = 1.0;

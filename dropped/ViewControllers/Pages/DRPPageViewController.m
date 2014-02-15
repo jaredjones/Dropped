@@ -12,6 +12,8 @@
 
 @interface DRPPageViewController ()
 
+@property (readwrite) UIScrollView *scrollView;
+
 @end
 
 @implementation DRPPageViewController

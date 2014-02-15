@@ -6,9 +6,9 @@
 //  Copyright (c) 2013 Brad Zeis. All rights reserved.
 //
 
-#import "DRPPageViewController.h"
+#import "DRPPageCollectionViewController.h"
 #import <GameKit/GameKit.h>
 
-@interface DRPPageMatchmakerViewController : DRPPageViewController <GKTurnBasedMatchmakerViewControllerDelegate>
+@interface DRPPageMatchmakerViewController : DRPPageCollectionViewController <GKTurnBasedMatchmakerViewControllerDelegate>
 
 @end

@@ -11,7 +11,6 @@
 
 #import "DRPCollectionViewDataSource.h"
 #import "DRPCollectionDataItem.h"
-#import "DRPCollectionViewLayout.h"
 
 #import "DRPMatchCollectionViewCell.h"
 #import "DRPMatch.h"
@@ -20,10 +19,6 @@
 #import "FRBSwatchist.h"
 
 @interface DRPPageListViewController ()
-
-@property UICollectionView *scrollView;
-@property DRPCollectionViewDataSource *dataSource;
-@property DRPCollectionViewLayout *layout;
 
 @end
 

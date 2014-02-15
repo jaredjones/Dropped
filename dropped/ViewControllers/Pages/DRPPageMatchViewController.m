@@ -23,6 +23,8 @@
 
 @interface DRPPageMatchViewController ()
 
+@property (readwrite) UIScrollView *scrollView;
+
 @property DRPMatchHeaderViewController *headerViewController;
 @property DRPBoardViewController *boardViewController;
 @property DRPMatchCurrentWordViewController *currentWordViewController;

@@ -8,6 +8,14 @@
 
 #import "DRPPageViewController.h"
 
+@class DRPCollectionViewDataSource;
+
 @interface DRPPageCollectionViewController : DRPPageViewController <UICollectionViewDelegate>
+
+@property (readonly) UICollectionView *scrollView;
+@property (readonly) DRPCollectionViewDataSource *dataSource;
+
+- (void)initDataSource;
+- (void)registerCellIdentifiers;
 
 @end

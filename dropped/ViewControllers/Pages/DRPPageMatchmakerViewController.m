@@ -8,6 +8,12 @@
 
 #import "DRPPageMatchmakerViewController.h"
 #import "DRPMainViewController.h"
+
+#import "DRPCollectionViewDataSource.h"
+#import "DRPCollectionDataItem.h"
+#import "DRPCharacter.h"
+#import "DRPMenuCollectionViewCell.h"
+
 #import "DRPMatch.h"
 #import <GameKit/GameKit.h>
 
@@ -21,18 +27,47 @@
 {
     self = [super initWithPageID:DRPPageMatchMaker];
     if (self) {
+        self.bottomCue = @"Back";
     }
     return self;
 }
 
-- (void)loadScrollView
-{
-    // Intentionally left blank
-}
-
 #pragma mark DRPPageViewController
 
-- (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo
+- (void)initDataSource
+{
+    [self.dataSource loadData:^NSArray *{
+        return @[({
+            DRPCollectionDataItem *dataItem = [[DRPCollectionDataItem alloc] init];
+            dataItem.itemID = @"Multiplayer";
+            dataItem.cellIdentifier = @"menuCell";
+            dataItem.userData = @{@"color" : @(DRPColorBlue), @"text" : @"Multiplayer"};
+            dataItem.selected = ^(id userData){
+                [self requestMatch];
+            };
+            dataItem;
+        }), ({
+            DRPCollectionDataItem *dataItem = [[DRPCollectionDataItem alloc] init];
+            dataItem.itemID = @"Single Player";
+            dataItem.cellIdentifier = @"menuCell";
+            dataItem.userData = @{@"color" : @(DRPColorGreen), @"text" : @"Single Player"};
+            dataItem;
+        }), ({
+            DRPCollectionDataItem *dataItem = [[DRPCollectionDataItem alloc] init];
+            dataItem.itemID = @"Daily Challenge";
+            dataItem.cellIdentifier = @"menuCell";
+            dataItem.userData = @{@"color" : @(DRPColorYellow), @"text" : @"Daily Challenge"};
+            dataItem;
+        })];
+    }];
+}
+
+- (void)registerCellIdentifiers
+{
+    [self.scrollView registerClass:[DRPMenuCollectionViewCell class] forCellWithReuseIdentifier:@"menuCell"];
+}
+
+- (void)requestMatch
 {
     // Create new GKTurnBasedMatchMakerViewController
     GKMatchRequest *request = [[GKMatchRequest alloc] init];

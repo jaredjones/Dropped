@@ -31,6 +31,6 @@
 - (void)hideIndicators;
 - (void)showIndicators;
 
-- (void)bringToFront;
+- (void)sendToBack;
 
 @end

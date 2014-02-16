@@ -240,12 +240,17 @@
 #pragma mark Superview
 
 // TODO: see, this is why quasi-ViewControllers are super bad
-- (void)bringToFront
+- (void)sendToBack
 {
-    [self.view bringSubviewToFront:self.topCue];
-    [self.view bringSubviewToFront:self.bottomCue];
-    [self.view bringSubviewToFront:self.topIndicatorView];
-    [self.view bringSubviewToFront:self.bottomIndicatorView];
+//    [self.view bringSubviewToFront:self.topCue];
+//    [self.view bringSubviewToFront:self.bottomCue];
+//    [self.view bringSubviewToFront:self.topIndicatorView];
+//    [self.view bringSubviewToFront:self.bottomIndicatorView];
+    
+    [self.view sendSubviewToBack:self.topCue];
+    [self.view sendSubviewToBack:self.bottomCue];
+    [self.view sendSubviewToBack:self.topIndicatorView];
+    [self.view sendSubviewToBack:self.bottomIndicatorView];
 }
 
 @end

@@ -100,6 +100,8 @@
         [self repositionPagesAroundCurrentPage];
         self.upPage.view.hidden = YES;
         self.downPage.view.hidden = YES;
+        
+        [self.cueKeeper sendToBack];
     };
     
     // Only run animation if the page is not already in place
@@ -156,9 +158,9 @@
 // Slightly different rules if animating to new page
 - (void)configurePageViewsForAnimationWithPreviousPage:(DRPPageViewController *)prevPage animated:(BOOL)animated
 {
-    [self.view addSubview:_currentPage.view];
-    [self.view addSubview:_upPage.view];
-    [self.view addSubview:_downPage.view];
+    [self.view addSubview:self.currentPage.view];
+    [self.view addSubview:self.upPage.view];
+    [self.view addSubview:self.downPage.view];
     
     if (!animated) {
         self.currentPage.view.frame = self.view.bounds;
@@ -189,7 +191,7 @@
     }
     
     [self repositionPagesAroundCurrentPage];
-    [self.cueKeeper bringToFront];
+    [self.cueKeeper sendToBack];
 }
 
 - (void)repositionPagesAroundCurrentPage
@@ -225,6 +227,7 @@
 - (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position
 {
     [self.cueKeeper cycleInCue:cue inPosition:position];
+    [self.cueKeeper sendToBack];
 }
 
 - (void)emphasizeCueInPosition:(DRPPageDirection)position

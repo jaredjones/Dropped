@@ -17,8 +17,8 @@
 
 @interface DRPPageCollectionViewController ()
 
-@property UICollectionView *scrollView;
-@property DRPCollectionViewDataSource *dataSource;
+@property (readwrite) UICollectionView *scrollView;
+@property (readwrite) DRPCollectionViewDataSource *dataSource;
 @property DRPCollectionViewLayout *layout;
 
 @end

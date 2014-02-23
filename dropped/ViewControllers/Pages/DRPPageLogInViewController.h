@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Brad Zeis. All rights reserved.
 //
 
-#import "DRPPageViewController.h"
+#import "DRPPageCollectionViewController.h"
 
-@interface DRPPageLogInViewController : DRPPageViewController
+@interface DRPPageLogInViewController : DRPPageCollectionViewController
 
 @end

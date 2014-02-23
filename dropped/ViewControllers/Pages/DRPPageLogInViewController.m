@@ -8,6 +8,11 @@
 
 #import "DRPMainViewController.h"
 #import "DRPPageLogInViewController.h"
+
+#import "DRPCollectionViewDataSource.h"
+#import "DRPCollectionDataItem.h"
+#import "DRPMenuCollectionViewCell.h"
+
 #import "DRPGameCenterInterface.h"
 #import "FRBSwatchist.h"
 #import "DRPUtility.h"
@@ -38,48 +43,36 @@
 
 #pragma mark View Loading
 
-- (void)viewDidLoad
+- (void)initDataSource
 {
-    [super viewDidLoad];
-    
-    [self loadSignInButton];
+    [self.dataSource loadData:^NSArray *{
+        return @[({
+            DRPCollectionDataItem *dataItem = [[DRPCollectionDataItem alloc] init];
+            dataItem.itemID = @"Facebook";
+            dataItem.cellIdentifier = @"menuCell";
+            dataItem.userData = @{@"color" : @(DRPColorFacebook), @"text" : @"Facebook"};
+            dataItem.selected = ^(id userData) {
+                [self signInButtonPressed];
+            };
+            dataItem;
+        }), ({
+            DRPCollectionDataItem *dataItem = [[DRPCollectionDataItem alloc] init];
+            dataItem.itemID = @"No Thanks";
+            dataItem.cellIdentifier = @"menuCell";
+            dataItem.userData = @{@"color" : @(DRPColorNil), @"text" : @"No Thanks"};
+            dataItem;
+        })];
+    }];
 }
 
-- (void)viewWillLayoutSubviews
+- (void)registerCellIdentifiers
 {
-    [super viewWillLayoutSubviews];
-    
-    [self layoutSignInButton];
-}
-
-- (void)loadScrollView
-{
-    // Intentionally left blank
-}
-
-- (void)loadSignInButton
-{
-    self.signInButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.signInButton.frame = CGRectMake(0, 0, 320, 200);
-    self.signInButton.center = rectCenter(self.view.bounds);
-    
-    NSAttributedString *title = [[NSAttributedString alloc] initWithString:@"Sign In with Game Center"
-                                                                attributes:@{NSFontAttributeName : [FRBSwatchist fontForKey:@"page.cueFont"]}];
-    
-    [self.signInButton setAttributedTitle:title forState:UIControlStateNormal];
-    [self.signInButton setTitleColor:[FRBSwatchist colorForKey:@"colors.black"] forState:UIControlStateNormal];
-    [self.signInButton addTarget:self action:@selector(signInButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:self.signInButton];
-}
-
-- (void)layoutSignInButton
-{
-    self.signInButton.center = rectCenter(self.view.bounds);
+    [self.scrollView registerClass:[DRPMenuCollectionViewCell class] forCellWithReuseIdentifier:@"menuCell"];
 }
 
 #pragma mark Touch Events
 
-- (void)signInButtonPressed:(id)sender
+- (void)signInButtonPressed
 {
     if ([DRPGameCenterInterface authenticationViewController]) {
         [self presentViewController:[DRPGameCenterInterface authenticationViewController] animated:YES completion:nil];
@@ -97,13 +90,6 @@
     if ([self.mainViewController isCurrentPage:self]) {
         [self.mainViewController setCurrentPageID:DRPPageList animated:YES userInfo:nil];
     }
-}
-
-#pragma mark Rotation
-
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
-{
-    [self layoutSignInButton];
 }
 
 @end

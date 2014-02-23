@@ -7,6 +7,7 @@
 //
 
 #import "DRPCollectionViewCell.h"
+#import "FRBSwatchist.h"
 
 @implementation DRPCollectionViewCell
 
@@ -14,13 +15,13 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        self.backgroundColor = [FRBSwatchist colorForKey:@"colors.white"];
     }
     return self;
 }
 
 - (void)configureWithUserData:(id)userData
 {
-    self.backgroundColor = [UIColor lightGrayColor];
 }
 
 @end

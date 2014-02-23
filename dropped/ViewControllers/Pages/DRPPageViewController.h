@@ -43,7 +43,7 @@ typedef NS_ENUM(NSInteger, DRPPageDirection) {
 
 // Each DRPPageViewController has a fullscreen scrollView embedded in it
 // Everything in the page should be added to the scrollView for MAXIMUM INTERACTIVITY
-@property UIScrollView *scrollView;
+@property (readonly) UIScrollView *scrollView;
 
 @property BOOL topCueVisible, bottomCueVisible;
 

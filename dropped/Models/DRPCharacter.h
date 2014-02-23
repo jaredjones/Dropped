@@ -9,13 +9,18 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, DRPColor) {
+    // Multiplier colors
     DRPColorBlue,
     DRPColorGreen,
     DRPColorOrange,
     DRPColorPurple,
     DRPColorYellow,
     DRPColorPink,
+    
+    // Non-multiplier colors
     DRPColorRed,
+    DRPColorGray,
+    DRPColorFacebook,
     DRPColorNil
 };
 

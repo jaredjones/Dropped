@@ -37,6 +37,7 @@
         // Format: { currentPage : [upPage, downPage] }
         self.neighbors = @{@(DRPPageList)       : @[@(DRPPageMatchMaker), @(DRPPageEtCetera)],
                            @(DRPPageMatch)      : @[[NSNull null], @(DRPPageList)],
+                           @(DRPPageMatchMaker) : @[[NSNull null], @(DRPPageList)],
                            @(DRPPageEtCetera)   : @[@(DRPPageList), [NSNull null]]};
         
         // Directions stores directions from a DRPPage to another DRPPage. Used to figure

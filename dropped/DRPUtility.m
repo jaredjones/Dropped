@@ -20,7 +20,9 @@ UIColor *colorForColor(DRPColor color)
                    @(DRPColorYellow) : @"yellow",
                    @(DRPColorPink) : @"pink",
                    @(DRPColorRed) : @"red",
-                   @(DRPColorNil) : @"white" };
+                   @(DRPColorGray) : @"gray",
+                   @(DRPColorFacebook) : @"facebook",
+                   @(DRPColorNil) : @"white",};
     }
     return [[FRBSwatchist swatchForName:@"colors"] colorForKey:colors[@(color)]];
 }

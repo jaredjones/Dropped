@@ -148,7 +148,6 @@
                                           self.upPage ?: [NSNull null],
                                           self.downPage ?: [NSNull null]]) {
         if (page != (id)[NSNull null] && page.parentViewController != self) {
-            [page willMoveToParentViewController:self];
             [self addChildViewController:page];
         }
     }

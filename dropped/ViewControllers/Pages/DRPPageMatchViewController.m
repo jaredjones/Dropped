@@ -94,7 +94,6 @@
     self.headerViewController = [[DRPMatchHeaderViewController alloc] init];
     self.headerViewController.delegate = self;
 
-    [self.headerViewController willMoveToParentViewController:self];
     [self addChildViewController:self.headerViewController];
     [self.scrollView addSubview:self.headerViewController.view];
 }
@@ -104,7 +103,6 @@
     self.boardViewController = [[DRPBoardViewController alloc] initWithNibName:nil bundle:nil];
     self.boardViewController.delegate = self;
 
-    [self.boardViewController willMoveToParentViewController:self];
     [self addChildViewController:self.boardViewController];
 
     [self layoutBoardViewController];
@@ -137,7 +135,6 @@
     self.currentWordViewController = [[DRPMatchCurrentWordViewController alloc] initWithNibName:nil bundle:nil];
     self.currentWordViewController.delegate = self;
 
-    [self.currentWordViewController willMoveToParentViewController:self];
     [self addChildViewController:self.currentWordViewController];
 
     [self layoutCurrentWordViewController];

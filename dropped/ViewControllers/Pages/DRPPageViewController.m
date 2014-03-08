@@ -29,7 +29,7 @@
 
 - (void)willMoveToParentViewController:(UIViewController *)parent
 {
-    // TODO: I am really not a fan of this
+    // Need a reference to the mainViewController. This is easier than a static reference
     _mainViewController = (DRPMainViewController *)parent;
 }
 

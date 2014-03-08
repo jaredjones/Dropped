@@ -11,6 +11,21 @@
 
 @implementation DRPCollectionViewLayout
 
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        self.itemSize = [FRBSwatchist sizeForKey:@"list.itemSize"];
+        self.minimumLineSpacing = [FRBSwatchist floatForKey:@"list.lineSpacing"];
+        // Make sure there can only be a single cell in a row
+        self.minimumInteritemSpacing = MAX(CGRectGetWidth([UIScreen mainScreen].applicationFrame),
+                                           CGRectGetHeight([UIScreen mainScreen].applicationFrame));
+        self.sectionInset = UIEdgeInsetsMake([FRBSwatchist floatForKey:@"list.sectionInset"], 0,
+                                             [FRBSwatchist floatForKey:@"list.sectionInset"], 0);
+    }
+    return self;
+}
+
 - (CGSize)collectionViewContentSize
 {
     CGSize contentSize = [super collectionViewContentSize];

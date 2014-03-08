@@ -13,8 +13,6 @@
 #import "DRPCollectionDataItem.h"
 #import "DRPCollectionViewLayout.h"
 
-#import "FRBSwatchist.h"
-
 @interface DRPPageCollectionViewController ()
 
 @property (readwrite) UICollectionView *scrollView;
@@ -43,11 +41,6 @@
 - (void)loadScrollView
 {
     self.layout = [[DRPCollectionViewLayout alloc] init];
-    self.layout.itemSize = [FRBSwatchist sizeForKey:@"list.itemSize"];
-    self.layout.minimumLineSpacing = [FRBSwatchist floatForKey:@"list.lineSpacing"];
-    self.layout.minimumInteritemSpacing = MAX(self.view.bounds.size.width, self.view.bounds.size.height);
-    self.layout.sectionInset = UIEdgeInsetsMake([FRBSwatchist floatForKey:@"list.sectionInset"], 0,
-                                                [FRBSwatchist floatForKey:@"list.sectionInset"], 0);
     
     self.scrollView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:self.layout];
     self.scrollView.backgroundColor = [UIColor clearColor];
@@ -109,19 +102,13 @@
     }
 }
 
-#pragma mark Rotation
+#pragma mark ScrollViewDelegate
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
-//    [self.layout prepareForAnimatedBoundsChange:self.scrollView.bounds];
+    [super scrollViewDidScroll:scrollView];
+    
+    // TODO: make sure the cues are "pushed away" with the top/bottom cells
 }
-
-- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
-{
-    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
-//    [self.layout finalizeAnimatedBoundsChange];
-}
-
 
 @end

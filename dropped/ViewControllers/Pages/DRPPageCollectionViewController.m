@@ -109,4 +109,19 @@
     }
 }
 
+#pragma mark Rotation
+
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [super willAnimateRotationToInterfaceOrientation:toInterfaceOrientation duration:duration];
+//    [self.layout prepareForAnimatedBoundsChange:self.scrollView.bounds];
+}
+
+- (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
+{
+    [super didRotateFromInterfaceOrientation:fromInterfaceOrientation];
+//    [self.layout finalizeAnimatedBoundsChange];
+}
+
+
 @end

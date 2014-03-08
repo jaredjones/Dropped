@@ -18,17 +18,6 @@
     return contentSize;
 }
 
-- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
-{
-    CGRect oldBounds = self.collectionView.bounds;
-    if (CGRectGetWidth(oldBounds) != CGRectGetWidth(newBounds)) {
-        NSLog(@"aw yiss");
-        return YES;
-    }
-        
-    return NO;
-}
-
 - (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
 {
     NSArray *attributes = [super layoutAttributesForElementsInRect:rect];
@@ -54,12 +43,12 @@
 
 - (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
 {
-    return [super initialLayoutAttributesForAppearingItemAtIndexPath:itemIndexPath];
+    return nil;
 }
 
 - (UICollectionViewLayoutAttributes *)finalLayoutAttributesForDisappearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
 {
-    return [super finalLayoutAttributesForDisappearingItemAtIndexPath:itemIndexPath];
+    return [self layoutAttributesForItemAtIndexPath:itemIndexPath];
 }
 
 - (CGFloat)cellOffset

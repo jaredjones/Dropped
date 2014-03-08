@@ -12,6 +12,4 @@
 
 @interface DRPCollectionViewLayout : UICollectionViewFlowLayout
 
-- (void)recalculateSectionInsetsWithCollectionView:(UICollectionView *)collectionView cellCount:(NSInteger)cellCount;
-
 @end

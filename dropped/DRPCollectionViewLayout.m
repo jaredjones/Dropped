@@ -18,19 +18,60 @@
     return contentSize;
 }
 
-- (void)recalculateSectionInsetsWithCollectionView:(UICollectionView *)collectionView cellCount:(NSInteger)cellCount
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
 {
-    CGSize itemSize = [FRBSwatchist sizeForKey:@"list.itemSize"];
-    CGFloat itemSpacing = [FRBSwatchist floatForKey:@"list.lineSpacing"];
-    CGFloat inset = [FRBSwatchist floatForKey:@"list.sectionInset"];
-    
-    CGFloat height = itemSize.height * cellCount + itemSpacing * (cellCount - 1);
-    if (cellCount && height - 2 * inset < collectionView.bounds.size.height) {
-        self.sectionInset = UIEdgeInsetsMake((collectionView.bounds.size.height - height) / 2, 0,
-                                             (collectionView.bounds.size.height - height) / 2, 0);
-    } else {
-        self.sectionInset = UIEdgeInsetsMake(inset, 0, inset, 0);
+    CGRect oldBounds = self.collectionView.bounds;
+    if (CGRectGetWidth(oldBounds) != CGRectGetWidth(newBounds)) {
+        NSLog(@"aw yiss");
+        return YES;
     }
+        
+    return NO;
+}
+
+- (NSArray *)layoutAttributesForElementsInRect:(CGRect)rect
+{
+    NSArray *attributes = [super layoutAttributesForElementsInRect:rect];
+    
+    NSMutableArray *newAttributes = [[NSMutableArray alloc] init];
+    for (UICollectionViewLayoutAttributes *attribute in attributes) {
+        [newAttributes addObject:[self layoutAttributesForItemAtIndexPath:attribute.indexPath]];
+    }
+    
+    return newAttributes;
+}
+
+- (UICollectionViewLayoutAttributes *)layoutAttributesForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    UICollectionViewLayoutAttributes *currentAttributes = [super layoutAttributesForItemAtIndexPath:indexPath];
+    currentAttributes.center = ({
+        CGPoint center = currentAttributes.center;
+        center.y += [self cellOffset];
+        center;
+    });
+    return currentAttributes;
+}
+
+- (UICollectionViewLayoutAttributes *)initialLayoutAttributesForAppearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
+{
+    return [super initialLayoutAttributesForAppearingItemAtIndexPath:itemIndexPath];
+}
+
+- (UICollectionViewLayoutAttributes *)finalLayoutAttributesForDisappearingItemAtIndexPath:(NSIndexPath *)itemIndexPath
+{
+    return [super finalLayoutAttributesForDisappearingItemAtIndexPath:itemIndexPath];
+}
+
+- (CGFloat)cellOffset
+{
+    NSInteger cellCount = [self.collectionView.dataSource collectionView:self.collectionView numberOfItemsInSection:0];
+    CGFloat height = self.itemSize.height * cellCount + self.minimumLineSpacing * (cellCount - 1);
+    CGFloat offset = 0;
+    
+    if (cellCount && height < self.collectionView.bounds.size.height - (self.sectionInset.top + self.sectionInset.bottom)) {
+        offset = (self.collectionView.bounds.size.height - height) / 2 - self.sectionInset.top;
+    }
+    return offset;
 }
 
 @end

@@ -16,7 +16,7 @@ static const NSInteger _HTTPSuccessCode = 200;
 
 @interface DRPDictionary()
 
-@property (strong, atomic) NSString *databasePath;
+@property (strong, atomic) NSURL *databaseURL;
 @property (strong, atomic) FMDatabase *database;
 
 @end
@@ -29,22 +29,48 @@ static const NSInteger _HTTPSuccessCode = 200;
     static dispatch_once_t pred;
     
     dispatch_once(&pred, ^{
-        // TODO: use a writeable path here
-        sharedDictionary = [DRPDictionary alloc];
-        sharedDictionary = [sharedDictionary initWithDatabase:@"en-us"
-                                                withExtension:@"db"
-                                                withDirectory:@"Database"];
+        
+        NSURL *dbDirectory = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory
+                                                                     inDomains:NSUserDomainMask][0] URLByAppendingPathComponent:@"Database"];
+        NSURL *databaseURL = [dbDirectory URLByAppendingPathComponent:@"en-us.db"];
+        
+        if (![[NSFileManager defaultManager] fileExistsAtPath:databaseURL.path]) {
+            // Library/Application Support/ directory isn't present by default, it has to be created
+            NSError *error;
+            [[NSFileManager defaultManager] createDirectoryAtURL:dbDirectory
+                                     withIntermediateDirectories:YES
+                                                      attributes:nil
+                                                           error:&error];
+            if (error) {
+                NSLog(@"%@", error.localizedDescription);
+            }
+            
+            // /Library/Application Support/ must be excluded from backup
+            [dbDirectory setResourceValue:@YES forKey:NSURLIsExcludedFromBackupKey error:&error];
+            if (error) {
+                NSLog(@"%@", error.localizedDescription);
+            }
+            
+            // Copy the database from the app bundle to Application Support so it's writeable
+            NSURL *databaseSourceURL = [[NSBundle mainBundle] URLForResource:@"en-us" withExtension:@"db" subdirectory:@"Database"];
+            [[NSFileManager defaultManager] copyItemAtPath:databaseSourceURL.path toPath:databaseURL.path error:&error];
+            if (error) {
+                NSLog(@"%@", error.localizedDescription);
+            }
+        }
+        
+        sharedDictionary = [[DRPDictionary alloc] initWithDatabaseURL:databaseURL];
     });
     
     return sharedDictionary;
 }
 
-- (instancetype)initWithDatabase:(NSString *)filePath withExtension:(NSString *)ext withDirectory:(NSString *)dirPath
+- (instancetype)initWithDatabaseURL:(NSURL *)databaseURL
 {
     self = [super init];
     if (self){
-        self.databasePath = [[NSBundle mainBundle] pathForResource:filePath ofType:ext inDirectory:dirPath];
-        self.database = [[FMDatabase alloc]initWithPath:self.databasePath];
+        self.databaseURL = databaseURL;
+        self.database = [[FMDatabase alloc] initWithPath:self.databaseURL.path];
         
         if (![self.database openWithFlags:SQLITE_OPEN_READWRITE]) {
             // FMDatabase doesn't throw exceptions when it can't

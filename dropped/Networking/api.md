@@ -30,7 +30,7 @@ Methods
 - Generate new device identifier (only if there hasn't been one generated yet)
     - GET /device/generate-device-id
     - Response body:
-        - { deviceID = "..." }
+        - { deviceID : "..." }
 
     - Stored on the client after generation
     - The client is forbidden from knowing any device identifiers other than its own
@@ -43,7 +43,7 @@ Methods
     - GET /device/deviceID/alias
     - GET /user/userID/alias
     - Response body:
-        - { alias = "..." }
+        - { alias : "..." }
 
     - Gets the alias for the deviceID or Facebook userID
     - The second method returns the most recently set alias
@@ -52,7 +52,7 @@ Methods
     - POST /device/deviceID/alias
     - POST /user/userID/alias
     - Request body:
-        { alias = "..." }
+        { alias : "..." }
 
     - Sets the alias for the deviceID
     - The second method sets the alias of all associated deviceIDs
@@ -60,7 +60,7 @@ Methods
 - Facebook Log In
     - POST /facebook-login
     - Request body:
-        { deviceID = "...", userID = "..." }
+        { deviceID : "...", userID : "..." }
 
     - Facebook User Docs: https://developers.facebook.com/docs/graph-api/reference/user
     - Links device identifier to the Facebook userID
@@ -69,23 +69,23 @@ Methods
 - Facebook Log Out
     - POST /facebook-logout
     - Request body:
-        { deviceID = "...", userID = "..." }
+        { deviceID : "...", userID : "..." }
 
     - Disassociate the deviceID (convert to anonymous account)
 
 - Facebook friends
     - GET /user/userID/facebook-friends
     - Response body:
-        - { friendIDs = [ id1, id2, ... ] }
+        - { friendIDs : [ id1, id2, ... ] }
 
     - Returns all of the user's Facebook friends that have already installed and signed in to Dropped
 
 - Request match
     - POST /new-match
     - Request body:
-        - { deviceID = "...", userID = "...", friendID = "..." (empty for anonymous) }
+        - { deviceID : "...", userID : "...", friendID : "..." (empty for anonymous) }
     - Response body:
-        - { matchID = "..." }
+        - { matchID : "..." }
 
     - Returns a matchID for a new match. Will fill any half-full matches before starting new ones.
     - Optionally takes a friend's Facebook userID and force a new match (unless there's a half-full match
@@ -94,12 +94,12 @@ Methods
 - Match Data
     - GET /match/matchID/match-data
     - Response body:
-        - { matchData = "...", isLocalPlayerTurn = "...", remotePlayerAlias = "..." }
+        - { matchData : "...", isLocalPlayerTurn : "...", remotePlayerAlias : "..." }
 
 - Submit Turn
     - POST /match/matchID/submit
     - Request body:
-        - { deviceID = "...", matchData = "..." }
+        - { deviceID : "...", matchData : "..." }
 
     - Pass in new matchData
     - Make sure to keep track of how many moves have been made in a game and don't accept turn submissions past that
@@ -108,7 +108,7 @@ Methods
 - Concede Match
     - POST /match/matchID/concede
     - Request body:
-         - { deviceID = "..." }
+         - { deviceID : "..." }
 
     - Mark the match as finished
 

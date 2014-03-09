@@ -18,6 +18,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Initalize RemoteServices
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+    
     [self loadSwatches];
     srandomdev();
     
@@ -33,6 +37,16 @@
     [UIApplication sharedApplication].statusBarHidden = YES;
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+	NSLog(@"APNS Setup Success: %@\n\n", deviceToken);
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	NSLog(@"APNS Setup Failed:\n\nFailed to get APNS token, error: %@\n\n", error);
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

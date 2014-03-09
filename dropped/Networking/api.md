@@ -1,4 +1,3 @@
-
 Overview
 --------
 
@@ -53,6 +52,7 @@ Methods
     - POST /user/userID/alias
     - Request body:
         { alias : "..." }
+    - The new Alias MUST BE Alphanumerical Only!!!!
 
     - Sets the alias for the deviceID
     - The second method sets the alias of all associated deviceIDs

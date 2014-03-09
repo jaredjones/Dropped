@@ -71,6 +71,7 @@
 		A9E27CC11857AFBC0043F6A9 /* Rokkitt.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9E27CC01857AFBC0043F6A9 /* Rokkitt.otf */; };
 		A9E27CC61857B6170043F6A9 /* tileOffset.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9E27CC21857B4290043F6A9 /* tileOffset.plist */; };
 		A9E27CC81857B6250043F6A9 /* tileScalingOffset.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */; };
+		A9E4A44A18CBE8420085CA57 /* DRPNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E4A44918CBE8420085CA57 /* DRPNetworking.m */; };
 		C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C024DF7818370AC300B5775B /* DRPDictionary.m */; };
 		C08CBC171837168800CE678F /* importdatabase.sh in Resources */ = {isa = PBXBuildFile; fileRef = C08CBC141837168800CE678F /* importdatabase.sh */; };
 		C08CBC1A18371B3700CE678F /* Dropped.db in CopyFiles */ = {isa = PBXBuildFile; fileRef = C08CBC131837168800CE678F /* Dropped.db */; };
@@ -223,6 +224,8 @@
 		A9E27CC01857AFBC0043F6A9 /* Rokkitt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Rokkitt.otf; path = Fonts/Rokkitt.otf; sourceTree = "<group>"; };
 		A9E27CC21857B4290043F6A9 /* tileOffset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = tileOffset.plist; path = Swatches/tileOffset.plist; sourceTree = "<group>"; };
 		A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = tileScalingOffset.plist; path = Swatches/tileScalingOffset.plist; sourceTree = "<group>"; };
+		A9E4A44818CBE8420085CA57 /* DRPNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPNetworking.h; path = Networking/DRPNetworking.h; sourceTree = "<group>"; };
+		A9E4A44918CBE8420085CA57 /* DRPNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPNetworking.m; path = Networking/DRPNetworking.m; sourceTree = "<group>"; };
 		B0935A92C9664719B578E480 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C024DF7718370AC300B5775B /* DRPDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDictionary.h; path = Models/DRPDictionary.h; sourceTree = "<group>"; };
 		C024DF7818370AC300B5775B /* DRPDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPDictionary.m; path = Models/DRPDictionary.m; sourceTree = "<group>"; };
@@ -308,6 +311,7 @@
 				A9204054183704B7006940B8 /* ViewControllers */,
 				A9204055183704C1006940B8 /* Views */,
 				A9204056183704D7006940B8 /* Models */,
+				A9E4A44718CBE8260085CA57 /* Networking */,
 				A9ACB3C21883129800B0B9D9 /* Game Center */,
 				A9C0FAD31864F6D000377B0E /* Utility */,
 				A91D8F5A183702EE00BEC6E8 /* Images.xcassets */,
@@ -598,6 +602,15 @@
 			name = Utility;
 			sourceTree = "<group>";
 		};
+		A9E4A44718CBE8260085CA57 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				A9E4A44818CBE8420085CA57 /* DRPNetworking.h */,
+				A9E4A44918CBE8420085CA57 /* DRPNetworking.m */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
 		C08CBC121837168800CE678F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -791,6 +804,7 @@
 				A9813327186DFBA100FC3277 /* DRPGreedyScrollView.m in Sources */,
 				A9C0FACC1864DB0A00377B0E /* DRPPageMatchViewController.m in Sources */,
 				A9B1C085184D042100866029 /* DRPLiftTransition.m in Sources */,
+				A9E4A44A18CBE8420085CA57 /* DRPNetworking.m in Sources */,
 				A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */,
 				A99EAF1D1876603E00DAD44F /* DRPMatchPlayerView.m in Sources */,
 				A920405C18370BA0006940B8 /* DRPPosition.m in Sources */,

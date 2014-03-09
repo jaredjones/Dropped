@@ -31,7 +31,7 @@ static const NSInteger _HTTPSuccessCode = 200;
     dispatch_once(&pred, ^{
         // TODO: use a writeable path here
         sharedDictionary = [DRPDictionary alloc];
-        sharedDictionary = [sharedDictionary initWithDatabase:@"Dropped"
+        sharedDictionary = [sharedDictionary initWithDatabase:@"en-us"
                                                 withExtension:@"db"
                                                 withDirectory:@"Database"];
     });

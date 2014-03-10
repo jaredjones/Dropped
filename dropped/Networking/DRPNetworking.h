@@ -8,9 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, DRPNetworkingOpCode) {
+    DRPNetworkingOpCodeGenerateDeviceID
+};
+
 @interface DRPNetworking : NSObject
 
-+ (void)generateDeviceIDWithCompletion:(void (^)())completion;
++ (void)fetchDeviceIDWithCompletion:(void (^)())completion;
 
 + (void)aliasForDeviceID:(NSString *)deviceID withCompletion:(void (^)(NSString *))completion;
 + (void)aliasForUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion;

@@ -28,7 +28,6 @@
 		A93E9F29184AAC3B0047575A /* DRPMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93E9F28184AAC3B0047575A /* DRPMainViewController.m */; };
 		A959500718A3F33D006B42DA /* DRPMenuCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A959500618A3F33D006B42DA /* DRPMenuCollectionViewCell.m */; };
 		A959500A18A3F74D006B42DA /* list.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A959500818A3F514006B42DA /* list.plist */; };
-		A95A2C821847C3AB001AF846 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A95A2C811847C3AB001AF846 /* GameKit.framework */; };
 		A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */; };
 		A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48F18372DA800B7A9A8 /* DRPBoard.m */; };
 		A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB49318372DA800B7A9A8 /* DRPCharacter.m */; };
@@ -141,7 +140,6 @@
 		A959500518A3F33D006B42DA /* DRPMenuCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMenuCollectionViewCell.h; path = Views/DRPMenuCollectionViewCell.h; sourceTree = "<group>"; };
 		A959500618A3F33D006B42DA /* DRPMenuCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMenuCollectionViewCell.m; path = Views/DRPMenuCollectionViewCell.m; sourceTree = "<group>"; };
 		A959500818A3F514006B42DA /* list.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = list.plist; path = Swatches/list.plist; sourceTree = "<group>"; };
-		A95A2C811847C3AB001AF846 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A95BB48B18372D9C00B7A9A8 /* DRPMatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMatch.h; path = Models/DRPMatch.h; sourceTree = "<group>"; };
 		A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMatch.m; path = Models/DRPMatch.m; sourceTree = "<group>"; };
 		A95BB48E18372DA800B7A9A8 /* DRPBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPBoard.h; path = Models/DRPBoard.h; sourceTree = "<group>"; };
@@ -227,7 +225,6 @@
 				A920405218370467006940B8 /* Security.framework in Frameworks */,
 				A91D8F4B183702EE00BEC6E8 /* CoreGraphics.framework in Frameworks */,
 				A91D8F4D183702EE00BEC6E8 /* UIKit.framework in Frameworks */,
-				A95A2C821847C3AB001AF846 /* GameKit.framework in Frameworks */,
 				A91D8F49183702EE00BEC6E8 /* Foundation.framework in Frameworks */,
 				F4E61295ABFC46CDBE1384F1 /* libPods.a in Frameworks */,
 			);
@@ -266,7 +263,6 @@
 		A91D8F47183702EE00BEC6E8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A95A2C811847C3AB001AF846 /* GameKit.framework */,
 				A920405118370467006940B8 /* Security.framework */,
 				A91D8F48183702EE00BEC6E8 /* Foundation.framework */,
 				A91D8F4A183702EE00BEC6E8 /* CoreGraphics.framework */,
@@ -632,7 +628,7 @@
 						DevelopmentTeam = VK6PLLGMJR;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -849,13 +845,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jared Jones (R96M5245A2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jared Jones (R96M5245A2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dropped/Dropped-Prefix.pch";
 				INFOPLIST_FILE = "Dropped/Dropped-Info.plist";
 				PRODUCT_NAME = Dropped;
-				PROVISIONING_PROFILE = "B5C5651B-4CFA-442E-B233-2DE1FD3ACDA0";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -866,12 +862,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jared Jones (R96M5245A2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dropped/Dropped-Prefix.pch";
 				INFOPLIST_FILE = "Dropped/Dropped-Info.plist";
 				PRODUCT_NAME = Dropped;
-				PROVISIONING_PROFILE = "FA5230FD-31F0-48B4-918E-C637B6B5AA6B";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

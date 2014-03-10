@@ -19,6 +19,7 @@
 @property NSString *userID;
 
 @property NSString *cachedAlias;
+@property NSURL *deviceURL;
 
 // Social
 @property FBSession *fbSession;
@@ -36,6 +37,8 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedNetworking = [[DRPNetworking alloc] init];
+        sharedNetworking.deviceURL = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory
+                                                                             inDomains:NSUserDomainMask][0] URLByAppendingPathComponent:@"device.plist"];
     });
     
     return sharedNetworking;
@@ -74,79 +77,112 @@
 
 #pragma mark DeviceID
 
-+ (void)fetchDeviceIDWithCompletion:(void (^)())completion {
+- (void)fetchDeviceIDWithCompletion:(void (^)())completion {
     
     // Attempt to read cached deviceID (only if not already loaded)
-    NSURL *deviceURL = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory
-                                                               inDomains:NSUserDomainMask][0] URLByAppendingPathComponent:@"device.plist"];
-    if (![DRPNetworking sharedNetworking].deviceID && ![FRBSwatchist boolForKey:@"debug.purgeDeviceID"]) {
-        [DRPNetworking sharedNetworking].deviceID = [NSDictionary dictionaryWithContentsOfURL:deviceURL][@"deviceID"];
-        [DRPNetworking sharedNetworking].pass = [NSDictionary dictionaryWithContentsOfURL:deviceURL][@"pass"];
+    if ([FRBSwatchist boolForKey:@"debug.purgeDeviceID"]) {
+        [self purgeDeviceIDPair];
+    } if (!self.deviceID) {
+        [self loadSavedDeviceIDPair];
     }
     
-    if ([DRPNetworking sharedNetworking].deviceID) {
-        // Already have a cached deviceID
-        NSLog(@"Loaded deviceID: %@", [DRPNetworking sharedNetworking].deviceID);
-        completion();
+    if (self.deviceID) {
+        // Already have a saved deviceID
+        // Generate a new deviceID/pass pair if the saved pair is invalid
+        [self validateDeviceIDPairWithCompletion:^(BOOL valid) {
+            if (!valid) {
+                [self purgeDeviceIDPair];
+                [self fetchDeviceIDWithCompletion:completion];
+                
+            } else {
+                NSLog(@"Loaded deviceID: %@", [DRPNetworking sharedNetworking].deviceID);
+                completion();
+            }
+        }];
         
     } else  {
         // Device didn't load deviceID, generate a new one on the server
-        
         // Pass is generated locally
-        [DRPNetworking sharedNetworking].pass = generateUUID();
+        self.pass = generateUUID();
         
         // Don't have a deviceID locally, let the server generate one
-        [[DRPNetworking sharedNetworking] networkRequestOpcode:DRPNetworkingOpCodeGenerateDeviceID
-                                                     arguments:@{@"pass" : [DRPNetworking sharedNetworking].pass }
-                                                withCompletion:^(NSDictionary *response, NSError *error) {
-                                                    
-                                                    [DRPNetworking sharedNetworking].deviceID = response[@"deviceID"];
-                                                    
-                                                    // Cache deviceID and pass
-                                                    NSDictionary *device = @{@"deviceID" : [DRPNetworking sharedNetworking].deviceID,
-                                                                             @"pass" : [DRPNetworking sharedNetworking].pass};
-                                                    [device writeToURL:deviceURL atomically:YES];
-                                                    
-                                                    NSLog(@"Generated new deviceID: %@", [DRPNetworking sharedNetworking].deviceID);
-                                                    completion();
+        [self networkRequestOpcode:DRPNetworkingGenerateDeviceID
+                         arguments:@{@"pass" : self.pass}
+                    withCompletion:^(NSDictionary *response, NSError *error) {
+                        self.deviceID = response[@"deviceID"];
+                        [self saveDeviceIDPair];
+                        
+                        NSLog(@"Generated new deviceID: %@", self.deviceID);
+                        completion();
         }];
     }
 }
 
+- (void)validateDeviceIDPairWithCompletion:(void (^)(BOOL))completion
+{
+    [[DRPNetworking sharedNetworking] networkRequestOpcode:DRPNetworkingDeviceIDPairValidation
+                                                 arguments:@{@"pass" : [DRPNetworking sharedNetworking].pass}
+                                            withCompletion:^(NSDictionary *response, NSError *error) {
+                                                // Pair is only valid when validPair == 1
+                                                completion([response[@"validPair"] integerValue] == 1);
+    }];
+}
+
+- (void)loadSavedDeviceIDPair
+{
+    NSDictionary *devicePair = [NSDictionary dictionaryWithContentsOfURL:self.deviceURL];
+    
+    [DRPNetworking sharedNetworking].deviceID = devicePair[@"deviceID"];
+    [DRPNetworking sharedNetworking].pass = devicePair[@"pass"];
+}
+
+- (void)saveDeviceIDPair
+{
+    NSDictionary *devicePair = @{@"deviceID" : self.deviceID, @"pass" : self.pass};
+    [devicePair writeToURL:self.deviceURL atomically:YES];
+}
+
+- (void)purgeDeviceIDPair
+{
+    [[NSFileManager defaultManager] removeItemAtURL:self.deviceURL error:nil];
+    self.deviceID = nil;
+    self.pass = nil;
+}
+
 #pragma mark Aliases
 
-+ (void)aliasForDeviceID:(NSString *)deviceID withCompletion:(void (^)(NSString *))completion {
+- (void)aliasForDeviceID:(NSString *)deviceID withCompletion:(void (^)(NSString *))completion {
 }
 
-+ (void)aliasForUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion {
+- (void)aliasForUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion {
 }
 
-+ (void)setAlias:(NSString *)alias withCompletion:(void (^)(NSString *))completion {
+- (void)setAlias:(NSString *)alias withCompletion:(void (^)(NSString *))completion {
 }
 
 #pragma mark Facebook
 
-+ (void)associateFacebook:(NSString *)userID withCompletion:(void (^)())completion {
+- (void)associateFacebook:(NSString *)userID withCompletion:(void (^)())completion {
 }
 
-+ (void)disassociateFacebookWithCompletion:(void (^)())completion {
+- (void)disassociateFacebookWithCompletion:(void (^)())completion {
 }
 
-+ (void)facebookFriendsWithCompletion:(void (^)(NSArray *))completion {
+- (void)facebookFriendsWithCompletion:(void (^)(NSArray *))completion {
 }
 
 #pragma mark Matches
 
-+ (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *, BOOL, NSString *))completion {
+- (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *, BOOL, NSString *))completion {
 }
 
-+ (void)matchData:(NSString *)matchID withCompletion:(void (^)(NSData *))completion {
+- (void)matchData:(NSString *)matchID withCompletion:(void (^)(NSData *))completion {
 }
 
-+ (void)submitMatchData:(NSData *)matchData forMatchID:(NSString *)matchID withCompletion:(void (^)())completion {
+- (void)submitMatchData:(NSData *)matchData forMatchID:(NSString *)matchID withCompletion:(void (^)())completion {
 }
 
-+ (void)concedeMatchID:(NSString *)matchID withCompletion:(void (^)())completion {
+- (void)concedeMatchID:(NSString *)matchID withCompletion:(void (^)())completion {
 }
 
 @end

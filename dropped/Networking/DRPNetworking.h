@@ -9,26 +9,29 @@
 #import <Foundation/Foundation.h>
 
 typedef NS_ENUM(NSInteger, DRPNetworkingOpCode) {
-    DRPNetworkingOpCodeGenerateDeviceID
+    DRPNetworkingGenerateDeviceID = 0,
+    DRPNetworkingDeviceIDPairValidation = 6
 };
 
 @interface DRPNetworking : NSObject
 
-+ (void)fetchDeviceIDWithCompletion:(void (^)())completion;
++ (instancetype)sharedNetworking;
 
-+ (void)aliasForDeviceID:(NSString *)deviceID withCompletion:(void (^)(NSString *))completion;
-+ (void)aliasForUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion;
+- (void)fetchDeviceIDWithCompletion:(void (^)())completion;
 
-+ (void)setAlias:(NSString *)alias withCompletion:(void (^)(NSString *))completion;
+- (void)aliasForDeviceID:(NSString *)deviceID withCompletion:(void (^)(NSString *))completion;
+- (void)aliasForUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion;
 
-+ (void)associateFacebook:(NSString *)userID withCompletion:(void (^)())completion;
-+ (void)disassociateFacebookWithCompletion:(void (^)())completion;
-+ (void)facebookFriendsWithCompletion:(void (^)(NSArray *))completion;
+- (void)setAlias:(NSString *)alias withCompletion:(void (^)(NSString *))completion;
 
-+ (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *, BOOL, NSString *))completion;
-+ (void)matchData:(NSString *)matchID withCompletion:(void (^)(NSData *))completion;
+- (void)associateFacebook:(NSString *)userID withCompletion:(void (^)())completion;
+- (void)disassociateFacebookWithCompletion:(void (^)())completion;
+- (void)facebookFriendsWithCompletion:(void (^)(NSArray *))completion;
 
-+ (void)submitMatchData:(NSData *)matchData forMatchID:(NSString *)matchID withCompletion:(void (^)())completion;
-+ (void)concedeMatchID:(NSString *)matchID withCompletion:(void (^)())completion;
+- (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *, BOOL, NSString *))completion;
+- (void)matchData:(NSString *)matchID withCompletion:(void (^)(NSData *))completion;
+
+- (void)submitMatchData:(NSData *)matchData forMatchID:(NSString *)matchID withCompletion:(void (^)())completion;
+- (void)concedeMatchID:(NSString *)matchID withCompletion:(void (^)())completion;
 
 @end

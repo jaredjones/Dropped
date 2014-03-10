@@ -88,6 +88,7 @@ static const NSInteger _HTTPSuccessCode = 200;
 
 + (void)syncDictionary
 {
+    // TODO: this doesn't fail gracefully
     NSInteger versionNumber = [[[DRPDictionary sharedDictionary] database] intForQuery:@"SELECT version FROM settings"];
     NSString *URLString = [NSString stringWithFormat:@"%@grabdicsql.php?i=%ld",
                                             [FRBSwatchist stringForKey:@"debug.dictionaryDownloadURL"],

@@ -12,6 +12,7 @@
 #import "FRBSwatchist.h"
 
 #import "DRPDictionary.h"
+#import "DRPNetworking.h"
 #import "TestFlight.h"
 
 @implementation DRPAppDelegate
@@ -24,6 +25,10 @@
     
     [self loadSwatches];
     srandomdev();
+    
+    // tmp
+    // Generate a deviceID
+    [DRPNetworking fetchDeviceIDWithCompletion:^{}];
     
     // Important networky things need to happen ASAP
     [TestFlight takeOff:@"e04eea5f-3c76-4cc7-a01d-79f12d9fa6ad"];

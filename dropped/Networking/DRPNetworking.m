@@ -11,8 +11,6 @@
 
 @interface DRPNetworking ()
 
-@property NSURLSession *urlSession;
-
 @property NSString *deviceID;
 @property NSString *userID;
 
@@ -34,7 +32,6 @@
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         sharedNetworking = [[DRPNetworking alloc] init];
-        sharedNetworking.urlSession = [[NSURLSession alloc] init];
     });
     
     return sharedNetworking;
@@ -42,30 +39,38 @@
 
 - (void)networkRequestOpcode:(NSInteger)opCode arguments:(NSDictionary *)json withCompletion:(void (^)(NSDictionary *, NSError *))completion
 {
-    NSString *serverURL = @"chaos.uvora.com/dropped/process.php";
+    NSString *serverURL = @"http://chaos.uvora.com/dropped/process.php";
     NSURL *requestURL = [NSURL URLWithString:[NSString localizedStringWithFormat:@"%@?o=%ld", serverURL, (long)opCode]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
     request.HTTPMethod = @"POST";
+    request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
     
     // Serialize NSURLRequest body (JSON)
     // Automatically adds deviceID and userID
-    // (additional secret?)
     NSMutableDictionary *requestBody = [json mutableCopy];
-    requestBody[@"deviceID"] = self.deviceID;
-    requestBody[@"userID"] = self.userID;
+    requestBody[@"deviceID"] = self.deviceID ?: @"";
+    requestBody[@"userID"] = self.userID ?: @"";
+    
+    // TODO: store with deviceID pass
+    NSString *pass = [NSString stringWithFormat:@"%ld", (long)arc4random()];
+    requestBody[@"pass"] = pass;
+    
     NSError *error;
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:requestBody options:0 error:&error];
+    NSLog(@"Request body: %@", [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]);
     
     // Be free, little packets
-    [[self.urlSession dataTaskWithRequest:request
-                        completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-                            if (error) {
-                                completion(nil, error);
-                            } else {
-                                NSDictionary *responseBody = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
-                                completion(responseBody, error);
-                            }
-    }] resume];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        if (error) {
+            completion(nil, connectionError);
+        } else if (data) {
+            
+            NSLog(@"Recieved data: %@", data);
+            
+            NSDictionary *responseBody = [NSJSONSerialization JSONObjectWithData:data options:0 error:&connectionError];
+            completion(responseBody, error);
+        }
+    }];
 }
 
 #pragma mark DeviceID
@@ -89,6 +94,8 @@
                                                      arguments:@{}
                                                 withCompletion:^(NSDictionary *response, NSError *error) {
                                                     // TODO: cache generated deviceID
+                                                    
+                                                    NSLog(@"Generated deviceID: %@", response[@"deviceID"]);
                                                     completion();
         }];
     }

@@ -17,7 +17,7 @@ typedef NS_ENUM(NSInteger, DRPNetworkingOpCode) {
 
 + (instancetype)sharedNetworking;
 
-- (void)fetchDeviceIDWithCompletion:(void (^)())completion;
+- (void)fetchDeviceIDWithCompletion:(void (^)(BOOL))completion;
 
 - (void)aliasForDeviceID:(NSString *)deviceID withCompletion:(void (^)(NSString *))completion;
 - (void)aliasForUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion;

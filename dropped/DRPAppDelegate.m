@@ -28,7 +28,9 @@
     
     // tmp
     // Generate a deviceID
-    [[DRPNetworking sharedNetworking] fetchDeviceIDWithCompletion:^{}];
+    [[DRPNetworking sharedNetworking] fetchDeviceIDWithCompletion:^(BOOL foundDeviceID){
+        NSLog(@"got a deviceID: %d", foundDeviceID);
+    }];
     
     // Important networky things need to happen ASAP
     [TestFlight takeOff:@"e04eea5f-3c76-4cc7-a01d-79f12d9fa6ad"];

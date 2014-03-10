@@ -8,9 +8,11 @@
 
 #import "DRPNetworking.h"
 #import "FBSession.h"
+#import "DRPUtility.h"
 
 @interface DRPNetworking ()
 
+@property NSString *pass;
 @property NSString *deviceID;
 @property NSString *userID;
 
@@ -51,25 +53,20 @@
     requestBody[@"deviceID"] = self.deviceID ?: @"";
     requestBody[@"userID"] = self.userID ?: @"";
     
-    // TODO: store with deviceID pass
-    NSString *pass = [NSString stringWithFormat:@"%@",[DRPNetworking generateRandomString]];
-    requestBody[@"pass"] = pass;
-    
-    NSError *error;
-    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:requestBody options:0 error:&error];
-    NSLog(@"Request body: %@", [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]);
+    request.HTTPBody = [NSJSONSerialization dataWithJSONObject:requestBody options:0 error:nil];
     
     // Be free, little packets
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-        if (error) {
-            completion(nil, connectionError);
-        } else if (data) {
-            
-            NSLog(@"Recieved data: %@", data);
-            
-            NSDictionary *responseBody = [NSJSONSerialization JSONObjectWithData:data options:0 error:&connectionError];
-            completion(responseBody, error);
-        }
+    [NSURLConnection sendAsynchronousRequest:request
+                                       queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                               if (connectionError) {
+                                   completion(nil, connectionError);
+                                   
+                               } else if (data) {
+                                   NSError *error;
+                                   NSDictionary *responseBody = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+                                   completion(responseBody, error);
+                               }
     }];
 }
 
@@ -78,24 +75,37 @@
 + (void)fetchDeviceIDWithCompletion:(void (^)())completion {
     
     // Attempt to read cached deviceID (only if not already loaded)
+    NSURL *deviceURL = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory
+                                                               inDomains:NSUserDomainMask][0] URLByAppendingPathComponent:@"device.plist"];
     if (![DRPNetworking sharedNetworking].deviceID) {
-        NSURL *deviceURL = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory
-                                                                   inDomains:NSUserDomainMask][0] URLByAppendingPathComponent:@"device.plist"];
         [DRPNetworking sharedNetworking].deviceID = [NSDictionary dictionaryWithContentsOfURL:deviceURL][@"deviceID"];
+        [DRPNetworking sharedNetworking].pass = [NSDictionary dictionaryWithContentsOfURL:deviceURL][@"pass"];
     }
     
     if ([DRPNetworking sharedNetworking].deviceID) {
         // Already have a cached deviceID
+        NSLog(@"Loaded deviceID: %@", [DRPNetworking sharedNetworking].deviceID);
         completion();
         
     } else  {
-        // Don't have a deviceID locally, generate one
+        // Device didn't load deviceID, generate a new one on the server
+        
+        // Pass is generated locally
+        [DRPNetworking sharedNetworking].pass = generateUUID();
+        
+        // Don't have a deviceID locally, let the server generate one
         [[DRPNetworking sharedNetworking] networkRequestOpcode:DRPNetworkingOpCodeGenerateDeviceID
-                                                     arguments:@{}
+                                                     arguments:@{@"pass" : [DRPNetworking sharedNetworking].pass }
                                                 withCompletion:^(NSDictionary *response, NSError *error) {
-                                                    // TODO: cache generated deviceID
                                                     
-                                                    NSLog(@"Generated deviceID: %@", response[@"deviceID"]);
+                                                    [DRPNetworking sharedNetworking].deviceID = response[@"deviceID"];
+                                                    
+                                                    // Cache deviceID and pass
+                                                    NSDictionary *device = @{@"deviceID" : [DRPNetworking sharedNetworking].deviceID,
+                                                                             @"pass" : [DRPNetworking sharedNetworking].pass};
+                                                    [device writeToURL:deviceURL atomically:YES];
+                                                    
+                                                    NSLog(@"Generated new deviceID: %@", [DRPNetworking sharedNetworking].deviceID);
                                                     completion();
         }];
     }
@@ -135,18 +145,6 @@
 }
 
 + (void)concedeMatchID:(NSString *)matchID withCompletion:(void (^)())completion {
-}
-
-+ (NSString*)generateRandomString
-{
-    NSString *alphabet  = @"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXZY0123456789";
-    NSMutableString *s = [NSMutableString stringWithCapacity:20];
-    for (NSUInteger i = 0U; i < 20; i++) {
-        u_int32_t r = arc4random() % [alphabet length];
-        unichar c = [alphabet characterAtIndex:r];
-        [s appendFormat:@"%C", c];
-    }
-    return s;
 }
 
 @end

@@ -13,6 +13,7 @@ UIColor *colorForColor(DRPColor color);
 BOOL runningPhone5();
 CGPoint rectCenter(CGRect rect);
 NSString *firstPrintableCharacter(NSString *alias);
+NSString *generateUUID();
 
 // TODO: this function sucks
 CGFloat labelOffset(UIFont *font, CGFloat height);

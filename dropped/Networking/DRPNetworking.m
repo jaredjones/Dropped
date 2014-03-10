@@ -168,6 +168,7 @@
 - (void)aliasForDeviceID:(NSString *)deviceID withCompletion:(void (^)(NSString *))completion {
 }
 
+// opcode 2, recieves userID only
 - (void)aliasForUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion {
 }
 

@@ -10,5 +10,7 @@
 	<false/>
 	<key>playBackEntireMatch</key>
 	<false/>
+	<key>purgeDeviceID</key>
+	<false/>
 </dict>
 </plist>

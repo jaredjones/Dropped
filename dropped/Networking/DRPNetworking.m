@@ -7,8 +7,10 @@
 //
 
 #import "DRPNetworking.h"
-#import "FBSession.h"
+#import "FRBSwatchist.h"
 #import "DRPUtility.h"
+
+#import "FBSession.h"
 
 @interface DRPNetworking ()
 
@@ -42,7 +44,7 @@
 - (void)networkRequestOpcode:(NSInteger)opCode arguments:(NSDictionary *)json withCompletion:(void (^)(NSDictionary *, NSError *))completion
 {
     NSString *serverURL = @"http://chaos.uvora.com/dropped/process.php";
-    NSURL *requestURL = [NSURL URLWithString:[NSString localizedStringWithFormat:@"%@?o=%ld", serverURL, (long)opCode]];
+    NSURL *requestURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@?o=%ld", serverURL, (long)opCode]];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:requestURL];
     request.HTTPMethod = @"POST";
     request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
@@ -77,7 +79,7 @@
     // Attempt to read cached deviceID (only if not already loaded)
     NSURL *deviceURL = [[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory
                                                                inDomains:NSUserDomainMask][0] URLByAppendingPathComponent:@"device.plist"];
-    if (![DRPNetworking sharedNetworking].deviceID) {
+    if (![DRPNetworking sharedNetworking].deviceID && ![FRBSwatchist boolForKey:@"debug.purgeDeviceID"]) {
         [DRPNetworking sharedNetworking].deviceID = [NSDictionary dictionaryWithContentsOfURL:deviceURL][@"deviceID"];
         [DRPNetworking sharedNetworking].pass = [NSDictionary dictionaryWithContentsOfURL:deviceURL][@"pass"];
     }

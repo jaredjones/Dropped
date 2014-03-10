@@ -97,7 +97,7 @@
                 completion(NO);
                 
             } else if (!valid) {
-                // Purge and try again with a newly generated pair
+                // Purge and start over with a newly generated pair
                 [self purgeDeviceIDPair];
                 [self fetchDeviceIDWithCompletion:completion];
                 

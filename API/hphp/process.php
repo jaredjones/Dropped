@@ -1,24 +1,25 @@
 <?php
 	$opcode = htmlspecialchars((isset($_GET['o']) ? $_GET['o'] : null));
 	if (!ctype_digit($opcode))
-    exit();
+		exit(); 
     
-    
-    try {
-        # MySQL with PDO_MYSQL
-        $host = "127.0.0.1";
-        $dbname = "REMOVED";
-        $dbuser = "REMOVED";
-        $dbpass = "REMOVED";
-        $DBH = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $dbpass);
-    }
-    catch(PDOException $e) {
-        exit();
-        #    echo $e->getMessage();
-    }
+	try
+	{
+		# MySQL with PDO_MYSQL
+		$host = "127.0.0.1";
+		$dbname = "REMOVED";
+		$dbuser = "REMOVED";
+		$dbpass = "REMOVED";
+		$DBH = new PDO("mysql:host=$host;dbname=$dbname", $dbuser, $dbpass);
+	}
+	catch(PDOException $e) {
+		exit();
+		#echo $e->getMessage();
+	}
+
 	switch($opcode)
 	{
-            //REQUEST DEVICEID
+		//REQUEST DEVICEID
 		case 0:
 			$randguid = 0;
 			//$guidpass = htmlspecialchars((isset($_GET['pass']) ? $_GET['pass'] : exit()));
@@ -46,13 +47,13 @@
 			echo json_encode($the_json);
 			exit();
             
-            break;
+		break;
             
-            //REQUEST ALIAS FOR FOR DEVICE ID
+		//REQUEST ALIAS FOR FOR DEVICE ID
 		case 1:
 			//$deviceid = htmlspecialchars((isset($_GET['devid']) ? $_GET['devid'] : exit()));
 			$data = json_decode(file_get_contents('php://input'));
-            $deviceid = $data->{'deviceID'};
+			$deviceid = $data->{'deviceID'};
 			if (empty($deviceid))
 				exit();
             
@@ -64,43 +65,43 @@
 			$the_json['alias'] = $alias;
 			echo json_encode($the_json);
 			exit();
-            break;
+		break;
             
-            //REQUEST ALIAS FOR USERID
+		//REQUEST ALIAS FOR USERID
 		case 2:
 			//$userID = htmlspecialchars((isset($_GET['userID']) ? $_GET['userID'] : exit()));
 			$data = json_decode(file_get_contents('php://input'));
-            $userID = $data->{'userID'};
+			$userID = $data->{'userID'};
             
-            if (empty($userID))
-                exit();
+			if (empty($userID))
+				exit();
             
-            $STH = $DBH->prepare("SELECT alias FROM users WHERE fbid=? LIMIT 1");
-            $STH->execute(array($userID));
-            $result = $STH->fetch();
-            $alias = $result["alias"];
+			$STH = $DBH->prepare("SELECT alias FROM users WHERE fbid=? LIMIT 1");
+			$STH->execute(array($userID));
+			$result = $STH->fetch();
+			$alias = $result["alias"];
             
-            $the_json['alias'] = $alias;
-            echo json_encode($the_json);
-            exit();
-            break;
+			$the_json['alias'] = $alias;
+			echo json_encode($the_json);
+			exit();
+		break;
             
-            //Set Alias for deviceID and Pass
-            //Returns new alias if success, else nothing shows up
+		//Set Alias for deviceID and Pass
+		//Returns new alias if success, else nothing shows up
 		case 3:
 			#$guidpass = htmlspecialchars((isset($_GET['pass']) ? $_GET['pass'] : exit()));
 			#$deviceID = htmlspecialchars((isset($_GET['deviceID']) ? $_GET['deviceID'] : exit()));
 			#$alias = htmlspecialchars((isset($_GET['alias']) ? $_GET['alias'] : exit()));
             
 			$data = json_decode(file_get_contents('php://input'));
-            $guidpass = $data->{'pass'};
+			$guidpass = $data->{'pass'};
 			$deviceID = $data->{'deviceID'};
 			$alias = $data->{'alias'};
 			if (empty($alias) || empty($deviceID) || empty($alias))
 				exit();
             
 			$STH = $DBH->prepare("SELECT * FROM users WHERE devid=? AND pass=? LIMIT 1");
-            $STH->execute(array($deviceID, $guidpass));
+			$STH->execute(array($deviceID, $guidpass));
             
 			if ($STH->rowCount() == 0)
 				exit();
@@ -110,52 +111,54 @@
 			$STH->execute(array($alias, $sqlID));
             
 			$the_json['alias'] = $alias;
-            echo json_encode($the_json);
-            break;
+			echo json_encode($the_json);
+		break;
             
-            //Set Alias for FBID and Pass//UPDATES ALL DEVIDs ASSOCIATED WITH
+		//Set Alias for FBID and Pass//UPDATES ALL DEVIDs ASSOCIATED WITH
 		case 4:
 			#$guidpass = htmlspecialchars((isset($_GET['pass']) ? $_GET['pass'] : exit()));
 			#$fbID = htmlspecialchars((isset($_GET['userID']) ? $_GET['userID'] : exit()));
-            #$alias = htmlspecialchars((isset($_GET['alias']) ? $_GET['alias'] : exit()));
+			#$alias = htmlspecialchars((isset($_GET['alias']) ? $_GET['alias'] : exit()));
             
 			$data = json_decode(file_get_contents('php://input'));
-            $guidpass = $data->{'pass'};
+			$guidpass = $data->{'pass'};
 			$fbID = $data->{'userID'};
 			$alias = $data->{'alias'};
+			
 			if (empty($alias) || empty($fbID) || empty($alias))
-                exit();
+                		exit();
             
 			$STH = $DBH->prepare("SELECT * FROM users WHERE fbid=? AND pass=? LIMIT 1");
-            $STH->execute(array($fbID, $guidpass));
+			$STH->execute(array($fbID, $guidpass));
             
-            if ($STH->rowCount() == 0)
-                exit();
+			if ($STH->rowCount() == 0)
+				exit();
             
 			$STH = $DBH->prepare("UPDATE users SET alias=? WHERE fbid=?");
-            $STH->execute(array($alias, $fbID));
+			$STH->execute(array($alias, $fbID));
             
 			$the_json['alias'] = $alias;
-            echo json_encode($the_json);
-            break;
+			echo json_encode($the_json);
+			
+		break;
             
-            //Request Match (NEEDS USERID AND FRIENDID SUPPORT ONCE FB IS IMPLEMENTED)
+		//Request Match (NEEDS USERID AND FRIENDID SUPPORT ONCE FB IS IMPLEMENTED)
 		case 5:
 			#$guidpass = htmlspecialchars((isset($_GET['pass']) ? $_GET['pass'] : exit()));
-            #$deviceID = htmlspecialchars((isset($_GET['deviceID']) ? $_GET['deviceID'] : exit()));
+			#$deviceID = htmlspecialchars((isset($_GET['deviceID']) ? $_GET['deviceID'] : exit()));
             
 			$data = json_decode(file_get_contents('php://input'));
-            $guidpass = $data->{'pass'};
+			$guidpass = $data->{'pass'};
 			$deviceID = $data->{'deviceID'};
             
 			if (empty($guidpass) || empty($deviceID))
 				exit();
             
 			$STH = $DBH->prepare("SELECT * FROM users WHERE devid=? AND pass=? LIMIT 1");
-            $STH->execute(array($deviceID, $guidpass));
+			$STH->execute(array($deviceID, $guidpass));
             
-            if ($STH->rowCount() == 0)
-                exit();
+			if ($STH->rowCount() == 0)
+				exit();
             
 			$result = $STH->fetch();
 			$sqlID = $result["id"];
@@ -181,12 +184,12 @@
 			exit();
             
 			//$STH = $DBH->prepare("SELECT * FROM matchlist WHERE ");
-            break;
+		break;
             
-            //Is a Pair Valid? Receives a deviceID and Pass, it will return validPair:1 if valid else validPair:0
+		//Is a Pair Valid? Receives a deviceID and Pass, it will return validPair:1 if valid else validPair:0
 		case 6:
 			$data = json_decode(file_get_contents('php://input'));
-            $guidpass = $data->{'pass'};
+			$guidpass = $data->{'pass'};
 			$deviceID = $data->{'deviceID'};
             
 			if (empty($guidpass) || empty($deviceID))
@@ -204,10 +207,66 @@
 			$the_json['validPair'] = 0;
 			echo json_encode($the_json);
 			exit();
-            break;
-            
+		break;
+
+		//Receives a MatchID and DeviceID then it returns matchData, isLocalPlayerTurn and remotePlayerAlias
+                case 7:
+			$data = json_decode(file_get_contents('php://input'));
+			$matchID = $data->{'matchID'};
+			$deviceID = $data->{'deviceID'};
+
+			if (empty($matchID) || empty($deviceID))
+				exit();
+
+			$STH = $DBH->prepare("SELECT firstuser, seconduser, turn, data FROM matchlist WHERE id = ? LIMIT 1");
+			$STH->execute(array($matchID));
+			
+			if ($STH->rowCount() == 0)
+				exit();
+
+			$result = $STH->fetch();
+			$firstUser = $result[0];
+			$secondUser = $result[1];
+			$turn = $result[2];
+			$dataBlob = $result[3];
+
+			$STH = $DBH->prepare("SELECT id FROM users WHERE devid=? LIMIT 1");
+			$STH->execute(array($deviceID));			
+			if ($STH->rowCount() == 0)
+				exit();
+			
+			$result = $STH->fetch();
+			$myID = $result[0];
+
+			$isLocalPlayerTurn = 0; //Assume opponents turn
+
+			if ($myID == $firstUser)
+			{
+				$opponent = $secondUser;
+				if ($turn == 0)
+					$isLocalPlayerTurn = 1;
+			}
+			else
+			{
+				$opponent = $firstUser;
+				if ($turn == 1)
+					$isLocalPlayerTurn = 1;
+			}
+
+			$STH = $DBH->prepare("SELECT alias FROM users WHERE id=?");
+			$STH->execute(array($opponent));
+			$result = $STH->fetch();
+			$opponentAlias = $result[0];
+
+			$the_json['matchData'] = $dataBlob;
+			$the_json['isLocalPlayerTurn'] = $isLocalPlayerTurn;
+			$the_json['remotePlayerAlias'] = $opponentAlias;
+
+			echo json_encode($the_json);
+			exit();
+		break;
+
 		default:
-            exit();
+		exit();
 	}
-    
-    ?>
+?>

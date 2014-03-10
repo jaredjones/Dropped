@@ -15,6 +15,8 @@ typedef NS_ENUM(NSInteger, DRPNetworkingOpCode) {
 
 @interface DRPNetworking : NSObject
 
+@property (readonly) NSString *deviceID, *userID;
+
 + (instancetype)sharedNetworking;
 
 - (void)fetchDeviceIDWithCompletion:(void (^)(BOOL))completion;
@@ -28,10 +30,11 @@ typedef NS_ENUM(NSInteger, DRPNetworkingOpCode) {
 - (void)disassociateFacebookWithCompletion:(void (^)())completion;
 - (void)facebookFriendsWithCompletion:(void (^)(NSArray *))completion;
 
+- (void)currentMatchIDsWithCompletion:(void (^)(NSArray *))completion;
 - (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *, BOOL, NSString *))completion;
-- (void)matchData:(NSString *)matchID withCompletion:(void (^)(NSData *))completion;
+- (void)matchDataForMatchID:(NSString *)matchID withCompletion:(void (^)(NSData *, NSInteger, NSString *))completion;
 
-- (void)submitMatchData:(NSData *)matchData forMatchID:(NSString *)matchID withCompletion:(void (^)())completion;
+- (void)submitMatchData:(NSData *)matchData forMatchID:(NSString *)matchID advanceTurn:(BOOL)advanceTurn withCompletion:(void (^)())completion;
 - (void)concedeMatchID:(NSString *)matchID withCompletion:(void (^)())completion;
 
 @end

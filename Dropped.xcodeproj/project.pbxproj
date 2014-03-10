@@ -24,7 +24,6 @@
 		A93D77C618566A8F006691AE /* DRPPageMatchmakerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77C518566A8F006691AE /* DRPPageMatchmakerViewController.m */; };
 		A93D77CC185673EF006691AE /* DRPPageSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77CB185673EF006691AE /* DRPPageSplashViewController.m */; };
 		A93D77CF18567D4B006691AE /* DRPPageLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77CE18567D4B006691AE /* DRPPageLogInViewController.m */; };
-		A93D77D21856A1F7006691AE /* DRPGameCenterInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77D11856A1F7006691AE /* DRPGameCenterInterface.m */; };
 		A93E9F29184AAC3B0047575A /* DRPMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93E9F28184AAC3B0047575A /* DRPMainViewController.m */; };
 		A959500718A3F33D006B42DA /* DRPMenuCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A959500618A3F33D006B42DA /* DRPMenuCollectionViewCell.m */; };
 		A959500A18A3F74D006B42DA /* list.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A959500818A3F514006B42DA /* list.plist */; };
@@ -133,8 +132,6 @@
 		A93D77CB185673EF006691AE /* DRPPageSplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageSplashViewController.m; path = ViewControllers/Pages/DRPPageSplashViewController.m; sourceTree = "<group>"; };
 		A93D77CD18567D4B006691AE /* DRPPageLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageLogInViewController.h; path = ViewControllers/Pages/DRPPageLogInViewController.h; sourceTree = "<group>"; };
 		A93D77CE18567D4B006691AE /* DRPPageLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageLogInViewController.m; path = ViewControllers/Pages/DRPPageLogInViewController.m; sourceTree = "<group>"; };
-		A93D77D01856A1F7006691AE /* DRPGameCenterInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRPGameCenterInterface.h; sourceTree = "<group>"; };
-		A93D77D11856A1F7006691AE /* DRPGameCenterInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRPGameCenterInterface.m; sourceTree = "<group>"; };
 		A93E9F27184AAC3B0047575A /* DRPMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMainViewController.h; path = ViewControllers/DRPMainViewController.h; sourceTree = "<group>"; };
 		A93E9F28184AAC3B0047575A /* DRPMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMainViewController.m; path = ViewControllers/DRPMainViewController.m; sourceTree = "<group>"; };
 		A959500518A3F33D006B42DA /* DRPMenuCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMenuCollectionViewCell.h; path = Views/DRPMenuCollectionViewCell.h; sourceTree = "<group>"; };
@@ -281,7 +278,6 @@
 				A9204055183704C1006940B8 /* Views */,
 				A9204056183704D7006940B8 /* Models */,
 				A9E4A44718CBE8260085CA57 /* Networking */,
-				A9ACB3C21883129800B0B9D9 /* Game Center */,
 				A9C0FAD31864F6D000377B0E /* Utility */,
 				A91D8F5A183702EE00BEC6E8 /* Images.xcassets */,
 				C08CBC121837168800CE678F /* Resources */,
@@ -514,15 +510,6 @@
 			name = Swatches;
 			sourceTree = "<group>";
 		};
-		A9ACB3C21883129800B0B9D9 /* Game Center */ = {
-			isa = PBXGroup;
-			children = (
-				A93D77D01856A1F7006691AE /* DRPGameCenterInterface.h */,
-				A93D77D11856A1F7006691AE /* DRPGameCenterInterface.m */,
-			);
-			name = "Game Center";
-			sourceTree = "<group>";
-		};
 		A9ACB3CC18838A5A00B0B9D9 /* CollectionViewCells */ = {
 			isa = PBXGroup;
 			children = (
@@ -722,7 +709,6 @@
 				A9C0FACF1864DE7700377B0E /* DRPBoardViewController.m in Sources */,
 				A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */,
 				A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */,
-				A93D77D21856A1F7006691AE /* DRPGameCenterInterface.m in Sources */,
 				A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */,
 				A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */,
 				C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */,

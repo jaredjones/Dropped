@@ -13,7 +13,6 @@
 #import "DRPCollectionDataItem.h"
 #import "DRPMenuCollectionViewCell.h"
 
-#import "DRPGameCenterInterface.h"
 #import "FRBSwatchist.h"
 #import "DRPUtility.h"
 
@@ -29,16 +28,8 @@
 {
     self = [super initWithPageID:DRPPageLogIn];
     if (self) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(localPlayerAuthenticated)
-                                                     name:DRPGameCenterLocalPlayerAuthenticatedNotificationName
-                                                   object:nil];
     }
     return self;
-}
-
-- (void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark View Loading
@@ -60,6 +51,9 @@
             dataItem.itemID = @"No Thanks";
             dataItem.cellIdentifier = @"menuCell";
             dataItem.userData = @{@"color" : @(DRPColorNil), @"text" : @"No Thanks"};
+            dataItem.selected = ^(id userData) {
+                [self skipSignInButtonPressed];
+            };
             dataItem;
         })];
     }];
@@ -74,13 +68,12 @@
 
 - (void)signInButtonPressed
 {
-    if ([DRPGameCenterInterface authenticationViewController]) {
-        [self presentViewController:[DRPGameCenterInterface authenticationViewController] animated:YES completion:nil];
-    } else {
-        // Dumb user hit Cancel. Only option now is to sign in through Game Center app.
-        // Fuck, I hate Game Center
-        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"gamecenter://"]];
-    }
+    NSLog(@"Facebook signin not supported yet.");
+}
+
+- (void)skipSignInButtonPressed
+{
+    [self localPlayerAuthenticated];
 }
 
 #pragma mark Notifications

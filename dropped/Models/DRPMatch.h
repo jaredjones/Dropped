@@ -7,9 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <GameKit/GameKit.h>
-
-#define DRPGameCenterReceivedLocalTurnNotificationName @"DRPGameCenterReceivedLocalTurnNotification"
 
 @class DRPPlayer, DRPBoard, DRPPlayedWord;
 
@@ -18,13 +15,12 @@
 @property (readonly) NSString *matchID;
 
 @property (readonly) DRPBoard *board;
-@property (readonly) GKTurnBasedMatch *gkMatch;
 @property (readonly) NSArray *players;
+@property (readonly) NSInteger localPlayerTurn;
 
-// Loaded from Cache
-- (instancetype)initWithMatchID:(NSString *)matchID;
-// Created fresh
-- (instancetype)initWithGKMatch:(GKTurnBasedMatch *)gkMatch;
+// Takes a trip to the server to load matchData
++ (void)matchWithMatchID:(NSString *)matchID completion:(void (^)(DRPMatch *))completion;
++ (void)newMatchWithCompletion:(void (^)(DRPMatch *))completion;
 
 // Shit ton of convenience methods that require menial calculation
 - (NSInteger)numberOfTurns;
@@ -40,8 +36,7 @@
 - (DRPPlayer *)playerForTurn:(NSInteger)turn;
 - (BOOL)isLocalPlayerTurn;
 
-// Game Center interaction
-- (void)reloadPlayerAliases;
+// Server Interaction
 - (void)reloadMatchDataWithCompletion:(void(^)(BOOL newTurns))completion;
 - (void)submitTurnForPositions:(NSArray *)positions;
 

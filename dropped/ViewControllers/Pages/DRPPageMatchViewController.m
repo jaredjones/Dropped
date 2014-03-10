@@ -14,7 +14,6 @@
 #import "DRPBoard.h"
 #import "DRPPlayedWord.h"
 
-#import "DRPGameCenterInterface.h"
 #import "DRPDictionary.h"
 #import "DRPGreedyScrollView.h"
 
@@ -43,15 +42,6 @@
     self = [super initWithPageID:DRPPageMatch];
     if (self) {
         self.bottomCue = @"Back";
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(gameCenterReceivedLocalTurn:)
-                                                     name:DRPGameCenterReceivedLocalTurnNotificationName
-                                                   object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(receivedRemoteGameCenterTurn:)
-                                                     name:DRPGameCenterReceivedRemoteTurnNotificationName
-                                                object:nil];
     }
     return self;
 }
@@ -211,8 +201,6 @@
                                      isLocalTurn:self.match.isLocalPlayerTurn
                                    fromDirection:[self currentWordDirectionForPlayer:self.match.currentPlayer]];
     }
-
-    [self.match reloadPlayerAliases];
 }
 
 - (void)loadTurn:(NSInteger)turn
@@ -397,26 +385,6 @@
     [self.boardViewController deselectCurrentWord];
     [self setHeaderViewControllerTurn:self.match.currentTurn];
     [self resetCues];
-}
-
-#pragma mark Remote Turns
-
-- (void)gameCenterReceivedLocalTurn:(NSNotification *)notification
-{
-    [self advanceRenderedTurnToTurn:self.match.currentTurn];
-}
-
-- (void)receivedRemoteGameCenterTurn:(NSNotification *)notification
-{
-    GKTurnBasedMatch *gkMatch = notification.userInfo[@"gkMatch"];
-    if (![self.match.gkMatch.matchID isEqualToString:gkMatch.matchID]) return;
-
-    [self.match reloadMatchDataWithCompletion:^(BOOL newTurns) {
-        if (newTurns) {
-            // TODO: make sure the match is not being replayed when this happens
-            [self advanceRenderedTurnToTurn:self.match.currentTurn];
-        }
-    }];
 }
 
 #pragma mark DRPHeaderViewControllerDelegate

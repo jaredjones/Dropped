@@ -10,10 +10,6 @@
 #import "DRPCollectionDataItem.h"
 #import "DRPCollectionViewCell.h"
 
-#import "DRPMatch.h"
-#import "DRPGameCenterInterface.h"
-#import <GameKit/GameKit.h>
-
 @interface DRPCollectionViewDataSource ()
 
 @property NSMutableArray *dataItems;

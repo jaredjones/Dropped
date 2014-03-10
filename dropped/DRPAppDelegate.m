@@ -8,33 +8,23 @@
 
 #import "DRPAppDelegate.h"
 #import "DRPMainViewController.h"
-#import "DRPGameCenterInterface.h"
 #import "FRBSwatchist.h"
 
 #import "DRPDictionary.h"
-#import "DRPNetworking.h"
 #import "TestFlight.h"
 
 @implementation DRPAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Initalize RemoteServices
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
-     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
-    
     [self loadSwatches];
     srandomdev();
     
-    // tmp
-    // Generate a deviceID
-    [[DRPNetworking sharedNetworking] fetchDeviceIDWithCompletion:^(BOOL foundDeviceID){
-        NSLog(@"got a deviceID: %d", foundDeviceID);
-    }];
-    
     // Important networky things need to happen ASAP
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge |
+                                                                          UIRemoteNotificationTypeSound |
+                                                                          UIRemoteNotificationTypeAlert];
     [TestFlight takeOff:@"e04eea5f-3c76-4cc7-a01d-79f12d9fa6ad"];
-    [DRPGameCenterInterface authenticateLocalPlayer];
     [DRPDictionary syncDictionary];
     
     // RootViewController

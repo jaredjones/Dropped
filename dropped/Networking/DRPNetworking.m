@@ -15,8 +15,8 @@
 @interface DRPNetworking ()
 
 @property NSString *pass;
-@property NSString *deviceID;
-@property NSString *userID;
+@property (readwrite) NSString *deviceID;
+@property (readwrite) NSString *userID;
 
 @property NSURL *deviceURL;
 @property NSMutableDictionary *cachedAliases;
@@ -189,15 +189,23 @@
 
 #pragma mark Matches
 
+- (void)currentMatchIDsWithCompletion:(void (^)(NSArray *))completion {
+    completion(nil);
+}
+
 // opcode 5, recieves deviceID/pass and userID
+// TODO: rematch method that takes deviceID/pass and previous matchID
 - (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *, BOOL, NSString *))completion {
 }
 
-// opcode 7, recieves matchID, deviceID, userID -> matchData, isLocalPlayerTurn, remotePlayerAlias
-- (void)matchData:(NSString *)matchID withCompletion:(void (^)(NSData *))completion {
+// opcode 7, recieves matchID, deviceID, userID -> matchData, isLocalPlayerTurn, remotePlayerAlias (only if available)
+
+// TODO: opcode 7 should return localPlayerTurn, not isLocalPlayerTurn (integer instead of BOOL)
+// TODO: Make sure this works if there haven't been any turns submitted yet
+- (void)matchDataForMatchID:(NSString *)matchID withCompletion:(void (^)(NSData *, NSInteger, NSString *))completion {
 }
 
-- (void)submitMatchData:(NSData *)matchData forMatchID:(NSString *)matchID withCompletion:(void (^)())completion {
+- (void)submitMatchData:(NSData *)matchData forMatchID:(NSString *)matchID advanceTurn:(BOOL)advanceTurn withCompletion:(void (^)())completion {
 }
 
 - (void)concedeMatchID:(NSString *)matchID withCompletion:(void (^)())completion {

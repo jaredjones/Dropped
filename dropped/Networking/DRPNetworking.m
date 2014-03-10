@@ -18,8 +18,8 @@
 @property NSString *deviceID;
 @property NSString *userID;
 
-@property NSString *cachedAlias;
 @property NSURL *deviceURL;
+@property NSMutableDictionary *cachedAliases;
 
 // Social
 @property FBSession *fbSession;
@@ -79,6 +79,7 @@
 
 #pragma mark DeviceID
 
+// opcode 0, recieves pass
 - (void)fetchDeviceIDWithCompletion:(void (^)(BOOL))completion
 {    
     // Attempt to read cached deviceID (only if not already loaded)
@@ -129,6 +130,7 @@
     }
 }
 
+// opcode 6, recieves deviceID/pass
 - (void)validateDeviceIDPairWithCompletion:(void (^)(BOOL, NSError *))completion
 {
     [self networkRequestOpcode:DRPNetworkingDeviceIDPairValidation
@@ -162,12 +164,15 @@
 
 #pragma mark Aliases
 
+// opcode 1, recieves deviceID only
 - (void)aliasForDeviceID:(NSString *)deviceID withCompletion:(void (^)(NSString *))completion {
 }
 
 - (void)aliasForUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion {
 }
 
+// opcode 3, receives deviceID/pass and alias
+// opcode 4, recieves userID/pass and alias
 - (void)setAlias:(NSString *)alias withCompletion:(void (^)(NSString *))completion {
 }
 
@@ -184,9 +189,11 @@
 
 #pragma mark Matches
 
+// opcode 5, recieves deviceID/pass and userID
 - (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *, BOOL, NSString *))completion {
 }
 
+// opcode 7, recieves matchID, deviceID, userID -> matchData, isLocalPlayerTurn, remotePlayerAlias
 - (void)matchData:(NSString *)matchID withCompletion:(void (^)(NSData *))completion {
 }
 

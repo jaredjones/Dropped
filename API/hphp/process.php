@@ -192,14 +192,10 @@
 					$STH2 = $DBH->prepare("SELECT id FROM matchlist WHERE firstuser=? OR seconduser=? AND firstuser!=seconduser");
 					$STH2->execute(array($myID, $myID));
 			
-					//$idArray = array();
-					$matchIDArraySize = count($matchIDArray);
 					for ($j = 0; $j < $STH2->rowCount(); $j++)
 					{
 						$result2 = $STH2->fetch(PDO::FETCH_ASSOC);
 						array_push($matchIDArray, $result2['id']);
-						//$matchIDArray[$i + $matchIDArraySize] =  $result2['id'];
-				
 					}
 				}
 				$the_json['matchIDs'] = $matchIDArray;
@@ -238,7 +234,7 @@
 			#$guidpass = htmlspecialchars((isset($_GET['pass']) ? $_GET['pass'] : exit()));
 			#$deviceID = htmlspecialchars((isset($_GET['deviceID']) ? $_GET['deviceID'] : exit()));
             		
-			$emptyManually = "{\"matchID\":\"null\"}";
+			$emptyManually = "{\"matchID\":\"null\", \"localPlayerTurn\":\"null\"}";
 
 			$data = json_decode(file_get_contents('php://input'));
 			$guidpass = $data->{'pass'};
@@ -256,13 +252,14 @@
 			$result = $STH->fetch();
 			$sqlID = $result["id"];
             
-			$STH = $DBH->prepare("SELECT @tmpID := id FROM matchlist WHERE seconduser IS NULL AND active=1 AND firstuser!=? ORDER BY time ASC LIMIT 1 FOR UPDATE; UPDATE matchlist SET seconduser=? WHERE id=@tmpID; SELECT @tmpID;");
+			$STH = $DBH->prepare("SELECT @tmpID := id FROM matchlist WHERE seconduser IS NULL AND active=1 AND firstuser!=? ORDER BY start_time ASC LIMIT 1 FOR UPDATE; UPDATE matchlist SET seconduser=? WHERE id=@tmpID; SELECT @tmpID;");
 			$STH->execute(array($sqlID, $sqlID));
 			$result = $STH->fetch();
 			$tmpVar = $result[0];
 			if (!empty($tmpVar))
 			{
 				$the_json['matchID'] = $tmpVar;
+				$the_json['localPlayerTurn'] = 1;
 				echo json_encode($the_json);
 				//PLAYER NEEDS TO GET A PUSH NOTIFICATION HERE INFORMING THEM THAT SOMEONE JOINED THE MATCH!!!!!!
 				exit();
@@ -273,15 +270,16 @@
 			$matchID = $DBH->lastInsertId();
             
 			$the_json['matchID'] = $matchID;
+			$the_json['localPlayerTurn'] = 0;
 			echo json_encode($the_json);
 			exit();
             
 			//$STH = $DBH->prepare("SELECT * FROM matchlist WHERE ");
 		break;
             
-		//Receives a MatchID and DeviceID then it returns matchData, localPlayerTurn and remotePlayerAlias
+		//Receives a MatchID and DeviceID then it returns matchData, localPlayerTurn, remotePlayerAlias, and matchStatus
                 case 13:
-			$emptyManually = "{\"matchData\":\"null\", \"localPlayerTurn\":\"null\", \"remotePlayerAlias\":\"null\"}";
+			$emptyManually = "{\"matchData\":\"null\", \"localPlayerTurn\":\"null\", \"remotePlayerAlias\":\"null\", \"matchStatus\":\"null\"}";
 
 			$data = json_decode(file_get_contents('php://input'));
 			$matchID = $data->{'matchID'};
@@ -290,7 +288,7 @@
 			if (empty($matchID) || empty($deviceID))
 				exit($emptyManually);
 
-			$STH = $DBH->prepare("SELECT firstuser, seconduser, turn, data FROM matchlist WHERE id = ? LIMIT 1");
+			$STH = $DBH->prepare("SELECT firstuser, seconduser, turn, data, active FROM matchlist WHERE id = ? LIMIT 1");
 			$STH->execute(array($matchID));
 			
 			if ($STH->rowCount() == 0)
@@ -301,6 +299,7 @@
 			$secondUser = $result[1];
 			$turn = $result[2];
 			$dataBlob = $result[3];
+			$matchStatus = $result[4];
 
 			$STH = $DBH->prepare("SELECT id FROM users WHERE devid=? LIMIT 1");
 			$STH->execute(array($deviceID));			
@@ -310,20 +309,26 @@
 			$result = $STH->fetch();
 			$myID = $result[0];
 
-			$localPlayerTurn = 0; //Assume opponents turn
+			
+			if ($myID != $firstUser && $myID != $secondUser)
+				exit($emptyManually);
 
+			//$localPlayerTurn = 0; //Assume opponents turn
 			if ($myID == $firstUser)
 			{
 				$opponent = $secondUser;
-				if ($turn == 0)
-					$localPlayerTurn = 1;
+				$localPlayerTurn = 0;
+				/*if ($turn == 0)
+					$localPlayerTurn = 1;*/
 			}
 			else
 			{
 				$opponent = $firstUser;
-				if ($turn == 1)
-					$localPlayerTurn = 1;
+				$localPlayerTurn = 1;
+				/*if ($turn == 1)
+					$localPlayerTurn = 1;*/
 			}
+
 
 			$STH = $DBH->prepare("SELECT alias FROM users WHERE id=?");
 			$STH->execute(array($opponent));
@@ -333,6 +338,7 @@
 			$the_json['matchData'] = $dataBlob;
 			$the_json['localPlayerTurn'] = $localPlayerTurn;
 			$the_json['remotePlayerAlias'] = $opponentAlias;
+			$the_json['matchStatus'] = $matchStatus;
 
 			echo json_encode($the_json);
 			exit();

@@ -115,15 +115,18 @@ Methods
 - Submit Turn
     - POST opcode 14
     - Request:
-        - { "deviceID"  : "...",
-            "userID"    : "...",
-            "pass"      : "...",
-            "matchData" : "..." }
+        - { "deviceID"      : "...",
+            "userID"        : "...",
+            "pass"          : "...",
+            "advanceTurn"   : "0 or 1"
+            "matchData"     : "..." }
     - Response
         - { "matchStatus" : "..." }
 
     - Pass in new matchData
     - Make sure to keep track of how many moves have been made in a game and don't accept turn submissions past that
+    - Don't advance the turn unless advanceTurn == 1. That way initial matchData can be saved when the first player's
+      client generates the match
     - Advances the game and possibly ends it (visible in the matchStatus passed back)
 
 - Concede Match

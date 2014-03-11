@@ -56,7 +56,7 @@
     
     // Serialize NSURLRequest body (JSON)
     // Automatically adds deviceID and userID
-    NSMutableDictionary *requestBody = [json mutableCopy];
+    NSMutableDictionary *requestBody = [(json ?: @{}) mutableCopy];
     requestBody[@"deviceID"] = self.deviceID ?: @"";
     requestBody[@"userID"] = self.userID ?: @"";
     
@@ -185,13 +185,30 @@
 #pragma mark Matches
 
 - (void)currentMatchIDsWithCompletion:(void (^)(NSArray *))completion {
-    completion(nil);
+    [self networkRequestOpcode:DRPNetworkingGetMatchIDs arguments:nil withCompletion:^(NSDictionary *response, NSError *error) {
+        completion(response[@"matchIDs"]);
+    }];
 }
 
-- (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *, BOOL, NSString *))completion {
+- (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *))completion {
+    
+    NSMutableDictionary *args = [[NSMutableDictionary alloc] init];
+    if (userID) {
+        args[@"friendID"] = userID;
+    }
+    args[@"pass"] = self.pass;
+    
+    [self networkRequestOpcode:DRPNetworkingRequestMatch arguments:args withCompletion:^(NSDictionary *response, NSError *error) {
+        NSLog(@"request match %@", response);
+        completion(response[@"matchID"]);
+    }];
 }
 
 - (void)matchDataForMatchID:(NSString *)matchID withCompletion:(void (^)(NSData *, NSInteger, NSString *))completion {
+    [self networkRequestOpcode:DRPNetworkingGetMatchData arguments:@{@"matchID" : matchID } withCompletion:^(NSDictionary *response, NSError *error) {
+        NSLog(@"get matchData %@", response);
+        completion(nil, 0, nil);
+    }];
 }
 
 - (void)submitMatchData:(NSData *)matchData forMatchID:(NSString *)matchID advanceTurn:(BOOL)advanceTurn withCompletion:(void (^)())completion {

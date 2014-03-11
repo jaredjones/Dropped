@@ -37,8 +37,16 @@
 
 + (void)newMatchWithCompletion:(void (^)(DRPMatch *))completion
 {
-    // TODO: request new matchID, then instantiate a DRPMatch
-    completion(nil);
+    [[DRPNetworking sharedNetworking] requestMatchWithFriend:nil withCompletion:^(NSString *matchID) {
+        if (!matchID) {
+            completion(nil);
+        }
+        
+        DRPMatch *match = [[DRPMatch alloc] initWithMatchID:matchID];
+        [match reloadMatchDataWithCompletion:^(BOOL newTurns) {
+            completion(match);
+        }];
+    }];
 }
 
 - (instancetype)initWithMatchID:(NSString *)matchID
@@ -168,7 +176,7 @@
 
 - (DRPPlayer *)localPlayer
 {
-    return self.players[self.isLocalPlayerTurn];
+    return self.players[self.localPlayerTurn];
 }
 
 - (DRPPlayer *)remotePlayer

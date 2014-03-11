@@ -60,7 +60,9 @@
                         
                         dataItem.cellIdentifier = @"matchCell";
                         dataItem.selected = ^(DRPMatch *match) {
-                            [wkSelf.mainViewController setCurrentPageID:DRPPageMatch animated:YES userInfo:@{@"match" : match}];
+                            if (match) {
+                                [wkSelf.mainViewController setCurrentPageID:DRPPageMatch animated:YES userInfo:@{@"match" : match}];
+                            }
                         };
                         dataItem;
                     })];

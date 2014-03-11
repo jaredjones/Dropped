@@ -24,6 +24,7 @@
 @end
 
 @implementation DRPPageCollectionViewController
+@synthesize scrollView = _scrollView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

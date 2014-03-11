@@ -13,8 +13,6 @@
 #import "DRPUtility.h"
 #import "DRPPlayer.h"
 
-static long const PrivateKVOContext;
-
 @interface DRPMatchPlayerView ()
 
 @property DRPTileView *tile;

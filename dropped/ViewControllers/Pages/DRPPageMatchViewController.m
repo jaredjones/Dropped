@@ -36,6 +36,7 @@
 @end
 
 @implementation DRPPageMatchViewController
+@synthesize scrollView = _scrollView;
 
 - (id)init
 {

@@ -119,6 +119,7 @@ Methods
             "userID"        : "...",
             "pass"          : "...",
             "advanceTurn"   : "0 or 1"
+            "matchID"       : "...",
             "matchData"     : "..." }
     - Response
         - { "matchStatus" : "..." }

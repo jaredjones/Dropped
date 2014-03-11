@@ -229,7 +229,7 @@
     NSDictionary *args = @{@"pass" : self.pass,
                            @"matchData" : [[NSString alloc] initWithData:matchData encoding:NSUTF8StringEncoding],
                            @"matchID" : matchID,
-                           @"advanceTurn" : @(advanceTurn)};
+                           @"advanceTurn" : @((int)advanceTurn)};
     
     [self networkRequestOpcode:DRPNetworkingSubmitMatchTurn arguments:args withCompletion:^(NSDictionary *response, NSError *error) {
     }];

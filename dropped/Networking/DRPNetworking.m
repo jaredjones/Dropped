@@ -190,7 +190,7 @@
     }];
 }
 
-- (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *))completion {
+- (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *, NSInteger))completion {
     
     NSMutableDictionary *args = [[NSMutableDictionary alloc] init];
     if (userID) {
@@ -200,7 +200,7 @@
     
     [self networkRequestOpcode:DRPNetworkingRequestMatch arguments:args withCompletion:^(NSDictionary *response, NSError *error) {
         NSLog(@"request match %@", response);
-        completion(response[@"matchID"]);
+        completion(response[@"matchID"], [response[@"localPlayerTurn"] integerValue]);
     }];
 }
 

@@ -38,7 +38,7 @@ typedef NS_ENUM(NSInteger, DRPNetworkingOpCode) {
 - (void)facebookFriendsWithCompletion:(void (^)(NSArray *))completion;
 
 - (void)currentMatchIDsWithCompletion:(void (^)(NSArray *))completion;
-- (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *))completion;
+- (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *, NSInteger))completion;
 - (void)matchDataForMatchID:(NSString *)matchID withCompletion:(void (^)(NSData *, NSInteger, NSString *))completion;
 
 - (void)submitMatchData:(NSData *)matchData forMatchID:(NSString *)matchID advanceTurn:(BOOL)advanceTurn withCompletion:(void (^)())completion;

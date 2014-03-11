@@ -216,11 +216,11 @@
 - (void)matchDataForMatchID:(NSString *)matchID withCompletion:(void (^)(NSData *, NSInteger, NSString *))completion {
     [self networkRequestOpcode:DRPNetworkingGetMatchData arguments:@{@"matchID" : matchID } withCompletion:^(NSDictionary *response, NSError *error) {
         
-        NSLog(@"get matchData %@", response);
+        NSString *remotePlayerAlias = response[@"remotePlayerAlias"] != (id)[NSNull null] ? response[@"remotePlayerAlias"] : nil;
         
         completion([(NSString *)response[@"matchData"] dataUsingEncoding:NSUTF8StringEncoding],
                    [response[@"localPlayerTurn"] integerValue],
-                   response[@"remotePlayerAlias"]);
+                   remotePlayerAlias);
     }];
 }
 

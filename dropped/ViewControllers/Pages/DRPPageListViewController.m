@@ -49,12 +49,26 @@
         [[DRPNetworking sharedNetworking] currentMatchIDsWithCompletion:^(NSArray *matchIDs) {
             
             NSMutableArray *dataItems = [[NSMutableArray alloc] init];
+            __block NSInteger dataResponsesReceived = 0;
+            
+            // TODO: compute how many _new_ matchIDs there are instead of using matchIDs.count
             
             for (NSString *matchID in matchIDs) {
                 if (![wkSelf.dataSource dataItemForID:matchID]) {
                     [dataItems addObject:({
                         DRPCollectionDataItem *dataItem = [[DRPCollectionDataItem alloc] init];
                         dataItem.itemID = matchID;
+                        
+                        [DRPMatch matchWithMatchID:matchID completion:^(DRPMatch *match) {
+                            
+                            dataItem.userData = match;
+                            
+                            // Call the completion handler once all of the new matchIDs have loaded data
+                            dataResponsesReceived += 1;
+                            if (dataResponsesReceived >= matchIDs.count) {
+                                completion(dataItems);
+                            }
+                        }];
                         
                         dataItem.userData = nil; // TODO: load the match
                         
@@ -68,9 +82,6 @@
                     })];
                 }
             }
-            
-            completion(dataItems);
-            
         }];
     };
 }

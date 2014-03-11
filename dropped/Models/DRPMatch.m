@@ -87,9 +87,20 @@
 {
     [[DRPNetworking sharedNetworking] matchDataForMatchID:self.matchID withCompletion:^(NSData *matchData, NSInteger localPlayerTurn, NSString *remotePlayerAlias) {
         
-        NSInteger turns = self.board.currentTurn;
-        [self.board appendNewData:matchData];
-        BOOL newTurns = self.board.currentTurn > turns;
+        BOOL newTurns;
+        
+        // If this is the first time the matchData is loaded, initialize a DRPBoard and load the players
+        if (!self.board) {
+            self.board = [[DRPBoard alloc] initWithMatchData:matchData];
+            self.localPlayerTurn = localPlayerTurn;
+            [self loadPlayers];
+            newTurns = YES;
+            
+        } else {
+            NSInteger turns = self.board.currentTurn;
+            [self.board appendNewData:matchData];
+            newTurns = self.board.currentTurn > turns;
+        }
         
         self.remotePlayer.alias = remotePlayerAlias;
         [self reloadPlayerScores];

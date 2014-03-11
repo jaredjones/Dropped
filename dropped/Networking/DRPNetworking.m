@@ -62,10 +62,19 @@
     
     request.HTTPBody = [NSJSONSerialization dataWithJSONObject:requestBody options:0 error:nil];
     
+    if ([FRBSwatchist boolForKey:@"debug.printNetworkingActivity"]) {
+        NSLog(@"OpCode %ld (request): %@", (long)opCode, [[NSString alloc] initWithData:request.HTTPBody encoding:NSUTF8StringEncoding]);
+    }
+    
     // Be free, little packets
     [NSURLConnection sendAsynchronousRequest:request
                                        queue:[NSOperationQueue mainQueue]
                            completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                               
+                               if ([FRBSwatchist boolForKey:@"debug.printNetworkingActivity"]) {
+                                   NSLog(@"OpCode %ld (response): %@", (long)opCode, [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+                               }
+                               
                                if (connectionError) {
                                    completion(nil, connectionError);
                                    
@@ -206,12 +215,24 @@
 
 - (void)matchDataForMatchID:(NSString *)matchID withCompletion:(void (^)(NSData *, NSInteger, NSString *))completion {
     [self networkRequestOpcode:DRPNetworkingGetMatchData arguments:@{@"matchID" : matchID } withCompletion:^(NSDictionary *response, NSError *error) {
+        
         NSLog(@"get matchData %@", response);
-        completion(nil, 0, nil);
+        
+        completion([(NSString *)response[@"matchData"] dataUsingEncoding:NSUTF8StringEncoding],
+                   [response[@"localPlayerTurn"] integerValue],
+                   response[@"remotePlayerAlias"]);
     }];
 }
 
 - (void)submitMatchData:(NSData *)matchData forMatchID:(NSString *)matchID advanceTurn:(BOOL)advanceTurn withCompletion:(void (^)())completion {
+    
+    NSDictionary *args = @{@"pass" : self.pass,
+                           @"matchData" : [[NSString alloc] initWithData:matchData encoding:NSUTF8StringEncoding],
+                           @"advanceTurn" : @(advanceTurn)};
+    
+    [self networkRequestOpcode:DRPNetworkingSubmitMatchTurn arguments:args withCompletion:^(NSDictionary *response, NSError *error) {
+    }];
+    
 }
 
 - (void)concedeMatchID:(NSString *)matchID withCompletion:(void (^)())completion {

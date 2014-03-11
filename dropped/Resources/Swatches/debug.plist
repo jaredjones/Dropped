@@ -4,6 +4,8 @@
 <dict>
 	<key>dictionaryDownloadURL</key>
 	<string>http://chaos.uvora.com/dropped/</string>
+	<key>printNetworkingActivity</key>
+	<true/>
 	<key>singlePlayerMode</key>
 	<false/>
 	<key>playBackEntireMatch</key>

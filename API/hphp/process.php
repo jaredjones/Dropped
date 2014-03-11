@@ -17,17 +17,23 @@
 		#echo $e->getMessage();
 	}
 
+	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+	header("Cache-Control: post-check=0, pre-check=0", false);
+	header("Pragma: no-cache");
+	header('Content-type:application/json');
+
 	switch($opcode)
 	{
 		//REQUEST DEVICEID
 		case 0:
+			$emptyManually = "{\"deviceID\":\"null\"}";
 			$randguid = 0;
 			//$guidpass = htmlspecialchars((isset($_GET['pass']) ? $_GET['pass'] : exit()));
 			$data = json_decode(file_get_contents('php://input'));
 			$guidpass = $data->{'pass'};
             
 			if (empty($guidpass))
-				exit();
+				exit($emptyManually);
 			for ($i = 0; $i < 5; $i++)
 			{
 				$randguid = sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
@@ -37,26 +43,64 @@
 				if ($STH->rowCount() == 0)
 					break;
 				if ($i == 4)//We couldn't generate a unique after 5 turns? Uh Exit...
-					exit();
+					exit($emptyManually);
 			}
 			$STH = $DBH->prepare("INSERT INTO users (devid,pass) VALUES (?,?)");
 			$STH->execute(array($randguid, $guidpass));
             
 			$the_json['deviceID'] = $randguid;
-			header('Content-type:application/json');
 			echo json_encode($the_json);
 			exit();
             
 		break;
             
-		//REQUEST ALIAS FOR FOR DEVICE ID
+		//Is a Pair Valid? Receives a deviceID and Pass, it will return validPair:1 if valid else validPair:0
 		case 1:
+			$emptyManually = "{\"validPair\",\"null\"}";			
+
+			$data = json_decode(file_get_contents('php://input'));
+			$guidpass = $data->{'pass'};
+			$deviceID = $data->{'deviceID'};
+            
+			if (empty($guidpass) || empty($deviceID))
+				exit($emptyManually);
+            
+			$STH = $DBH->prepare("SELECT * FROM users WHERE devid=? AND pass=? LIMIT 1");
+			$STH->execute(array($deviceID, $guidpass));
+            
+			if ($STH->rowCount() > 0)
+			{
+				$the_json['validPair'] = 1;
+				echo json_encode($the_json);
+				exit();
+			}
+			$the_json['validPair'] = 0;
+			echo json_encode($the_json);
+			exit();
+		break;
+
+		//REQUEST ALIAS FOR FOR DEVICE ID or USERID. If UserID is filled, ignore deviceID
+		case 2:
+			$emptyManually = "{\"alias\":\"null\"}";
 			//$deviceid = htmlspecialchars((isset($_GET['devid']) ? $_GET['devid'] : exit()));
 			$data = json_decode(file_get_contents('php://input'));
 			$deviceid = $data->{'deviceID'};
-			if (empty($deviceid))
-				exit();
+			$userID = $data->{'userID'};
+			if (empty($deviceid) && empty($userID))
+				exit($emptyManually);
             
+			if (!empty($userID))
+			{		
+				$STH = $DBH->prepare("SELECT alias FROM users WHERE fbid=? LIMIT 1");
+				$STH->execute(array($userID));
+				$result = $STH->fetch();
+				$alias = $result["alias"];
+            
+				$the_json['alias'] = $alias;
+				echo json_encode($the_json);
+				exit();
+			}
+
 			$STH = $DBH->prepare("SELECT alias FROM users WHERE devid=? LIMIT 1");
 			$STH->execute(array($deviceid));
 			$result = $STH->fetch();
@@ -65,46 +109,52 @@
 			$the_json['alias'] = $alias;
 			echo json_encode($the_json);
 			exit();
-		break;
+		break; 
             
-		//REQUEST ALIAS FOR USERID
-		case 2:
-			//$userID = htmlspecialchars((isset($_GET['userID']) ? $_GET['userID'] : exit()));
-			$data = json_decode(file_get_contents('php://input'));
-			$userID = $data->{'userID'};
-            
-			if (empty($userID))
-				exit();
-            
-			$STH = $DBH->prepare("SELECT alias FROM users WHERE fbid=? LIMIT 1");
-			$STH->execute(array($userID));
-			$result = $STH->fetch();
-			$alias = $result["alias"];
-            
-			$the_json['alias'] = $alias;
-			echo json_encode($the_json);
-			exit();
-		break;
-            
-		//Set Alias for deviceID and Pass
-		//Returns new alias if success, else nothing shows up
+		//Set Alias for deviceID and Pass if userID is empty, else Update UserID devices only
+		//Returns new alias if success, else null alias shows up
 		case 3:
 			#$guidpass = htmlspecialchars((isset($_GET['pass']) ? $_GET['pass'] : exit()));
 			#$deviceID = htmlspecialchars((isset($_GET['deviceID']) ? $_GET['deviceID'] : exit()));
 			#$alias = htmlspecialchars((isset($_GET['alias']) ? $_GET['alias'] : exit()));
-            
+			$emptyManually = "{\"alias\":\"null\"}";           
+ 
 			$data = json_decode(file_get_contents('php://input'));
 			$guidpass = $data->{'pass'};
 			$deviceID = $data->{'deviceID'};
+			$fbID = $data->{'userID'};
 			$alias = $data->{'alias'};
-			if (empty($alias) || empty($deviceID) || empty($alias))
+
+
+			if (!empty(fbID))
+			{	
+				if (empty($alias) || empty($fbID) || empty($alias))
+                			exit($emptyManually);
+            
+				$STH = $DBH->prepare("SELECT * FROM users WHERE fbid=? AND pass=? LIMIT 1");
+				$STH->execute(array($fbID, $guidpass));
+            
+				if ($STH->rowCount() == 0)
+					exit($emptyManually);
+            
+				$STH = $DBH->prepare("UPDATE users SET alias=? WHERE fbid=?");
+				$STH->execute(array($alias, $fbID));
+            
+				$the_json['alias'] = $alias;
+				echo json_encode($the_json);
 				exit();
+			}
+
+
+
+			if (empty($alias) || empty($deviceID) || empty($alias))
+				exit($emptyManually);
             
 			$STH = $DBH->prepare("SELECT * FROM users WHERE devid=? AND pass=? LIMIT 1");
 			$STH->execute(array($deviceID, $guidpass));
             
 			if ($STH->rowCount() == 0)
-				exit();
+				exit($emptyManually);
 			$result = $STH->fetch();
 			$sqlID = $result["id"];
 			$STH = $DBH->prepare("UPDATE users SET alias=? WHERE id=?");
@@ -113,52 +163,95 @@
 			$the_json['alias'] = $alias;
 			echo json_encode($the_json);
 		break;
-            
-		//Set Alias for FBID and Pass//UPDATES ALL DEVIDs ASSOCIATED WITH
-		case 4:
-			#$guidpass = htmlspecialchars((isset($_GET['pass']) ? $_GET['pass'] : exit()));
-			#$fbID = htmlspecialchars((isset($_GET['userID']) ? $_GET['userID'] : exit()));
-			#$alias = htmlspecialchars((isset($_GET['alias']) ? $_GET['alias'] : exit()));
-            
+           	
+		//Get matchIDs for userID if specified, else get matchIDs for userID
+		case 11:
+			$emptyManually = "{\"matchIDs\":\"[null]\"}";
+			
 			$data = json_decode(file_get_contents('php://input'));
-			$guidpass = $data->{'pass'};
-			$fbID = $data->{'userID'};
-			$alias = $data->{'alias'};
+			$deviceID = $data->{'deviceID'};
+			$userID = $data->{'userID'};
+
+			if (!empty($userID))
+			{
+				$STH = $DBH->prepare("SELECT id FROM users WHERE fbid=?");
+				$STH->execute(array($userID));
+				if ($STH->rowCount() == 0)
+					exit($emptyManually);
+
+				$matchIDArray = array();
+				
+				for ($i = 0; $i < $STH->rowCount(); $i++)
+				{
+					$result = $STH->fetch(PDO::FETCH_ASSOC);
+					$myID = $result['id'];
+						
+					if (empty($myID))
+						exit($emptyManually);
+
+					$STH2 = $DBH->prepare("SELECT id FROM matchlist WHERE firstuser=? OR seconduser=? AND firstuser!=seconduser");
+					$STH2->execute(array($myID, $myID));
 			
-			if (empty($alias) || empty($fbID) || empty($alias))
-                		exit();
-            
-			$STH = $DBH->prepare("SELECT * FROM users WHERE fbid=? AND pass=? LIMIT 1");
-			$STH->execute(array($fbID, $guidpass));
-            
-			if ($STH->rowCount() == 0)
-				exit();
-            
-			$STH = $DBH->prepare("UPDATE users SET alias=? WHERE fbid=?");
-			$STH->execute(array($alias, $fbID));
-            
-			$the_json['alias'] = $alias;
-			echo json_encode($the_json);
+					//$idArray = array();
+					$matchIDArraySize = count($matchIDArray);
+					for ($j = 0; $j < $STH2->rowCount(); $j++)
+					{
+						$result2 = $STH2->fetch(PDO::FETCH_ASSOC);
+						array_push($matchIDArray, $result2['id']);
+						//$matchIDArray[$i + $matchIDArraySize] =  $result2['id'];
+				
+					}
+				}
+				$the_json['matchIDs'] = $matchIDArray;
+				exit(json_encode($the_json));
+				//exit($matchIDArray[0]);	
+			}
+
+			if (empty($deviceID))
+				exit($emptyManually);	
 			
+			$STH = $DBH->prepare("SELECT id FROM users WHERE devid=? LIMIT 1");
+			$STH->execute(array($deviceID));
+			$result = $STH->fetch();
+			$myID = $result["id"];
+			if (empty($myID))
+				exit($emptyManually);
+
+			$STH = $DBH->prepare("SELECT id FROM matchlist WHERE firstuser=? OR seconduser=? AND firstuser!=seconduser");
+			$STH->execute(array($myID, $myID));
+			
+			$idArray = array();
+			for ($i = 0; $i < $STH->rowCount(); $i++)
+			{
+				$result = $STH->fetch(PDO::FETCH_ASSOC);
+				$idArray[$i] = $result['id'];
+				
+			}
+			
+			$the_json['matchIDs'] = $idArray;
+			exit(json_encode($the_json));
+
 		break;
-            
+ 
 		//Request Match (NEEDS USERID AND FRIENDID SUPPORT ONCE FB IS IMPLEMENTED)
-		case 5:
+		case 12:
 			#$guidpass = htmlspecialchars((isset($_GET['pass']) ? $_GET['pass'] : exit()));
 			#$deviceID = htmlspecialchars((isset($_GET['deviceID']) ? $_GET['deviceID'] : exit()));
-            
+            		
+			$emptyManually = "{\"matchID\":\"null\"}";
+
 			$data = json_decode(file_get_contents('php://input'));
 			$guidpass = $data->{'pass'};
 			$deviceID = $data->{'deviceID'};
             
 			if (empty($guidpass) || empty($deviceID))
-				exit();
+				exit($emptyManually);
             
 			$STH = $DBH->prepare("SELECT * FROM users WHERE devid=? AND pass=? LIMIT 1");
 			$STH->execute(array($deviceID, $guidpass));
             
 			if ($STH->rowCount() == 0)
-				exit();
+				exit($emptyManually);
             
 			$result = $STH->fetch();
 			$sqlID = $result["id"];
@@ -186,43 +279,22 @@
 			//$STH = $DBH->prepare("SELECT * FROM matchlist WHERE ");
 		break;
             
-		//Is a Pair Valid? Receives a deviceID and Pass, it will return validPair:1 if valid else validPair:0
-		case 6:
-			$data = json_decode(file_get_contents('php://input'));
-			$guidpass = $data->{'pass'};
-			$deviceID = $data->{'deviceID'};
-            
-			if (empty($guidpass) || empty($deviceID))
-				exit();
-            
-			$STH = $DBH->prepare("SELECT * FROM users WHERE devid=? AND pass=? LIMIT 1");
-			$STH->execute(array($deviceID, $guidpass));
-            
-			if ($STH->rowCount() > 0)
-			{
-				$the_json['validPair'] = 1;
-				echo json_encode($the_json);
-				exit();
-			}
-			$the_json['validPair'] = 0;
-			echo json_encode($the_json);
-			exit();
-		break;
+		//Receives a MatchID and DeviceID then it returns matchData, localPlayerTurn and remotePlayerAlias
+                case 13:
+			$emptyManually = "{\"matchData\":\"null\", \"localPlayerTurn\":\"null\", \"remotePlayerAlias\":\"null\"}";
 
-		//Receives a MatchID and DeviceID then it returns matchData, isLocalPlayerTurn and remotePlayerAlias
-                case 7:
 			$data = json_decode(file_get_contents('php://input'));
 			$matchID = $data->{'matchID'};
 			$deviceID = $data->{'deviceID'};
 
 			if (empty($matchID) || empty($deviceID))
-				exit();
+				exit($emptyManually);
 
 			$STH = $DBH->prepare("SELECT firstuser, seconduser, turn, data FROM matchlist WHERE id = ? LIMIT 1");
 			$STH->execute(array($matchID));
 			
 			if ($STH->rowCount() == 0)
-				exit();
+				exit($emptyManually);
 
 			$result = $STH->fetch();
 			$firstUser = $result[0];
@@ -233,24 +305,24 @@
 			$STH = $DBH->prepare("SELECT id FROM users WHERE devid=? LIMIT 1");
 			$STH->execute(array($deviceID));			
 			if ($STH->rowCount() == 0)
-				exit();
+				exit($emptyManually);
 			
 			$result = $STH->fetch();
 			$myID = $result[0];
 
-			$isLocalPlayerTurn = 0; //Assume opponents turn
+			$localPlayerTurn = 0; //Assume opponents turn
 
 			if ($myID == $firstUser)
 			{
 				$opponent = $secondUser;
 				if ($turn == 0)
-					$isLocalPlayerTurn = 1;
+					$localPlayerTurn = 1;
 			}
 			else
 			{
 				$opponent = $firstUser;
 				if ($turn == 1)
-					$isLocalPlayerTurn = 1;
+					$localPlayerTurn = 1;
 			}
 
 			$STH = $DBH->prepare("SELECT alias FROM users WHERE id=?");
@@ -259,7 +331,7 @@
 			$opponentAlias = $result[0];
 
 			$the_json['matchData'] = $dataBlob;
-			$the_json['isLocalPlayerTurn'] = $isLocalPlayerTurn;
+			$the_json['localPlayerTurn'] = $localPlayerTurn;
 			$the_json['remotePlayerAlias'] = $opponentAlias;
 
 			echo json_encode($the_json);

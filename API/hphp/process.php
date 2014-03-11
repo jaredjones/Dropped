@@ -252,7 +252,7 @@
 			$result = $STH->fetch();
 			$sqlID = $result["id"];
             
-			$STH = $DBH->prepare("SELECT @tmpID := id FROM matchlist WHERE seconduser IS NULL AND active=1 AND firstuser!=? ORDER BY start_time ASC LIMIT 1 FOR UPDATE; UPDATE matchlist SET seconduser=? WHERE id=@tmpID; SELECT @tmpID;");
+			$STH = $DBH->prepare("SELECT @tmpID := id FROM matchlist WHERE seconduser IS NULL AND data IS NOT NULL AND active=1 AND firstuser!=? ORDER BY start_time ASC LIMIT 1 FOR UPDATE; UPDATE matchlist SET seconduser=? WHERE id=@tmpID; SELECT @tmpID;");
 			$STH->execute(array($sqlID, $sqlID));
 			$result = $STH->fetch();
 			$tmpVar = $result[0];
@@ -342,6 +342,77 @@
 
 			echo json_encode($the_json);
 			exit();
+		break;
+		
+		//Receives A Submitted Turn Request of matchID, deviceID, userID, pass, advanceTurn, and matchData
+		case 14:
+			$emptyManually = "{\"matchStatus\":\"null\"}";			
+
+			$data = json_decode(file_get_contents('php://input'));
+                        $matchID = $data->{'matchID'};
+                        $deviceID = $data->{'deviceID'};
+			$guidpass = $data->{'pass'};
+			$advanceTurn = $data->{'advanceTurn'};
+			$matchData = $data->{'matchData'};
+			
+			if (!is_numeric($matchID) || !is_numeric($advanceTurn) || empty($deviceID) || empty($guidpass) || empty($matchData))
+				exit($emptyManually);
+	
+			$STH = $DBH->prepare("SELECT * FROM users WHERE devid=? AND pass=? LIMIT 1");
+			$STH->execute(array($deviceID, $guidpass));
+            
+			if ($STH->rowCount() == 0)
+				exit($emptyManually);
+
+			$result = $STH->fetch();
+			$sqlID = $result["id"];
+			
+			$STH = $DBH->prepare("SELECT firstuser, seconduser, turn, active FROM matchlist WHERE firstuser=? OR seconduser=? AND id=? LIMIT 1");
+			$STH->execute(array($sqlID, $sqlID, $matchID));
+			
+			if ($STH->rowCount() == 0)
+				exit($emptyManually);
+
+			$result = $STH->fetch();
+			$firstUser = $result[0];
+			$secondUser = $result[1];
+			$turnCount = $result[2];
+			$active = $result[3];	
+
+			if ($active == 0)
+			{
+				$the_json['matchStatus'] = $active;
+				exit(json_encode($the_json));
+			}
+
+			if ($turnCount >= 20)
+				exit($emptyManually);
+			if ($turnCount % 2 == 0 && $sqlID == $secondUser)
+				exit($emptyManually);
+			if ($turnCount % 2 == 1 && $sqlID == $firstUser)
+				exit($emptyManually);	
+
+			if ($advanceTurn == 0)
+			{
+				$STH = $DBH->prepare("UPDATE matchlist SET data=? WHERE id=?");
+				$STH->execute(array($matchData, $matchID));
+				$the_json['matchStatus'] = $active;
+				exit(json_encode($the_json));
+			}
+			
+			++$turnCount;
+			
+			if ($turnCount >= 20)	
+				$STH = $DBH->prepare("UPDATE matchlist SET turn=?, data=?, active=0 WHERE id=?");
+			else
+				$STH = $DBH->prepare("UPDATE matchlist SET turn=?, data=? WHERE id=?");
+			$STH->execute(array($turnCount, $matchData, $matchID));
+
+			if ($turnCount >= 20)
+				$active = 0;
+
+			$the_json['matchStatus'] = $active;
+			exit(json_encode($the_json));				
 		break;
 
 		default:

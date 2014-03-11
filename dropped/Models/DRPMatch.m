@@ -15,6 +15,8 @@
 
 @interface DRPMatch ()
 
+@property (readwrite) DRPBoard *board;
+@property (readwrite) NSInteger localPlayerTurn;
 @property (readwrite) NSMutableArray *players;
 
 @end
@@ -37,15 +39,27 @@
 
 + (void)newMatchWithCompletion:(void (^)(DRPMatch *))completion
 {
-    [[DRPNetworking sharedNetworking] requestMatchWithFriend:nil withCompletion:^(NSString *matchID) {
+    [[DRPNetworking sharedNetworking] requestMatchWithFriend:nil withCompletion:^(NSString *matchID, NSInteger localPlayerTurn) {
         if (!matchID) {
             completion(nil);
         }
         
         DRPMatch *match = [[DRPMatch alloc] initWithMatchID:matchID];
-        [match reloadMatchDataWithCompletion:^(BOOL newTurns) {
+        
+        // Generate the board if client is the first player
+        if (localPlayerTurn == 0) {
+            match.board = [[DRPBoard alloc] initWithMatchData:nil];
+            match.localPlayerTurn = localPlayerTurn;
+            [match loadPlayers];
+            
+            [match saveMatchData];
             completion(match);
-        }];
+            
+        } else {
+            [match reloadMatchDataWithCompletion:^(BOOL newTurns) {
+                completion(match);
+            }];
+        }
     }];
 }
 
@@ -73,21 +87,9 @@
 {
     [[DRPNetworking sharedNetworking] matchDataForMatchID:self.matchID withCompletion:^(NSData *matchData, NSInteger localPlayerTurn, NSString *remotePlayerAlias) {
         
-        BOOL newTurns = NO;
-        
-        // Load DRPBoard the first time this method is called
-        if (!self.board) {
-            _board = [[DRPBoard alloc] initWithMatchData:matchData];
-            _localPlayerTurn = localPlayerTurn;
-            newTurns = YES;
-            
-            [self loadPlayers];
-            
-        } else {
-            NSInteger turns = self.board.currentTurn;
-            [self.board appendNewData:matchData];
-            newTurns = self.board.currentTurn > turns;
-        }
+        NSInteger turns = self.board.currentTurn;
+        [self.board appendNewData:matchData];
+        BOOL newTurns = self.board.currentTurn > turns;
         
         self.remotePlayer.alias = remotePlayerAlias;
         [self reloadPlayerScores];
@@ -141,8 +143,9 @@
 
 - (void)saveMatchData
 {
-//    [self.gkMatch saveCurrentTurnWithMatchData:self.board.matchData completionHandler:^(NSError *error) {
-//    }];
+    [[DRPNetworking sharedNetworking] submitMatchData:self.board.matchData forMatchID:self.matchID advanceTurn:NO withCompletion:^{
+        NSLog(@"finished submitting");
+    }];
 }
 
 #pragma mark Match Data

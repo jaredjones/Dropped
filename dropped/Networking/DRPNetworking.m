@@ -79,7 +79,6 @@
 
 #pragma mark DeviceID
 
-// opcode 0, recieves pass
 - (void)fetchDeviceIDWithCompletion:(void (^)(BOOL))completion
 {    
     // Attempt to read cached deviceID (only if not already loaded)
@@ -130,7 +129,6 @@
     }
 }
 
-// opcode 6, recieves deviceID/pass
 - (void)validateDeviceIDPairWithCompletion:(void (^)(BOOL, NSError *))completion
 {
     [self networkRequestOpcode:DRPNetworkingDeviceIDPairValidation
@@ -164,16 +162,12 @@
 
 #pragma mark Aliases
 
-// opcode 1, recieves deviceID only
 - (void)aliasForDeviceID:(NSString *)deviceID withCompletion:(void (^)(NSString *))completion {
 }
 
-// opcode 2, recieves userID only
 - (void)aliasForUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion {
 }
 
-// opcode 3, receives deviceID/pass and alias
-// opcode 4, recieves userID/pass and alias
 - (void)setAlias:(NSString *)alias withCompletion:(void (^)(NSString *))completion {
 }
 
@@ -194,15 +188,9 @@
     completion(nil);
 }
 
-// opcode 5, recieves deviceID/pass and userID
-// TODO: rematch method that takes deviceID/pass and previous matchID
 - (void)requestMatchWithFriend:(NSString *)userID withCompletion:(void (^)(NSString *, BOOL, NSString *))completion {
 }
 
-// opcode 7, recieves matchID, deviceID, userID -> matchData, isLocalPlayerTurn, remotePlayerAlias (only if available)
-
-// TODO: opcode 7 should return localPlayerTurn, not isLocalPlayerTurn (integer instead of BOOL)
-// TODO: Make sure this works if there haven't been any turns submitted yet
 - (void)matchDataForMatchID:(NSString *)matchID withCompletion:(void (^)(NSData *, NSInteger, NSString *))completion {
 }
 

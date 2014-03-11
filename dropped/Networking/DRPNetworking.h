@@ -10,7 +10,14 @@
 
 typedef NS_ENUM(NSInteger, DRPNetworkingOpCode) {
     DRPNetworkingGenerateDeviceID = 0,
-    DRPNetworkingDeviceIDPairValidation = 6
+    DRPNetworkingDeviceIDPairValidation = 1,
+    DRPNetworkingGetAlias = 2,
+    DRPNetworkingSetAlias = 3,
+    DRPNetworkingGetMatchIDs = 11,
+    DRPNetworkingRequestMatch = 12,
+    DRPNetworkingGetMatchData = 13,
+    DRPNetworkingSubmitMatchTurn = 14,
+    DRPNetworkingConcedeMatch = 15
 };
 
 @interface DRPNetworking : NSObject

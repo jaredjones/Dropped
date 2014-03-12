@@ -17,6 +17,7 @@
 @property NSString *pass;
 @property (readwrite) NSString *deviceID;
 @property (readwrite) NSString *userID;
+@property (readwrite) NSString *APNSToken;
 
 @property NSURL *deviceURL;
 @property NSMutableDictionary *cachedAliases;
@@ -173,6 +174,25 @@
     [[NSFileManager defaultManager] removeItemAtURL:self.deviceURL error:nil];
     self.deviceID = nil;
     self.pass = nil;
+}
+
+#pragma mark APNSToken
+
+- (void)setAPNSToken:(NSString *)APNSToken withCompletion:(void (^)())completion
+{
+    self.APNSToken = APNSToken;
+    
+    NSMutableDictionary *args = [[NSMutableDictionary alloc] init];
+    args[@"pass"] = self.pass;
+    if (self.APNSToken) {
+        args[@"APNSToken"] = self.APNSToken;
+    }
+    
+    [self networkRequestOpcode:DRPNetworkingSetAPNSToken arguments:args withCompletion:^(NSDictionary *response, NSError *error) {
+        if (completion) {
+            completion();
+        }
+    }];
 }
 
 #pragma mark Aliases

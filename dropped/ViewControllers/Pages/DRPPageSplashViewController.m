@@ -67,16 +67,15 @@
             // TODO: Critical error, must be network problems on either end
             
         } else {
-            [self checkSocialStatus];
+            // Register APNSToken
+            // TODO: move this to after alias creation
+            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound |UIRemoteNotificationTypeAlert];
+            
+            // TODO: if an alias is not set, prompt user to set an alias
+            
+            [self transtionToPage:DRPPageLogIn];
         }
     }];
-}
-
-- (void)checkSocialStatus
-{
-    // TODO: check if logged in to Facebook (though only the first time the app launches)
-    
-    [self transtionToPage:DRPPageLogIn];
 }
 
 - (void)transtionToPage:(DRPPageID)pageID

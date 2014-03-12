@@ -10,6 +10,7 @@
 #import "DRPMainViewController.h"
 #import "FRBSwatchist.h"
 
+#import "DRPNetworking.h"
 #import "DRPDictionary.h"
 #import "TestFlight.h"
 
@@ -21,9 +22,6 @@
     srandomdev();
     
     // Important networky things need to happen ASAP
-    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge |
-                                                                          UIRemoteNotificationTypeSound |
-                                                                          UIRemoteNotificationTypeAlert];
     [TestFlight takeOff:@"e04eea5f-3c76-4cc7-a01d-79f12d9fa6ad"];
     [DRPDictionary syncDictionary];
     
@@ -36,9 +34,14 @@
     return YES;
 }
 
-- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-	NSLog(@"APNS Setup Success: %@\n\n", deviceToken);
+    NSLog(@"%@", deviceToken.description);
+    NSString *APNSToken = [[NSString alloc] initWithData:deviceToken encoding:NSUTF8StringEncoding];
+    [[DRPNetworking sharedNetworking] setAPNSToken:APNSToken withCompletion:nil];
+    
+    
+	NSLog(@"APNS Setup Success: %@", APNSToken);
 }
 
 - (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error

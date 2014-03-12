@@ -13,6 +13,7 @@ typedef NS_ENUM(NSInteger, DRPNetworkingOpCode) {
     DRPNetworkingDeviceIDPairValidation = 1,
     DRPNetworkingGetAlias = 2,
     DRPNetworkingSetAlias = 3,
+    DRPNetworkingSetAPNSToken = 4,
     DRPNetworkingGetMatchIDs = 11,
     DRPNetworkingRequestMatch = 12,
     DRPNetworkingGetMatchData = 13,
@@ -31,6 +32,7 @@ typedef NS_ENUM(NSInteger, DRPNetworkingOpCode) {
 + (instancetype)sharedNetworking;
 
 - (void)fetchDeviceIDWithCompletion:(void (^)(BOOL))completion;
+- (void)setAPNSToken:(NSString *)APNSToken withCompletion:(void (^)())completion;
 
 - (void)aliasForDeviceID:(NSString *)deviceID withCompletion:(void (^)(NSString *))completion;
 - (void)aliasForUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion;

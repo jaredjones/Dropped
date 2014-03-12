@@ -218,6 +218,8 @@
         
         NSString *remotePlayerAlias = response[@"remotePlayerAlias"] != (id)[NSNull null] ? response[@"remotePlayerAlias"] : nil;
         
+        // TODO: create function that auto nils NSNull
+        
         completion([(NSString *)response[@"matchData"] dataUsingEncoding:NSUTF8StringEncoding],
                    [response[@"localPlayerTurn"] integerValue],
                    remotePlayerAlias);

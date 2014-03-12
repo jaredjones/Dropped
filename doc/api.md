@@ -70,6 +70,16 @@ Methods
     - The new Alias MUST BE Alphanumerical Only!!!!
     - If userID is specified, set the alias for all associated deviceIDs
 
+- Set APNS Token
+    - POST opcode 4
+    - Request:
+        { "deviceID"    : "...",
+          "userID"      : "...",
+          "pass"        : "...",
+          "APNSToken"   : "..."}
+
+    - Associate the token with the deviceID
+
 - MatchIDs
     - POST opcode 11
     - Request:

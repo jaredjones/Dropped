@@ -79,6 +79,7 @@ Methods
           "APNSToken"   : "..."}
 
     - Associate the token with the deviceID
+    - When the user is revoking access to push notifications, APNSToken won't be present in the request body
 
 - MatchIDs
     - POST opcode 11

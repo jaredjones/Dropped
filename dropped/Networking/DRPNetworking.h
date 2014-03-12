@@ -20,6 +20,10 @@ typedef NS_ENUM(NSInteger, DRPNetworkingOpCode) {
     DRPNetworkingConcedeMatch = 15
 };
 
+#pragma mark 
+
+#define DRPReceivedMatchTurnNotificationName @"DRPReceivedMatchTurnNotification"
+
 @interface DRPNetworking : NSObject
 
 @property (readonly) NSString *deviceID, *userID;

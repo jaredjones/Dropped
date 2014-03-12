@@ -111,51 +111,20 @@
 
 - (void)submitTurnForPositions:(NSArray *)positions
 {
-//    // Add move to history (assumed correct, don't do further error checking)
-//    DRPPlayedWord *playedWord = [self.board appendMoveForPositions:positions];
-//    
-//    // Send move off to Game Center
-//    NSArray *participants = @[self.currentPlayer.participant];
-//    NSData *data = self.board.matchData;
-//    
-//    if (!self.finished) {
-//        [self.gkMatch endTurnWithNextParticipants:participants turnTimeout:GKTurnTimeoutNone matchData:data completionHandler:^(NSError *error) {
-//            if (error) {
-//                NSLog(@"endTurn error: %@", error.localizedDescription);
-//                return;
-//            }
-//            
-//            [self postTurnSubmissionNotificationsWithPlayedWord:playedWord];
-//        }];
-//        
-//    } else {
-//        // Game Finished
-//        // Set match outcomes
-//        for (DRPPlayer *player in self.players) {
-//            if (self.tied) {
-//                player.participant.matchOutcome = GKTurnBasedMatchOutcomeTied;
-//            } else if (self.winner == player) {
-//                player.participant.matchOutcome = GKTurnBasedMatchOutcomeWon;
-//            } else {
-//                player.participant.matchOutcome = GKTurnBasedMatchOutcomeLost;
-//            }
-//        }
-//        
-//        [self.gkMatch endMatchInTurnWithMatchData:data completionHandler:^(NSError *error) {
-//            if (error) {
-//                NSLog(@"endTurn error: %@", error.localizedDescription);
-//                return;
-//            }
-//            
-//            [self postTurnSubmissionNotificationsWithPlayedWord:playedWord];
-//        }];
-//    }
+    // Add move to history (assumed correct, don't do further error checking)
+    [self.board appendMoveForPositions:positions];
+    NSData *data = self.board.matchData;
+
+    [[DRPNetworking sharedNetworking] submitMatchData:data forMatchID:self.matchID advanceTurn:YES withCompletion:^{
+        // TODO: post UI stuff
+    }];
 }
 
 - (void)saveMatchData
 {
     [[DRPNetworking sharedNetworking] submitMatchData:self.board.matchData forMatchID:self.matchID advanceTurn:NO withCompletion:^{
         NSLog(@"finished submitting");
+        [[NSNotificationCenter defaultCenter] postNotificationName:DRPReceivedMatchTurnNotificationName object:nil userInfo:@{@"matchID" : self.matchID}];
     }];
 }
 

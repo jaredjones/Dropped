@@ -17,6 +17,7 @@
 #import "DRPDictionary.h"
 #import "DRPGreedyScrollView.h"
 
+#import "DRPNetworking.h"
 #import "FRBSwatchist.h"
 #import "DRPUtility.h"
 
@@ -43,6 +44,12 @@
     self = [super initWithPageID:DRPPageMatch];
     if (self) {
         self.bottomCue = @"Back";
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(receivedTurnNotification:)
+                                                     name:DRPReceivedMatchTurnNotificationName
+                                                   object:nil];
+        
     }
     return self;
 }
@@ -252,6 +259,8 @@
     return DRPDirectionRight;
 }
 
+// TODO: this isn't exactly the cleanest code
+// TODO: make sure this works when you receive a remote turn during playback
 - (void)advanceRenderedTurnToTurn:(NSInteger)turn
 {
     // Make sure user can't mess with anything on the board
@@ -409,6 +418,15 @@
     // load turn and replay
     if (self.match.currentTurn > startTurn && startTurn >= 0) {
         [self loadTurn:startTurn];
+        [self advanceRenderedTurnToTurn:self.match.currentTurn];
+    }
+}
+
+#pragma mark Turn Notifications
+
+- (void)receivedTurnNotification:(NSNotification *)notification
+{
+    if ([notification.userInfo[@"matchID"] isEqualToString:self.match.matchID]) {
         [self advanceRenderedTurnToTurn:self.match.currentTurn];
     }
 }

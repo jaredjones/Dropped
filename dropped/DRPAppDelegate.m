@@ -36,10 +36,11 @@
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
-    NSLog(@"%@", deviceToken.description);
-    NSString *APNSToken = [[NSString alloc] initWithData:deviceToken encoding:NSUTF8StringEncoding];
-    [[DRPNetworking sharedNetworking] setAPNSToken:APNSToken withCompletion:nil];
+    // Boo, Apple. This shit stanky
+    NSString *APNSToken = [deviceToken.description stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    APNSToken = [APNSToken stringByReplacingOccurrencesOfString:@" " withString:@""];
     
+    [[DRPNetworking sharedNetworking] setAPNSToken:APNSToken withCompletion:nil];
     
 	NSLog(@"APNS Setup Success: %@", APNSToken);
 }

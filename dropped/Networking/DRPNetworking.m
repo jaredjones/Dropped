@@ -29,6 +29,7 @@
 @implementation DRPNetworking
 
 // TODO: send APNS token to server
+// TODO: add error checking to completion handlers
 
 + (instancetype)sharedNetworking
 {
@@ -75,7 +76,12 @@
                                    NSLog(@"OpCode %ld (response): %@", (long)opCode, [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
                                }
                                
-                               if (connectionError) {
+                               // If there is no response body, that means there was a networking issue
+                               // In every other case, there will be a message body
+                               if (data.length == 0) {
+                                   completion(nil, [NSError errorWithDomain:@"URLConnectionFailed" code:0 userInfo:@{}]);
+                                   
+                               } else if (connectionError) {
                                    completion(nil, connectionError);
                                    
                                } else if (data) {

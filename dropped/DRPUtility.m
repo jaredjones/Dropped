@@ -53,3 +53,10 @@ NSString *generateUUID() {
     CFRelease(uniqueID);
     return uuidString;
 }
+
+id coerceObject(id argument, id (^block)(id)) {
+    if (argument == [NSNull null]) {
+        return nil;
+    }
+    return block(argument);
+}

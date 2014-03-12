@@ -222,13 +222,11 @@
 - (void)matchDataForMatchID:(NSString *)matchID withCompletion:(void (^)(NSData *, NSInteger, NSString *))completion {
     [self networkRequestOpcode:DRPNetworkingGetMatchData arguments:@{@"matchID" : matchID } withCompletion:^(NSDictionary *response, NSError *error) {
         
-        NSString *remotePlayerAlias = response[@"remotePlayerAlias"] != (id)[NSNull null] ? response[@"remotePlayerAlias"] : nil;
+        // TODO: what do when the matchData received back is NULL? (means there was a server issue)
         
-        // TODO: create function that auto nils NSNull
-        
-        completion([(NSString *)response[@"matchData"] dataUsingEncoding:NSUTF8StringEncoding],
+        completion(coerceObject(response[@"matchData"], ^id(id argument) { return [(NSString *)argument dataUsingEncoding:NSUTF8StringEncoding]; }),
                    [response[@"localPlayerTurn"] integerValue],
-                   remotePlayerAlias);
+                   coerceObject(response[@"remotePlayerAlias"], ^id(id argument) { return argument; }));
     }];
 }
 

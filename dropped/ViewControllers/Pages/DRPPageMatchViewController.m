@@ -69,6 +69,8 @@
     [self loadCurrentWordViewController];
     [self.scrollView bringSubviewToFront:self.boardViewController.view];
     [self loadHeaderViewController];
+    
+    [self setBoardEnabled:NO];
 }
 
 - (void)viewWillLayoutSubviews
@@ -211,18 +213,11 @@
     }
 }
 
-- (void)loadTurn:(NSInteger)turn
-{
-    self.renderedTurn = turn;
-    [self.boardViewController loadBoard:self.match.board atTurn:self.renderedTurn];
-    [self setHeaderViewControllerTurn:self.renderedTurn];
-}
-
 - (void)didMoveToCurrent
 {
     [super didMoveToCurrent];
 
-    [self advanceRenderedTurnToTurn:self.match.currentTurn];
+    [self advanceRenderedTurnToCurrent];
 }
 
 - (void)resetCues
@@ -233,12 +228,8 @@
         newBottomCue = @"Back";
 
     } else {
-        if (self.isCurrentWordValid) {
-            newBottomCue = @"Tap to Submit";
-
-        } else {
-            newBottomCue = @"Swipe to Clear";
-        }
+        if (self.isCurrentWordValid) { newBottomCue = @"Tap to Submit"; }
+        else { newBottomCue = @"Swipe to Clear"; }
     }
 
     if (![newBottomCue isEqualToString:self.bottomCue]) {
@@ -249,7 +240,28 @@
     [super resetCues];
 }
 
+#pragma mark Interaction
+
+- (void)setBoardEnabled:(BOOL)enabled
+{
+    // TODO: make sure to set as enabled when the receiving a remote turn
+    if ((!self.match.isLocalPlayerTurn || self.match.finished) && enabled) {
+        [self setBoardEnabled:NO];
+        
+    } else {
+        self.boardViewController.boardEnabled = enabled;
+        self.currentWordViewController.gesturesEnabled = enabled;
+    }
+}
+
 #pragma mark Turn Transitions
+
+- (void)loadTurn:(NSInteger)turn
+{
+    self.renderedTurn = turn;
+    [self.boardViewController loadBoard:self.match.board atTurn:self.renderedTurn];
+    [self setHeaderViewControllerTurn:self.renderedTurn];
+}
 
 - (DRPDirection)currentWordDirectionForPlayer:(DRPPlayer *)player
 {
@@ -259,32 +271,23 @@
     return DRPDirectionRight;
 }
 
-// TODO: this isn't exactly the cleanest code
-// TODO: make sure this works when you receive a remote turn during playback
-- (void)advanceRenderedTurnToTurn:(NSInteger)turn
+- (void)advanceRenderedTurnToCurrent
 {
     // Make sure user can't mess with anything on the board
     // while the turns are advancing
-    if (self.boardViewController.boardEnabled) {
-        self.boardViewController.boardEnabled = NO;
-    }
-    if (self.currentWordViewController.gesturesEnabled) {
-        self.currentWordViewController.gesturesEnabled = NO;
-    }
+    [self setBoardEnabled:NO];
 
     // This is essentially recursion that pauses between each
     // iteration (because each iteration is asynchronous)
-    if ([self.mainViewController isCurrentPage:self] && self.renderedTurn <= turn) {
+    if ([self.mainViewController isCurrentPage:self] && self.renderedTurn < self.match.currentTurn) {
         [self stepRenderedTurnWithCompletion:^{
-            [self advanceRenderedTurnToTurn:turn];
+            [self advanceRenderedTurnToCurrent];
         }];
-
+        
+    } else {
         // Turns are done advancing, reenable the board and the currentWordView
-        // TODO: Doesn't keep board disabled when the match is finished
-        if (self.renderedTurn == turn && !self.match.finished) {
-            self.boardViewController.boardEnabled = YES;
-            self.currentWordViewController.gesturesEnabled = YES;
-        }
+        [self stepRenderedTurnWithCompletion:nil];
+        [self setBoardEnabled:YES];
     }
 }
 
@@ -308,7 +311,6 @@
         }];
 
     } else if (self.renderedTurn == self.match.currentTurn) {
-
         // Caught up to turn, show the turnsLeft container
         [self.currentWordViewController setTurnsLeft:self.match.turnsLeft
                                          isLocalTurn:self.match.isLocalPlayerTurn
@@ -418,7 +420,7 @@
     // load turn and replay
     if (self.match.currentTurn > startTurn && startTurn >= 0) {
         [self loadTurn:startTurn];
-        [self advanceRenderedTurnToTurn:self.match.currentTurn];
+        [self advanceRenderedTurnToCurrent];
     }
 }
 
@@ -427,7 +429,7 @@
 - (void)receivedTurnNotification:(NSNotification *)notification
 {
     if ([notification.userInfo[@"matchID"] isEqualToString:self.match.matchID]) {
-        [self advanceRenderedTurnToTurn:self.match.currentTurn];
+        [self advanceRenderedTurnToCurrent];
     }
 }
 

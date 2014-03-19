@@ -40,4 +40,17 @@
     return [self filteredArrayUsingPredicate:[NSPredicate predicateWithFormat:@"NOT SELF IN %@", array]];
 }
 
+- (NSArray *)filter:(BOOL (^)(id))predicate
+{
+    NSMutableArray *array = [[NSMutableArray alloc] initWithCapacity:self.count];
+    
+    for (id elt in self) {
+        if (predicate(elt)) {
+            [array addObject:elt];
+        }
+    }
+    
+    return array;
+}
+
 @end

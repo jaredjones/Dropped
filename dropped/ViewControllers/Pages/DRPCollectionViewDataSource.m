@@ -9,6 +9,7 @@
 #import "DRPCollectionViewDataSource.h"
 #import "DRPCollectionDataItem.h"
 #import "DRPCollectionViewCell.h"
+#import "NSArray+Mutable.h"
 
 @interface DRPCollectionViewDataSource ()
 
@@ -43,7 +44,6 @@
     for (DRPCollectionDataItem *dataItem in self.dataItems) {
         [self.dataItemIDs addObject:dataItem.itemID];
     }
-    
 }
 
 - (void)loadData:(NSArray *(^)())loadData
@@ -55,13 +55,12 @@
 {
     if (!self.reloadData) return;
     
-    // tmp, clear the cache each time data is reloaded
-    self.dataItemIDs = nil;
+    // If no new data is loaded, there is no reason to update the collectionView
     
     self.reloadData(^(NSArray *newDataItems) {
         if (!newDataItems) return;
         
-        // Sorting
+        // Sort the dataItems after loading
         if (self.comparator) {
             newDataItems = [newDataItems sortedArrayUsingComparator:self.comparator];
         }
@@ -89,6 +88,13 @@
     }
     
     return nil;
+}
+
+- (NSArray *)filterNewDataItemIDs:(NSArray *)dataItemIDs
+{
+    return [dataItemIDs filter:^BOOL (NSString *elt) {
+        return ![self.dataItemIDs containsObject:elt];
+    }];
 }
 
 #pragma mark UICollectionViewDataSource

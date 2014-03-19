@@ -48,39 +48,42 @@
         
         [[DRPNetworking sharedNetworking] currentMatchIDsWithCompletion:^(NSArray *matchIDs) {
             
+            // Accumulate new DRPMatches in dataItems
+            // Once all are loaded, call the compltion handler
             NSMutableArray *dataItems = [[NSMutableArray alloc] init];
             __block NSInteger dataResponsesReceived = 0;
             
-            // TODO: compute how many _new_ matchIDs there are instead of using matchIDs.count
+            // Filter out matchIDs that are already present in the dataSource
+            matchIDs = [wkSelf.dataSource filterNewDataItemIDs:matchIDs];
             
             for (NSString *matchID in matchIDs) {
-                if (![wkSelf.dataSource dataItemForID:matchID]) {
-                    [dataItems addObject:({
-                        DRPCollectionDataItem *dataItem = [[DRPCollectionDataItem alloc] init];
-                        dataItem.itemID = matchID;
+                [dataItems addObject:({
+                    
+                    DRPCollectionDataItem *dataItem = [[DRPCollectionDataItem alloc] init];
+                    dataItem.itemID = matchID;
+                    dataItem.cellIdentifier = @"matchCell";
+                    
+                    // matchData loading is asynchronous
+                    [DRPMatch matchWithMatchID:matchID completion:^(DRPMatch *match) {
                         
-                        [DRPMatch matchWithMatchID:matchID completion:^(DRPMatch *match) {
-                            
-                            dataItem.userData = match;
-                            
-                            // Call the completion handler once all of the new matchIDs have loaded data
-                            dataResponsesReceived += 1;
-                            if (dataResponsesReceived >= matchIDs.count) {
-                                completion(dataItems);
-                            }
-                        }];
+                        dataItem.userData = match;
                         
-                        dataItem.userData = nil; // TODO: load the match
-                        
-                        dataItem.cellIdentifier = @"matchCell";
-                        dataItem.selected = ^(DRPMatch *match) {
-                            if (match) {
-                                [wkSelf.mainViewController setCurrentPageID:DRPPageMatch animated:YES userInfo:@{@"match" : match}];
-                            }
-                        };
-                        dataItem;
-                    })];
-                }
+                        // Call the completion handler once all of the new matchIDs have loaded data
+                        dataResponsesReceived += 1;
+                        if (dataResponsesReceived >= matchIDs.count) {
+                            completion(dataItems);
+                        }
+                    }];
+                    
+                    // Go to DRPPageMatch when the dataItem is selected
+                    dataItem.selected = ^(DRPMatch *match) {
+                        if (match) {
+                            [wkSelf.mainViewController setCurrentPageID:DRPPageMatch animated:YES userInfo:@{@"match" : match}];
+                        }
+                    };
+                    
+                    dataItem;
+                })];
             }
         }];
     };

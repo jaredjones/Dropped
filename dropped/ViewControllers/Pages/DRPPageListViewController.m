@@ -53,37 +53,50 @@
             NSMutableArray *dataItems = [[NSMutableArray alloc] init];
             __block NSInteger dataResponsesReceived = 0;
             
-            // Filter out matchIDs that are already present in the dataSource
-            matchIDs = [wkSelf.dataSource filterNewDataItemIDs:matchIDs];
+            // This block is called every time a response is received from DRPNetworking
+            // When a response has been received from every matchID
+            void (^matchDataResponseReceived)() = ^{
+                dataResponsesReceived += 1;
+                if (dataItems.count >= matchIDs.count) {
+                    completion(dataItems);
+                }
+            };
             
             for (NSString *matchID in matchIDs) {
-                [dataItems addObject:({
-                    
-                    DRPCollectionDataItem *dataItem = [[DRPCollectionDataItem alloc] init];
-                    dataItem.itemID = matchID;
-                    dataItem.cellIdentifier = @"matchCell";
-                    
-                    // matchData loading is asynchronous
-                    [DRPMatch matchWithMatchID:matchID completion:^(DRPMatch *match) {
-                        
-                        dataItem.userData = match;
-                        
-                        // Call the completion handler once all of the new matchIDs have loaded data
-                        dataResponsesReceived += 1;
-                        if (dataResponsesReceived >= matchIDs.count) {
-                            completion(dataItems);
-                        }
+                DRPCollectionDataItem *dataItem = [wkSelf.dataSource dataItemForID:matchID];
+                
+                if (dataItem) {
+                    // Match is already in the list, refresh the data
+                    [dataItems addObject:dataItem];
+                    [(DRPMatch *)dataItem.userData reloadMatchDataWithCompletion:^(BOOL newTurns) {
+                        matchDataResponseReceived();
                     }];
                     
-                    // Go to DRPPageMatch when the dataItem is selected
-                    dataItem.selected = ^(DRPMatch *match) {
-                        if (match) {
-                            [wkSelf.mainViewController setCurrentPageID:DRPPageMatch animated:YES userInfo:@{@"match" : match}];
-                        }
-                    };
-                    
-                    dataItem;
-                })];
+                } else {
+                    // MatchID is not in the list, create a new dataItem
+                    [dataItems addObject:({
+                        
+                        DRPCollectionDataItem *dataItem = [[DRPCollectionDataItem alloc] init];
+                        dataItem.itemID = matchID;
+                        dataItem.cellIdentifier = @"matchCell";
+                        
+                        // matchData loading is asynchronous
+                        [DRPMatch matchWithMatchID:matchID completion:^(DRPMatch *match) {
+                            
+                            dataItem.userData = match;
+                            matchDataResponseReceived();
+                        }];
+                        
+                        // Go to DRPPageMatch when the dataItem is selected
+                        dataItem.selected = ^(DRPMatch *match) {
+                            if (match) {
+                                [wkSelf.mainViewController setCurrentPageID:DRPPageMatch animated:YES userInfo:@{@"match" : match}];
+                            }
+                        };
+                        
+                        dataItem;
+                    })];
+                }
             }
         }];
     };

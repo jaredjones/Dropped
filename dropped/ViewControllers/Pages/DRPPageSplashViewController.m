@@ -64,11 +64,14 @@
     [[DRPNetworking sharedNetworking] fetchDeviceIDWithCompletion:^(BOOL foundDeviceID) {
         
         if (!foundDeviceID) {
-            // TODO: Critical error, must be network problems on either end
+            // TODO: Critical error, must be network problems on either end. Show some sort of apologetic message
+            
+            // TODO: If the user has logged in before, let them play around with their cached matches. We'll need to sync them up when they reconnect
             
         } else {
             // Register APNSToken
-            // TODO: move this to after alias creation
+            
+            // TODO: move this to after the user creates their first match
             [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound |UIRemoteNotificationTypeAlert];
             
             // TODO: if an alias is not set, prompt user to set an alias

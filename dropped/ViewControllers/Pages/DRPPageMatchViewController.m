@@ -276,6 +276,7 @@
     // Make sure user can't mess with anything on the board
     // while the turns are advancing
     [self setBoardEnabled:NO];
+    [self.headerViewController setTilesEnabled:NO];
 
     // This is essentially recursion that pauses between each
     // iteration (because each iteration is asynchronous)
@@ -288,6 +289,7 @@
         // Turns are done advancing, reenable the board and the currentWordView
         [self stepRenderedTurnWithCompletion:nil];
         [self setBoardEnabled:YES];
+        [self.headerViewController setTilesEnabled:YES];
     }
 }
 

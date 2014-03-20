@@ -234,4 +234,9 @@
     // Intentionally left blank
 }
 
+- (void)setTileEnabled:(BOOL)enabled
+{
+    self.tile.enabled = enabled;
+}
+
 @end

@@ -122,6 +122,13 @@
     return CGPointZero;
 }
 
+- (void)setTilesEnabled:(BOOL)enabled
+{
+    for (DRPMatchPlayerView *playerView in self.playerViews) {
+        [playerView setTileEnabled:enabled];
+    }
+}
+
 #pragma mark Rotation
 
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration

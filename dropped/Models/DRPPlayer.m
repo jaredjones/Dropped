@@ -40,7 +40,7 @@
                              @"Contender"];
     }
     
-    return opponentSynomyms[arc4random_uniform(opponentSynomyms.count)];
+    return opponentSynomyms[arc4random_uniform((u_int32_t)opponentSynomyms.count)];
 }
 
 - (NSString *)firstPrintableAliasCharacter

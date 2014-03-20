@@ -122,15 +122,15 @@
 
     [[DRPNetworking sharedNetworking] submitMatchData:data forMatchID:self.matchID advanceTurn:YES withCompletion:^{
         // TODO: post UI stuff
+        [[NSNotificationCenter defaultCenter] postNotificationName:DRPReceivedMatchTurnNotificationName
+                                                            object:nil
+                                                          userInfo:@{@"matchID" : self.matchID}];
     }];
 }
 
 - (void)saveMatchData
 {
     [[DRPNetworking sharedNetworking] submitMatchData:self.board.matchData forMatchID:self.matchID advanceTurn:NO withCompletion:^{
-        [[NSNotificationCenter defaultCenter] postNotificationName:DRPReceivedMatchTurnNotificationName
-                                                            object:nil
-                                                          userInfo:@{@"matchID" : self.matchID}];
     }];
 }
 

@@ -246,7 +246,7 @@
         
         completion(coerceObject(response[@"matchData"], ^id(id argument) { return [(NSString *)argument dataUsingEncoding:NSUTF8StringEncoding]; }),
                    [response[@"localPlayerTurn"] integerValue],
-                   coerceObject(response[@"remotePlayerAlias"], ^id(id argument) { return argument; }));
+                   coerceObject(response[@"remotePlayerAlias"], nil));
     }];
 }
 

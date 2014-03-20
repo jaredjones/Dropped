@@ -58,5 +58,8 @@ id coerceObject(id argument, id (^block)(id)) {
     if (argument == [NSNull null]) {
         return nil;
     }
-    return block(argument);
+    if (block) {
+        return block(argument);
+    }
+    return argument;
 }

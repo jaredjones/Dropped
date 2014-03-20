@@ -144,7 +144,7 @@
 {
     if (object == self.player) {
         if ([keyPath isEqualToString:@"alias"]) {
-            [self updatePlayerAlias:change[NSKeyValueChangeNewKey]];
+            [self updatePlayerAlias:coerceObject(change[NSKeyValueChangeNewKey], nil)];
         }
         
     } else {
@@ -154,12 +154,11 @@
 
 - (void)updatePlayerAlias:(NSString *)alias
 {
-    if ((id)alias != [NSNull null]) {
-        self.alias.text = self.player.alias;
-        self.tile.character = [self playerTileCharacter];
-    }
+    // TODO: better enemy names
+    self.alias.text = self.player.alias ?: @"Nemesis";
+    self.tile.character = [self playerTileCharacter];
 }
-                       
+
 - (DRPCharacter *)playerTileCharacter
 {
     return ({

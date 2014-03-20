@@ -12,6 +12,7 @@
 
 @property (readonly) BOOL isLocalPlayer;
 @property NSString *alias;
+@property BOOL aliasLoaded;
 
 // Either 0 or 1 (played first or second)
 @property (readonly) NSInteger turn;
@@ -19,6 +20,7 @@
 
 - (instancetype)initWithTurn:(NSInteger)turn isLocalPlayer:(BOOL)isLocalPlayer;
 
++ (NSString *)opponentSynonym;
 - (NSString *)firstPrintableAliasCharacter;
 
 @end

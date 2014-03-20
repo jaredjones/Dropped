@@ -40,26 +40,21 @@
 + (void)newMatchWithCompletion:(void (^)(DRPMatch *))completion
 {
     [[DRPNetworking sharedNetworking] requestMatchWithFriend:nil withCompletion:^(NSString *matchID, NSInteger localPlayerTurn) {
+        // No matchID, serious error. Return early
         if (!matchID) {
             completion(nil);
         }
         
         DRPMatch *match = [[DRPMatch alloc] initWithMatchID:matchID];
         
-        // Generate the board if client is the first player
-        if (localPlayerTurn == 0) {
-            match.board = [[DRPBoard alloc] initWithMatchData:nil];
-            match.localPlayerTurn = localPlayerTurn;
-            [match loadPlayers];
+        [match reloadMatchDataWithCompletion:^(BOOL newTurns) {
+            // Make sure to save the matchData if the board was just generated
+            if (localPlayerTurn == 0) {
+                [match saveMatchData];
+            }
             
-            [match saveMatchData];
             completion(match);
-            
-        } else {
-            [match reloadMatchDataWithCompletion:^(BOOL newTurns) {
-                completion(match);
-            }];
-        }
+        }];
     }];
 }
 
@@ -89,6 +84,7 @@
         
         BOOL newTurns;
         
+        // Load boardData
         // If this is the first time the matchData is loaded, initialize a DRPBoard and load the players
         if (!self.board) {
             self.board = [[DRPBoard alloc] initWithMatchData:matchData];
@@ -102,7 +98,16 @@
             newTurns = self.board.currentTurn > turns;
         }
         
-        self.remotePlayer.alias = remotePlayerAlias;
+        // Reset remotePlayer.alias
+        if (remotePlayerAlias) {
+            self.remotePlayer.alias = remotePlayerAlias;
+            self.remotePlayer.aliasLoaded = YES;
+            
+        } else {
+            // Only generate a random opponent synonym once
+            self.remotePlayer.alias = self.remotePlayer.alias ?: [DRPPlayer opponentSynonym];
+        }
+        
         [self reloadPlayerScores];
         
         completion(newTurns);
@@ -122,10 +127,10 @@
 
 - (void)saveMatchData
 {
-    // TODO: apparently this isn't working
     [[DRPNetworking sharedNetworking] submitMatchData:self.board.matchData forMatchID:self.matchID advanceTurn:NO withCompletion:^{
-        NSLog(@"finished submitting");
-        [[NSNotificationCenter defaultCenter] postNotificationName:DRPReceivedMatchTurnNotificationName object:nil userInfo:@{@"matchID" : self.matchID}];
+        [[NSNotificationCenter defaultCenter] postNotificationName:DRPReceivedMatchTurnNotificationName
+                                                            object:nil
+                                                          userInfo:@{@"matchID" : self.matchID}];
     }];
 }
 

@@ -154,8 +154,7 @@
 
 - (void)updatePlayerAlias:(NSString *)alias
 {
-    // TODO: better enemy names
-    self.alias.text = self.player.alias ?: @"Nemesis";
+    self.alias.text = self.player.alias;
     self.tile.character = [self playerTileCharacter];
 }
 

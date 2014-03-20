@@ -258,6 +258,9 @@
                            @"advanceTurn" : @((int)advanceTurn)};
     
     [self networkRequestOpcode:DRPNetworkingSubmitMatchTurn arguments:args withCompletion:^(NSDictionary *response, NSError *error) {
+        if (completion) {
+            completion();
+        }
     }];
     
 }

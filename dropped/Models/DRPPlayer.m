@@ -24,9 +24,28 @@
     return self;
 }
 
++ (NSString *)opponentSynonym
+{
+    // TODO: moar better
+    static NSArray *opponentSynomyms;
+    if (!opponentSynomyms) {
+        opponentSynomyms = @[@"Foe",
+                             @"Enemy",
+                             @"Opponent",
+                             @"Opposer",
+                             @"Adversary",
+                             @"Rival",
+                             @"Combatant",
+                             @"Competitor",
+                             @"Contender"];
+    }
+    
+    return opponentSynomyms[arc4random_uniform(opponentSynomyms.count)];
+}
+
 - (NSString *)firstPrintableAliasCharacter
 {
-    return self.alias ? firstPrintableCharacter(self.alias) : @"hash";
+    return (self.alias && self.aliasLoaded) ? firstPrintableCharacter(self.alias) : @"hash";
 }
 
 @end

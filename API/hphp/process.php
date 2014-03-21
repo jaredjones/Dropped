@@ -6,7 +6,7 @@
 	try
 	{
 		# MySQL with PDO_MYSQL
-		$host = "127.0.0.1";
+		$host = "REMOVED";
 		$dbname = "REMOVED";
 		$dbuser = "REMOVED";
 		$dbpass = "REMOVED";
@@ -164,6 +164,43 @@
 			echo json_encode($the_json);
 		break;
            	
+		//Set APNS Token sends deviceID, pass and APNSToken (if Exists)
+		case 4:
+		    	$emptyManually = "{}";
+
+		    	$data = json_decode(file_get_contents('php://input'));
+		    	$deviceID = $data->{'deviceID'};
+		    	$guidpass = $data->{'pass'};
+		    	$apnstoken = $data->{'APNSToken'};
+
+		    	if (empty(deviceID) || empty(guidpass))
+				exit($emptyManually);
+
+		    	$STH = $DBH->prepare("SELECT apns FROM users WHERE devid=? AND pass=? LIMIT 1");
+		    	$STH->execute(array($deviceID, $guidpass));
+
+		    	if ($STH->rowCount() == 0)
+				exit($emptyManually);
+
+		    	$result = $STH->fetch();
+		    	$dbAPNToken = $result[0];
+
+		    	if (empty($apnstoken))
+		    	{
+				$STH = $DBH->prepare("UPDATE users SET apns=? WHERE devid=? AND pass=?");
+				$STH->execute(array(0, $deviceID, $guidpass));
+				exit($emptyManually);
+		    	}
+
+		    	if ($apnstoken == $dbAPNToken)
+				exit($emptyManually);
+
+		    	$STH = $DBH->prepare("UPDATE users SET apns=? WHERE devid=? AND pass=?");
+		    	$STH->execute(array($apnstoken, $deviceID, $guidpass));
+
+		     	exit($emptyManually);
+		break;
+
 		//Get matchIDs for userID if specified, else get matchIDs for userID
 		case 11:
 			$emptyManually = "{\"matchIDs\":\"[null]\"}";
@@ -251,7 +288,14 @@
             
 			$result = $STH->fetch();
 			$sqlID = $result["id"];
-            
+
+			//DELETE THIS
+		//	shell_exec("wget -q --spider http://localhost/dropped/push/push.php?uID=".$sqlID);
+			$url = "http://localhost/dropped/push/push.php";
+			$a = array(
+    				"uID"=>$sqlID);
+			curl_request_async($url,$a,"POST");			
+	
 			$STH = $DBH->prepare("SELECT @tmpID := id FROM matchlist WHERE seconduser IS NULL AND data IS NOT NULL AND active=1 AND firstuser!=? ORDER BY start_time ASC LIMIT 1 FOR UPDATE; UPDATE matchlist SET seconduser=? WHERE id=@tmpID; SELECT @tmpID;");
 			$STH->execute(array($sqlID, $sqlID));
 			$result = $STH->fetch();
@@ -366,7 +410,8 @@
 
 			$result = $STH->fetch();
 			$sqlID = $result["id"];
-			
+		
+	
 			$STH = $DBH->prepare("SELECT firstuser, seconduser, turn, active FROM matchlist WHERE firstuser=? OR seconduser=? AND id=? LIMIT 1");
 			$STH->execute(array($sqlID, $sqlID, $matchID));
 			
@@ -385,7 +430,7 @@
 				exit(json_encode($the_json));
 			}
 
-			if ($turnCount >= 20)
+			if ($turnCount >= 10)
 				exit($emptyManually);
 			if ($turnCount % 2 == 0 && $sqlID == $secondUser)
 				exit($emptyManually);
@@ -402,13 +447,13 @@
 			
 			++$turnCount;
 			
-			if ($turnCount >= 20)	
+			if ($turnCount >= 10)	
 				$STH = $DBH->prepare("UPDATE matchlist SET turn=?, data=?, active=0 WHERE id=?");
 			else
 				$STH = $DBH->prepare("UPDATE matchlist SET turn=?, data=? WHERE id=?");
 			$STH->execute(array($turnCount, $matchData, $matchID));
 
-			if ($turnCount >= 20)
+			if ($turnCount >= 10)
 				$active = 0;
 
 			$the_json['matchStatus'] = $active;
@@ -418,4 +463,37 @@
 		default:
 		exit();
 	}
+
+function curl_request_async($url, $params, $type='POST')
+{
+	foreach ($params as $key => &$val)
+	{
+		if (is_array($val)) $val = implode(',', $val);
+	  	$post_params[] = $key.'='.urlencode($val);
+	}
+	$post_string = implode('&', $post_params);
+
+	$parts=parse_url($url);
+
+	$fp = fsockopen($parts['host'],
+	    isset($parts['port'])?$parts['port']:80,
+	    $errno, $errstr, 0.2);
+	
+	stream_set_timeout($fp, 0.2);
+
+	// Data goes in the path for a GET request
+	if('GET' == $type) $parts['path'] .= '?'.$post_string;
+
+	$out = "$type ".$parts['path']." HTTP/1.1\r\n";
+	$out.= "Host: ".$parts['host']."\r\n";
+	$out.= "Content-Type: application/x-www-form-urlencoded\r\n";
+	$out.= "Content-Length: ".strlen($post_string)."\r\n";
+	$out.= "Connection: Close\r\n\r\n";
+	// Data goes in the request body for a POST request
+	if ('POST' == $type && isset($post_string)) $out.= $post_string;
+
+		fwrite($fp, $out);
+		fclose($fp);
+	}
+
 ?>

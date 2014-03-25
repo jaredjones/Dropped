@@ -206,7 +206,12 @@
         args[@"deviceID"] = deviceID;}
     
     [self networkRequestOpcode:DRPNetworkingGetAlias arguments:args withCompletion:^(NSDictionary * response, NSError *error) {
-        completion(response[@"alias"]);
+        
+        if (response[@"alias"] != nil){
+            completion(response[@"alias"]);
+        }else{
+            completion(nil);
+        }
     }];
 }
 

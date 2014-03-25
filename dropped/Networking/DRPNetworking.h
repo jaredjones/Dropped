@@ -34,10 +34,9 @@ typedef NS_ENUM(NSInteger, DRPNetworkingOpCode) {
 - (void)fetchDeviceIDWithCompletion:(void (^)(BOOL))completion;
 - (void)setAPNSToken:(NSString *)APNSToken withCompletion:(void (^)())completion;
 
-- (void)aliasForDeviceID:(NSString *)deviceID withCompletion:(void (^)(NSString *))completion;
-- (void)aliasForUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion;
-
-- (void)setAlias:(NSString *)alias withCompletion:(void (^)(NSString *))completion;
+- (void)aliasForDeviceIDOrUserID:(NSString *)deviceID withUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion;
+- (void)setAliasForDeviceIDOrUserID:(NSString *)alias withDeviceID:(NSString *)deviceID withUserID:(NSString *)userID
+                           withPass:(NSString *)pass withCompletion:(void (^)(NSString *))completion;
 
 - (void)associateFacebook:(NSString *)userID withCompletion:(void (^)())completion;
 - (void)disassociateFacebookWithCompletion:(void (^)())completion;

@@ -102,8 +102,7 @@
             newTurns = self.board.currentTurn > turns;
         }
         
-        if (localAlias)
-        {
+        if (localAlias){
             self.localPlayer.alias = localAlias;
         }else{
             self.localPlayer.alias = @"You";

@@ -203,7 +203,8 @@
     if (deviceID == nil){
         args[@"userID"] = userID;
     }else{
-        args[@"deviceID"] = deviceID;}
+        args[@"deviceID"] = deviceID;
+    }
     
     [self networkRequestOpcode:DRPNetworkingGetAlias arguments:args withCompletion:^(NSDictionary * response, NSError *error) {
         

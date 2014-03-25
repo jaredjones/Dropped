@@ -18,6 +18,7 @@
 @property (readwrite) NSString *deviceID;
 @property (readwrite) NSString *userID;
 @property (readwrite) NSString *APNSToken;
+@property (readwrite) NSString *localAlias;
 
 @property NSURL *deviceURL;
 @property NSMutableDictionary *cachedAliases;
@@ -197,7 +198,13 @@
 
 #pragma mark Aliases
 
-- (void)aliasForDeviceIDOrUserID:(NSString *)deviceID withUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion {
+- (void)aliasWithCompletion:(void (^)(NSString *))completion
+{
+    [self aliasForDeviceID:self.deviceID withUserID:self.userID withCompletion:completion];
+}
+
+- (void)aliasForDeviceID:(NSString *)deviceID withUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion
+{
     
     NSMutableDictionary *args = [[NSMutableDictionary alloc] init];
     if (deviceID == nil){
@@ -209,6 +216,7 @@
     [self networkRequestOpcode:DRPNetworkingGetAlias arguments:args withCompletion:^(NSDictionary * response, NSError *error) {
         
         if (response[@"alias"] != nil){
+            self.localAlias = response[@"alias"];
             completion(response[@"alias"]);
         }else{
             completion(nil);
@@ -216,16 +224,15 @@
     }];
 }
 
-- (void)setAliasForDeviceIDOrUserID:(NSString *)alias withDeviceID:(NSString *)deviceID withUserID:(NSString *)userID
-                                                        withPass:(NSString *)pass withCompletion:(void (^)(NSString *))completion{
+- (void)setAlias:(NSString *)alias forDeviceID:(NSString *)deviceID userID:(NSString *)userID withCompletion:(void (^)(NSString *))completion{
     
-    if ((pass == nil) || (deviceID == nil && userID == nil)){
+    if (!self.pass || (deviceID == nil && userID == nil)){
         NSLog(@"Pass or (deviceID and userID) is nil, can't call this method.");
         return;
     }
     
     NSMutableDictionary *args = [[NSMutableDictionary alloc] init];
-    args[@"pass"] = pass;
+    args[@"pass"] = self.pass;
     
     if (deviceID == nil){
         args[@"userID"] = userID;

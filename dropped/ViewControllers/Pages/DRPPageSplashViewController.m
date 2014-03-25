@@ -74,6 +74,11 @@
             // TODO: move this to after the user creates their first match
             [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound |UIRemoteNotificationTypeAlert];
             
+            [[DRPNetworking sharedNetworking] aliasWithCompletion:^(NSString *alias) {
+                
+            }];
+            
+            
             // TODO: if an alias is not set, prompt user to set an alias
             
             [self transtionToPage:DRPPageLogIn];

@@ -27,16 +27,16 @@ typedef NS_ENUM(NSInteger, DRPNetworkingOpCode) {
 
 @interface DRPNetworking : NSObject
 
-@property (readonly) NSString *deviceID, *userID;
+@property (readonly) NSString *deviceID, *userID, *localAlias;
 
 + (instancetype)sharedNetworking;
 
 - (void)fetchDeviceIDWithCompletion:(void (^)(BOOL))completion;
 - (void)setAPNSToken:(NSString *)APNSToken withCompletion:(void (^)())completion;
 
-- (void)aliasForDeviceIDOrUserID:(NSString *)deviceID withUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion;
-- (void)setAliasForDeviceIDOrUserID:(NSString *)alias withDeviceID:(NSString *)deviceID withUserID:(NSString *)userID
-                           withPass:(NSString *)pass withCompletion:(void (^)(NSString *))completion;
+- (void)aliasWithCompletion:(void (^)(NSString *))completion;
+- (void)aliasForDeviceID:(NSString *)deviceID withUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion;
+- (void)setAlias:(NSString *)alias forDeviceID:(NSString *)deviceID userID:(NSString *)userID withCompletion:(void (^)(NSString *))completion;
 
 - (void)associateFacebook:(NSString *)userID withCompletion:(void (^)())completion;
 - (void)disassociateFacebookWithCompletion:(void (^)())completion;

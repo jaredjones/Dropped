@@ -80,11 +80,6 @@
 
 - (void)reloadMatchDataWithCompletion:(void(^)(BOOL newTurns))completion
 {
-    __block NSString *localAlias;
-    [[DRPNetworking sharedNetworking] aliasForDeviceIDOrUserID:[DRPNetworking sharedNetworking].deviceID withUserID:[DRPNetworking sharedNetworking].userID withCompletion:^(NSString *alias) {
-        localAlias = alias;
-    }];
-    
     [[DRPNetworking sharedNetworking] matchDataForMatchID:self.matchID withCompletion:^(NSData *matchData, NSInteger localPlayerTurn, NSString *remotePlayerAlias) {
         BOOL newTurns;
         
@@ -102,8 +97,8 @@
             newTurns = self.board.currentTurn > turns;
         }
         
-        if (localAlias){
-            self.localPlayer.alias = localAlias;
+        if ([[DRPNetworking sharedNetworking] localAlias]){
+            self.localPlayer.alias = [[DRPNetworking sharedNetworking] localAlias];
             self.localPlayer.aliasLoaded = YES;
         }else{
             self.localPlayer.alias = @"You";

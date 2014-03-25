@@ -104,6 +104,7 @@
         
         if (localAlias){
             self.localPlayer.alias = localAlias;
+            self.localPlayer.aliasLoaded = YES;
         }else{
             self.localPlayer.alias = @"You";
         }

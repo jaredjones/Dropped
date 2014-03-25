@@ -197,13 +197,39 @@
 
 #pragma mark Aliases
 
-- (void)aliasForDeviceID:(NSString *)deviceID withCompletion:(void (^)(NSString *))completion {
+- (void)aliasForDeviceIDOrUserID:(NSString *)deviceID withUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion {
+    
+    NSMutableDictionary *args = [[NSMutableDictionary alloc] init];
+    if (deviceID == nil){
+        args[@"userID"] = userID;
+    }else{
+        args[@"deviceID"] = deviceID;}
+    
+    [self networkRequestOpcode:DRPNetworkingGetAlias arguments:args withCompletion:^(NSDictionary * response, NSError *error) {
+        completion(response[@"alias"]);
+    }];
 }
 
-- (void)aliasForUserID:(NSString *)userID withCompletion:(void (^)(NSString *))completion {
-}
-
-- (void)setAlias:(NSString *)alias withCompletion:(void (^)(NSString *))completion {
+- (void)setAliasForDeviceIDOrUserID:(NSString *)alias withDeviceID:(NSString *)deviceID withUserID:(NSString *)userID
+                                                        withPass:(NSString *)pass withCompletion:(void (^)(NSString *))completion{
+    
+    if ((pass == nil) || (deviceID == nil && userID == nil)){
+        NSLog(@"Pass or (deviceID and userID) is nil, can't call this method.");
+        return;
+    }
+    
+    NSMutableDictionary *args = [[NSMutableDictionary alloc] init];
+    args[@"pass"] = pass;
+    
+    if (deviceID == nil){
+        args[@"userID"] = userID;
+    }else{
+        args[@"deviceID"] = deviceID;
+    }
+    
+    [self networkRequestOpcode:DRPNetworkingSetAlias arguments:args withCompletion:^(NSDictionary *response, NSError *error) {
+        completion(response[@"alias"]);
+    }];
 }
 
 #pragma mark Facebook

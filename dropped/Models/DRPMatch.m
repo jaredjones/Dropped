@@ -43,6 +43,7 @@
         // No matchID, serious error. Return early
         if (!matchID) {
             completion(nil);
+            return;
         }
         
         DRPMatch *match = [[DRPMatch alloc] initWithMatchID:matchID];
@@ -97,14 +98,10 @@
             newTurns = self.board.currentTurn > turns;
         }
         
-        if ([[DRPNetworking sharedNetworking] localAlias]){
-            self.localPlayer.alias = [[DRPNetworking sharedNetworking] localAlias];
-            self.localPlayer.aliasLoaded = YES;
-        }else{
-            self.localPlayer.alias = @"You";
-        }
+        // Reset Aliases
+        self.localPlayer.alias = [[DRPNetworking sharedNetworking] localAlias];
+        self.localPlayer.aliasLoaded = YES;
         
-        // Reset remotePlayer.alias
         if (remotePlayerAlias) {
             self.remotePlayer.alias = remotePlayerAlias;
             self.remotePlayer.aliasLoaded = YES;

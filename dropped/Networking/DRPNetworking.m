@@ -216,8 +216,9 @@
     [self networkRequestOpcode:DRPNetworkingGetAlias arguments:args withCompletion:^(NSDictionary * response, NSError *error) {
         
         if (response[@"alias"] != nil){
-            self.localAlias = response[@"alias"];
-            completion(response[@"alias"]);
+            self.localAlias = coerceObject(response[@"alias"], nil) ?: @"You";
+            completion(self.localAlias);
+            
         }else{
             completion(nil);
         }

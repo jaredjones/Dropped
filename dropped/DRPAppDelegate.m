@@ -8,9 +8,9 @@
 
 #import "DRPAppDelegate.h"
 #import "DRPMainViewController.h"
-#import "DRPGameCenterInterface.h"
 #import "FRBSwatchist.h"
 
+#import "DRPNetworking.h"
 #import "DRPDictionary.h"
 #import "TestFlight.h"
 
@@ -23,7 +23,6 @@
     
     // Important networky things need to happen ASAP
     [TestFlight takeOff:@"e04eea5f-3c76-4cc7-a01d-79f12d9fa6ad"];
-    [DRPGameCenterInterface authenticateLocalPlayer];
     [DRPDictionary syncDictionary];
     
     // RootViewController
@@ -60,6 +59,29 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark Push Notifications
+
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    // Boo, Apple. This shit stanky
+    NSString *APNSToken = [deviceToken.description stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+    APNSToken = [APNSToken stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    [[DRPNetworking sharedNetworking] setAPNSToken:APNSToken withCompletion:nil];
+    
+	NSLog(@"APNS Setup Success: %@", APNSToken);
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	NSLog(@"APNS Setup Failed:\n\nFailed to get APNS token, error: %@\n\n", error);
+}
+
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    // TODO: respond to notification
 }
 
 #pragma mark Swatches

@@ -13,8 +13,6 @@
 #import "DRPUtility.h"
 #import "DRPPlayer.h"
 
-static long const PrivateKVOContext;
-
 @interface DRPMatchPlayerView ()
 
 @property DRPTileView *tile;
@@ -146,7 +144,7 @@ static long const PrivateKVOContext;
 {
     if (object == self.player) {
         if ([keyPath isEqualToString:@"alias"]) {
-            [self updatePlayerAlias:change[NSKeyValueChangeNewKey]];
+            [self updatePlayerAlias:coerceObject(change[NSKeyValueChangeNewKey], nil)];
         }
         
     } else {
@@ -156,12 +154,10 @@ static long const PrivateKVOContext;
 
 - (void)updatePlayerAlias:(NSString *)alias
 {
-    if ((id)alias != [NSNull null]) {
-        self.alias.text = self.player.alias;
-        self.tile.character = [self playerTileCharacter];
-    }
+    self.alias.text = self.player.alias;
+    self.tile.character = [self playerTileCharacter];
 }
-                       
+
 - (DRPCharacter *)playerTileCharacter
 {
     return ({
@@ -235,6 +231,11 @@ static long const PrivateKVOContext;
 - (void)tileWasDeselected:(DRPTileView *)tile
 {
     // Intentionally left blank
+}
+
+- (void)setTileEnabled:(BOOL)enabled
+{
+    self.tile.enabled = enabled;
 }
 
 @end

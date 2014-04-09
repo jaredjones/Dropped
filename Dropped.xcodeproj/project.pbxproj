@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		A9039FFB1858D579002AEB37 /* DRPPageEtCeteraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9039FFA1858D579002AEB37 /* DRPPageEtCeteraViewController.m */; };
-		A91C045818557C03002B6899 /* page.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A91C045618557B6A002B6899 /* page.plist */; };
+		A91C045818557C03002B6899 /* page.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A91C045618557B6A002B6899 /* page.plist */; };
 		A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = A91C045E185582DC002B6899 /* DRPCueKeeper.m */; };
 		A91D8F49183702EE00BEC6E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F48183702EE00BEC6E8 /* Foundation.framework */; };
 		A91D8F4B183702EE00BEC6E8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4A183702EE00BEC6E8 /* CoreGraphics.framework */; };
@@ -17,21 +17,16 @@
 		A91D8F55183702EE00BEC6E8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A91D8F54183702EE00BEC6E8 /* main.m */; };
 		A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A91D8F58183702EE00BEC6E8 /* DRPAppDelegate.m */; };
 		A91D8F5B183702EE00BEC6E8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A91D8F5A183702EE00BEC6E8 /* Images.xcassets */; };
-		A91D8F62183702EE00BEC6E8 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F61183702EE00BEC6E8 /* XCTest.framework */; };
-		A91D8F63183702EE00BEC6E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F48183702EE00BEC6E8 /* Foundation.framework */; };
-		A91D8F64183702EE00BEC6E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4C183702EE00BEC6E8 /* UIKit.framework */; };
 		A920405218370467006940B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A920405118370467006940B8 /* Security.framework */; };
 		A920405C18370BA0006940B8 /* DRPPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = A920405B18370BA0006940B8 /* DRPPosition.m */; };
-		A9239C6418844C5100F8E07B /* debug.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9239C6218844C2F00F8E07B /* debug.plist */; };
-		A9323D281878BA650045287A /* board.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9323D261878BA4F0045287A /* board.plist */; };
+		A9239C6418844C5100F8E07B /* debug.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A9239C6218844C2F00F8E07B /* debug.plist */; };
+		A9323D281878BA650045287A /* board.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A9323D261878BA4F0045287A /* board.plist */; };
 		A93D77C618566A8F006691AE /* DRPPageMatchmakerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77C518566A8F006691AE /* DRPPageMatchmakerViewController.m */; };
 		A93D77CC185673EF006691AE /* DRPPageSplashViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77CB185673EF006691AE /* DRPPageSplashViewController.m */; };
 		A93D77CF18567D4B006691AE /* DRPPageLogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77CE18567D4B006691AE /* DRPPageLogInViewController.m */; };
-		A93D77D21856A1F7006691AE /* DRPGameCenterInterface.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D77D11856A1F7006691AE /* DRPGameCenterInterface.m */; };
 		A93E9F29184AAC3B0047575A /* DRPMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93E9F28184AAC3B0047575A /* DRPMainViewController.m */; };
 		A959500718A3F33D006B42DA /* DRPMenuCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A959500618A3F33D006B42DA /* DRPMenuCollectionViewCell.m */; };
-		A959500A18A3F74D006B42DA /* list.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A959500818A3F514006B42DA /* list.plist */; };
-		A95A2C821847C3AB001AF846 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A95A2C811847C3AB001AF846 /* GameKit.framework */; };
+		A959500A18A3F74D006B42DA /* list.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A959500818A3F514006B42DA /* list.plist */; };
 		A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */; };
 		A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB48F18372DA800B7A9A8 /* DRPBoard.m */; };
 		A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */ = {isa = PBXBuildFile; fileRef = A95BB49318372DA800B7A9A8 /* DRPCharacter.m */; };
@@ -41,14 +36,13 @@
 		A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9813323186BC00300FC3277 /* DRPCurrentWordView.m */; };
 		A9813327186DFBA100FC3277 /* DRPGreedyScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9813326186DFBA100FC3277 /* DRPGreedyScrollView.m */; };
 		A997F00918A446FA0007E7E5 /* under_construction.png in Resources */ = {isa = PBXBuildFile; fileRef = A997F00818A446FA0007E7E5 /* under_construction.png */; };
-		A99B627318989BB500906CD5 /* debugMatches.plist in Resources */ = {isa = PBXBuildFile; fileRef = A99B627218989BB500906CD5 /* debugMatches.plist */; };
 		A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = A99D97D218490C8300208FA0 /* DRPPlayer.m */; };
 		A99EAF1D1876603E00DAD44F /* DRPMatchPlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = A99EAF1C1876603E00DAD44F /* DRPMatchPlayerView.m */; };
 		A9A485D1185627B00080A4B5 /* Centrale Sans Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9A485CF185627B00080A4B5 /* Centrale Sans Light.otf */; };
 		A9A485D2185627B00080A4B5 /* Centrale Sans Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9A485D0185627B00080A4B5 /* Centrale Sans Medium.otf */; };
 		A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5BE1850ED5F0024E7D4 /* DRPPageListViewController.m */; };
 		A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9A9D5C01850ED5F0024E7D4 /* DRPPageViewController.m */; };
-		A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9AC495F18539E44006E1D84 /* animation.plist */; };
+		A9AC496218539E97006E1D84 /* animation.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A9AC495F18539E44006E1D84 /* animation.plist */; };
 		A9ACB3C81883688500B0B9D9 /* DRPCollectionViewDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB3C71883688500B0B9D9 /* DRPCollectionViewDataSource.m */; };
 		A9ACB3CB1883740600B0B9D9 /* DRPCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB3CA1883740600B0B9D9 /* DRPCollectionViewLayout.m */; };
 		A9ACB3CF18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A9ACB3CE18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.m */; };
@@ -58,7 +52,7 @@
 		A9B1C085184D042100866029 /* DRPLiftTransition.m in Sources */ = {isa = PBXBuildFile; fileRef = A9B1C084184D042100866029 /* DRPLiftTransition.m */; };
 		A9C0FACC1864DB0A00377B0E /* DRPPageMatchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FACB1864DB0A00377B0E /* DRPPageMatchViewController.m */; };
 		A9C0FACF1864DE7700377B0E /* DRPBoardViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FACE1864DE7700377B0E /* DRPBoardViewController.m */; };
-		A9C0FAD21864F63700377B0E /* colors.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9C0FAD01864F53700377B0E /* colors.plist */; };
+		A9C0FAD21864F63700377B0E /* colors.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A9C0FAD01864F53700377B0E /* colors.plist */; };
 		A9C0FAD61864F6FC00377B0E /* DRPUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FAD51864F6FC00377B0E /* DRPUtility.m */; };
 		A9C0FAD9186507EC00377B0E /* NSArray+Mutable.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C0FAD8186507EC00377B0E /* NSArray+Mutable.m */; };
 		A9C7BBB218395DFD003F585F /* DRPCharacterHistogram.m in Sources */ = {isa = PBXBuildFile; fileRef = A9C7BBB118395DFD003F585F /* DRPCharacterHistogram.m */; };
@@ -69,50 +63,42 @@
 		A9D1D5C718AD35B700F088D4 /* DRPCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A9D1D5C618AD35B700F088D4 /* DRPCollectionViewCell.m */; };
 		A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E27CBE1857AE210043F6A9 /* DRPTileView.m */; };
 		A9E27CC11857AFBC0043F6A9 /* Rokkitt.otf in Resources */ = {isa = PBXBuildFile; fileRef = A9E27CC01857AFBC0043F6A9 /* Rokkitt.otf */; };
-		A9E27CC61857B6170043F6A9 /* tileOffset.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9E27CC21857B4290043F6A9 /* tileOffset.plist */; };
-		A9E27CC81857B6250043F6A9 /* tileScalingOffset.plist in CopyFiles */ = {isa = PBXBuildFile; fileRef = A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */; };
+		A9E27CC61857B6170043F6A9 /* tileOffset.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A9E27CC21857B4290043F6A9 /* tileOffset.plist */; };
+		A9E27CC81857B6250043F6A9 /* tileScalingOffset.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */; };
+		A9E4A44A18CBE8420085CA57 /* DRPNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E4A44918CBE8420085CA57 /* DRPNetworking.m */; };
+		A9E4A44D18CD09310085CA57 /* en-us.db in Copy Word Databases */ = {isa = PBXBuildFile; fileRef = A9E4A44B18CD09110085CA57 /* en-us.db */; };
 		C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C024DF7818370AC300B5775B /* DRPDictionary.m */; };
-		C08CBC171837168800CE678F /* importdatabase.sh in Resources */ = {isa = PBXBuildFile; fileRef = C08CBC141837168800CE678F /* importdatabase.sh */; };
-		C08CBC1A18371B3700CE678F /* Dropped.db in CopyFiles */ = {isa = PBXBuildFile; fileRef = C08CBC131837168800CE678F /* Dropped.db */; };
 		F4E61295ABFC46CDBE1384F1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA523B0D421443AAA174ECE1 /* libPods.a */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		A91D8F65183702EE00BEC6E8 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = A91D8F3D183702EE00BEC6E8 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = A91D8F44183702EE00BEC6E8;
-			remoteInfo = dropped;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXCopyFilesBuildPhase section */
-		A9AC496118539E8E006E1D84 /* CopyFiles */ = {
+		A9AC496118539E8E006E1D84 /* Copy Swatches */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = Swatches;
 			dstSubfolderSpec = 7;
 			files = (
-				A9AC496218539E97006E1D84 /* animation.plist in CopyFiles */,
-				A9323D281878BA650045287A /* board.plist in CopyFiles */,
-				A9C0FAD21864F63700377B0E /* colors.plist in CopyFiles */,
-				A9239C6418844C5100F8E07B /* debug.plist in CopyFiles */,
-				A959500A18A3F74D006B42DA /* list.plist in CopyFiles */,
-				A91C045818557C03002B6899 /* page.plist in CopyFiles */,
-				A9E27CC61857B6170043F6A9 /* tileOffset.plist in CopyFiles */,
-				A9E27CC81857B6250043F6A9 /* tileScalingOffset.plist in CopyFiles */,
+				A9AC496218539E97006E1D84 /* animation.plist in Copy Swatches */,
+				A9323D281878BA650045287A /* board.plist in Copy Swatches */,
+				A9C0FAD21864F63700377B0E /* colors.plist in Copy Swatches */,
+				A9239C6418844C5100F8E07B /* debug.plist in Copy Swatches */,
+				A959500A18A3F74D006B42DA /* list.plist in Copy Swatches */,
+				A91C045818557C03002B6899 /* page.plist in Copy Swatches */,
+				A9E27CC61857B6170043F6A9 /* tileOffset.plist in Copy Swatches */,
+				A9E27CC81857B6250043F6A9 /* tileScalingOffset.plist in Copy Swatches */,
 			);
+			name = "Copy Swatches";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		C08CBC1918371B1E00CE678F /* CopyFiles */ = {
+		C08CBC1918371B1E00CE678F /* Copy Word Databases */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = Database;
 			dstSubfolderSpec = 7;
 			files = (
-				C08CBC1A18371B3700CE678F /* Dropped.db in CopyFiles */,
+				A9E4A44D18CD09310085CA57 /* en-us.db in Copy Word Databases */,
 			);
+			name = "Copy Word Databases";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -134,7 +120,6 @@
 		A91D8F57183702EE00BEC6E8 /* DRPAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRPAppDelegate.h; sourceTree = "<group>"; };
 		A91D8F58183702EE00BEC6E8 /* DRPAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRPAppDelegate.m; sourceTree = "<group>"; };
 		A91D8F5A183702EE00BEC6E8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		A91D8F60183702EE00BEC6E8 /* DroppedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DroppedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A91D8F61183702EE00BEC6E8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A920405118370467006940B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		A920405A18370BA0006940B8 /* DRPPosition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPosition.h; path = Models/DRPPosition.h; sourceTree = "<group>"; };
@@ -147,14 +132,11 @@
 		A93D77CB185673EF006691AE /* DRPPageSplashViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageSplashViewController.m; path = ViewControllers/Pages/DRPPageSplashViewController.m; sourceTree = "<group>"; };
 		A93D77CD18567D4B006691AE /* DRPPageLogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageLogInViewController.h; path = ViewControllers/Pages/DRPPageLogInViewController.h; sourceTree = "<group>"; };
 		A93D77CE18567D4B006691AE /* DRPPageLogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageLogInViewController.m; path = ViewControllers/Pages/DRPPageLogInViewController.m; sourceTree = "<group>"; };
-		A93D77D01856A1F7006691AE /* DRPGameCenterInterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DRPGameCenterInterface.h; sourceTree = "<group>"; };
-		A93D77D11856A1F7006691AE /* DRPGameCenterInterface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DRPGameCenterInterface.m; sourceTree = "<group>"; };
 		A93E9F27184AAC3B0047575A /* DRPMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMainViewController.h; path = ViewControllers/DRPMainViewController.h; sourceTree = "<group>"; };
 		A93E9F28184AAC3B0047575A /* DRPMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMainViewController.m; path = ViewControllers/DRPMainViewController.m; sourceTree = "<group>"; };
 		A959500518A3F33D006B42DA /* DRPMenuCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMenuCollectionViewCell.h; path = Views/DRPMenuCollectionViewCell.h; sourceTree = "<group>"; };
 		A959500618A3F33D006B42DA /* DRPMenuCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMenuCollectionViewCell.m; path = Views/DRPMenuCollectionViewCell.m; sourceTree = "<group>"; };
 		A959500818A3F514006B42DA /* list.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = list.plist; path = Swatches/list.plist; sourceTree = "<group>"; };
-		A95A2C811847C3AB001AF846 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
 		A95BB48B18372D9C00B7A9A8 /* DRPMatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMatch.h; path = Models/DRPMatch.h; sourceTree = "<group>"; };
 		A95BB48C18372D9C00B7A9A8 /* DRPMatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMatch.m; path = Models/DRPMatch.m; sourceTree = "<group>"; };
 		A95BB48E18372DA800B7A9A8 /* DRPBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPBoard.h; path = Models/DRPBoard.h; sourceTree = "<group>"; };
@@ -223,12 +205,12 @@
 		A9E27CC01857AFBC0043F6A9 /* Rokkitt.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Rokkitt.otf; path = Fonts/Rokkitt.otf; sourceTree = "<group>"; };
 		A9E27CC21857B4290043F6A9 /* tileOffset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = tileOffset.plist; path = Swatches/tileOffset.plist; sourceTree = "<group>"; };
 		A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = tileScalingOffset.plist; path = Swatches/tileScalingOffset.plist; sourceTree = "<group>"; };
+		A9E4A44818CBE8420085CA57 /* DRPNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPNetworking.h; path = Networking/DRPNetworking.h; sourceTree = "<group>"; };
+		A9E4A44918CBE8420085CA57 /* DRPNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPNetworking.m; path = Networking/DRPNetworking.m; sourceTree = "<group>"; };
+		A9E4A44B18CD09110085CA57 /* en-us.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = "en-us.db"; path = "Database/en-us.db"; sourceTree = "<group>"; };
 		B0935A92C9664719B578E480 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C024DF7718370AC300B5775B /* DRPDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDictionary.h; path = Models/DRPDictionary.h; sourceTree = "<group>"; };
 		C024DF7818370AC300B5775B /* DRPDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPDictionary.m; path = Models/DRPDictionary.m; sourceTree = "<group>"; };
-		C08CBC131837168800CE678F /* Dropped.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dropped.db; sourceTree = "<group>"; };
-		C08CBC141837168800CE678F /* importdatabase.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = importdatabase.sh; sourceTree = "<group>"; };
-		C08CBC151837168800CE678F /* US.dic */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = US.dic; sourceTree = "<group>"; };
 		CA523B0D421443AAA174ECE1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -240,19 +222,8 @@
 				A920405218370467006940B8 /* Security.framework in Frameworks */,
 				A91D8F4B183702EE00BEC6E8 /* CoreGraphics.framework in Frameworks */,
 				A91D8F4D183702EE00BEC6E8 /* UIKit.framework in Frameworks */,
-				A95A2C821847C3AB001AF846 /* GameKit.framework in Frameworks */,
 				A91D8F49183702EE00BEC6E8 /* Foundation.framework in Frameworks */,
 				F4E61295ABFC46CDBE1384F1 /* libPods.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A91D8F5D183702EE00BEC6E8 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				A91D8F62183702EE00BEC6E8 /* XCTest.framework in Frameworks */,
-				A91D8F64183702EE00BEC6E8 /* UIKit.framework in Frameworks */,
-				A91D8F63183702EE00BEC6E8 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,7 +253,6 @@
 			isa = PBXGroup;
 			children = (
 				A91D8F45183702EE00BEC6E8 /* Dropped.app */,
-				A91D8F60183702EE00BEC6E8 /* DroppedTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -290,7 +260,6 @@
 		A91D8F47183702EE00BEC6E8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A95A2C811847C3AB001AF846 /* GameKit.framework */,
 				A920405118370467006940B8 /* Security.framework */,
 				A91D8F48183702EE00BEC6E8 /* Foundation.framework */,
 				A91D8F4A183702EE00BEC6E8 /* CoreGraphics.framework */,
@@ -308,7 +277,7 @@
 				A9204054183704B7006940B8 /* ViewControllers */,
 				A9204055183704C1006940B8 /* Views */,
 				A9204056183704D7006940B8 /* Models */,
-				A9ACB3C21883129800B0B9D9 /* Game Center */,
+				A9E4A44718CBE8260085CA57 /* Networking */,
 				A9C0FAD31864F6D000377B0E /* Utility */,
 				A91D8F5A183702EE00BEC6E8 /* Images.xcassets */,
 				C08CBC121837168800CE678F /* Resources */,
@@ -520,9 +489,7 @@
 		A9AC495D18539E0D006E1D84 /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				C08CBC131837168800CE678F /* Dropped.db */,
-				C08CBC141837168800CE678F /* importdatabase.sh */,
-				C08CBC151837168800CE678F /* US.dic */,
+				A9E4A44B18CD09110085CA57 /* en-us.db */,
 			);
 			name = Database;
 			sourceTree = "<group>";
@@ -541,15 +508,6 @@
 				A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */,
 			);
 			name = Swatches;
-			sourceTree = "<group>";
-		};
-		A9ACB3C21883129800B0B9D9 /* Game Center */ = {
-			isa = PBXGroup;
-			children = (
-				A93D77D01856A1F7006691AE /* DRPGameCenterInterface.h */,
-				A93D77D11856A1F7006691AE /* DRPGameCenterInterface.m */,
-			);
-			name = "Game Center";
 			sourceTree = "<group>";
 		};
 		A9ACB3CC18838A5A00B0B9D9 /* CollectionViewCells */ = {
@@ -598,6 +556,15 @@
 			name = Utility;
 			sourceTree = "<group>";
 		};
+		A9E4A44718CBE8260085CA57 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				A9E4A44818CBE8420085CA57 /* DRPNetworking.h */,
+				A9E4A44918CBE8420085CA57 /* DRPNetworking.m */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
 		C08CBC121837168800CE678F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -622,8 +589,8 @@
 				A91D8F42183702EE00BEC6E8 /* Frameworks */,
 				A91D8F43183702EE00BEC6E8 /* Resources */,
 				8142C07EB6364950BA9598DA /* Copy Pods Resources */,
-				C08CBC1918371B1E00CE678F /* CopyFiles */,
-				A9AC496118539E8E006E1D84 /* CopyFiles */,
+				C08CBC1918371B1E00CE678F /* Copy Word Databases */,
+				A9AC496118539E8E006E1D84 /* Copy Swatches */,
 			);
 			buildRules = (
 			);
@@ -634,24 +601,6 @@
 			productReference = A91D8F45183702EE00BEC6E8 /* Dropped.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A91D8F5F183702EE00BEC6E8 /* DroppedTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = A91D8F74183702EE00BEC6E8 /* Build configuration list for PBXNativeTarget "DroppedTests" */;
-			buildPhases = (
-				A91D8F5C183702EE00BEC6E8 /* Sources */,
-				A91D8F5D183702EE00BEC6E8 /* Frameworks */,
-				A91D8F5E183702EE00BEC6E8 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				A91D8F66183702EE00BEC6E8 /* PBXTargetDependency */,
-			);
-			name = DroppedTests;
-			productName = droppedTests;
-			productReference = A91D8F60183702EE00BEC6E8 /* DroppedTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -659,19 +608,16 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = DRP;
-				LastUpgradeCheck = 0500;
+				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Brad Zeis";
 				TargetAttributes = {
 					A91D8F44183702EE00BEC6E8 = {
 						DevelopmentTeam = VK6PLLGMJR;
 						SystemCapabilities = {
 							com.apple.GameCenter = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
-					};
-					A91D8F5F183702EE00BEC6E8 = {
-						TestTargetID = A91D8F44183702EE00BEC6E8;
 					};
 				};
 			};
@@ -688,7 +634,6 @@
 			projectRoot = "";
 			targets = (
 				A91D8F44183702EE00BEC6E8 /* Dropped */,
-				A91D8F5F183702EE00BEC6E8 /* DroppedTests */,
 			);
 		};
 /* End PBXProject section */
@@ -703,17 +648,8 @@
 				A960B1FE18A749E6002B89FA /* logo.png in Resources */,
 				A9A485D1185627B00080A4B5 /* Centrale Sans Light.otf in Resources */,
 				A9A485D2185627B00080A4B5 /* Centrale Sans Medium.otf in Resources */,
-				C08CBC171837168800CE678F /* importdatabase.sh in Resources */,
 				A9E27CC11857AFBC0043F6A9 /* Rokkitt.otf in Resources */,
-				A99B627318989BB500906CD5 /* debugMatches.plist in Resources */,
 				A91D8F5B183702EE00BEC6E8 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		A91D8F5E183702EE00BEC6E8 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -773,7 +709,6 @@
 				A9C0FACF1864DE7700377B0E /* DRPBoardViewController.m in Sources */,
 				A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */,
 				A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */,
-				A93D77D21856A1F7006691AE /* DRPGameCenterInterface.m in Sources */,
 				A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */,
 				A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */,
 				C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */,
@@ -791,6 +726,7 @@
 				A9813327186DFBA100FC3277 /* DRPGreedyScrollView.m in Sources */,
 				A9C0FACC1864DB0A00377B0E /* DRPPageMatchViewController.m in Sources */,
 				A9B1C085184D042100866029 /* DRPLiftTransition.m in Sources */,
+				A9E4A44A18CBE8420085CA57 /* DRPNetworking.m in Sources */,
 				A9A9D5C21850ED5F0024E7D4 /* DRPPageViewController.m in Sources */,
 				A99EAF1D1876603E00DAD44F /* DRPMatchPlayerView.m in Sources */,
 				A920405C18370BA0006940B8 /* DRPPosition.m in Sources */,
@@ -801,22 +737,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A91D8F5C183702EE00BEC6E8 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		A91D8F66183702EE00BEC6E8 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = A91D8F44183702EE00BEC6E8 /* Dropped */;
-			targetProxy = A91D8F65183702EE00BEC6E8 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		A91D8F51183702EE00BEC6E8 /* InfoPlist.strings */ = {
@@ -834,7 +755,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -847,7 +767,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jared Jones (R96M5245A2)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jared Jones (R96M5245A2)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -874,7 +795,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -887,7 +807,8 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Uvora LLC (VK6PLLGMJR)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Uvora LLC (VK6PLLGMJR)";
 				COPY_PHASE_STRIP = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -910,13 +831,13 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Jared Jones (R96M5245A2)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jared Jones (R96M5245A2)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dropped/Dropped-Prefix.pch";
 				INFOPLIST_FILE = "Dropped/Dropped-Info.plist";
 				PRODUCT_NAME = Dropped;
-				PROVISIONING_PROFILE = "2F678A44-C067-4274-AE87-5DED0687D080";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -927,55 +848,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Uvora LLC (VK6PLLGMJR)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dropped/Dropped-Prefix.pch";
 				INFOPLIST_FILE = "Dropped/Dropped-Info.plist";
 				PRODUCT_NAME = Dropped;
-				PROVISIONING_PROFILE = "72CE805A-82D7-4A90-B146-599BC400F24D";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
-			};
-			name = Release;
-		};
-		A91D8F75183702EE00BEC6E8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/dropped.app/dropped";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "dropped/dropped-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "droppedTests/droppedTests-Info.plist";
-				PRODUCT_NAME = DroppedTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		A91D8F76183702EE00BEC6E8 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_INCLUDING_64_BIT)";
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/dropped.app/dropped";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "dropped/dropped-Prefix.pch";
-				INFOPLIST_FILE = "droppedTests/droppedTests-Info.plist";
-				PRODUCT_NAME = DroppedTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
 			};
 			name = Release;
 		};
@@ -996,15 +876,6 @@
 			buildConfigurations = (
 				A91D8F72183702EE00BEC6E8 /* Debug */,
 				A91D8F73183702EE00BEC6E8 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		A91D8F74183702EE00BEC6E8 /* Build configuration list for PBXNativeTarget "DroppedTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				A91D8F75183702EE00BEC6E8 /* Debug */,
-				A91D8F76183702EE00BEC6E8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

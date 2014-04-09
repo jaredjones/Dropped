@@ -8,9 +8,11 @@
 
 #import "DRPPageSplashViewController.h"
 #import "DRPMainViewController.h"
+
+#import "DRPNetworking.h"
+
 #import "FRBSwatchist.h"
 #import "DRPUtility.h"
-#import <GameKit/GameKit.h>
 
 @interface DRPPageSplashViewController ()
 
@@ -58,20 +60,35 @@
 
 - (void)didMoveToCurrent
 {
-    // TODO: animate that shit
-    // TODO: wait until shit happens before dropping tiles
-    
-    // tmp
-    double delayInSeconds = 1.0;
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        DRPPageID page = DRPPageList;
-        if (![GKLocalPlayer localPlayer].authenticated) {
-            page = DRPPageLogIn;
-        }
+    // Attempt to Log user in
+    [[DRPNetworking sharedNetworking] fetchDeviceIDWithCompletion:^(BOOL foundDeviceID) {
         
-        [self.mainViewController setCurrentPageID:page animated:YES userInfo:nil];
-    });
+        if (!foundDeviceID) {
+            // TODO: Critical error, must be network problems on either end. Show some sort of apologetic message
+            
+            // TODO: If the user has logged in before, let them play around with their cached matches. We'll need to sync them up when they reconnect
+            
+        } else {
+            // Register APNSToken
+            
+            // TODO: move this to after the user creates their first match
+            [[UIApplication sharedApplication] registerForRemoteNotificationTypes:UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound |UIRemoteNotificationTypeAlert];
+            
+            [[DRPNetworking sharedNetworking] aliasWithCompletion:^(NSString *alias) {
+                
+            }];
+            
+            
+            // TODO: if an alias is not set, prompt user to set an alias
+            
+            [self transtionToPage:DRPPageLogIn];
+        }
+    }];
+}
+
+- (void)transtionToPage:(DRPPageID)pageID
+{
+    [self.mainViewController setCurrentPageID:pageID animated:YES userInfo:nil];
 }
 
 @end

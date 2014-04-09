@@ -29,4 +29,6 @@
 - (void)setIsCurrentPlayer:(BOOL)isCurrentPlayer withColor:(DRPColor)color;
 - (void)resetScore:(NSInteger)score;
 
+- (void)setTileEnabled:(BOOL)enabled;
+
 @end

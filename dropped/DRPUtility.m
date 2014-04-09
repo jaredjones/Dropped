@@ -46,3 +46,20 @@ NSString *firstPrintableCharacter(NSString *alias)
 {
     return [[alias substringToIndex:1] uppercaseString];
 }
+
+NSString *generateUUID() {
+    CFUUIDRef uniqueID = CFUUIDCreate(kCFAllocatorDefault);
+    NSString *uuidString = (__bridge_transfer NSString *)CFUUIDCreateString(kCFAllocatorDefault, uniqueID);
+    CFRelease(uniqueID);
+    return uuidString;
+}
+
+id coerceObject(id argument, id (^block)(id)) {
+    if (argument == [NSNull null]) {
+        return nil;
+    }
+    if (block) {
+        return block(argument);
+    }
+    return argument;
+}

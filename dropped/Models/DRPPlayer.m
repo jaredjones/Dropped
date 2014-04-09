@@ -8,29 +8,44 @@
 
 #import "DRPPlayer.h"
 #import "DRPUtility.h"
+#import "DRPNetworking.h"
 
 #pragma mark - DRPPlayer
 
 @implementation DRPPlayer
 
-- (instancetype)initWithParticipant:(GKTurnBasedParticipant *)participant turn:(NSInteger)turn
+- (instancetype)initWithTurn:(NSInteger)turn isLocalPlayer:(BOOL)isLocalPlayer
 {
     self = [super init];
     if (self) {
-        self.participant = participant;
-        self.turn = turn;
+        _turn = turn;
+        _isLocalPlayer = isLocalPlayer;
     }
     return self;
 }
 
-- (BOOL)hasParticipant
++ (NSString *)opponentSynonym
 {
-    return self.participant.playerID != nil;
+    // TODO: moar better
+    static NSArray *opponentSynomyms;
+    if (!opponentSynomyms) {
+        opponentSynomyms = @[@"Foe",
+                             @"Enemy",
+                             @"Opponent",
+                             @"Opposer",
+                             @"Adversary",
+                             @"Rival",
+                             @"Combatant",
+                             @"Competitor",
+                             @"Contender"];
+    }
+    
+    return opponentSynomyms[arc4random_uniform((u_int32_t)opponentSynomyms.count)];
 }
 
 - (NSString *)firstPrintableAliasCharacter
 {
-    return [self hasParticipant] ? firstPrintableCharacter(self.alias) : @"hash";
+    return (self.alias && self.aliasLoaded) ? firstPrintableCharacter(self.alias) : @"hash";
 }
 
 @end

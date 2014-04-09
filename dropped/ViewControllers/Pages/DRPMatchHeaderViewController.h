@@ -34,4 +34,6 @@
 - (void)setCurrentPlayerTurn:(NSInteger)turn multiplierColors:(NSArray *)colors;
 - (void)setScores:(NSDictionary *)scores;
 
+- (void)setTilesEnabled:(BOOL)enabled;
+
 @end

@@ -14,5 +14,6 @@
 
 - (NSArray *)arrayByRemovingObject:(id)object;
 - (NSArray *)arrayByRemovingObjectsFromArray:(NSArray *)array;
+- (NSArray *)filter:(BOOL (^)(id elt))predicate;
 
 @end

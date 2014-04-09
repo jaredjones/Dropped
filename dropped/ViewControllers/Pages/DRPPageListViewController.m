@@ -15,7 +15,7 @@
 #import "DRPMatchCollectionViewCell.h"
 #import "DRPMatch.h"
 
-#import "DRPGameCenterInterface.h"
+#import "DRPNetworking.h"
 #import "FRBSwatchist.h"
 
 @interface DRPPageListViewController ()
@@ -30,11 +30,6 @@
     if (self) {
         self.topCue = @"Pull for New Game";
         self.bottomCue = @"Et Cetera";
-        
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(receivedRemoteGameCenterTurn:)
-                                                     name:DRPGameCenterReceivedRemoteTurnNotificationName
-                                                   object:nil];
     }
     return self;
 }
@@ -50,33 +45,59 @@
 {
     __block DRPPageListViewController *wkSelf = self;
     self.dataSource.reloadData = ^(void (^completion)(NSArray *)) {
-        [GKTurnBasedMatch loadMatchesWithCompletionHandler:^(NSArray *matches, NSError *error) {
         
-            NSMutableArray *dataItems = [[NSMutableArray alloc] init];
+        [[DRPNetworking sharedNetworking] currentMatchIDsWithCompletion:^(NSArray *matchIDs) {
             
-            for (GKTurnBasedMatch *gkMatch in matches) {
-                // Ran into invalid matches occassonally during testing
-                // that couldn't be removed from GC. Don't show them here,
-                // they're annoying
-                if (![DRPGameCenterInterface gkMatchIsValid:gkMatch]) {
-                    continue;
+            // Accumulate new DRPMatches in dataItems
+            // Once all are loaded, call the compltion handler
+            NSMutableArray *dataItems = [[NSMutableArray alloc] init];
+            __block NSInteger dataResponsesReceived = 0;
+            
+            // This block is called every time a response is received from DRPNetworking
+            // When a response has been received from every matchID
+            void (^matchDataResponseReceived)() = ^{
+                dataResponsesReceived += 1;
+                if (dataItems.count >= matchIDs.count) {
+                    completion(dataItems);
                 }
+            };
+            
+            for (NSString *matchID in matchIDs) {
+                DRPCollectionDataItem *dataItem = [wkSelf.dataSource dataItemForID:matchID];
                 
-                if (![wkSelf.dataSource dataItemForID:gkMatch.matchID]) {
+                if (dataItem) {
+                    // Match is already in the list, refresh the data
+                    [dataItems addObject:dataItem];
+                    [(DRPMatch *)dataItem.userData reloadMatchDataWithCompletion:^(BOOL newTurns) {
+                        matchDataResponseReceived();
+                    }];
+                    
+                } else {
+                    // MatchID is not in the list, create a new dataItem
                     [dataItems addObject:({
+                        
                         DRPCollectionDataItem *dataItem = [[DRPCollectionDataItem alloc] init];
-                        dataItem.itemID = gkMatch.matchID;
-                        dataItem.userData = [[DRPMatch alloc] initWithGKMatch:gkMatch];
+                        dataItem.itemID = matchID;
                         dataItem.cellIdentifier = @"matchCell";
+                        
+                        // matchData loading is asynchronous
+                        [DRPMatch matchWithMatchID:matchID completion:^(DRPMatch *match) {
+                            
+                            dataItem.userData = match;
+                            matchDataResponseReceived();
+                        }];
+                        
+                        // Go to DRPPageMatch when the dataItem is selected
                         dataItem.selected = ^(DRPMatch *match) {
-                            [wkSelf.mainViewController setCurrentPageID:DRPPageMatch animated:YES userInfo:@{@"match" : match}];
+                            if (match) {
+                                [wkSelf.mainViewController setCurrentPageID:DRPPageMatch animated:YES userInfo:@{@"match" : match}];
+                            }
                         };
+                        
                         dataItem;
                     })];
                 }
             }
-            
-            completion(dataItems);
         }];
     };
 }
@@ -84,21 +105,6 @@
 - (void)registerCellIdentifiers
 {
     [self.scrollView registerClass:[DRPMatchCollectionViewCell class] forCellWithReuseIdentifier:@"matchCell"];
-}
-
-#pragma mark Game Center Notifications
-
-- (void)receivedRemoteGameCenterTurn:(NSNotification *)notification
-{
-    // This check is to prevent reloadMatchDataWithCompletion: from being called twice
-    if (![self.mainViewController isCurrentPage:self]) return;
-    
-    GKTurnBasedMatch *gkMatch = notification.userInfo[@"gkMatch"];
-    DRPMatch *match = [self.dataSource dataItemForID:gkMatch.matchID].userData;
-    if (!match) return;
-
-    // TODO: is this getting called twice? Definitely check
-    [self.dataSource reloadDataForCollectionView:self.scrollView];
 }
 
 @end

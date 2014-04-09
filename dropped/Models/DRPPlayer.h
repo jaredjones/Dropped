@@ -7,19 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <GameKit/GameKit.h>
 
 @interface DRPPlayer : NSObject
 
-@property GKTurnBasedParticipant *participant;
+@property (readonly) BOOL isLocalPlayer;
 @property NSString *alias;
+@property BOOL aliasLoaded;
 
 // Either 0 or 1 (played first or second)
-@property NSInteger turn;
+@property (readonly) NSInteger turn;
 @property NSInteger score;
 
-- (instancetype)initWithParticipant:(GKTurnBasedParticipant *)participant turn:(NSInteger)turn;
+- (instancetype)initWithTurn:(NSInteger)turn isLocalPlayer:(BOOL)isLocalPlayer;
 
++ (NSString *)opponentSynonym;
 - (NSString *)firstPrintableAliasCharacter;
 
 @end

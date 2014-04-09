@@ -14,10 +14,10 @@
 #import "DRPBoard.h"
 #import "DRPPlayedWord.h"
 
-#import "DRPGameCenterInterface.h"
 #import "DRPDictionary.h"
 #import "DRPGreedyScrollView.h"
 
+#import "DRPNetworking.h"
 #import "FRBSwatchist.h"
 #import "DRPUtility.h"
 
@@ -37,21 +37,19 @@
 @end
 
 @implementation DRPPageMatchViewController
+@synthesize scrollView = _scrollView;
 
 - (id)init
 {
     self = [super initWithPageID:DRPPageMatch];
     if (self) {
         self.bottomCue = @"Back";
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(gameCenterReceivedLocalTurn:)
-                                                     name:DRPGameCenterReceivedLocalTurnNotificationName
+                                                 selector:@selector(receivedTurnNotification:)
+                                                     name:DRPReceivedMatchTurnNotificationName
                                                    object:nil];
-
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(receivedRemoteGameCenterTurn:)
-                                                     name:DRPGameCenterReceivedRemoteTurnNotificationName
-                                                object:nil];
+        
     }
     return self;
 }
@@ -71,6 +69,8 @@
     [self loadCurrentWordViewController];
     [self.scrollView bringSubviewToFront:self.boardViewController.view];
     [self loadHeaderViewController];
+    
+    [self setBoardEnabled:NO];
 }
 
 - (void)viewWillLayoutSubviews
@@ -211,22 +211,13 @@
                                      isLocalTurn:self.match.isLocalPlayerTurn
                                    fromDirection:[self currentWordDirectionForPlayer:self.match.currentPlayer]];
     }
-
-    [self.match reloadPlayerAliases];
-}
-
-- (void)loadTurn:(NSInteger)turn
-{
-    self.renderedTurn = turn;
-    [self.boardViewController loadBoard:self.match.board atTurn:self.renderedTurn];
-    [self setHeaderViewControllerTurn:self.renderedTurn];
 }
 
 - (void)didMoveToCurrent
 {
     [super didMoveToCurrent];
 
-    [self advanceRenderedTurnToTurn:self.match.currentTurn];
+    [self advanceRenderedTurnToCurrent];
 }
 
 - (void)resetCues
@@ -237,12 +228,8 @@
         newBottomCue = @"Back";
 
     } else {
-        if (self.isCurrentWordValid) {
-            newBottomCue = @"Tap to Submit";
-
-        } else {
-            newBottomCue = @"Swipe to Clear";
-        }
+        if (self.isCurrentWordValid) { newBottomCue = @"Tap to Submit"; }
+        else { newBottomCue = @"Swipe to Clear"; }
     }
 
     if (![newBottomCue isEqualToString:self.bottomCue]) {
@@ -253,7 +240,28 @@
     [super resetCues];
 }
 
+#pragma mark Interaction
+
+- (void)setBoardEnabled:(BOOL)enabled
+{
+    // TODO: make sure to set as enabled when the receiving a remote turn
+    if ((!self.match.isLocalPlayerTurn || self.match.finished) && enabled) {
+        [self setBoardEnabled:NO];
+        
+    } else {
+        self.boardViewController.boardEnabled = enabled;
+        self.currentWordViewController.gesturesEnabled = enabled;
+    }
+}
+
 #pragma mark Turn Transitions
+
+- (void)loadTurn:(NSInteger)turn
+{
+    self.renderedTurn = turn;
+    [self.boardViewController loadBoard:self.match.board atTurn:self.renderedTurn];
+    [self setHeaderViewControllerTurn:self.renderedTurn];
+}
 
 - (DRPDirection)currentWordDirectionForPlayer:(DRPPlayer *)player
 {
@@ -263,30 +271,25 @@
     return DRPDirectionRight;
 }
 
-- (void)advanceRenderedTurnToTurn:(NSInteger)turn
+- (void)advanceRenderedTurnToCurrent
 {
     // Make sure user can't mess with anything on the board
     // while the turns are advancing
-    if (self.boardViewController.boardEnabled) {
-        self.boardViewController.boardEnabled = NO;
-    }
-    if (self.currentWordViewController.gesturesEnabled) {
-        self.currentWordViewController.gesturesEnabled = NO;
-    }
+    [self setBoardEnabled:NO];
+    [self.headerViewController setTilesEnabled:NO];
 
     // This is essentially recursion that pauses between each
     // iteration (because each iteration is asynchronous)
-    if ([self.mainViewController isCurrentPage:self] && self.renderedTurn <= turn) {
+    if ([self.mainViewController isCurrentPage:self] && self.renderedTurn < self.match.currentTurn) {
         [self stepRenderedTurnWithCompletion:^{
-            [self advanceRenderedTurnToTurn:turn];
+            [self advanceRenderedTurnToCurrent];
         }];
-
+        
+    } else {
         // Turns are done advancing, reenable the board and the currentWordView
-        // TODO: Doesn't keep board disabled when the match is finished
-        if (self.renderedTurn == turn && !self.match.finished) {
-            self.boardViewController.boardEnabled = YES;
-            self.currentWordViewController.gesturesEnabled = YES;
-        }
+        [self stepRenderedTurnWithCompletion:nil];
+        [self setBoardEnabled:YES];
+        [self.headerViewController setTilesEnabled:YES];
     }
 }
 
@@ -310,7 +313,6 @@
         }];
 
     } else if (self.renderedTurn == self.match.currentTurn) {
-
         // Caught up to turn, show the turnsLeft container
         [self.currentWordViewController setTurnsLeft:self.match.turnsLeft
                                          isLocalTurn:self.match.isLocalPlayerTurn
@@ -399,26 +401,6 @@
     [self resetCues];
 }
 
-#pragma mark Remote Turns
-
-- (void)gameCenterReceivedLocalTurn:(NSNotification *)notification
-{
-    [self advanceRenderedTurnToTurn:self.match.currentTurn];
-}
-
-- (void)receivedRemoteGameCenterTurn:(NSNotification *)notification
-{
-    GKTurnBasedMatch *gkMatch = notification.userInfo[@"gkMatch"];
-    if (![self.match.gkMatch.matchID isEqualToString:gkMatch.matchID]) return;
-
-    [self.match reloadMatchDataWithCompletion:^(BOOL newTurns) {
-        if (newTurns) {
-            // TODO: make sure the match is not being replayed when this happens
-            [self advanceRenderedTurnToTurn:self.match.currentTurn];
-        }
-    }];
-}
-
 #pragma mark DRPHeaderViewControllerDelegate
 
 - (void)headerViewTappedPlayerTileForTurn:(NSInteger)turn
@@ -440,7 +422,16 @@
     // load turn and replay
     if (self.match.currentTurn > startTurn && startTurn >= 0) {
         [self loadTurn:startTurn];
-        [self advanceRenderedTurnToTurn:self.match.currentTurn];
+        [self advanceRenderedTurnToCurrent];
+    }
+}
+
+#pragma mark Turn Notifications
+
+- (void)receivedTurnNotification:(NSNotification *)notification
+{
+    if ([notification.userInfo[@"matchID"] isEqualToString:self.match.matchID]) {
+        [self advanceRenderedTurnToCurrent];
     }
 }
 

@@ -235,7 +235,7 @@
         
         if (validColumns.count == 0) return nil;
 
-        NSInteger newColumn = [validColumns[arc4random_uniform(validColumns.count)] integerValue];
+        NSInteger newColumn = [validColumns[arc4random_uniform((unsigned int)validColumns.count)] integerValue];
 
         DRPCharacter *multiplier = [self randomMultiplier];
         [self registerColor:multiplier.color];
@@ -291,7 +291,7 @@
         
         validColumns = [self removeInvalidColumnsFromArray:validColumns forOccupiedColumn:occupiedColumn];
         
-        NSInteger column = [validColumns[arc4random_uniform(validColumns.count)] integerValue];
+        NSInteger column = [validColumns[arc4random_uniform((unsigned int)validColumns.count)] integerValue];
         NSInteger row = arc4random_uniform(6);
         if (multiplier.multiplier >= 4 && (column == 0 || column == 5)) {
             row = arc4random_uniform(5);

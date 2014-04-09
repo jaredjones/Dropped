@@ -21,7 +21,14 @@
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
 	header('Content-type:application/json');
-
+/*
+	$url = "http://localhost/dropped/push/push.php";
+                                $a = array(
+                                        //"uID"=>
+                                        "uAPN"=>"868f3e34967913e1d9b27a99d0fca71207a7594e12faaf824232280ba634ee69");
+                                
+                                        curl_request_async($url,$a,"POST");
+*/
 	switch($opcode)
 	{
 		//REQUEST DEVICEID
@@ -291,10 +298,6 @@
 
 			//DELETE THIS
 		//	shell_exec("wget -q --spider http://localhost/dropped/push/push.php?uID=".$sqlID);
-			$url = "http://localhost/dropped/push/push.php";
-			$a = array(
-    				"uID"=>$sqlID);
-			curl_request_async($url,$a,"POST");			
 	
 			$STH = $DBH->prepare("SELECT @tmpID := id FROM matchlist WHERE seconduser IS NULL AND data IS NOT NULL AND active=1 AND firstuser!=? ORDER BY start_time ASC LIMIT 1 FOR UPDATE; UPDATE matchlist SET seconduser=? WHERE id=@tmpID; SELECT @tmpID;");
 			$STH->execute(array($sqlID, $sqlID));
@@ -383,6 +386,7 @@
 			$the_json['localPlayerTurn'] = $localPlayerTurn;
 			$the_json['remotePlayerAlias'] = $opponentAlias;
 			$the_json['matchStatus'] = $matchStatus;
+			$the_json['matchID'] = $matchID;
 
 			echo json_encode($the_json);
 			exit();
@@ -411,8 +415,8 @@
 			$result = $STH->fetch();
 			$sqlID = $result["id"];
 		
-	
-			$STH = $DBH->prepare("SELECT firstuser, seconduser, turn, active FROM matchlist WHERE firstuser=? OR seconduser=? AND id=? LIMIT 1");
+			
+			$STH = $DBH->prepare("SELECT firstuser, seconduser, turn, active FROM matchlist WHERE (firstuser=? OR seconduser=?) AND id=? LIMIT 1");
 			$STH->execute(array($sqlID, $sqlID, $matchID));
 			
 			if ($STH->rowCount() == 0)

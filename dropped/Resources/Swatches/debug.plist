@@ -5,7 +5,7 @@
 	<key>dictionaryDownloadURL</key>
 	<string>http://chaos.uvora.com/dropped/</string>
 	<key>printNetworkingActivity</key>
-	<true/>
+	<false/>
 	<key>playBackEntireMatch</key>
 	<false/>
 	<key>purgeDeviceID</key>

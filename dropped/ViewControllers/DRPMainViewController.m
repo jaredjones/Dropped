@@ -53,18 +53,27 @@
     
     [DRPTransition setReferenceViewForUIDynamics:self.view];
     self.view.backgroundColor = [FRBSwatchist colorForKey:@"colors.white"];
+    
+    // Because DRPCueKeeper is now a UIViewController, initialization can happen
+    // here
+    self.cueKeeper = [[DRPCueKeeper alloc] init];
+    [self.cueKeeper willMoveToParentViewController:self];
+    [self addChildViewController:self.cueKeeper];
+    [self.view addSubview:self.cueKeeper.view];
+    
+    [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
 }
 
 
 - (void)viewWillLayoutSubviews
 {
-    // CueKeeper initialization
-    // This is here because the view's frame is not always properly initialized
-    // when viewDidLoad is called.
-    if (!self.cueKeeper) {
-        self.cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
-        [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
-    }
+//    // CueKeeper initialization
+//    // This is here because the view's frame is not always properly initialized
+//    // when viewDidLoad is called.
+//    if (!self.cueKeeper) {
+//        self.cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
+//        [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
+//    }
 }
 
 #pragma mark DRPPageViewControllers
@@ -100,8 +109,6 @@
         [self repositionPagesAroundCurrentPage];
         self.upPage.view.hidden = YES;
         self.downPage.view.hidden = YES;
-        
-        [self.cueKeeper sendToBack];
     };
     
     // Only run animation if the page is not already in place
@@ -116,8 +123,8 @@
         self.currentTransition.startingVelocity = [userInfo[@"velocity"] floatValue];
         
         // Hide cues and cueIndicators during transition
-        [self setCue:nil inPosition:DRPPageDirectionUp];
-        [self setCue:nil inPosition:DRPPageDirectionDown];
+        [self.cueKeeper setCueText:nil forPosition:DRPPageDirectionUp];
+        [self.cueKeeper setCueText:nil forPosition:DRPPageDirectionDown];
         
         self.currentPage.view.hidden = NO;
         [self.currentTransition execute];
@@ -169,6 +176,7 @@
         // to make sure the correct views are visible
         [self.view bringSubviewToFront:self.currentPage.view];
         [self.view bringSubviewToFront:prevPage.view];
+        [self.view bringSubviewToFront:self.cueKeeper.view];
         
         self.upPage.view.hidden = YES;
         self.downPage.view.hidden = YES;
@@ -190,7 +198,6 @@
     }
     
     [self repositionPagesAroundCurrentPage];
-    [self.cueKeeper sendToBack];
 }
 
 - (void)repositionPagesAroundCurrentPage
@@ -208,39 +215,14 @@
 - (void)decommissionOldPagesWithPreviousPage:(DRPPageViewController *)prevPage
 {
     // TODO: should probably keep an NSSet of priveleged UIViews
-    
     for (UIView *view in self.view.subviews) {
-        if ([view isKindOfClass:[UILabel class]]) continue;
-        if ([view isKindOfClass:[DRPCueIndicatorView class]]) continue;
-        if (!(view == self.currentPage.view || view == self.upPage.view || view == self.downPage.view)) {
+        if (!(view == self.currentPage.view || view == self.upPage.view || view == self.downPage.view || view == self.cueKeeper.view)) {
             [view removeFromSuperview];
         }
     }
     
     [prevPage didMoveFromCurrent];
     [self.currentPage didMoveToCurrent];
-}
-
-#pragma mark Cues
-
-- (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position
-{
-    [self.cueKeeper cycleInCue:cue inPosition:position];
-    [self.cueKeeper sendToBack];
-}
-
-- (void)emphasizeCueInPosition:(DRPPageDirection)position
-{
-    if (position == DRPPageDirectionUp || position == DRPPageDirectionDown) {
-        // Note: this only works because the only possible directions are 0 and 1
-        [self.cueKeeper emphasizeCueInPosition:position];
-        [self.cueKeeper deemphasizeCueInPosition:!position];
-        
-    } else {
-        // Invalid direction passed in, deemphasize both cues
-        [self.cueKeeper deemphasizeCueInPosition:DRPPageDirectionUp];
-        [self.cueKeeper deemphasizeCueInPosition:DRPPageDirectionDown];
-    }
 }
 
 #pragma mark Rotation
@@ -262,13 +244,10 @@
 // Hide cues during autorotation
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
-    // TODO: hide cues instaneously
-    [self.cueKeeper hideIndicators];
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation
 {
-    [self.cueKeeper showIndicators];
 }
 
 @end

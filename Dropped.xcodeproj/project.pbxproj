@@ -33,6 +33,7 @@
 		A95C321B184BDD3200ECC3D4 /* DRPPageDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = A95C321A184BDD3200ECC3D4 /* DRPPageDataSource.m */; };
 		A960B1FE18A749E6002B89FA /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = A960B1FD18A749E6002B89FA /* logo.png */; };
 		A9801A3A18774A9A0024B2A1 /* DRPMatchHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9801A3918774A990024B2A1 /* DRPMatchHeaderViewController.m */; };
+		A980DC4D18F9C44600737ED7 /* DRPSelflessView.m in Sources */ = {isa = PBXBuildFile; fileRef = A980DC4C18F9C44600737ED7 /* DRPSelflessView.m */; };
 		A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9813323186BC00300FC3277 /* DRPCurrentWordView.m */; };
 		A9813327186DFBA100FC3277 /* DRPGreedyScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = A9813326186DFBA100FC3277 /* DRPGreedyScrollView.m */; };
 		A997F00918A446FA0007E7E5 /* under_construction.png in Resources */ = {isa = PBXBuildFile; fileRef = A997F00818A446FA0007E7E5 /* under_construction.png */; };
@@ -148,6 +149,8 @@
 		A960B1FD18A749E6002B89FA /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		A9801A3818774A990024B2A1 /* DRPMatchHeaderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPMatchHeaderViewController.h; path = ViewControllers/Pages/DRPMatchHeaderViewController.h; sourceTree = "<group>"; };
 		A9801A3918774A990024B2A1 /* DRPMatchHeaderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPMatchHeaderViewController.m; path = ViewControllers/Pages/DRPMatchHeaderViewController.m; sourceTree = "<group>"; };
+		A980DC4B18F9C44600737ED7 /* DRPSelflessView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPSelflessView.h; path = Views/DRPSelflessView.h; sourceTree = "<group>"; };
+		A980DC4C18F9C44600737ED7 /* DRPSelflessView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPSelflessView.m; path = Views/DRPSelflessView.m; sourceTree = "<group>"; };
 		A9813322186BC00300FC3277 /* DRPCurrentWordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPCurrentWordView.h; path = Views/DRPCurrentWordView.h; sourceTree = "<group>"; };
 		A9813323186BC00300FC3277 /* DRPCurrentWordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPCurrentWordView.m; path = Views/DRPCurrentWordView.m; sourceTree = "<group>"; };
 		A9813325186DFBA100FC3277 /* DRPGreedyScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPGreedyScrollView.h; path = Views/DRPGreedyScrollView.h; sourceTree = "<group>"; };
@@ -323,10 +326,9 @@
 				A9ACB3CC18838A5A00B0B9D9 /* CollectionViewCells */,
 				A99EAF1718765FE800DAD44F /* Match */,
 				A9B1206C1857F8B80079BF72 /* Cues */,
+				A980DC4E18F9C44B00737ED7 /* Utility */,
 				A9E27CBD1857AE210043F6A9 /* DRPTileView.h */,
 				A9E27CBE1857AE210043F6A9 /* DRPTileView.m */,
-				A9813325186DFBA100FC3277 /* DRPGreedyScrollView.h */,
-				A9813326186DFBA100FC3277 /* DRPGreedyScrollView.m */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -424,6 +426,17 @@
 				A99D97D218490C8300208FA0 /* DRPPlayer.m */,
 			);
 			name = Match;
+			sourceTree = "<group>";
+		};
+		A980DC4E18F9C44B00737ED7 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				A980DC4B18F9C44600737ED7 /* DRPSelflessView.h */,
+				A980DC4C18F9C44600737ED7 /* DRPSelflessView.m */,
+				A9813325186DFBA100FC3277 /* DRPGreedyScrollView.h */,
+				A9813326186DFBA100FC3277 /* DRPGreedyScrollView.m */,
+			);
+			name = Utility;
 			sourceTree = "<group>";
 		};
 		A980FD14184BB56A00A7800F /* MainViewController */ = {
@@ -733,6 +746,7 @@
 				A93E9F29184AAC3B0047575A /* DRPMainViewController.m in Sources */,
 				A9D1D5C718AD35B700F088D4 /* DRPCollectionViewCell.m in Sources */,
 				A9A9D5C11850ED5F0024E7D4 /* DRPPageListViewController.m in Sources */,
+				A980DC4D18F9C44600737ED7 /* DRPSelflessView.m in Sources */,
 				A95BB48D18372D9C00B7A9A8 /* DRPMatch.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

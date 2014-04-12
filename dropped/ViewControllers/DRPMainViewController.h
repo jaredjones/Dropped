@@ -9,18 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "DRPPageViewController.h"
 
-// Rootlevel container ViewController. Much like UIPageViewController,
+@class DRPCueKeeper;
+
+// Root-level container UIViewController. Much like UIPageViewController,
 // handles DRPPageViewController state and transitions.
 
 @interface DRPMainViewController : UIViewController
 
+@property (readonly) DRPCueKeeper *cueKeeper;
+
 - (BOOL)isCurrentPage:(DRPPageViewController *)page;
 - (void)setCurrentPageID:(DRPPageID)pageID animated:(BOOL)animated userInfo:(NSDictionary *)userInfo;
 - (void)transitionToPageInDirection:(DRPPageDirection)direction userInfo:(NSDictionary *)userInfo;
-
-// Methods to interact directly with top/bottom cues
-// The rest of the app calls these methods to manipulate cues
-- (void)setCue:(NSString *)cue inPosition:(DRPPageDirection)position;
-- (void)emphasizeCueInPosition:(DRPPageDirection)position;
 
 @end

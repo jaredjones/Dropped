@@ -8,6 +8,7 @@
 
 #import "DRPPageViewController.h"
 #import "DRPMainViewController.h"
+#import "DRPCueKeeper.h"
 #import "FRBSwatchist.h"
 
 @interface DRPPageViewController ()
@@ -72,46 +73,6 @@
     });
 }
 
-- (void)resetCues
-{
-    CGFloat offset = self.scrollView.contentOffset.y;
-    CGFloat threshold = [FRBSwatchist floatForKey:@"page.transitionThreshold"];
-    
-    // Check topCue
-    if (offset <= threshold) {
-        if (!self.topCueVisible) {
-            [self.mainViewController setCue:self.topCue inPosition:DRPPageDirectionUp];
-            self.topCueVisible = YES;
-        }
-    } else {
-        if (self.topCueVisible) {
-            [self.mainViewController setCue:nil inPosition:DRPPageDirectionUp];
-            self.topCueVisible = NO;
-        }
-    }
-
-    // Check bottomCue
-    if (offset + self.scrollView.frame.size.height >= self.scrollView.contentSize.height - threshold) {
-        if (!self.bottomCueVisible) {
-            [self.mainViewController setCue:self.bottomCue inPosition:DRPPageDirectionDown];
-            self.bottomCueVisible = YES;
-        }
-    } else {
-        if (self.bottomCueVisible) {
-            [self.mainViewController setCue:nil inPosition:DRPPageDirectionDown];
-            self.bottomCueVisible = NO;
-        }
-    }
-}
-
-- (void)hideCues
-{
-    [self.mainViewController setCue:nil inPosition:DRPPageDirectionUp];
-    [self.mainViewController setCue:nil inPosition:DRPPageDirectionDown];
-    self.topCueVisible = NO;
-    self.bottomCueVisible = NO;
-}
-
 #pragma mark DRPPage
 
 - (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo
@@ -133,6 +94,48 @@
 - (void)didMoveFromCurrent
 {
     
+}
+
+#pragma mark Cues
+
+- (void)resetCues
+{
+    CGFloat offset = self.scrollView.contentOffset.y;
+    CGFloat threshold = [FRBSwatchist floatForKey:@"page.transitionThreshold"];
+    
+    // Check topCue
+    if (offset <= threshold) {
+        if (!self.topCueVisible) {
+            [self.mainViewController.cueKeeper setCueText:self.topCue forPosition:DRPPageDirectionUp];
+            self.topCueVisible = YES;
+        }
+    } else {
+        if (self.topCueVisible) {
+            [self.mainViewController.cueKeeper setCueText:nil forPosition:DRPPageDirectionUp];
+            self.topCueVisible = NO;
+        }
+    }
+    
+    // Check bottomCue
+    if (offset + self.scrollView.frame.size.height >= self.scrollView.contentSize.height - threshold) {
+        if (!self.bottomCueVisible) {
+            [self.mainViewController.cueKeeper setCueText:self.bottomCue forPosition:DRPPageDirectionDown];
+            self.bottomCueVisible = YES;
+        }
+    } else {
+        if (self.bottomCueVisible) {
+            [self.mainViewController.cueKeeper setCueText:nil forPosition:DRPPageDirectionDown];
+            self.bottomCueVisible = NO;
+        }
+    }
+}
+
+- (void)hideCues
+{
+    [self.mainViewController.cueKeeper setCueText:nil forPosition:DRPPageDirectionUp];
+    [self.mainViewController.cueKeeper setCueText:nil forPosition:DRPPageDirectionDown];
+    self.topCueVisible = NO;
+    self.bottomCueVisible = NO;
 }
 
 #pragma mark ScrollViewDelegate
@@ -168,7 +171,6 @@
 {
     if (![self.mainViewController isCurrentPage:self]) return;
     
-    [self.mainViewController emphasizeCueInPosition:[self scrollViewShouldEmphasizeCue:scrollView]];
     [self resetCues];
 }
 

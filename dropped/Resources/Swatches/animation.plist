@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>gravity</key>
-	<real>3</real>
+	<real>2.3</real>
 	<key>newTileDropSpeed</key>
 	<integer>120</integer>
 	<key>newTileDropMinDuration</key>
@@ -13,9 +13,9 @@
 	<key>newTileDropDelay</key>
 	<real>0.1</real>
 	<key>tileDropAngleRange</key>
-	<real>0.05</real>
+	<real>0.2</real>
 	<key>tileDropBaseMagnitude</key>
-	<real>0.23</real>
+	<real>0.75</real>
 	<key>tileDropMagnitudeRange</key>
 	<real>0.046</real>
 	<key>currentWordManipulationDuration</key>

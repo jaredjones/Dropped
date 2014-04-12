@@ -391,7 +391,7 @@
         CGFloat magRange = [FRBSwatchist floatForKey:@"animation.tileDropMagnitudeRange"];
         push.angle = -M_PI_2 + (float)random() / RAND_MAX * angleRange - angleRange / 2;
         push.magnitude = baseMag + (float)random() / RAND_MAX * magRange - magRange / 2;
-        [push setTargetOffsetFromCenter:UIOffsetMake(0, 24) forItem:tile];
+        [push setTargetOffsetFromCenter:UIOffsetMake(0, [FRBSwatchist floatForKey:@"board.tileLength"] / 4) forItem:tile];
         [self.animator addBehavior:push];
         self.pushes[tile] = push;
         

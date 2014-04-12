@@ -19,18 +19,18 @@
           initialSpringVelocity:self.startingVelocity / -100
                         options:0
                      animations:^{
-        CGRect frame = self.start.view.frame;
-        frame.origin.y = -frame.size.height;
-        self.start.view.frame = frame;
-        
-        frame.origin.y = 0;
-        self.destination.view.frame = frame;
-        
-    } completion:^(BOOL finished) {
-        if (self.completion) {
-            self.completion();
-        }
-    }];
+                         CGRect frame = self.start.view.frame;
+                         frame.origin.y = -frame.size.height;
+                         self.start.view.frame = frame;
+                         
+                         frame.origin.y = 0;
+                         self.destination.view.frame = frame;
+                         
+                     } completion:^(BOOL finished) {
+                         if (self.completion) {
+                             self.completion();
+                         }
+                     }];
 }
 
 @end

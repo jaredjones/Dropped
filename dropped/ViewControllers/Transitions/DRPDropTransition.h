@@ -8,6 +8,6 @@
 
 #import "DRPTransition.h"
 
-@interface DRPDropTransition : DRPTransition <UICollisionBehaviorDelegate>
+@interface DRPDropTransition : DRPTransition
 
 @end

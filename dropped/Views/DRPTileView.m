@@ -115,7 +115,6 @@ static NSMutableDictionary *glyphAdvancesCache;
     _character = character;
     [self loadGlyphLayer];
     
-    [self resetTargets];
     [self resetAppearence];
 }
 
@@ -166,44 +165,70 @@ static NSMutableDictionary *glyphAdvancesCache;
 
 #pragma mark Touch Events
 
-- (void)touchDown
-{
-    [self.delegate tileWasHighlighted:self];
-    [self resetAppearence];
-}
-
-- (void)touchUpInside
-{
+- (void)touchEvent:(void (^)())eventBlock beganTouch:(BOOL)beganTouch {
+    
+    if (!self.enabled) {
+        return;
+    }
+    
+    // Store current state in case it needs to be reverted
+    // because maintainControlState is set
+    BOOL wasHighlighted = self.highlighted;
+    BOOL wasSelected = self.selected;
+    
+    eventBlock();
+    
+    // Run delegate methods
     if (self.highlighted) {
-        self.selected = !self.selected;
+        [self.delegate tileWasHighlighted:self];
+        
+    } else if (wasHighlighted && !self.highlighted) {
+        [self.delegate tileWasDehighlighted:self];
     }
-    self.highlighted = NO;
     
-    [self.delegate tileWasDehighlighted:self];
-    if (self.selected) {
+    if (!wasSelected && self.selected) {
         [self.delegate tileWasSelected:self];
-    } else {
+        
+    } else if (wasSelected && !self.selected) {
         [self.delegate tileWasDeselected:self];
     }
+    
     
     [self resetAppearence];
 }
 
-- (void)touchUpOutside
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    self.highlighted = NO;
-    [self.delegate tileWasDehighlighted:self];
-    [self resetAppearence];
+    [self touchEvent:^{
+        self.highlighted = YES;
+    } beganTouch:YES];
 }
 
-- (void)touchCancel
+- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event
 {
-    self.highlighted = NO;
-    [self.delegate tileWasDehighlighted:self];
-    if (!self.selected) {
-        [self.delegate tileWasDeselected:self];
+    CGPoint location = [[touches anyObject] locationInView:self];
+    if (CGRectContainsPoint(self.bounds, location)) {
+        // Touch up inside
+        [self touchEvent:^{
+            if (self.highlighted) {
+                self.selected = !self.selected;
+            }
+            self.highlighted = NO;
+        } beganTouch:NO];
+        
+    } else {
+        // Touch up outside
+        [self touchEvent:^{
+            self.highlighted = NO;
+        } beganTouch:NO];
     }
-    [self resetAppearence];
+}
+
+- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [self touchEvent:^{
+        self.highlighted = NO;
+    } beganTouch:NO];
 }
 
 - (void)resetAppearence
@@ -249,25 +274,6 @@ static NSMutableDictionary *glyphAdvancesCache;
         self.glyphLayer.transform = [glyphScaleTransformCache[self.character.character] CATransform3DValue];
     } else {
         self.glyphLayer.transform = CATransform3DIdentity;
-    }
-}
-
-// Multipliers shouldn't have any targets
-// This method cleanly resets targets between
-// different character assignments
-- (void)resetTargets
-{
-    if (self.character.multiplier) {
-        [self removeTarget:self action:@selector(touchDown) forControlEvents:UIControlEventTouchDown];
-        [self removeTarget:self action:@selector(touchUpInside) forControlEvents:UIControlEventTouchUpInside];
-        [self removeTarget:self action:@selector(touchUpOutside) forControlEvents:UIControlEventTouchUpOutside];
-        [self removeTarget:self action:@selector(touchCancel) forControlEvents:UIControlEventTouchCancel];
-        
-    } else if (!([self actionsForTarget:self forControlEvent:UIControlEventTouchDown]).count) {
-        [self addTarget:self action:@selector(touchDown) forControlEvents:UIControlEventTouchDown];
-        [self addTarget:self action:@selector(touchUpInside) forControlEvents:UIControlEventTouchUpInside];
-        [self addTarget:self action:@selector(touchUpOutside) forControlEvents:UIControlEventTouchUpOutside];
-        [self addTarget:self action:@selector(touchCancel) forControlEvents:UIControlEventTouchCancel];
     }
 }
 

@@ -88,8 +88,6 @@
                 center;
             });
             
-            tile.selected = YES;
-//            tile.permaSelected = YES;
             tile.delegate = self;
             [self addSubview:tile];
             tile;
@@ -174,8 +172,17 @@
     // Make sure to save the tile color so if self.tile.character is changed the color stays the same
     self.tileColor = color;
     
+    if (isCurrentPlayer) {
+        self.tile.highlighted = YES;
+        self.tile.selected = NO;
+        
+    } else {
+        self.tile.highlighted = NO;
+        self.tile.selected = YES;
+    }
+    
+    self.tile.scaleCharacter = NO;
     self.tile.character.color = self.tileColor;
-//    self.tile.permaHighlighted = isCurrentPlayer;
     [self.tile resetAppearence];
 }
 
@@ -215,7 +222,8 @@
 
 - (void)tileWasHighlighted:(DRPTileView *)tile
 {
-    // Intentionally left blank
+    self.tile.selected = NO;
+    self.tile.scaleCharacter = YES;
 }
 
 - (void)tileWasSelected:(DRPTileView *)tile
@@ -225,12 +233,12 @@
 
 - (void)tileWasDehighlighted:(DRPTileView *)tile
 {
-    // Intentionally left blank
+    self.tile.selected = YES;
+    self.tile.scaleCharacter = NO;
 }
 
 - (void)tileWasDeselected:(DRPTileView *)tile
 {
-    // Intentionally left blank
 }
 
 - (void)setTileEnabled:(BOOL)enabled

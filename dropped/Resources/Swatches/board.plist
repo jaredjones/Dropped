@@ -20,6 +20,10 @@
 	<integer>50</integer>
 	<key>tileLengthPad</key>
 	<real>87.5</real>
+	<key>tileCornerRadius</key>
+	<real>12.5</real>
+	<key>tileCornerRadiusPad</key>
+	<real>21.875</real>
 	<key>tileStrokeWidth</key>
 	<string>3</string>
 	<key>tileStrokeWidthPad</key>

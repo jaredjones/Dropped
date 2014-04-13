@@ -57,7 +57,8 @@ static NSMutableDictionary *glyphAdvancesCache;
     self.strokeLayer = [[CAShapeLayer alloc] init];
     UIBezierPath *strokePath = ({
         CGFloat strokeWidth = [FRBSwatchist floatForKey:@"board.tileStrokeWidth"];
-        [UIBezierPath bezierPathWithRect:CGRectInset(self.bounds, strokeWidth / 2, strokeWidth / 2)];
+        [UIBezierPath bezierPathWithRoundedRect:CGRectInset(self.bounds, strokeWidth / 2, strokeWidth / 2)
+                                   cornerRadius:[FRBSwatchist floatForKey:@"board.tileCornerRadius"]];
     });
     self.strokeLayer.path = strokePath.CGPath;
     self.strokeLayer.lineWidth = [FRBSwatchist floatForKey:@"board.tileStrokeWidth"];

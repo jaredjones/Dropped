@@ -93,7 +93,6 @@ static NSMutableDictionary *glyphAdvancesCache;
     
     tile.userInteractionEnabled = YES;
     tile.scaleCharacter = YES;
-    tile.maintainControlState = NO;
     
     tile.position = nil;
     
@@ -239,9 +238,7 @@ static NSMutableDictionary *glyphAdvancesCache;
     [self setStrokeColor:({
         UIColor *color;
         
-        if (self.transparentFill) {
-            color = [UIColor clearColor];
-        } else if (self.highlighted || (self.selected && !self.character.multiplier)) {
+        if (self.highlighted || (self.selected && !self.character.multiplier)) {
             color = [FRBSwatchist colorForKey:@"colors.black"];
         } else if (self.character.multiplier) {
             color = colorForDRPColor(self.color);
@@ -265,7 +262,13 @@ static NSMutableDictionary *glyphAdvancesCache;
         }
         
     } else {
-        [self setFillColor:[FRBSwatchist colorForKey:@"colors.white"]];
+        [self setFillColor:({
+            UIColor *color = [UIColor clearColor];
+            if (self.selected) {
+                color = [FRBSwatchist colorForKey:@"colors.white"];
+            }
+            color;
+        })];
         self.glyphColor = [FRBSwatchist colorForKey:@"colors.black"];
     }
     

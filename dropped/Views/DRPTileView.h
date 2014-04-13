@@ -33,8 +33,8 @@
 // Scales the glyph down when the user interacts with the tile
 @property (nonatomic) BOOL scaleCharacter;
 
-// When YES, the fillColor will be clearColor
-@property BOOL transparentFill;
+//// When YES, the fillColor will be clearColor
+//@property BOOL transparentFill;
 
 // The DRPBoardViewController needs to keep track of the position
 // of each tile. This property isn't used for anything else

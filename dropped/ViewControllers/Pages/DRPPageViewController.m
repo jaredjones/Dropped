@@ -77,7 +77,6 @@
 
 - (void)willMoveToCurrentWithUserInfo:(NSDictionary *)userInfo
 {
-    
 }
 
 - (void)didMoveToCurrent

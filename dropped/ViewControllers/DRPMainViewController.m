@@ -64,18 +64,6 @@
     [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
 }
 
-
-- (void)viewWillLayoutSubviews
-{
-//    // CueKeeper initialization
-//    // This is here because the view's frame is not always properly initialized
-//    // when viewDidLoad is called.
-//    if (!self.cueKeeper) {
-//        self.cueKeeper = [[DRPCueKeeper alloc] initWithView:self.view];
-//        [self setCurrentPageID:DRPPageSplash animated:NO userInfo:nil];
-//    }
-}
-
 #pragma mark DRPPageViewControllers
 
 - (BOOL)isCurrentPage:(DRPPageViewController *)page

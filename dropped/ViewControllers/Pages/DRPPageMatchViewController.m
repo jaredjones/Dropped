@@ -419,11 +419,13 @@
         startTurn = startTurn - 1;
     }
 
-    // load turn and replay
+    // Load turn and replay
     if (self.match.currentTurn > startTurn && startTurn >= 0) {
         [self loadTurn:startTurn];
-        [self advanceRenderedTurnToCurrent];
     }
+    // Advance the turn regardless of the currentTurn so the player tiles
+    // in the DRPHeaderViewController update correctly
+    [self advanceRenderedTurnToCurrent];
 }
 
 #pragma mark Turn Notifications

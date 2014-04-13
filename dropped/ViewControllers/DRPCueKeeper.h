@@ -17,8 +17,18 @@
 // on itself and instead passes them to either the cues (so they act like
 // buttons) or the current DRPPageViewController.
 
+// There are two pairs of cues and indicators. The cues are the text
+// buttons at the top and bottom of the screen. The indicators are the
+// 6 tiles just off the screen that indicate
+
+@class DRPPageViewController;
+
 @interface DRPCueKeeper : UIViewController
 
 - (void)setCueText:(NSString *)cueText forPosition:(DRPPageDirection)position;
+
+// This method sets the offsets of any cues/indicators if the scrollView
+// has scrolled adequately
+- (void)updateWithPage:(DRPPageViewController *)page;
 
 @end

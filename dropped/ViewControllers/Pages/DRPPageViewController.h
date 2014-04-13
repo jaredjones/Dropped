@@ -53,9 +53,9 @@ typedef NS_ENUM(NSInteger, DRPPageDirection) {
 - (void)willMoveFromCurrent;
 - (void)didMoveFromCurrent;
 
+// TODO: remove this crap
 // Called to show/hide cues
 // It's used internally by DRPPageViewController every time the scrollView is scrolled
 - (void)resetCues;
-- (void)hideCues;
 
 @end

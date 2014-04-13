@@ -11,11 +11,6 @@
 
 @interface DRPCueIndicatorView : UIView
 
-@property (readonly) DRPPageDirection position;
-
 - (instancetype)initWithPosition:(DRPPageDirection)position;
-
-- (void)animateIn;
-- (void)animateOut;
 
 @end

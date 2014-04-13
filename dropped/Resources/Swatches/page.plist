@@ -2,10 +2,14 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>transitionThreshold</key>
-	<integer>45</integer>
-	<key>transitionThresholdpad</key>
+	<key>indicatorMaxDrag</key>
+	<integer>200</integer>
+	<key>indicatorMaxDragPad</key>
 	<integer>135</integer>
+	<key>cueDragThreshold</key>
+	<integer>56</integer>
+	<key>cueDragThresholdPad</key>
+	<integer>0</integer>
 	<key>cueFont</key>
 	<dict>
 		<key>name</key>
@@ -34,23 +38,5 @@
 		<key>size</key>
 		<integer>22</integer>
 	</dict>
-	<key>cueOffsetTop</key>
-	<integer>20</integer>
-	<key>cueOffsetTopPad</key>
-	<integer>26</integer>
-	<key>cueOffsetBottom</key>
-	<integer>18</integer>
-	<key>cueOffsetBottomPad</key>
-	<integer>22</integer>
-	<key>cueVisibleThreshold</key>
-	<integer>45</integer>
-	<key>cueAnimationDuration</key>
-	<real>0.65</real>
-	<key>cueAnimationDamping</key>
-	<real>0.8</real>
-	<key>cueIndicatorAnimationDuration</key>
-	<real>0.12</real>
-	<key>cueIndicatorAnimationDelay</key>
-	<real>0.023</real>
 </dict>
 </plist>

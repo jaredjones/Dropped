@@ -89,7 +89,7 @@
             });
             
             tile.selected = YES;
-            tile.permaSelected = YES;
+//            tile.permaSelected = YES;
             tile.delegate = self;
             [self addSubview:tile];
             tile;
@@ -175,7 +175,7 @@
     self.tileColor = color;
     
     self.tile.character.color = self.tileColor;
-    self.tile.permaHighlighted = isCurrentPlayer;
+//    self.tile.permaHighlighted = isCurrentPlayer;
     [self.tile resetAppearence];
 }
 

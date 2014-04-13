@@ -89,8 +89,6 @@
             tile.character = [self.board characterAtPosition:position forTurn:turn];
             tile.position = position;
             tile.center = [self centerForPosition:position];
-            tile.transform = CGAffineTransformIdentity;
-            tile.userInteractionEnabled = YES;
             [self.view addSubview:tile];
             [self.view sendSubviewToBack:tile];
             

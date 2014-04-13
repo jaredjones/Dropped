@@ -29,8 +29,8 @@
         self.tile.frame = self.tileFrame;
         self.tile.enabled = NO;
         self.tile.selected = YES;
-        self.tile.permaSelected = YES;
-        self.tile.permaHighlighted = YES;
+//        self.tile.permaSelected = YES;
+//        self.tile.permaHighlighted = YES;
         [self.contentView addSubview:self.tile];
         
         self.label = [[UILabel alloc] initWithFrame:CGRectZero];

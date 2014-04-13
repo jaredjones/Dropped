@@ -10,7 +10,7 @@
 #import "FRBSwatchist.h"
 
 static NSDictionary *colors;
-UIColor *colorForColor(DRPColor color)
+UIColor *colorForDRPColor(DRPColor color)
 {
     if (!colors) {
         colors = @{@(DRPColorBlue) : @"blue",

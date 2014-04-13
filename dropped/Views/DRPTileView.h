@@ -21,14 +21,24 @@
 
 @interface DRPTileView : UIControl <NSCopying>
 
+// Modifying changes the glyph displayed in the tile.
+// If the character is a multiplier, the tile will
+// automatically set its fillColor
 @property (nonatomic) DRPCharacter *character;
-@property (nonatomic) CGFloat strokeOpacity;
-@property DRPPosition *position;
 
-// These are "weird" properties that allow for custom behavior
-// for non-board tiles (playerView, currentWordView, etc)
-@property (nonatomic) BOOL permaHighlighted, permaSelected;
+// When YES, interacting with the tile doesn't change its control
+// state (highlighted, selected)
+@property BOOL maintainControlState;
+
+// Scales the glyph down when the user interacts with the tile
 @property (nonatomic) BOOL scaleCharacter;
+
+// When YES, the fillColor will be clearColor
+@property BOOL transparentFill;
+
+// The DRPBoardViewController needs to keep track of the position
+// of each tile. This property isn't used for anything else
+@property DRPPosition *position;
 
 @property id<DRPTileViewDelegate> delegate;
 

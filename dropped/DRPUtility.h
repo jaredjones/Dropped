@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "DRPCharacter.h"
 
-UIColor *colorForColor(DRPColor color);
+UIColor *colorForDRPColor(DRPColor color);
 BOOL runningPhone5();
 CGPoint rectCenter(CGRect rect);
 NSString *firstPrintableCharacter(NSString *alias);

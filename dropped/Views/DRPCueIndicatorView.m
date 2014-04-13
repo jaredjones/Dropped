@@ -33,8 +33,8 @@
             [self addSubview:({
                 DRPTileView *tileView = [[DRPTileView alloc] initWithCharacter:nil];
                 tileView.center = [DRPCueIndicatorView centerForPosition:i];
-//                tileView.permaHighlighted = YES;
-                tileView.userInteractionEnabled = NO;
+                tileView.highlighted = YES;
+                tileView.enabled = NO;
                 [tileView resetAppearence];
                 tileView;
             })];

@@ -43,8 +43,7 @@
             DRPTileView *tile = [DRPTileView dequeueResusableTile];
             tile.hidden = YES;
             tile.selected = YES;
-//            tile.permaSelected = YES;
-//            tile.scaleCharacter = NO;
+            tile.scaleCharacter = NO;
             tile.enabled = NO;
             
             [self.tiles addObject:tile];
@@ -98,10 +97,8 @@
         // Highlight tile
         if ([highlights[i] boolValue]) {
             tile.highlighted = YES;
-//            tile.permaHighlighted = YES;
         } else {
             tile.highlighted = NO;
-//            tile.permaHighlighted = NO;
         }
         
         [tile resetAppearence];

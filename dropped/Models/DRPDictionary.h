@@ -17,5 +17,6 @@
 + (NSInteger)getDictionaryVersion;
 + (BOOL)isValidWord:(NSString *)word;
 + (NSInteger)indexPositionForWord:(NSString *)word;
++ (void)testing;
 
 @end

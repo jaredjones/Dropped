@@ -6,11 +6,13 @@
 //  Copyright (c) 2013 Brad Zeis. All rights reserved.
 //
 
-#import "DRPDictionary.h"
 #import <FRBSwatchist/FRBSwatchist.h>
 #import <FMDatabase.h>
 #import <FMResultSet.h>
 #import <FMDatabaseAdditions.h>
+
+#import "DRPDictionary.h"
+#import "Timer.h"
 
 static const NSInteger _HTTPSuccessCode = 200;
 
@@ -18,7 +20,7 @@ static const NSInteger _HTTPSuccessCode = 200;
 
 @property (strong, atomic) NSURL *databaseURL;
 @property (strong, atomic) FMDatabase *database;
-@property (strong, atomic) NSMutableDictionary *uniqueAlphabetized;
+@property (strong, atomic) NSMutableSet *uniqueAlphabetized;
 
 @end
 
@@ -147,48 +149,56 @@ static const NSInteger _HTTPSuccessCode = 200;
 + (void)testing
 {
     FMResultSet *wordSet = [[DRPDictionary sharedDictionary].database executeQuery:@"SELECT word FROM words;"];
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
  
+    Timer *timer = [[Timer alloc]init];
+    [timer startTimer];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^(void){
+        
+        NSString *columnString;
         while ([wordSet next])
         {
-            
+            columnString = [wordSet stringForColumn:@"word"];
             NSMutableSet *uniqueCharacters = [NSMutableSet set];
             NSMutableString *uniqueString = [NSMutableString string];
-            [[wordSet stringForColumn:@"word"] enumerateSubstringsInRange:NSMakeRange(0, [wordSet stringForColumn:@"word"].length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+            [columnString enumerateSubstringsInRange:NSMakeRange(0, columnString.length) options:NSStringEnumerationByComposedCharacterSequences usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
                 if (![uniqueCharacters containsObject:substring]) {
                     [uniqueCharacters addObject:substring];
                     [uniqueString appendString:substring];
                 }
             }];
             
-            NSUInteger length = [uniqueString length];
-            unichar *chars = (unichar *)malloc(sizeof(unichar) * length);
+//            NSUInteger length = [uniqueString length];
+//            unichar *chars = (unichar *)malloc(sizeof(unichar) * length);
+//            
+//            // extract
+//            [uniqueString getCharacters:chars range:NSMakeRange(0, length)];
+//            
+//            // sort (for western alphabets only)
+//            qsort_b(chars, length, sizeof(unichar), ^(const void *l, const void *r) {
+//                unichar left = *(unichar *)l;
+//                unichar right = *(unichar *)r;
+//                return (int)(left - right);
+//            });
+//            
+//            // recreate
+//            NSString *sorted = [NSString stringWithCharacters:chars length:length];
+//            [[DRPDictionary sharedDictionary].uniqueAlphabetized addObject:sorted];
+//            
+//            // clean-up
+//            free(chars);
             
-            // extract
-            [uniqueString getCharacters:chars range:NSMakeRange(0, length)];
+            [[DRPDictionary sharedDictionary].uniqueAlphabetized addObject:uniqueString];
             
-            // sort (for western alphabets only)
-            qsort_b(chars, length, sizeof(unichar), ^(const void *l, const void *r) {
-                unichar left = *(unichar *)l;
-                unichar right = *(unichar *)r;
-                return (int)(left - right);
-            });
             
-            // recreate
-            NSString *sorted = [NSString stringWithCharacters:chars length:length];
             
-            // clean-up
-            free(chars);
             
             //NSLog(@"%@", sorted);
         }
         
         
-        
-        
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"DONE!");
+            [timer stopTimer];
+            NSLog(@"DONE: Total time was: %lfms", [timer timeElapsedInMilliseconds]);
         });
     });
 }

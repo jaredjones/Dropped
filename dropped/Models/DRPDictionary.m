@@ -168,55 +168,80 @@ static const NSInteger _HTTPSuccessCode = 200;
             [[DRPDictionary sharedDictionary].uniqueAlphabetized addObject:columnString];
         }
         
+        [timer stopTimer];
+        NSLog(@"DONE: Total set insertion time: %lfms", [timer timeElapsedInMilliseconds]);
+        
+        //BEGIN TEST
+        
+        [timer startTimer];
+        
+        NSString *testWord = @"apple";
+        NSMutableDictionary *countLetter = [[NSMutableDictionary alloc]init];
+        NSMutableArray *playableWords = [[NSMutableArray alloc]initWithCapacity:100];
+        for (NSUInteger i = 0; i < 100; i++)
+        {
+            if (i == 0)
+            {
+                [playableWords addObject:[NSNumber numberWithInt:0]];
+                continue;
+            }
+            [playableWords addObject:[NSNull alloc]];
+        }
+        
+        for (NSUInteger i = 0; i < testWord.length; i++)
+        {
+            NSString *charKey = [NSString stringWithFormat:@"%c",[testWord characterAtIndex:i]];
+            NSNumber *charCount = [countLetter objectForKey:charKey];
+            if (charCount == nil)
+                charCount = [NSNumber numberWithInt:0];
+            [countLetter setObject:[NSNumber numberWithInt:[charCount integerValue] + 1] forKey:charKey];
+        }
+        
+        for (NSString *word in [DRPDictionary sharedDictionary].uniqueAlphabetized)
+        {
+            if (word.length > testWord.length || word.length < 3)
+                continue;
+            NSMutableDictionary *tmp = [countLetter mutableCopy];
+            BOOL valid = YES;
+            
+            for (NSUInteger i = 0; i < word.length; i++)
+            {
+                NSString *character = [NSString stringWithFormat:@"%c",[word characterAtIndex:i]];
+                NSNumber *charCount = [tmp objectForKey:character];
+                if (charCount == nil || [charCount integerValue] <= 0)
+                {
+                    valid = NO;
+                    break;
+                }
+                [tmp setObject:[NSNumber numberWithInt:[charCount integerValue] - 1] forKey:character];
+                charCount = [tmp objectForKey:character];
+            }
+            if (!valid)
+                continue;
+            
+            if ([[playableWords objectAtIndex:word.length] isKindOfClass:[NSNull class]])
+            {
+                //Needed to prevent possible error. NSMutableArray is sparse at 100 NSNull's.
+                if (word.length < 100)
+                {
+                    NSMutableArray *newSize = [[NSMutableArray alloc]init];
+                    [playableWords replaceObjectAtIndex:word.length withObject:newSize];
+                }
+            }
+
+            [[playableWords objectAtIndex:word.length]addObject:word];
+            NSNumber *tmpNumber = [NSNumber numberWithInt:[[playableWords objectAtIndex:0]intValue]+1];
+            [playableWords replaceObjectAtIndex:0 withObject:tmpNumber];
+        }
+        
+        [timer stopTimer];
+        NSLog(@"DONE: Total playable word seek-time: %lfms", [timer timeElapsedInMilliseconds]);
+        NSLog(@"Word Count:%@", [playableWords objectAtIndex:0]);//Index 0 of playableWords is the wordCount.
+        
+        
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            [timer stopTimer];
-            NSLog(@"DONE: Total set insertion time: %lfms", [timer timeElapsedInMilliseconds]);
             
-            //BEGIN TEST
-            
-            [timer startTimer];
-            
-            NSString *testWord = @"aarfxesaelgipii";
-            NSMutableDictionary *countLetter = [[NSMutableDictionary alloc]init];
-            NSMutableArray *playableWords = [[NSMutableArray alloc]init];
-
-            for (NSUInteger i = 0; i < testWord.length; i++)
-            {
-                NSString *charKey = [NSString stringWithFormat:@"%c",[testWord characterAtIndex:i]];
-                NSNumber *charCount = [countLetter objectForKey:charKey];
-                if (charCount == nil)
-                    charCount = [NSNumber numberWithInt:0];
-                [countLetter setObject:[NSNumber numberWithInt:[charCount integerValue] + 1] forKey:charKey];
-            }
-            
-            for (NSString *word in [DRPDictionary sharedDictionary].uniqueAlphabetized)
-            {
-                if (word.length > testWord.length || word.length < 3)
-                    continue;
-                NSMutableDictionary *tmp = [countLetter mutableCopy];
-                BOOL valid = YES;
-                
-                for (NSUInteger i = 0; i < word.length; i++)
-                {
-                    NSString *character = [NSString stringWithFormat:@"%c",[word characterAtIndex:i]];
-                    NSNumber *charCount = [tmp objectForKey:character];
-                    if (charCount == nil || [charCount integerValue] <= 0)
-                    {
-                        valid = NO;
-                        break;
-                    }
-                    [tmp setObject:[NSNumber numberWithInt:[charCount integerValue] - 1] forKey:character];
-                    charCount = [tmp objectForKey:character];
-                }
-                if (!valid)
-                    continue;
-                [playableWords addObject:word];
-                //NSLog(@"Word:%@", word);
-            }
-            [timer stopTimer];
-            NSLog(@"DONE: Total playable word seek-time: %lfms", [timer timeElapsedInMilliseconds]);
-            NSLog(@"Word Count:%ld", (unsigned long)[playableWords count]);
         });
     });
 }

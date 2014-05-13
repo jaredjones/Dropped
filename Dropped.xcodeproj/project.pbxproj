@@ -68,6 +68,7 @@
 		A9E4A44A18CBE8420085CA57 /* DRPNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E4A44918CBE8420085CA57 /* DRPNetworking.m */; };
 		A9E4A44D18CD09310085CA57 /* en-us.db in Copy Word Databases */ = {isa = PBXBuildFile; fileRef = A9E4A44B18CD09110085CA57 /* en-us.db */; };
 		C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C024DF7818370AC300B5775B /* DRPDictionary.m */; };
+		C0C1AF291921C8F30085FD34 /* Timer.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C1AF281921C8F30085FD34 /* Timer.m */; };
 		F4E61295ABFC46CDBE1384F1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA523B0D421443AAA174ECE1 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -211,6 +212,8 @@
 		B0935A92C9664719B578E480 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		C024DF7718370AC300B5775B /* DRPDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDictionary.h; path = Models/DRPDictionary.h; sourceTree = "<group>"; };
 		C024DF7818370AC300B5775B /* DRPDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPDictionary.m; path = Models/DRPDictionary.m; sourceTree = "<group>"; };
+		C0C1AF271921C8F20085FD34 /* Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Timer.h; sourceTree = "<group>"; };
+		C0C1AF281921C8F30085FD34 /* Timer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Timer.m; sourceTree = "<group>"; };
 		CA523B0D421443AAA174ECE1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -552,6 +555,8 @@
 				A9C0FAD51864F6FC00377B0E /* DRPUtility.m */,
 				A9C0FAD7186507EC00377B0E /* NSArray+Mutable.h */,
 				A9C0FAD8186507EC00377B0E /* NSArray+Mutable.m */,
+				C0C1AF271921C8F20085FD34 /* Timer.h */,
+				C0C1AF281921C8F30085FD34 /* Timer.m */,
 			);
 			name = Utility;
 			sourceTree = "<group>";
@@ -720,6 +725,7 @@
 				A9C947F0189AC0B900FF69C2 /* DRPMatchCurrentWordViewController.m in Sources */,
 				A9B1C082184CFCDE00866029 /* DRPTransition.m in Sources */,
 				A93D77CC185673EF006691AE /* DRPPageSplashViewController.m in Sources */,
+				C0C1AF291921C8F30085FD34 /* Timer.m in Sources */,
 				A93D77C618566A8F006691AE /* DRPPageMatchmakerViewController.m in Sources */,
 				A9ACB3CF18838B0B00B0B9D9 /* DRPMatchCollectionViewCell.m in Sources */,
 				A9801A3A18774A9A0024B2A1 /* DRPMatchHeaderViewController.m in Sources */,

@@ -175,7 +175,7 @@ static const NSInteger _HTTPSuccessCode = 200;
         
         [timer startTimer];
         
-        NSString *testWord = @"apple";
+        NSString *testWord = @"utecrlnemltclccfvpuuuoooxllaortayh";
         NSMutableDictionary *countLetter = [[NSMutableDictionary alloc]init];
         NSMutableArray *playableWords = [[NSMutableArray alloc]initWithCapacity:100];
         for (NSUInteger i = 0; i < 100; i++)
@@ -194,7 +194,7 @@ static const NSInteger _HTTPSuccessCode = 200;
             NSNumber *charCount = [countLetter objectForKey:charKey];
             if (charCount == nil)
                 charCount = [NSNumber numberWithInt:0];
-            [countLetter setObject:[NSNumber numberWithInt:[charCount integerValue] + 1] forKey:charKey];
+            [countLetter setObject:[NSNumber numberWithInt:(int)[charCount integerValue] + 1] forKey:charKey];
         }
         
         for (NSString *word in [DRPDictionary sharedDictionary].uniqueAlphabetized)
@@ -213,7 +213,7 @@ static const NSInteger _HTTPSuccessCode = 200;
                     valid = NO;
                     break;
                 }
-                [tmp setObject:[NSNumber numberWithInt:[charCount integerValue] - 1] forKey:character];
+                [tmp setObject:[NSNumber numberWithInt:(int)[charCount integerValue] - 1] forKey:character];
                 charCount = [tmp objectForKey:character];
             }
             if (!valid)
@@ -238,6 +238,17 @@ static const NSInteger _HTTPSuccessCode = 200;
         NSLog(@"DONE: Total playable word seek-time: %lfms", [timer timeElapsedInMilliseconds]);
         NSLog(@"Word Count:%@", [playableWords objectAtIndex:0]);//Index 0 of playableWords is the wordCount.
         
+        for (NSUInteger i = 1; i < 100; i++)
+        {
+            if (![[playableWords objectAtIndex:i] isKindOfClass:[NSNull class]])
+            {
+                NSMutableArray *temp = [playableWords objectAtIndex:i];
+                for (NSString *hi in temp)
+                {
+                    NSLog(@"%@", hi);
+                }
+            }
+        }
         
         
         dispatch_async(dispatch_get_main_queue(), ^{

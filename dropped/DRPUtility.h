@@ -15,6 +15,9 @@ CGPoint rectCenter(CGRect rect);
 NSString *firstPrintableCharacter(NSString *alias);
 NSString *generateUUID();
 
+NSString *removeDuplicateCharactersInString(NSString *str);
+NSString *sortStringAlphabetically(NSString *str);
+
 id coerceObject(id argument, id (^block)(id));
 
 // TODO: this function sucks

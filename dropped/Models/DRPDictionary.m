@@ -174,7 +174,10 @@ static const NSInteger _HTTPSuccessCode = 200;
             NSLog(@"DONE: Total set insertion time: %lfms", [timer timeElapsedInMilliseconds]);
             
             //BEGIN TEST
-            NSString *testWord = @"aarfxesaelgipiioimosasraicdacsiamp";
+            
+            [timer startTimer];
+            
+            NSString *testWord = @"aarfxesaelgipii";
             NSMutableDictionary *countLetter = [[NSMutableDictionary alloc]init];
             NSMutableArray *playableWords = [[NSMutableArray alloc]init];
 
@@ -208,10 +211,12 @@ static const NSInteger _HTTPSuccessCode = 200;
                 }
                 if (!valid)
                     continue;
-                //[playableWords addObject:word];
+                [playableWords addObject:word];
                 //NSLog(@"Word:%@", word);
             }
-            NSLog(@"WCount:%ld", (unsigned long)[playableWords count]);
+            [timer stopTimer];
+            NSLog(@"DONE: Total playable word seek-time: %lfms", [timer timeElapsedInMilliseconds]);
+            NSLog(@"Word Count:%ld", (unsigned long)[playableWords count]);
         });
     });
 }

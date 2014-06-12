@@ -2,10 +2,10 @@ PODS:
   - Bolts (1.1.0)
   - Facebook-iOS-SDK (3.14.1):
     - Bolts
-  - FMDB (2.3):
+  - FMDB (2.2):
     - FMDB/standard
-  - FMDB/common (2.3)
-  - FMDB/standard (2.3):
+  - FMDB/common (2.2)
+  - FMDB/standard (2.2):
     - FMDB/common
   - FRBSwatchist (1.0.0)
   - TestFlightSDK (3.0.2)

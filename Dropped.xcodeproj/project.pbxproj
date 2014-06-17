@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7FF8DC5819500A5600DC5A7D /* DRPDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8DC5719500A5600DC5A7D /* DRPDictionary.swift */; };
+		7F521D81195032DC00E76C03 /* DRPDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F521D80195032DC00E76C03 /* DRPDictionary.swift */; };
 		A9039FFB1858D579002AEB37 /* DRPPageEtCeteraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9039FFA1858D579002AEB37 /* DRPPageEtCeteraViewController.m */; };
 		A91C045818557C03002B6899 /* page.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A91C045618557B6A002B6899 /* page.plist */; };
 		A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = A91C045E185582DC002B6899 /* DRPCueKeeper.m */; };
@@ -105,8 +105,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7F521D80195032DC00E76C03 /* DRPDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DRPDictionary.swift; path = Models/DRPDictionary.swift; sourceTree = "<group>"; };
 		7FF8DC5619500A5500DC5A7D /* Dropped-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dropped-Bridging-Header.h"; sourceTree = "<group>"; };
-		7FF8DC5719500A5600DC5A7D /* DRPDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRPDictionary.swift; sourceTree = "<group>"; };
 		A9039FF91858D579002AEB37 /* DRPPageEtCeteraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageEtCeteraViewController.h; path = ViewControllers/Pages/DRPPageEtCeteraViewController.h; sourceTree = "<group>"; };
 		A9039FFA1858D579002AEB37 /* DRPPageEtCeteraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageEtCeteraViewController.m; path = ViewControllers/Pages/DRPPageEtCeteraViewController.m; sourceTree = "<group>"; };
 		A91C045618557B6A002B6899 /* page.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = page.plist; path = Swatches/page.plist; sourceTree = "<group>"; };
@@ -343,7 +343,7 @@
 				A99EAF1E1876606C00DAD44F /* Atoms */,
 				C024DF7718370AC300B5775B /* DRPDictionary.h.OLD */,
 				C024DF7818370AC300B5775B /* DRPDictionary.m.OLD */,
-				7FF8DC5719500A5600DC5A7D /* DRPDictionary.swift */,
+				7F521D80195032DC00E76C03 /* DRPDictionary.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -614,7 +614,7 @@
 			attributes = {
 				CLASSPREFIX = DRP;
 				LastUpgradeCheck = 0510;
-				ORGANIZATIONNAME = "Brad Zeis";
+				ORGANIZATIONNAME = “Uvora LLC”;
 				TargetAttributes = {
 					A91D8F44183702EE00BEC6E8 = {
 						DevelopmentTeam = VK6PLLGMJR;
@@ -712,7 +712,7 @@
 				A9ACB3C81883688500B0B9D9 /* DRPCollectionViewDataSource.m in Sources */,
 				A91D8F55183702EE00BEC6E8 /* main.m in Sources */,
 				A9C0FACF1864DE7700377B0E /* DRPBoardViewController.m in Sources */,
-				7FF8DC5819500A5600DC5A7D /* DRPDictionary.swift in Sources */,
+				7F521D81195032DC00E76C03 /* DRPDictionary.swift in Sources */,
 				A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */,
 				A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */,
 				A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */,

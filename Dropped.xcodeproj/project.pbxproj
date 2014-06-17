@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7FF8DC5819500A5600DC5A7D /* DRPDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FF8DC5719500A5600DC5A7D /* DRPDictionary.swift */; };
 		A9039FFB1858D579002AEB37 /* DRPPageEtCeteraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9039FFA1858D579002AEB37 /* DRPPageEtCeteraViewController.m */; };
 		A91C045818557C03002B6899 /* page.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A91C045618557B6A002B6899 /* page.plist */; };
 		A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = A91C045E185582DC002B6899 /* DRPCueKeeper.m */; };
@@ -67,7 +68,7 @@
 		A9E27CC81857B6250043F6A9 /* tileScalingOffset.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */; };
 		A9E4A44A18CBE8420085CA57 /* DRPNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E4A44918CBE8420085CA57 /* DRPNetworking.m */; };
 		A9E4A44D18CD09310085CA57 /* en-us.db in Copy Word Databases */ = {isa = PBXBuildFile; fileRef = A9E4A44B18CD09110085CA57 /* en-us.db */; };
-		C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */ = {isa = PBXBuildFile; fileRef = C024DF7818370AC300B5775B /* DRPDictionary.m */; };
+		C024DF7918370AC300B5775B /* DRPDictionary.m.OLD in Sources */ = {isa = PBXBuildFile; fileRef = C024DF7818370AC300B5775B /* DRPDictionary.m.OLD */; };
 		F4E61295ABFC46CDBE1384F1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA523B0D421443AAA174ECE1 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -104,6 +105,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		7FF8DC5619500A5500DC5A7D /* Dropped-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dropped-Bridging-Header.h"; sourceTree = "<group>"; };
+		7FF8DC5719500A5600DC5A7D /* DRPDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRPDictionary.swift; sourceTree = "<group>"; };
 		A9039FF91858D579002AEB37 /* DRPPageEtCeteraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageEtCeteraViewController.h; path = ViewControllers/Pages/DRPPageEtCeteraViewController.h; sourceTree = "<group>"; };
 		A9039FFA1858D579002AEB37 /* DRPPageEtCeteraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageEtCeteraViewController.m; path = ViewControllers/Pages/DRPPageEtCeteraViewController.m; sourceTree = "<group>"; };
 		A91C045618557B6A002B6899 /* page.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = page.plist; path = Swatches/page.plist; sourceTree = "<group>"; };
@@ -209,8 +212,8 @@
 		A9E4A44918CBE8420085CA57 /* DRPNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPNetworking.m; path = Networking/DRPNetworking.m; sourceTree = "<group>"; };
 		A9E4A44B18CD09110085CA57 /* en-us.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = "en-us.db"; path = "Database/en-us.db"; sourceTree = "<group>"; };
 		B0935A92C9664719B578E480 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
-		C024DF7718370AC300B5775B /* DRPDictionary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPDictionary.h; path = Models/DRPDictionary.h; sourceTree = "<group>"; };
-		C024DF7818370AC300B5775B /* DRPDictionary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPDictionary.m; path = Models/DRPDictionary.m; sourceTree = "<group>"; };
+		C024DF7718370AC300B5775B /* DRPDictionary.h.OLD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DRPDictionary.h.OLD; path = Models/DRPDictionary.h.OLD; sourceTree = "<group>"; };
+		C024DF7818370AC300B5775B /* DRPDictionary.m.OLD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DRPDictionary.m.OLD; path = Models/DRPDictionary.m.OLD; sourceTree = "<group>"; };
 		CA523B0D421443AAA174ECE1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -273,6 +276,7 @@
 		A91D8F4E183702EE00BEC6E8 /* Dropped */ = {
 			isa = PBXGroup;
 			children = (
+				7FF8DC5619500A5500DC5A7D /* Dropped-Bridging-Header.h */,
 				A9204053183704AA006940B8 /* AppDelegate */,
 				A9204054183704B7006940B8 /* ViewControllers */,
 				A9204055183704C1006940B8 /* Views */,
@@ -337,8 +341,9 @@
 				A95BB48A18372D8C00B7A9A8 /* Match */,
 				A920405D18370BA3006940B8 /* Board/History */,
 				A99EAF1E1876606C00DAD44F /* Atoms */,
-				C024DF7718370AC300B5775B /* DRPDictionary.h */,
-				C024DF7818370AC300B5775B /* DRPDictionary.m */,
+				C024DF7718370AC300B5775B /* DRPDictionary.h.OLD */,
+				C024DF7818370AC300B5775B /* DRPDictionary.m.OLD */,
+				7FF8DC5719500A5600DC5A7D /* DRPDictionary.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -707,11 +712,12 @@
 				A9ACB3C81883688500B0B9D9 /* DRPCollectionViewDataSource.m in Sources */,
 				A91D8F55183702EE00BEC6E8 /* main.m in Sources */,
 				A9C0FACF1864DE7700377B0E /* DRPBoardViewController.m in Sources */,
+				7FF8DC5819500A5600DC5A7D /* DRPDictionary.swift in Sources */,
 				A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */,
 				A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */,
 				A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */,
 				A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */,
-				C024DF7918370AC300B5775B /* DRPDictionary.m in Sources */,
+				C024DF7918370AC300B5775B /* DRPDictionary.m.OLD in Sources */,
 				A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */,
 				A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */,
 				A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */,
@@ -831,13 +837,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dropped/Dropped-Prefix.pch";
 				INFOPLIST_FILE = "Dropped/Dropped-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Dropped;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "dropped/Dropped-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -848,13 +858,16 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Dropped/Dropped-Prefix.pch";
 				INFOPLIST_FILE = "Dropped/Dropped-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Dropped;
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "dropped/Dropped-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

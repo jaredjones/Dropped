@@ -614,7 +614,7 @@
 			attributes = {
 				CLASSPREFIX = DRP;
 				LastUpgradeCheck = 0510;
-				ORGANIZATIONNAME = “Uvora LLC”;
+				ORGANIZATIONNAME = "Uvora LLC";
 				TargetAttributes = {
 					A91D8F44183702EE00BEC6E8 = {
 						DevelopmentTeam = VK6PLLGMJR;

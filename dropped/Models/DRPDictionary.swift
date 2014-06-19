@@ -12,8 +12,8 @@ let _HTTPSuccessCode:NSInteger = 200
 
 class DRPDictionary : NSObject
 {
-    var databaseURL:NSURL?
-    var database:FMDatabase?
+    let databaseURL:NSURL
+    let database:FMDatabase
     
     class var sharedDictionary : DRPDictionary
     {
@@ -67,12 +67,12 @@ class DRPDictionary : NSObject
 
     init(databaseURL:NSURL)
     {
-        super.init()
-
         self.databaseURL = databaseURL
-        self.database = FMDatabase(path: self.databaseURL!.path)
+        self.database = FMDatabase(path: self.databaseURL.path)
         
-        if !self.database!.openWithFlags(SQLITE_OPEN_READWRITE)
+        super.init()
+        
+        if self.database.openWithFlags(SQLITE_OPEN_READWRITE)
         {
             // FMDatabase doesn't throw exceptions when it can't
             // open the database, it just returns a BOOL
@@ -82,7 +82,7 @@ class DRPDictionary : NSObject
     
     deinit
     {
-        database!.close()
+        database.close()
     }
 
     class func syncDictionary()
@@ -94,7 +94,7 @@ class DRPDictionary : NSObject
     
     class func getDictionaryVersion() -> NSInteger
     {
-        let rs:FMResultSet = DRPDictionary.sharedDictionary.database!.executeQuery("SELECT version FROM settings;",
+        let rs:FMResultSet = DRPDictionary.sharedDictionary.database.executeQuery("SELECT version FROM settings;",
                                                                         withArgumentsInArray: [])
         rs.next()
         return Int(rs.intForColumnIndex(0))
@@ -107,7 +107,7 @@ class DRPDictionary : NSObject
     
     class func indexPositionForWord(word: NSString)->NSInteger
     {
-        let rs:FMResultSet = DRPDictionary.sharedDictionary.database!.executeQuery("SELECT * FROM words WHERE word = ?;",
+        let rs:FMResultSet = DRPDictionary.sharedDictionary.database.executeQuery("SELECT * FROM words WHERE word = ?;",
             withArgumentsInArray: [word])
         rs.next()
         

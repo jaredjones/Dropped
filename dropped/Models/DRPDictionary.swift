@@ -72,7 +72,7 @@ class DRPDictionary : NSObject
         
         super.init()
         
-        if self.database.openWithFlags(SQLITE_OPEN_READWRITE)
+        if !self.database.openWithFlags(SQLITE_OPEN_READWRITE)
         {
             // FMDatabase doesn't throw exceptions when it can't
             // open the database, it just returns a BOOL

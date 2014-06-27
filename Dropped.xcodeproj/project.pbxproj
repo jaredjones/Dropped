@@ -68,7 +68,6 @@
 		A9E27CC81857B6250043F6A9 /* tileScalingOffset.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A9E27CC41857B6080043F6A9 /* tileScalingOffset.plist */; };
 		A9E4A44A18CBE8420085CA57 /* DRPNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = A9E4A44918CBE8420085CA57 /* DRPNetworking.m */; };
 		A9E4A44D18CD09310085CA57 /* en-us.db in Copy Word Databases */ = {isa = PBXBuildFile; fileRef = A9E4A44B18CD09110085CA57 /* en-us.db */; };
-		C024DF7918370AC300B5775B /* DRPDictionary.m.OLD in Sources */ = {isa = PBXBuildFile; fileRef = C024DF7818370AC300B5775B /* DRPDictionary.m.OLD */; };
 		F4E61295ABFC46CDBE1384F1 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA523B0D421443AAA174ECE1 /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -212,8 +211,6 @@
 		A9E4A44918CBE8420085CA57 /* DRPNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPNetworking.m; path = Networking/DRPNetworking.m; sourceTree = "<group>"; };
 		A9E4A44B18CD09110085CA57 /* en-us.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = "en-us.db"; path = "Database/en-us.db"; sourceTree = "<group>"; };
 		B0935A92C9664719B578E480 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
-		C024DF7718370AC300B5775B /* DRPDictionary.h.OLD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DRPDictionary.h.OLD; path = Models/DRPDictionary.h.OLD; sourceTree = "<group>"; };
-		C024DF7818370AC300B5775B /* DRPDictionary.m.OLD */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = DRPDictionary.m.OLD; path = Models/DRPDictionary.m.OLD; sourceTree = "<group>"; };
 		CA523B0D421443AAA174ECE1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -341,8 +338,6 @@
 				A95BB48A18372D8C00B7A9A8 /* Match */,
 				A920405D18370BA3006940B8 /* Board/History */,
 				A99EAF1E1876606C00DAD44F /* Atoms */,
-				C024DF7718370AC300B5775B /* DRPDictionary.h.OLD */,
-				C024DF7818370AC300B5775B /* DRPDictionary.m.OLD */,
 				7F521D80195032DC00E76C03 /* DRPDictionary.swift */,
 			);
 			name = Models;
@@ -717,7 +712,6 @@
 				A9D127B71837E0B40048AF25 /* DRPPlayedWord.m in Sources */,
 				A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */,
 				A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */,
-				C024DF7918370AC300B5775B /* DRPDictionary.m.OLD in Sources */,
 				A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */,
 				A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */,
 				A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */,

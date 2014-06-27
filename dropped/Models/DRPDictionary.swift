@@ -87,11 +87,48 @@ class DRPDictionary : NSObject
 
     class func syncDictionary()
     {
-        //TODO
-        //NO Syncing till I rewrite how this is done. Shouldn't take long.
-        //I'm super tired, I'll finish this tomorrow most likely.
+        let URLString:String = FRBSwatchist.stringForKey("debug.dictionaryDownloadURL") +
+            "grabdicsql.php?i=" + String(DRPDictionary.getDictionaryVersion())
+        
+        let urlRequest = NSMutableURLRequest();
+        urlRequest.HTTPMethod = "GET"
+        urlRequest.URL = NSURL(string: URLString)
+        
+        NSURLConnection.sendAsynchronousRequest(urlRequest,
+            queue: NSOperationQueue.mainQueue(),
+            completionHandler: {(response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+            
+                let httpResonse = response as NSHTTPURLResponse
+                if httpResonse.statusCode != _HTTPSuccessCode || error != nil
+                {
+                    NSLog("Dictionary Downloaded Failed with HTTP Status-Code:%ld\nURLPath:%@",
+                        httpResonse.statusCode,
+                        URLString)
+                }
+                else if data.length == 0
+                {
+                    //Either your version is too old for updating or your version is current
+                }
+                else
+                {
+                    let queryData = NSString(data: data, encoding: NSUTF8StringEncoding)
+                    //Keep this till we can verify that it's working
+                    NSLog("%@", queryData)
+                    
+                    let commands = queryData.componentsSeparatedByString(";")
+                    for cmd : AnyObject in commands
+                    {
+                        let trimmedCmd:NSString = cmd.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+                        if trimmedCmd.length == 0
+                        {
+                            continue;
+                        }
+                        DRPDictionary.sharedDictionary.database.executeUpdate(trimmedCmd, withArgumentsInArray: nil)
+                    }
+                    
+                }
+            })
     }
-    
     class func getDictionaryVersion() -> NSInteger
     {
         let rs:FMResultSet = DRPDictionary.sharedDictionary.database.executeQuery("SELECT version FROM settings;",
@@ -99,18 +136,18 @@ class DRPDictionary : NSObject
         rs.next()
         return Int(rs.intForColumnIndex(0))
     }
-    
+
     class func isValidWord(word: NSString)->Bool
     {
         return DRPDictionary.indexPositionForWord(word.lowercaseString) > 0
     }
-    
+
     class func indexPositionForWord(word: NSString)->NSInteger
     {
         let rs:FMResultSet = DRPDictionary.sharedDictionary.database.executeQuery("SELECT * FROM words WHERE word = ?;",
             withArgumentsInArray: [word])
         rs.next()
-        
+
         return Int(rs.intForColumnIndex(0))
     }
 }

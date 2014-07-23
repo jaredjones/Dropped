@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		7F521D81195032DC00E76C03 /* DRPDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F521D80195032DC00E76C03 /* DRPDictionary.swift */; };
+		7FD8A976197F2FDE002DC81F /* DRPAppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FD8A975197F2FDE002DC81F /* DRPAppDelegate.swift */; };
 		A9039FFB1858D579002AEB37 /* DRPPageEtCeteraViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A9039FFA1858D579002AEB37 /* DRPPageEtCeteraViewController.m */; };
 		A91C045818557C03002B6899 /* page.plist in Copy Swatches */ = {isa = PBXBuildFile; fileRef = A91C045618557B6A002B6899 /* page.plist */; };
 		A91C045F185582DC002B6899 /* DRPCueKeeper.m in Sources */ = {isa = PBXBuildFile; fileRef = A91C045E185582DC002B6899 /* DRPCueKeeper.m */; };
@@ -15,8 +16,6 @@
 		A91D8F4B183702EE00BEC6E8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4A183702EE00BEC6E8 /* CoreGraphics.framework */; };
 		A91D8F4D183702EE00BEC6E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A91D8F4C183702EE00BEC6E8 /* UIKit.framework */; };
 		A91D8F53183702EE00BEC6E8 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A91D8F51183702EE00BEC6E8 /* InfoPlist.strings */; };
-		A91D8F55183702EE00BEC6E8 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A91D8F54183702EE00BEC6E8 /* main.m */; };
-		A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A91D8F58183702EE00BEC6E8 /* DRPAppDelegate.m */; };
 		A91D8F5B183702EE00BEC6E8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A91D8F5A183702EE00BEC6E8 /* Images.xcassets */; };
 		A920405218370467006940B8 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A920405118370467006940B8 /* Security.framework */; };
 		A920405C18370BA0006940B8 /* DRPPosition.m in Sources */ = {isa = PBXBuildFile; fileRef = A920405B18370BA0006940B8 /* DRPPosition.m */; };
@@ -105,6 +104,7 @@
 
 /* Begin PBXFileReference section */
 		7F521D80195032DC00E76C03 /* DRPDictionary.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DRPDictionary.swift; path = Models/DRPDictionary.swift; sourceTree = "<group>"; };
+		7FD8A975197F2FDE002DC81F /* DRPAppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DRPAppDelegate.swift; sourceTree = "<group>"; };
 		7FF8DC5619500A5500DC5A7D /* Dropped-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dropped-Bridging-Header.h"; sourceTree = "<group>"; };
 		A9039FF91858D579002AEB37 /* DRPPageEtCeteraViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPPageEtCeteraViewController.h; path = ViewControllers/Pages/DRPPageEtCeteraViewController.h; sourceTree = "<group>"; };
 		A9039FFA1858D579002AEB37 /* DRPPageEtCeteraViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPPageEtCeteraViewController.m; path = ViewControllers/Pages/DRPPageEtCeteraViewController.m; sourceTree = "<group>"; };
@@ -117,10 +117,7 @@
 		A91D8F4C183702EE00BEC6E8 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		A91D8F50183702EE00BEC6E8 /* Dropped-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Dropped-Info.plist"; sourceTree = "<group>"; };
 		A91D8F52183702EE00BEC6E8 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		A91D8F54183702EE00BEC6E8 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A91D8F56183702EE00BEC6E8 /* Dropped-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Dropped-Prefix.pch"; sourceTree = "<group>"; };
-		A91D8F57183702EE00BEC6E8 /* DRPAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DRPAppDelegate.h; sourceTree = "<group>"; };
-		A91D8F58183702EE00BEC6E8 /* DRPAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DRPAppDelegate.m; sourceTree = "<group>"; };
 		A91D8F5A183702EE00BEC6E8 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		A91D8F61183702EE00BEC6E8 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		A920405118370467006940B8 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -293,7 +290,6 @@
 			children = (
 				A91D8F50183702EE00BEC6E8 /* Dropped-Info.plist */,
 				A91D8F51183702EE00BEC6E8 /* InfoPlist.strings */,
-				A91D8F54183702EE00BEC6E8 /* main.m */,
 				A91D8F56183702EE00BEC6E8 /* Dropped-Prefix.pch */,
 			);
 			name = "Supporting Files";
@@ -302,8 +298,7 @@
 		A9204053183704AA006940B8 /* AppDelegate */ = {
 			isa = PBXGroup;
 			children = (
-				A91D8F57183702EE00BEC6E8 /* DRPAppDelegate.h */,
-				A91D8F58183702EE00BEC6E8 /* DRPAppDelegate.m */,
+				7FD8A975197F2FDE002DC81F /* DRPAppDelegate.swift */,
 			);
 			name = AppDelegate;
 			sourceTree = "<group>";
@@ -705,7 +700,6 @@
 				A95BB49618372DA800B7A9A8 /* DRPCharacter.m in Sources */,
 				A9B1206F1857F8CE0079BF72 /* DRPCueIndicatorView.m in Sources */,
 				A9ACB3C81883688500B0B9D9 /* DRPCollectionViewDataSource.m in Sources */,
-				A91D8F55183702EE00BEC6E8 /* main.m in Sources */,
 				A9C0FACF1864DE7700377B0E /* DRPBoardViewController.m in Sources */,
 				7F521D81195032DC00E76C03 /* DRPDictionary.swift in Sources */,
 				A95BB49418372DA800B7A9A8 /* DRPBoard.m in Sources */,
@@ -713,7 +707,7 @@
 				A9B1C07E184CFCC100866029 /* DRPDropTransition.m in Sources */,
 				A99D97D318490C8300208FA0 /* DRPPlayer.m in Sources */,
 				A9E27CBF1857AE210043F6A9 /* DRPTileView.m in Sources */,
-				A91D8F59183702EE00BEC6E8 /* DRPAppDelegate.m in Sources */,
+				7FD8A976197F2FDE002DC81F /* DRPAppDelegate.swift in Sources */,
 				A9813324186BC00300FC3277 /* DRPCurrentWordView.m in Sources */,
 				A93D77CF18567D4B006691AE /* DRPPageLogInViewController.m in Sources */,
 				A9C0FAD9186507EC00377B0E /* NSArray+Mutable.m in Sources */,

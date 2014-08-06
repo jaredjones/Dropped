@@ -39,14 +39,14 @@ class DRPDictionary : NSObject
                                                                     withIntermediateDirectories: true,
                                                                     attributes: nil,
                                                                     error:&error)
-                if (error)
+                if (error != nil)
                 {
                     NSLog("%@", error!.localizedDescription)
                 }
                 
                 // /Library/Application Support/ must be excluded from backup
                 dbDirectory.setResourceValue(true, forKey: NSURLIsExcludedFromBackupKey, error: &error)
-                if (error)
+                if (error != nil)
                 {
                     NSLog("%@", error!.localizedDescription)
                 }
@@ -54,7 +54,7 @@ class DRPDictionary : NSObject
                 let databaseSourceURL:NSURL = NSBundle.mainBundle().URLForResource("en-us", withExtension: "db",
                                                                                             subdirectory: "Database")
                 NSFileManager.defaultManager().copyItemAtPath(databaseSourceURL.path, toPath: databaseURL.path, error: &error)
-                if (error)
+                if (error != nil)
                 {
                     NSLog("%@", error!.localizedDescription)
                 }

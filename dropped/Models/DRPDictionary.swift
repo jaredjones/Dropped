@@ -31,7 +31,7 @@ class DRPDictionary : NSObject
                                                             as NSURL).URLByAppendingPathComponent("Database")
             
             let databaseURL = dbDirectory.URLByAppendingPathComponent("en-us.db")
-            if !NSFileManager.defaultManager().fileExistsAtPath(databaseURL.path)
+            if !NSFileManager.defaultManager().fileExistsAtPath(databaseURL.path!)
             {
                 // Library/Application Support/ directory isn't present by default, it has to be created
                 var error:NSError?
@@ -52,8 +52,8 @@ class DRPDictionary : NSObject
                 }
                 
                 let databaseSourceURL:NSURL = NSBundle.mainBundle().URLForResource("en-us", withExtension: "db",
-                                                                                            subdirectory: "Database")
-                NSFileManager.defaultManager().copyItemAtPath(databaseSourceURL.path, toPath: databaseURL.path, error: &error)
+                                                                                            subdirectory: "Database")!
+                NSFileManager.defaultManager().copyItemAtPath(databaseSourceURL.path!, toPath: databaseURL.path!, error: &error)
                 if (error != nil)
                 {
                     NSLog("%@", error!.localizedDescription)

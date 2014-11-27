@@ -113,10 +113,10 @@ class DRPDictionary : NSObject
                 {
                     let queryData = NSString(data: data, encoding: NSUTF8StringEncoding)
                     //Keep this till we can verify that it's working
-                    NSLog("%@", queryData)
+                    NSLog("%@", queryData!)
                     
-                    let commands = queryData.componentsSeparatedByString(";")
-                    for cmd : AnyObject in commands
+                    let commands = queryData?.componentsSeparatedByString(";")
+                    for cmd : AnyObject in commands!
                     {
                         let trimmedCmd:NSString = cmd.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
                         if trimmedCmd.length == 0

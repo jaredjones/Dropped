@@ -1,5 +1,5 @@
 PODS:
-  - Bolts (1.1.0)
+  - Bolts (1.1.2)
   - Facebook-iOS-SDK (3.14.1):
     - Bolts
   - FMDB (2.2):
@@ -21,7 +21,7 @@ EXTERNAL SOURCES:
     :git: https://github.com/bradzeis/FRBSwatchist
 
 SPEC CHECKSUMS:
-  Bolts: 91c2af8eae1d44e1dd75946a5b0ae04a43ea43e4
+  Bolts: 2635e8698a630774689441047f3465d78c48d485
   Facebook-iOS-SDK: e9b3d5ac54ee3e5e693f4eef470b97911b3d076d
   FMDB: f6f4511ad1e9ace38e9b6f4d83c2cddaabf98ea6
   FRBSwatchist: bc312d54f3343366a4d03629864b316711e1cad1

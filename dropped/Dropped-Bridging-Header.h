@@ -10,5 +10,4 @@
 
 //Used by AppDelegate
 #import "DRPNetworking.h"
-#import "TestFlight.h"
 #import "DRPMainViewController.h"

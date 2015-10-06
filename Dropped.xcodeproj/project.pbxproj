@@ -207,8 +207,9 @@
 		A9E4A44818CBE8420085CA57 /* DRPNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DRPNetworking.h; path = Networking/DRPNetworking.h; sourceTree = "<group>"; };
 		A9E4A44918CBE8420085CA57 /* DRPNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DRPNetworking.m; path = Networking/DRPNetworking.m; sourceTree = "<group>"; };
 		A9E4A44B18CD09110085CA57 /* en-us.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = "en-us.db"; path = "Database/en-us.db"; sourceTree = "<group>"; };
-		B0935A92C9664719B578E480 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
+		AB64F84F4F055004B45D110F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		CA523B0D421443AAA174ECE1 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF48FC84768385C20DC927E8 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -242,7 +243,7 @@
 				A91D8F4E183702EE00BEC6E8 /* Dropped */,
 				A91D8F47183702EE00BEC6E8 /* Frameworks */,
 				A91D8F46183702EE00BEC6E8 /* Products */,
-				B0935A92C9664719B578E480 /* Pods.xcconfig */,
+				AD1486D015ED70BBC5F0B0DB /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -560,6 +561,15 @@
 			name = Networking;
 			sourceTree = "<group>";
 		};
+		AD1486D015ED70BBC5F0B0DB /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AB64F84F4F055004B45D110F /* Pods.debug.xcconfig */,
+				DF48FC84768385C20DC927E8 /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		C08CBC121837168800CE678F /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -603,7 +613,9 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = DRP;
-				LastUpgradeCheck = 0510;
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = "Uvora LLC";
 				TargetAttributes = {
 					A91D8F44183702EE00BEC6E8 = {
@@ -678,7 +690,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -764,6 +776,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer: Jared Jones (R96M5245A2)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jared Jones (R96M5245A2)";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -821,7 +834,7 @@
 		};
 		A91D8F72183702EE00BEC6E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0935A92C9664719B578E480 /* Pods.xcconfig */;
+			baseConfigurationReference = AB64F84F4F055004B45D110F /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -832,6 +845,7 @@
 				GCC_PREFIX_HEADER = "Dropped/Dropped-Prefix.pch";
 				INFOPLIST_FILE = "Dropped/Dropped-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bradjared.dropped;
 				PRODUCT_NAME = Dropped;
 				PROVISIONING_PROFILE = "3f9b788e-1cdd-4806-8eb1-1d33825d58af";
 				SWIFT_OBJC_BRIDGING_HEADER = "dropped/Dropped-Bridging-Header.h";
@@ -842,7 +856,7 @@
 		};
 		A91D8F73183702EE00BEC6E8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B0935A92C9664719B578E480 /* Pods.xcconfig */;
+			baseConfigurationReference = DF48FC84768385C20DC927E8 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -853,6 +867,7 @@
 				GCC_PREFIX_HEADER = "Dropped/Dropped-Prefix.pch";
 				INFOPLIST_FILE = "Dropped/Dropped-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.bradjared.dropped;
 				PRODUCT_NAME = Dropped;
 				PROVISIONING_PROFILE = "3f9b788e-1cdd-4806-8eb1-1d33825d58af";
 				SWIFT_OBJC_BRIDGING_HEADER = "dropped/Dropped-Bridging-Header.h";

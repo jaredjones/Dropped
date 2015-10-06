@@ -17,8 +17,6 @@ class DRPDictionary : NSObject
     
     class var sharedDictionary : DRPDictionary
     {
-        var pred : dispatch_once_t = 0
-            
         struct Static {
             static var pred : dispatch_once_t = 0
             static var instance : DRPDictionary? = nil
@@ -34,31 +32,29 @@ class DRPDictionary : NSObject
             if !NSFileManager.defaultManager().fileExistsAtPath(databaseURL.path!)
             {
                 // Library/Application Support/ directory isn't present by default, it has to be created
-                var error:NSError?
-                NSFileManager.defaultManager().createDirectoryAtURL(dbDirectory,
+                do{
+                    try NSFileManager.defaultManager().createDirectoryAtURL(dbDirectory,
                                                                     withIntermediateDirectories: true,
-                                                                    attributes: nil,
-                                                                    error:&error)
-                if (error != nil)
-                {
-                    NSLog("%@", error!.localizedDescription)
+                                                                    attributes: nil)
+                }catch{
+                    print(error)
                 }
                 
                 // /Library/Application Support/ must be excluded from backup
-                dbDirectory.setResourceValue(true, forKey: NSURLIsExcludedFromBackupKey, error: &error)
-                if (error != nil)
-                {
-                    NSLog("%@", error!.localizedDescription)
-                }
+                do{
+                    try dbDirectory.setResourceValue(true, forKey: NSURLIsExcludedFromBackupKey)
                 
+                }catch{
+                    print(error)
+                }
                 let databaseSourceURL:NSURL = NSBundle.mainBundle().URLForResource("en-us", withExtension: "db",
                                                                                             subdirectory: "Database")!
-                NSFileManager.defaultManager().copyItemAtPath(databaseSourceURL.path!, toPath: databaseURL.path!, error: &error)
-                if (error != nil)
-                {
-                    NSLog("%@", error!.localizedDescription)
+                
+                do{
+                    try NSFileManager.defaultManager().copyItemAtPath(databaseSourceURL.path!, toPath: databaseURL.path!)
+                }catch{
+                    print(error)
                 }
-
             }
             Static.instance = DRPDictionary(databaseURL: databaseURL)
         })
@@ -96,22 +92,22 @@ class DRPDictionary : NSObject
         
         NSURLConnection.sendAsynchronousRequest(urlRequest,
             queue: NSOperationQueue.mainQueue(),
-            completionHandler: {(response: NSURLResponse!, data: NSData!, error: NSError!) -> Void in
+            completionHandler: {(response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
             
-                let httpResonse = response as NSHTTPURLResponse
+                let httpResonse = response as! NSHTTPURLResponse
                 if httpResonse.statusCode != _HTTPSuccessCode || error != nil
                 {
                     NSLog("Dictionary Downloaded Failed with HTTP Status-Code:%ld\nURLPath:%@",
                         httpResonse.statusCode,
                         URLString)
                 }
-                else if data.length == 0
+                else if data!.length == 0
                 {
                     //Either your version is too old for updating or your version is current
                 }
                 else
                 {
-                    let queryData = NSString(data: data, encoding: NSUTF8StringEncoding)
+                    let queryData = NSString(data: data!, encoding: NSUTF8StringEncoding)
                     //Keep this till we can verify that it's working
                     NSLog("%@", queryData!)
                     
@@ -123,7 +119,7 @@ class DRPDictionary : NSObject
                         {
                             continue;
                         }
-                        DRPDictionary.sharedDictionary.database.executeUpdate(trimmedCmd, withArgumentsInArray: nil)
+                        DRPDictionary.sharedDictionary.database.executeUpdate(trimmedCmd as String, withArgumentsInArray: nil)
                     }
                     
                 }

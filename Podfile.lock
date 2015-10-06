@@ -3,28 +3,25 @@ PODS:
   - Facebook-iOS-SDK (3.14.1):
     - Bolts
   - FMDB (2.2):
-    - FMDB/standard
+    - FMDB/standard (= 2.2)
   - FMDB/common (2.2)
   - FMDB/standard (2.2):
     - FMDB/common
   - FRBSwatchist (1.0.0)
-  - TestFlightSDK (3.0.2)
 
 DEPENDENCIES:
   - Facebook-iOS-SDK
   - FMDB
   - FRBSwatchist (from `https://github.com/bradzeis/FRBSwatchist`)
-  - TestFlightSDK
 
 EXTERNAL SOURCES:
   FRBSwatchist:
     :git: https://github.com/bradzeis/FRBSwatchist
 
 SPEC CHECKSUMS:
-  Bolts: 2635e8698a630774689441047f3465d78c48d485
-  Facebook-iOS-SDK: e9b3d5ac54ee3e5e693f4eef470b97911b3d076d
-  FMDB: f6f4511ad1e9ace38e9b6f4d83c2cddaabf98ea6
-  FRBSwatchist: bc312d54f3343366a4d03629864b316711e1cad1
-  TestFlightSDK: 0c24c533748d0d84bfe7a3cb6036fa79124d84ee
+  Bolts: c3d6ab263e41ee59dae21881c021dc90b12434ff
+  Facebook-iOS-SDK: 2948301ff993744c3c931d1ba46fa4a5bd60a687
+  FMDB: 0678cab3b024ea6a2e6ea5dd91fc8eb9a296bf57
+  FRBSwatchist: 1a7d91ee01812c17c6f2e2e153f840bfee0875e2
 
-COCOAPODS: 0.33.1
+COCOAPODS: 0.38.2
